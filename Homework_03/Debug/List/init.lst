@@ -1,0 +1,107 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           11/Sep/2015  15:14:10
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE-306 Code\Homework_03\init.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE-306 Code\Homework_03\init.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE-306
+#        Code\Homework_03\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE-306 Code\Homework_03\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE-306
+#        Code\Homework_03\Debug\List\init.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE-306
+#        Code\Homework_03\Debug\Obj\init.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE-306 Code\Homework_03\init.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code to initialize conditions for LCD.
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          
+     13          // Includes
+     14          #include  "macros.h"
+     15          #include  "msp430.h"
+     16          #include  "functions.h"
+     17          
+     18          // Gloabl Variables
+     19          extern char display_line_1[DISPLAY_LENGTH];
+     20          extern char display_line_2[DISPLAY_LENGTH];
+     21          extern char display_line_3[DISPLAY_LENGTH];
+     22          extern char display_line_4[DISPLAY_LENGTH];
+     23          extern char *display_1;
+     24          extern char *display_2;
+     25          extern char *display_3;
+     26          extern char *display_4;
+     27          
+
+   \                                 In  segment CODE, align 2
+     28          void Init_Conditions(void){
+   \                     Init_Conditions:
+     29          //------------------------------------------------------------------------------
+     30          // Initializations Configurations
+     31          //------------------------------------------------------------------------------
+     32          // Interrupts are disabled by default, enable them. 
+     33            enable_interrupts();
+   \   000000   ........     CALLA   #enable_interrupts
+     34            display_1 = &display_line_1[ZERO];
+   \   000004   B240........ MOV.W   #display_line_1, &display_1
+     35            display_2 = &display_line_2[ZERO];
+   \   00000A   B240........ MOV.W   #display_line_2, &display_2
+     36            display_3 = &display_line_3[ZERO];
+   \   000010   B240........ MOV.W   #display_line_3, &display_3
+     37            display_4 = &display_line_4[ZERO];
+   \   000016   B240........ MOV.W   #display_line_4, &display_4
+     38          
+     39          //------------------------------------------------------------------------------
+     40          }
+   \   00001C   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Conditions
+        4   -> enable_interrupts
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      30  Init_Conditions
+
+ 
+ 30 bytes in segment CODE
+ 
+ 30 bytes of CODE memory
+
+Errors: none
+Warnings: none
