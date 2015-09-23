@@ -1,0 +1,205 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           23/Sep/2015  03:34:32
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\motors.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\motors.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        03\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 03\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        03\Debug\List\motors.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        03\Debug\Obj\motors.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\motors.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for motor control functions.
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Seppt 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x222
+   \   union <unnamed> _A_PBOUT_L
+   \                     _A_PBOUT_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     16          unsigned int tmp;
+   \                     tmp:
+   \   000000                DS8 2
+     17          
+
+   \                                 In  segment CODE, align 2
+     18          void Init_Motors(void){
+   \                     Init_Motors:
+     19            // Funcetion to turn off motor forward before any code runs.
+     20            right_off();
+   \   000000   ........     CALLA   #right_off
+     21            left_off();
+   \   000004   ........     BRA     #left_off
+     22          }
+     23          
+
+   \                                 In  segment CODE, align 2
+     24          void motor_straight(unsigned int test_time){
+   \                     motor_straight:
+   \   000000   1B15         PUSHM.W #0x2, R11
+   \   000002   0A4C         MOV.W   R12, R10
+     25            // Function to run both motors to make a straight line for a specified time.
+     26            //tmp = Time_Sequence+time;
+     27            int i = 0;
+   \   000004   0B43         MOV.W   #0x0, R11
+     28          while(i<5) // Stop after Time_Sequence has counted up to new time.
+   \                     ??motor_straight_0:
+   \   000006   3B900500     CMP.W   #0x5, R11
+   \   00000A   1034         JGE     ??motor_straight_1
+     29            {  
+     30              left_on();
+   \   00000C   ........     CALLA   #left_on
+     31              five_msec_sleep(2);
+   \   000010   2C43         MOV.W   #0x2, R12
+   \   000012   ........     CALLA   #five_msec_sleep
+     32              left_off();
+   \   000016   ........     CALLA   #left_off
+     33              right_on();
+   \   00001A   ........     CALLA   #right_on
+     34              five_msec_sleep(2);
+   \   00001E   2C43         MOV.W   #0x2, R12
+   \   000020   ........     CALLA   #five_msec_sleep
+     35              right_off();
+   \   000024   ........     CALLA   #right_off
+     36              i++;
+   \   000028   1B53         ADD.W   #0x1, R11
+   \   00002A   ED3F         JMP     ??motor_straight_0
+     37            }
+     38            left_off();
+   \                     ??motor_straight_1:
+   \   00002C   ........     CALLA   #left_off
+     39            right_off();
+   \   000030   ........     CALLA   #right_off
+     40          }
+   \   000034   1A17         POPM.W  #0x2, R11
+   \   000036   1001         RETA
+     41          
+
+   \                                 In  segment CODE, align 2
+     42          void right_off(void){
+   \                     right_off:
+     43            // Function to turn off right motor.
+     44            P3OUT &= ~R_FORWARD;
+   \   000000   F2C010002202 BIC.B   #0x10, &0x222
+     45          }
+   \   000006   1001         RETA
+   \   000008                REQUIRE _A_PBOUT_L
+     46          
+
+   \                                 In  segment CODE, align 2
+     47          void left_off(void){
+   \                     left_off:
+     48            // Function to turn off left motor.
+     49              P3OUT &= ~L_FORWARD;
+   \   000000   F2C040002202 BIC.B   #0x40, &0x222
+     50          }
+   \   000006   1001         RETA
+   \   000008                REQUIRE _A_PBOUT_L
+     51          
+
+   \                                 In  segment CODE, align 2
+     52          void right_on(void){
+   \                     right_on:
+     53            // Function to turn on right motor.
+     54            P3OUT |= R_FORWARD;
+   \   000000   F2D010002202 BIS.B   #0x10, &0x222
+     55            five_msec_sleep(2);
+   \   000006   2C43         MOV.W   #0x2, R12
+   \   000008   ........     BRA     #five_msec_sleep
+   \   00000C                REQUIRE _A_PBOUT_L
+     56          }
+     57          
+
+   \                                 In  segment CODE, align 2
+     58          void left_on(void){
+   \                     left_on:
+     59            // Function to turn on left motor.
+     60            P3OUT |= L_FORWARD;
+   \   000000   F2D040002202 BIS.B   #0x40, &0x222
+     61          }
+   \   000006   1001         RETA
+   \   000008                REQUIRE _A_PBOUT_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Motors
+        0   -> left_off
+        4   -> right_off
+      4   left_off
+      4   left_on
+      8   motor_straight
+        8   -> five_msec_sleep
+        8   -> left_off
+        8   -> left_on
+        8   -> right_off
+        8   -> right_on
+      4   right_off
+      4   right_on
+        0   -> five_msec_sleep
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  Init_Motors
+       2  _A_PBOUT_L
+       8  left_off
+       8  left_on
+      56  motor_straight
+       8  right_off
+      12  right_on
+       2  tmp
+
+ 
+ 100 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+   2 bytes in segment DATA16_Z
+ 
+ 100 bytes of CODE memory
+   2 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none
