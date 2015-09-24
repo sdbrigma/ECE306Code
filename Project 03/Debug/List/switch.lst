@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           23/Sep/2015  18:11:55
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           24/Sep/2015  00:34:52
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -82,7 +82,7 @@
      28          // Switch proccess sets LCD text when SW1 and SW2 are pressed
      29            if (!(P4IN & SW1)){
    \   000000   D2B32102     BIT.B   #0x1, &0x221
-   \   000004   1D2C         JC      ??Switches_Process_0
+   \   000004   1B2C         JC      ??Switches_Process_0
      30              /*display_1 = "Shape?";
      31              posL1 = 0;
      32              display_2 = ">1) Circle";
@@ -111,15 +111,14 @@
      47              five_msec_sleep(FULL_SECOND); // wait 3s to run motor
    \   000030   3C40FA00     MOV.W   #0xfa, R12
    \   000034   ........     CALLA   #five_msec_sleep
-     48              motor_straight(500); // run motor straigh for 3s
-   \   000038   3C40F401     MOV.W   #0x1f4, R12
-   \   00003C   ........     CALLA   #motor_straight
+     48              triangle();
+   \   000038   ........     CALLA   #triangle
      49              
      50            }
      51            if (!(P4IN & SW2)) {
    \                     ??Switches_Process_0:
-   \   000040   E2B32102     BIT.B   #0x2, &0x221
-   \   000044   1C2C         JC      ??Switches_Process_1
+   \   00003C   E2B32102     BIT.B   #0x2, &0x221
+   \   000040   1C2C         JC      ??Switches_Process_1
      52              /*while(button_counter2!=0){
      53                button_counter2++;
      54                switch(button_counter2-1){
@@ -195,34 +194,34 @@
     124                }
     125              }*/
     126              display_1 = "Embedded";
-   \   000046   B240........ MOV.W   #`?<Constant "Embedded">`, &display_1
+   \   000042   B240........ MOV.W   #`?<Constant "Embedded">`, &display_1
     127              posL1 = SW2_posL1;
-   \   00004C   D243....     MOV.B   #0x1, &posL1
+   \   000048   D243....     MOV.B   #0x1, &posL1
     128              display_2 = "Systems";
-   \   000050   B240........ MOV.W   #`?<Constant "Systems">`, &display_2
+   \   00004C   B240........ MOV.W   #`?<Constant "Systems">`, &display_2
     129              posL2 = SW2_posL1;
-   \   000056   D243....     MOV.B   #0x1, &posL2
+   \   000052   D243....     MOV.B   #0x1, &posL2
     130              display_3 = "Rock!";
-   \   00005A   B240........ MOV.W   #`?<Constant "Rock!">`, &display_3
+   \   000056   B240........ MOV.W   #`?<Constant "Rock!">`, &display_3
     131              posL3 = SW2_posL1;
-   \   000060   D243....     MOV.B   #0x1, &posL3
+   \   00005C   D243....     MOV.B   #0x1, &posL3
     132              display_4 = "Go Pack!";
-   \   000064   B240........ MOV.W   #`?<Constant "Go Pack!">`, &display_4
+   \   000060   B240........ MOV.W   #`?<Constant "Go Pack!">`, &display_4
     133              posL4 = SW2_posL1;
-   \   00006A   D243....     MOV.B   #0x1, &posL4
+   \   000066   D243....     MOV.B   #0x1, &posL4
     134              five_msec_sleep(FULL_SECOND); // wait 3s to run motor
-   \   00006E   3C40FA00     MOV.W   #0xfa, R12
-   \   000072   ........     CALLA   #five_msec_sleep
+   \   00006A   3C40FA00     MOV.W   #0xfa, R12
+   \   00006E   ........     CALLA   #five_msec_sleep
     135              circle();
-   \   000076   ........     CALLA   #circle
+   \   000072   ........     CALLA   #circle
     136              button_counter2++;
-   \   00007A   9253....     ADD.W   #0x1, &button_counter2
+   \   000076   9253....     ADD.W   #0x1, &button_counter2
     137            }
     138          //------------------------------------------------------------------------------
     139          }
    \                     ??Switches_Process_1:
-   \   00007E   1001         RETA
-   \   000080                REQUIRE _A_PBIN_L
+   \   00007A   1001         RETA
+   \   00007C                REQUIRE _A_PBIN_L
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "NCSU">`:
@@ -269,7 +268,7 @@
       4   Switches_Process
         4   -> circle
         4   -> five_msec_sleep
-        4   -> motor_straight
+        4   -> triangle
 
 
    Segment part sizes:
@@ -284,18 +283,18 @@
       10  ?<Constant "S Brigman">
        8  ?<Constant "Systems">
        9  ?<Constant "WOLFPACK">
-     128  Switches_Process
+     124  Switches_Process
        2  _A_PBIN_L
        2  button_counter1
        2  button_counter2
 
  
- 128 bytes in segment CODE
+ 124 bytes in segment CODE
    2 bytes in segment DATA16_AN
   63 bytes in segment DATA16_C
    4 bytes in segment DATA16_Z
  
- 128 bytes of CODE  memory
+ 124 bytes of CODE  memory
   63 bytes of CONST memory
    4 bytes of DATA  memory (+ 2 bytes shared)
 

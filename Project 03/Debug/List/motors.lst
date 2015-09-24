@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           24/Sep/2015  00:13:10
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           24/Sep/2015  01:52:26
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -86,19 +86,19 @@
    \   000008   824F....     MOV.W   R15, &tmp
      29            int i = 0;
    \   00000C   0D43         MOV.W   #0x0, R13
-     30          while(i<1)
+     30          while(i<(1*time))
    \                     ??motor_straight_0:
-   \   00000E   1D93         CMP.W   #0x1, R13
-   \   000010   0C34         JGE     ??motor_straight_1
+   \   00000E   0D9E         CMP.W   R14, R13
+   \   000010   0C2C         JC      ??motor_straight_1
      31            {  
      32              //five_msec_sleep(STRAIGHT_SYNCH);
-     33              right_on(2); // On for 500 ms
-   \   000012   2C43         MOV.W   #0x2, R12
+     33              right_on(1); // On for 500 ms
+   \   000012   1C43         MOV.W   #0x1, R12
    \   000014   ........     CALLA   #right_on
      34              right_off();
    \   000018   ........     CALLA   #right_off
-     35              left_on(2);
-   \   00001C   2C43         MOV.W   #0x2, R12
+     35              left_on(1);
+   \   00001C   1C43         MOV.W   #0x1, R12
    \   00001E   ........     CALLA   #left_on
      36              left_off();
    \   000022   ........     CALLA   #left_off
@@ -126,110 +126,141 @@
      48            while(delay<2){
    \                     ??circle_1:
    \   000004   2A93         CMP.W   #0x2, R10
-   \   000006   1C34         JGE     ??circle_2
+   \   000006   1B34         JGE     ??circle_2
      49              int i = 0;
    \   000008   0B43         MOV.W   #0x0, R11
-     50              while(i<38){
+     50              while(i<75){
    \                     ??circle_0:
-   \   00000A   3B902600     CMP.W   #0x26, R11
-   \   00000E   0C34         JGE     ??circle_3
-     51                motor_straight(3);
-   \   000010   3C400300     MOV.W   #0x3, R12
-   \   000014   ........     CALLA   #motor_straight
-     52                left_on(11);
-   \   000018   3C400B00     MOV.W   #0xb, R12
-   \   00001C   ........     CALLA   #left_on
+   \   00000A   3B904B00     CMP.W   #0x4b, R11
+   \   00000E   0B34         JGE     ??circle_3
+     51                motor_straight(2);
+   \   000010   2C43         MOV.W   #0x2, R12
+   \   000012   ........     CALLA   #motor_straight
+     52                left_on(13);
+   \   000016   3C400D00     MOV.W   #0xd, R12
+   \   00001A   ........     CALLA   #left_on
      53                left_off();
-   \   000020   ........     CALLA   #left_off
+   \   00001E   ........     CALLA   #left_off
      54                i++;
-   \   000024   1B53         ADD.W   #0x1, R11
-   \   000026   F13F         JMP     ??circle_0
+   \   000022   1B53         ADD.W   #0x1, R11
+   \   000024   F23F         JMP     ??circle_0
      55              }
      56              delay++;
    \                     ??circle_3:
-   \   000028   1A53         ADD.W   #0x1, R10
-     57              right_on(10);
-   \   00002A   3C400A00     MOV.W   #0xa, R12
-   \   00002E   ........     CALLA   #right_on
-     58              right_off();
-   \   000032   ........     CALLA   #right_off
+   \   000026   1A53         ADD.W   #0x1, R10
+     57              left_on(5);
+   \   000028   3C400500     MOV.W   #0x5, R12
+   \   00002C   ........     CALLA   #left_on
+     58              left_off();
+   \   000030   ........     CALLA   #left_off
      59              five_msec_sleep(FULL_SECOND);
-   \   000036   3C40FA00     MOV.W   #0xfa, R12
-   \   00003A   ........     CALLA   #five_msec_sleep
-   \   00003E   E23F         JMP     ??circle_1
+   \   000034   3C40FA00     MOV.W   #0xfa, R12
+   \   000038   ........     CALLA   #five_msec_sleep
+   \   00003C   E33F         JMP     ??circle_1
      60            }
      61          }
    \                     ??circle_2:
-   \   000040   1A17         POPM.W  #0x2, R11
-   \   000042   1001         RETA
+   \   00003E   1A17         POPM.W  #0x2, R11
+   \   000040   1001         RETA
      62          
 
    \                                 In  segment CODE, align 2
-     63          void right_off(void){
+     63          void triangle(void){
+   \                     triangle:
+   \   000000   0A12         PUSH.W  R10
+     64            //int delay = 0;
+     65            int i = 0;
+   \   000002   0A43         MOV.W   #0x0, R10
+     66            while(i<3){
+   \                     ??triangle_0:
+   \   000004   3A900300     CMP.W   #0x3, R10
+   \   000008   1034         JGE     ??triangle_1
+     67              motor_straight(70);
+   \   00000A   3C404600     MOV.W   #0x46, R12
+   \   00000E   ........     CALLA   #motor_straight
+     68              five_msec_sleep(10);
+   \   000012   3C400A00     MOV.W   #0xa, R12
+   \   000016   ........     CALLA   #five_msec_sleep
+     69              left_on(90);
+   \   00001A   3C405A00     MOV.W   #0x5a, R12
+   \   00001E   ........     CALLA   #left_on
+     70              left_off();
+   \   000022   ........     CALLA   #left_off
+     71              i++;
+   \   000026   1A53         ADD.W   #0x1, R10
+   \   000028   ED3F         JMP     ??triangle_0
+     72            }
+     73          }
+   \                     ??triangle_1:
+   \   00002A   3A41         POP.W   R10
+   \   00002C   1001         RETA
+
+   \                                 In  segment CODE, align 2
+     74          void right_off(void){
    \                     right_off:
-     64            // Function to turn off right motor.
-     65            P3OUT &= ~R_FORWARD;
+     75            // Function to turn off right motor.
+     76            P3OUT &= ~R_FORWARD;
    \   000000   F2C010002202 BIC.B   #0x10, &0x222
-     66          }
+     77          }
    \   000006   1001         RETA
    \   000008                REQUIRE _A_PBOUT_L
-     67          
+     78          
 
    \                                 In  segment CODE, align 2
-     68          void left_off(void){
+     79          void left_off(void){
    \                     left_off:
-     69            // Function to turn off left motor.
-     70              P3OUT &= ~L_FORWARD;
+     80            // Function to turn off left motor.
+     81              P3OUT &= ~L_FORWARD;
    \   000000   F2C040002202 BIC.B   #0x40, &0x222
-     71          }
+     82          }
    \   000006   1001         RETA
    \   000008                REQUIRE _A_PBOUT_L
-     72          
-
-   \                                 In  segment CODE, align 2
-     73          void right_on(unsigned int time_synch){
-   \                     right_on:
-     74            // Function to turn on right motor.
-     75              //Time_Sequence = 0;
-     76              tmp = time_synch + Time_Sequence;
-   \   000000   0F4C         MOV.W   R12, R15
-   \   000002   1F52....     ADD.W   &Time_Sequence, R15
-   \   000006   824F....     MOV.W   R15, &tmp
-     77            while(Time_Sequence<tmp)
-   \                     ??right_on_0:
-   \   00000A   9292........ CMP.W   &tmp, &Time_Sequence
-   \   000010   042C         JC      ??right_on_1
-     78            {
-     79              P3OUT |= R_FORWARD;
-   \   000012   F2D010002202 BIS.B   #0x10, &0x222
-   \   000018   F83F         JMP     ??right_on_0
-     80              //five_msec_sleep(1);
-     81            }
-     82          }
-   \                     ??right_on_1:
-   \   00001A   1001         RETA
-   \   00001C                REQUIRE _A_PBOUT_L
      83          
 
    \                                 In  segment CODE, align 2
-     84          void left_on(unsigned int time_synch){
-   \                     left_on:
-     85            // Function to turn on left motor.
+     84          void right_on(unsigned int time_synch){
+   \                     right_on:
+     85            // Function to turn on right motor.
      86              //Time_Sequence = 0;
      87              tmp = time_synch + Time_Sequence;
    \   000000   0F4C         MOV.W   R12, R15
    \   000002   1F52....     ADD.W   &Time_Sequence, R15
    \   000006   824F....     MOV.W   R15, &tmp
      88            while(Time_Sequence<tmp)
+   \                     ??right_on_0:
+   \   00000A   9292........ CMP.W   &tmp, &Time_Sequence
+   \   000010   042C         JC      ??right_on_1
+     89            {
+     90              P3OUT |= R_FORWARD;
+   \   000012   F2D010002202 BIS.B   #0x10, &0x222
+   \   000018   F83F         JMP     ??right_on_0
+     91              //five_msec_sleep(1);
+     92            }
+     93          }
+   \                     ??right_on_1:
+   \   00001A   1001         RETA
+   \   00001C                REQUIRE _A_PBOUT_L
+     94          
+
+   \                                 In  segment CODE, align 2
+     95          void left_on(unsigned int time_synch){
+   \                     left_on:
+     96            // Function to turn on left motor.
+     97              //Time_Sequence = 0;
+     98              tmp = time_synch + Time_Sequence;
+   \   000000   0F4C         MOV.W   R12, R15
+   \   000002   1F52....     ADD.W   &Time_Sequence, R15
+   \   000006   824F....     MOV.W   R15, &tmp
+     99            while(Time_Sequence<tmp)
    \                     ??left_on_0:
    \   00000A   9292........ CMP.W   &tmp, &Time_Sequence
    \   000010   042C         JC      ??left_on_1
-     89            {
-     90              P3OUT |= L_FORWARD;
+    100            {
+    101              P3OUT |= L_FORWARD;
    \   000012   F2D040002202 BIS.B   #0x40, &0x222
    \   000018   F83F         JMP     ??left_on_0
-     91            }
-     92          }
+    102            }
+    103          }
    \                     ??left_on_1:
    \   00001A   1001         RETA
    \   00001C                REQUIRE _A_PBOUT_L
@@ -246,8 +277,6 @@
         8   -> left_off
         8   -> left_on
         8   -> motor_straight
-        8   -> right_off
-        8   -> right_on
       4   left_off
       4   left_on
       4   motor_straight
@@ -258,6 +287,11 @@
         4   -> right_on
       4   right_off
       4   right_on
+      6   triangle
+        6   -> five_msec_sleep
+        6   -> left_off
+        6   -> left_on
+        6   -> motor_straight
 
 
    Segment part sizes:
@@ -266,20 +300,21 @@
    -----  --------------
        8  Init_Motors
        2  _A_PBOUT_L
-      68  circle
+      66  circle
        8  left_off
       28  left_on
       50  motor_straight
        8  right_off
       28  right_on
        2  tmp
+      46  triangle
 
  
- 198 bytes in segment CODE
+ 242 bytes in segment CODE
    2 bytes in segment DATA16_AN
    2 bytes in segment DATA16_Z
  
- 198 bytes of CODE memory
+ 242 bytes of CODE memory
    2 bytes of DATA memory (+ 2 bytes shared)
 
 Errors: none

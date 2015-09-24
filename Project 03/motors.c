@@ -27,12 +27,12 @@ void motor_straight(unsigned int time){
   //Time_Sequence = 0;
   tmp = time + Time_Sequence;
   int i = 0;
-while(i<1)
+while(i<(1*time))
   {  
     //five_msec_sleep(STRAIGHT_SYNCH);
-    right_on(2); // On for 500 ms
+    right_on(1); // On for 500 ms
     right_off();
-    left_on(2);
+    left_on(1);
     left_off();
     //five_msec_sleep(1);
     //Time_Sequence++;
@@ -47,19 +47,30 @@ void circle(void){
   int delay = 0;
   while(delay<2){
     int i = 0;
-    while(i<38){
-      motor_straight(3);
-      left_on(11);
+    while(i<75){
+      motor_straight(2);
+      left_on(13);
       left_off();
       i++;
     }
     delay++;
-    right_on(10);
-    right_off();
+    left_on(5);
+    left_off();
     five_msec_sleep(FULL_SECOND);
   }
 }
 
+void triangle(void){
+  //int delay = 0;
+  int i = 0;
+  while(i<3){
+    motor_straight(70);
+    five_msec_sleep(10);
+    left_on(90);
+    left_off();
+    i++;
+  }
+}
 void right_off(void){
   // Function to turn off right motor.
   P3OUT &= ~R_FORWARD;
