@@ -27,12 +27,12 @@ void motor_straight(unsigned int time){
   //Time_Sequence = 0;
   tmp = time + Time_Sequence;
   int i = 0;
-while(i<60)
+while(i<1)
   {  
     //five_msec_sleep(STRAIGHT_SYNCH);
-    right_on(3); // On for 500 ms
+    right_on(2); // On for 500 ms
     right_off();
-    left_on(5);
+    left_on(2);
     left_off();
     //five_msec_sleep(1);
     //Time_Sequence++;
@@ -44,15 +44,19 @@ while(i<60)
 
 void circle(void){
   //motor_straight(2);
-  int i = 0;
-  while(i<80){
-    left_on(13);
-    //five_msec_sleep(150);
-    left_off();
-    right_on(3);
-    //five_msec_sleep(10);
+  int delay = 0;
+  while(delay<2){
+    int i = 0;
+    while(i<38){
+      motor_straight(3);
+      left_on(11);
+      left_off();
+      i++;
+    }
+    delay++;
+    right_on(10);
     right_off();
-    i++;
+    five_msec_sleep(FULL_SECOND);
   }
 }
 
@@ -69,7 +73,7 @@ void left_off(void){
 void right_on(unsigned int time_synch){
   // Function to turn on right motor.
     //Time_Sequence = 0;
-    tmp = time_synch + Time_Sequence + 2;
+    tmp = time_synch + Time_Sequence;
   while(Time_Sequence<tmp)
   {
     P3OUT |= R_FORWARD;
