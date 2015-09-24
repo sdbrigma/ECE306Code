@@ -55,8 +55,9 @@ void Switches_Process(void);
 
 // Motors
 void Init_Motors(void);
-void motor_straight(unsigned int time);
+void motor_straight(volatile unsigned int time);
+void circle(void);
 void left_off(void);
 void right_off(void);
-void right_on(void);
-void left_on(void);
+void right_on(volatile unsigned int time);
+void left_on(volatile unsigned int time);

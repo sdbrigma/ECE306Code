@@ -21,10 +21,21 @@ extern char posL1;
 extern char posL2;
 extern char posL3;
 extern char posL4;
+int button_counter1 = 0;
+int button_counter2 = 0;
 void Switches_Process(void){
 //------------------------------------------------------------------------------
 // Switch proccess sets LCD text when SW1 and SW2 are pressed
   if (!(P4IN & SW1)){
+    /*display_1 = "Shape?";
+    posL1 = 0;
+    display_2 = ">1) Circle";
+    posL2 = 0;
+    display_3 = ">2) 3Angle";
+    posL3 = 0;
+    display_4 = ">3) Figure8";
+    posL4 = 0;
+    button_counter1++;*/
     display_1 = "NCSU";
     posL1 = SW1_posL1;
     display_2 = "WOLFPACK";
@@ -33,10 +44,85 @@ void Switches_Process(void){
     posL3 = SW1_posL3;
     display_4 = "S Brigman";
     posL4 = SW1_posL4;
-    five_msec_sleep(250); // wait 3s to run motor
-    motor_straight(STRAIGHT_TEST); // run motor straigh for 3s
+    five_msec_sleep(FULL_SECOND); // wait 3s to run motor
+    motor_straight(500); // run motor straigh for 3s
+    
   }
   if (!(P4IN & SW2)) {
+    /*while(button_counter2!=0){
+      button_counter2++;
+      switch(button_counter2-1){
+      case 1:
+        display_1 = "";
+        posL1 = 0;
+        display_2 = "Driving";
+        posL2 = 0;
+        display_3 = "Straight";
+        posL3 = 0;
+        display_4 = "";
+        posL4 = 0;
+        Display_Process();
+        five_msec_sleep(750);
+         motor_straight(5);
+         button_counter2 = 0;
+         break;
+      case 2:
+        display_1 = "";
+        posL1 = 0;
+        display_2 = "";
+        posL2 = 0;
+        display_3 = "Making A Circle";
+        posL3 = 0;
+        display_4 = "";
+        posL4 = 0;
+        Display_Process();
+        five_msec_sleep(750);
+         circle();
+         button_counter2 = 0;
+         break;
+      case 3:
+        display_1 = "";
+        posL1 = 0;
+        display_2 = "";
+        posL2 = 0;
+        display_3 = "Making 3Angle";
+        posL3 = 0;
+        display_4 = "";
+        posL4 = 0;
+        Display_Process();
+        five_msec_sleep(750);
+        motor_straight(5);
+        button_counter2 = 0;
+        break;
+      case 4:
+      display_1 = "";
+        posL1 = 0;
+        display_2 = "";
+        posL2 = 0;
+        display_3 = "Figure8";
+        posL3 = 0;
+        display_4 = "";
+        posL4 = 0;
+        Display_Process();
+        five_msec_sleep(FULL_SECOND);
+        motor_straight(5);
+        button_counter2 = 0;
+        break;
+      default:
+        display_1 = "";
+        posL1 = 0;
+        display_2 = "No Choice";
+        posL2 = 0;
+        display_3 = "Was Made!";
+        posL3 = 0;
+        display_4 = "";
+        posL4 = 0;
+        Display_Process();
+        five_msec_sleep(FULL_SECOND);
+        button_counter2 = 0;
+        break;
+      }
+    }*/
     display_1 = "Embedded";
     posL1 = SW2_posL1;
     display_2 = "Systems";
@@ -45,6 +131,9 @@ void Switches_Process(void){
     posL3 = SW2_posL1;
     display_4 = "Go Pack!";
     posL4 = SW2_posL1;
+    five_msec_sleep(FULL_SECOND); // wait 3s to run motor
+    circle();
+    button_counter2++;
   }
 //------------------------------------------------------------------------------
 }

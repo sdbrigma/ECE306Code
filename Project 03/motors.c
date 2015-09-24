@@ -14,6 +14,7 @@
 #include  "msp430.h"
 #include  "functions.h"
 unsigned int tmp;
+//volatile unsigned int Time_Sequence;
 
 void Init_Motors(void){
   // Funcetion to turn off motor forward before any code runs.
@@ -21,22 +22,38 @@ void Init_Motors(void){
   left_off();
 }
 
-void motor_straight(unsigned int test_time){
+void motor_straight(unsigned int time){
   // Function to run both motors to make a straight line for a specified time.
-  //tmp = Time_Sequence+time;
+  //Time_Sequence = 0;
+  tmp = time + Time_Sequence;
   int i = 0;
-while(i<5) // Stop after Time_Sequence has counted up to new time.
+while(i<60)
   {  
-    left_on();
-    five_msec_sleep(2);
-    left_off();
-    right_on();
-    five_msec_sleep(2);
+    //five_msec_sleep(STRAIGHT_SYNCH);
+    right_on(3); // On for 500 ms
     right_off();
+    left_on(5);
+    left_off();
+    //five_msec_sleep(1);
+    //Time_Sequence++;
     i++;
   }
   left_off();
   right_off();
+}
+
+void circle(void){
+  //motor_straight(2);
+  int i = 0;
+  while(i<80){
+    left_on(13);
+    //five_msec_sleep(150);
+    left_off();
+    right_on(3);
+    //five_msec_sleep(10);
+    right_off();
+    i++;
+  }
 }
 
 void right_off(void){
@@ -49,13 +66,23 @@ void left_off(void){
     P3OUT &= ~L_FORWARD;
 }
 
-void right_on(void){
+void right_on(unsigned int time_synch){
   // Function to turn on right motor.
-  P3OUT |= R_FORWARD;
-  five_msec_sleep(2);
+    //Time_Sequence = 0;
+    tmp = time_synch + Time_Sequence + 2;
+  while(Time_Sequence<tmp)
+  {
+    P3OUT |= R_FORWARD;
+    //five_msec_sleep(1);
+  }
 }
 
-void left_on(void){
+void left_on(unsigned int time_synch){
   // Function to turn on left motor.
-  P3OUT |= L_FORWARD;
+    //Time_Sequence = 0;
+    tmp = time_synch + Time_Sequence;
+  while(Time_Sequence<tmp)
+  {
+    P3OUT |= L_FORWARD;
+  }
 }

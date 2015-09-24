@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.3.2.73                                          #
 #                                                                              #
-#           Link time     =  23/Sep/2015  03:34:34                             #
+#           Link time     =  23/Sep/2015  20:56:29                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "\\vmware-host\Shared Folders\Desktop\ECE306Code\ #
 #                            Project 03\Debug\List\Project 02.map"             #
@@ -149,7 +149,7 @@ clocks ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\cl
         _A_CSCTL3_L                         0166
         _A_CSCTL4_L                         0168
         _A_WDTCTL_L                         015C
-        Init_Clocks                         C6C2
+        Init_Clocks                         C71E
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         CSCTL0                              0160
@@ -171,15 +171,15 @@ clocks ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\cl
         WDTCTL_H                            015D
         WDTCTL_L                            015C
 display ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\display.r43 )
-        posL1                               1C0C
-        posL2                               1C0D
-        posL3                               1C0E
-        posL4                               1C0F
-        Display_Process                     C802
+        posL1                               1C10
+        posL2                               1C11
+        posL3                               1C12
+        posL4                               1C13
+        Display_Process                     C7EE
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 init ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\init.r43 )
-        Init_Conditions                     C99C
+        Init_Conditions                     C9AE
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 LCD ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\LCD.r43 )
@@ -192,10 +192,10 @@ LCD ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\LCD.r43 )
         _A_UCB0IFG_L                        066C
         SPI_Char                            NOT NEEDED
         lcd_control                         NOT NEEDED
-        display_line_1                      1C10
-        display_line_2                      1C1B
-        display_line_3                      1C26
-        display_line_4                      1C31
+        display_line_1                      1C14
+        display_line_2                      1C1F
+        display_line_3                      1C2A
+        display_line_4                      1C35
         display_1                           1C00
         display_2                           1C02
         display_3                           1C04
@@ -206,23 +206,23 @@ LCD ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\LCD.r43 )
         display_update_time                 NOT NEEDED
         spi_rs_data                         NOT NEEDED
         spi_rs_command                      NOT NEEDED
-        spi_chipselect_idle                 CA3C
-        spi_chipselect_active               CA8C
-        spi_reset_idle                      CACC
-        spi_reset_active                    CAD8
-        Init_LCD                            C622
-        lcd_4line                           CAB4
-        lcd_BIG_mid                         C9D4
-        lcd_out                             C978
+        spi_chipselect_idle                 CA70
+        spi_chipselect_active               CAB4
+        spi_reset_idle                      CAF0
+        spi_reset_active                    CAE4
+        Init_LCD                            C5FE
+        lcd_4line                           NOT NEEDED
+        lcd_BIG_mid                         NOT NEEDED
+        lcd_out                             C98A
         lcd_puts                            NOT NEEDED
-        WriteIns                            C8F6
-        WriteData                           C922
+        WriteIns                            C90E
+        WriteData                           C8E2
         CheckBusy                           NOT NEEDED
-        ClrDisplay                          CA80
-        SetPostion                          CA4E
-        DisplayOnOff                        CA70
-        Init_SPI_B0                         C846
-        SPI_B0_write                        CA16
+        ClrDisplay                          CAC0
+        SetPostion                          CA5E
+        DisplayOnOff                        CA94
+        Init_SPI_B0                         C832
+        SPI_B0_write                        CA36
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PAOUT                               0202
@@ -249,7 +249,7 @@ LCD ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\LCD.r43 )
 LED ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\LED.r43 )
         _A_PBOUT_L                          NOT NEEDED
         _A_PJOUT_L                          NOT NEEDED
-        Init_LEDs                           C94E
+        Init_LEDs                           C93A
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PBOUT                               0222
@@ -264,9 +264,9 @@ main ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\main
         control_state                       NOT NEEDED
         Time_Sequence                       1C08
         led_smclk                           NOT NEEDED
-        one_time                            1C3C
-        size_count                          1C3D
-        big                                 1C3E
+        one_time                            1C40
+        size_count                          1C41
+        big                                 1C42
         main                                C30C
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
@@ -278,13 +278,14 @@ main ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\main
         PJOUT_L                             0322
 motors ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\motors.r43 )
         _A_PBOUT_L                          NOT NEEDED
-        tmp                                 NOT NEEDED
-        Init_Motors                         CAAC
-        motor_straight                      C8BE
-        right_off                           CAA4
-        left_off                            CAC4
-        right_on                            CA98
-        left_on                             CABC
+        tmp                                 1C0A
+        Init_Motors                         CACC
+        motor_straight                      C8AA
+        circle                              C964
+        right_off                           CADC
+        left_off                            CAD4
+        right_on                            C9CC
+        left_on                             C9EA
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PBOUT                               0222
@@ -306,12 +307,12 @@ ports ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\por
         _A_PJDIR_L                          0324
         _A_PJSEL0_L                         032A
         _A_PJSEL1_L                         032C
-        Init_Ports                          CA02
-        Init_Port1                          C57A
-        Init_Port2                          C4D0
-        Init_Port3                          C41E
-        Init_Port4                          C884
-        Init_PortJ                          C7A4
+        Init_Ports                          CA4A
+        Init_Port1                          C556
+        Init_Port2                          C4AC
+        Init_Port3                          C3FA
+        Init_Port4                          C870
+        Init_PortJ                          C790
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PAOUT                               0202
@@ -361,18 +362,20 @@ ports ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\por
         PJSEL1_L                            032C
 switch ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\switch.r43 )
         _A_PBIN_L                           0220
-        Switches_Process                    C734
+        button_counter1                     NOT NEEDED
+        button_counter2                     1C0C
+        Switches_Process                    C69E
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PBIN                                0220
         PBIN_H                              0221
         PBIN_L                              0220
 system ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\system.r43 )
-        enable_interrupts                   CAD2
+        enable_interrupts                   CAEA
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 timers ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\Debug\Obj\timers.r43 )
-        Init_Timers                         CAE6
+        Init_Timers                         CAFE
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 timersB2 ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\timersB2.r43 )
@@ -383,12 +386,12 @@ timersB2 ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\timersB2.r
         TB2CCR2                             0456
         TB2IV                               046E
         TB2EX0                              0460
-        five_msec_count                     1C0A
+        five_msec_count                     1C0E
         sleeping                            NOT NEEDED
         sleeptime                           NOT NEEDED
-        Init_Timer_B2                       C9BA
+        Init_Timer_B2                       CA06
         measure_delay                       NOT NEEDED
-        five_msec_sleep                     CA60
+        five_msec_sleep                     CAA4
         led_blink                           NOT NEEDED
         gps_resetting                       NOT NEEDED
         gps_2b_reset                        NOT NEEDED
@@ -404,15 +407,15 @@ timersB2 ( \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\timersB2.r
 ?abort ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
         abort                               NOT NEEDED
 ?__dbg_break ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
-        __DebugBreak                        CAEA
+        __DebugBreak                        CB02
 ?__dwrite ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
         __dwrite                            NOT NEEDED
 ?__exit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
-        __exit                              C9EC
+        __exit                              CA20
 ?__write ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
         __write                             NOT NEEDED
 ?_exit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
-        _exit                               CADE
+        _exit                               CAF6
         __cstart_call_dtors                 NOT NEEDED
         __cstart_closeall                   NOT NEEDED
         __cstart_clearlocks                 NOT NEEDED
@@ -441,7 +444,7 @@ lowinit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib
 ?reset_vector ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
         ?reset_vector                       FFFE
 ?exit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
-        exit                                CAE2
+        exit                                CAFA
 ?malloc ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
         malloc                              NOT NEEDED
 ?memcpy ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
@@ -449,7 +452,7 @@ lowinit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib
 ?memmove ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
         memmove                             NOT NEEDED
 ?memzero ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
-        __data16_memzero                    CA2A
+        __data16_memzero                    CA82
         __data16_memcpy                     NOT NEEDED
         __data16_memmove                    NOT NEEDED
 ?MpuInit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.r43 )
@@ -500,16 +503,16 @@ Module               CODE      DATA      CONST
 ?exit                   4
 ?memzero               18
 ?reset_vector           2
-LCD                   486     52      8
+LCD                   454     52      8
   + shared                            6
 LED                    42
 clocks                114            12
 display                68      4
 init                   30
-main                  274      5            31
-motors                100
+main                  238      5            31
+motors                176      2
 ports                 688            24
-switch                112             2     63
+switch                128      2      2     63
 system                  6
 timers                  4
 timersB2              112      2     14
@@ -517,7 +520,7 @@ timersB2              112      2     14
 N/A (command line)           240
 N/A (alignment)
 ----------          -----    ---     --     --
-Total:              2 112    303     66     94
+Total:              2 136    307     66     94
   + common             72
 
 
@@ -548,11 +551,11 @@ DATA16_AN                              015C - 015D               2   rel    0
                                        064E - 064F               2 
                                        066C - 066D               2 
 DATA16_I                                  1C00                       dse    0
-DATA16_Z                               1C00 - 1C3E              3F   rel    1
-DATA20_Z                                  1C40                       rel    1
-CODE_I                                    1C40                       rel    1
-DATA20_I                                  1C40                       rel    1
-DATA20_N                                  1C40                       rel    1
+DATA16_Z                               1C00 - 1C42              43   rel    1
+DATA20_Z                                  1C44                       rel    1
+CODE_I                                    1C44                       rel    1
+DATA20_I                                  1C44                       rel    1
+DATA20_N                                  1C44                       rel    1
 CSTACK                                 1F60 - 1FFF              A0   rel    1
 DATA16_HEAP                               C200                       dse    0
 DATA20_HEAP                            C200 - C24F              50   rel    1
@@ -562,7 +565,7 @@ DATA20_ID                                 C2AE                       rel    1
 CSTART                                 C2AE - C2C5              18   rel    1
 ISR_CODE                               C2C6 - C30B              46   rel    1
 CODE_ID                                   C30C                       rel    1
-<CODE> 1                               C30C - CAEB             7E0   rel    1
+<CODE> 1                               C30C - CB03             7F8   rel    1
 INTVEC                                 FF90 - FFD7              48   com    1
 RESET                                  FFFE - FFFF               2   rel    1
 
@@ -572,8 +575,8 @@ RESET                                  FFFE - FFFF               2   rel    1
                 *                                      *
                 ****************************************
 
- 2 184 bytes of CODE  memory
-   303 bytes of DATA  memory (+ 66 absolute )
+ 2 208 bytes of CODE  memory
+   307 bytes of DATA  memory (+ 66 absolute )
     94 bytes of CONST memory
 
 Errors: none

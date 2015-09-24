@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           22/Sep/2015  23:38:42
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           23/Sep/2015  17:54:25
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -178,7 +178,7 @@
    \   000074   3F803200     SUB.W   #0x32, R15
    \   000078   0C24         JEQ     ??main_6
    \   00007A   3F803200     SUB.W   #0x32, R15
-   \   00007E   3F20         JNE     ??main_1
+   \   00007E   2D20         JNE     ??main_1
      70              case FULL_SECOND:                               // 1000 msec  
      71                if(one_time){
    \   000080   C293....     CMP.B   #0x0, &one_time
@@ -238,45 +238,33 @@
      99                size_count++;
    \                     ??main_8:
    \   0000D2   D253....     ADD.B   #0x1, &size_count
-    100                if(size_count > BIG_LETTERS){
-   \   0000D6   F2900600.... CMP.B   #0x6, &size_count
-   \   0000DC   0E28         JNC     ??main_9
+    100                /*if(size_count > BIG_LETTERS){
     101                  size_count = ZERO;
-   \   0000DE   C243....     MOV.B   #0x0, &size_count
     102                  if(big){
-   \   0000E2   C293....     CMP.B   #0x0, &big
-   \   0000E6   0524         JEQ     ??main_10
     103                    lcd_BIG_mid();
-   \   0000E8   ........     CALLA   #lcd_BIG_mid
     104                    big = ZERO;
-   \   0000EC   C243....     MOV.B   #0x0, &big
-   \   0000F0   043C         JMP     ??main_9
     105                  }else{
     106                    lcd_4line();
-   \                     ??main_10:
-   \   0000F2   ........     CALLA   #lcd_4line
     107                    big = ONE;
-   \   0000F6   D243....     MOV.B   #0x1, &big
     108                  }
-    109                }
+    109                }*/
     110                Display_Process();
-   \                     ??main_9:
-   \   0000FA   ........     CALLA   #Display_Process
+   \   0000D6   ........     CALLA   #Display_Process
     111                break;                                // 
     112              default: break; 
     113            }
     114            Switches_Process();                       // Check for switch state change 
    \                     ??main_1:
-   \   0000FE   ........     CALLA   #Switches_Process
+   \   0000DA   ........     CALLA   #Switches_Process
     115            if(Time_Sequence > 250){ // 1000 msec
-   \   000102   B290FB00.... CMP.W   #0xfb, &Time_Sequence
-   \   000108   AA2B         JNC     ??main_0
+   \   0000DE   B290FB00.... CMP.W   #0xfb, &Time_Sequence
+   \   0000E4   BC2B         JNC     ??main_0
     116              Time_Sequence = ZERO;
-   \   00010A   8243....     MOV.W   #0x0, &Time_Sequence
-   \   00010E   A73F         JMP     ??main_0
-   \   000110   0343         NOP
-   \   000112                REQUIRE _A_PJOUT_L
-   \   000112                REQUIRE _A_PBOUT_L
+   \   0000E6   8243....     MOV.W   #0x0, &Time_Sequence
+   \   0000EA   B93F         JMP     ??main_0
+   \   0000EC   0343         NOP
+   \   0000EE                REQUIRE _A_PJOUT_L
+   \   0000EE                REQUIRE _A_PBOUT_L
     117            }
     118           }
     119          //------------------------------------------------------------------------------
@@ -316,8 +304,6 @@
         4   -> Init_Timers
         4   -> Switches_Process
         4   -> five_msec_sleep
-        4   -> lcd_4line
-        4   -> lcd_BIG_mid
 
 
    Segment part sizes:
@@ -334,17 +320,17 @@
        1  big
        3  control_state
        1  led_smclk
-     274  main
+     238  main
        1  one_time
        1  size_count
 
  
- 274 bytes in segment CODE
+ 238 bytes in segment CODE
    4 bytes in segment DATA16_AN
   31 bytes in segment DATA16_C
    9 bytes in segment DATA16_Z
  
- 274 bytes of CODE  memory
+ 238 bytes of CODE  memory
   31 bytes of CONST memory
    9 bytes of DATA  memory (+ 4 bytes shared)
 

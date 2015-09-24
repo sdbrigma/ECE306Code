@@ -9,6 +9,7 @@
 //******************************************************************************
 
 //------------------------------------------------------------------------------
+extern volatile unsigned int Time_Sequence;
 #define ALWAYS                  (1)
 #define ONE                     (1)
 #define DISPLAY_LENGTH          (11)
@@ -111,3 +112,7 @@
 #define IOT_WAKEUP      (0x02) // PJ.1
 #define IOT_STA_MINIAP  (0x04) // PJ.2
 #define RESET           (0x08) // PJ.3
+
+//  Straight Function for Motors
+#define STRAIGHT_I      (20) // Codes takes about 1 second per 20 loops
+#define STRAIGHT_SYNCH   (2)  // number used in delays
