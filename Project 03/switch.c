@@ -34,8 +34,7 @@ void Switches_Process(void){
     display_3 = ">2) 3Angle";
     posL3 = 0;
     display_4 = ">3) Figure8";
-    posL4 = 0;
-    button_counter1++;*/
+    posL4 = 0;*/
     display_1 = "NCSU";
     posL1 = SW1_posL1;
     display_2 = "WOLFPACK";
@@ -44,8 +43,8 @@ void Switches_Process(void){
     posL3 = SW1_posL3;
     display_4 = "S Brigman";
     posL4 = SW1_posL4;
-    five_msec_sleep(FULL_SECOND); // wait 3s to run motor
-    triangle();
+    five_msec_sleep(HALF_SECOND); // wait 3s to run motor
+    figure_eight();
     
   }
   if (!(P4IN & SW2)) {
@@ -131,9 +130,15 @@ void Switches_Process(void){
     posL3 = SW2_posL1;
     display_4 = "Go Pack!";
     posL4 = SW2_posL1;
-    five_msec_sleep(FULL_SECOND); // wait 3s to run motor
-    circle();
-    button_counter2++;
+    five_msec_sleep(HALF_SECOND); // wait 3s to run motor
+    if(button_counter2>0){
+      circle();
+      button_counter2 = 0;
+    }
+    else{
+      triangle();
+      button_counter2++;
+    }
   }
 //------------------------------------------------------------------------------
 }

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           24/Sep/2015  00:34:52
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           24/Sep/2015  15:14:50
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -90,138 +90,149 @@
      34              display_3 = ">2) 3Angle";
      35              posL3 = 0;
      36              display_4 = ">3) Figure8";
-     37              posL4 = 0;
-     38              button_counter1++;*/
-     39              display_1 = "NCSU";
+     37              posL4 = 0;*/
+     38              display_1 = "NCSU";
    \   000006   B240........ MOV.W   #`?<Constant "NCSU">`, &display_1
-     40              posL1 = SW1_posL1;
+     39              posL1 = SW1_posL1;
    \   00000C   F2400300.... MOV.B   #0x3, &posL1
-     41              display_2 = "WOLFPACK";
+     40              display_2 = "WOLFPACK";
    \   000012   B240........ MOV.W   #`?<Constant "WOLFPACK">`, &display_2
-     42              posL2 = SW1_posL2;
+     41              posL2 = SW1_posL2;
    \   000018   D243....     MOV.B   #0x1, &posL2
-     43              display_3 = "ECE306";
+     42              display_3 = "ECE306";
    \   00001C   B240........ MOV.W   #`?<Constant "ECE306">`, &display_3
-     44              posL3 = SW1_posL3;
+     43              posL3 = SW1_posL3;
    \   000022   E243....     MOV.B   #0x2, &posL3
-     45              display_4 = "S Brigman";
+     44              display_4 = "S Brigman";
    \   000026   B240........ MOV.W   #`?<Constant "S Brigman">`, &display_4
-     46              posL4 = SW1_posL4;
+     45              posL4 = SW1_posL4;
    \   00002C   D243....     MOV.B   #0x1, &posL4
-     47              five_msec_sleep(FULL_SECOND); // wait 3s to run motor
-   \   000030   3C40FA00     MOV.W   #0xfa, R12
+     46              five_msec_sleep(HALF_SECOND); // wait 3s to run motor
+   \   000030   3C406400     MOV.W   #0x64, R12
    \   000034   ........     CALLA   #five_msec_sleep
-     48              triangle();
-   \   000038   ........     CALLA   #triangle
-     49              
-     50            }
-     51            if (!(P4IN & SW2)) {
+     47              figure_eight();
+   \   000038   ........     CALLA   #figure_eight
+     48              
+     49            }
+     50            if (!(P4IN & SW2)) {
    \                     ??Switches_Process_0:
    \   00003C   E2B32102     BIT.B   #0x2, &0x221
-   \   000040   1C2C         JC      ??Switches_Process_1
-     52              /*while(button_counter2!=0){
-     53                button_counter2++;
-     54                switch(button_counter2-1){
-     55                case 1:
-     56                  display_1 = "";
-     57                  posL1 = 0;
-     58                  display_2 = "Driving";
-     59                  posL2 = 0;
-     60                  display_3 = "Straight";
-     61                  posL3 = 0;
-     62                  display_4 = "";
-     63                  posL4 = 0;
-     64                  Display_Process();
-     65                  five_msec_sleep(750);
-     66                   motor_straight(5);
-     67                   button_counter2 = 0;
-     68                   break;
-     69                case 2:
-     70                  display_1 = "";
-     71                  posL1 = 0;
-     72                  display_2 = "";
-     73                  posL2 = 0;
-     74                  display_3 = "Making A Circle";
-     75                  posL3 = 0;
-     76                  display_4 = "";
-     77                  posL4 = 0;
-     78                  Display_Process();
-     79                  five_msec_sleep(750);
-     80                   circle();
-     81                   button_counter2 = 0;
-     82                   break;
-     83                case 3:
-     84                  display_1 = "";
-     85                  posL1 = 0;
-     86                  display_2 = "";
-     87                  posL2 = 0;
-     88                  display_3 = "Making 3Angle";
-     89                  posL3 = 0;
-     90                  display_4 = "";
-     91                  posL4 = 0;
-     92                  Display_Process();
-     93                  five_msec_sleep(750);
-     94                  motor_straight(5);
-     95                  button_counter2 = 0;
-     96                  break;
-     97                case 4:
-     98                display_1 = "";
-     99                  posL1 = 0;
-    100                  display_2 = "";
-    101                  posL2 = 0;
-    102                  display_3 = "Figure8";
-    103                  posL3 = 0;
-    104                  display_4 = "";
-    105                  posL4 = 0;
-    106                  Display_Process();
-    107                  five_msec_sleep(FULL_SECOND);
-    108                  motor_straight(5);
-    109                  button_counter2 = 0;
-    110                  break;
-    111                default:
-    112                  display_1 = "";
-    113                  posL1 = 0;
-    114                  display_2 = "No Choice";
-    115                  posL2 = 0;
-    116                  display_3 = "Was Made!";
-    117                  posL3 = 0;
-    118                  display_4 = "";
-    119                  posL4 = 0;
-    120                  Display_Process();
-    121                  five_msec_sleep(FULL_SECOND);
-    122                  button_counter2 = 0;
-    123                  break;
-    124                }
-    125              }*/
-    126              display_1 = "Embedded";
+   \   000040   242C         JC      ??Switches_Process_1
+     51              /*while(button_counter2!=0){
+     52                button_counter2++;
+     53                switch(button_counter2-1){
+     54                case 1:
+     55                  display_1 = "";
+     56                  posL1 = 0;
+     57                  display_2 = "Driving";
+     58                  posL2 = 0;
+     59                  display_3 = "Straight";
+     60                  posL3 = 0;
+     61                  display_4 = "";
+     62                  posL4 = 0;
+     63                  Display_Process();
+     64                  five_msec_sleep(750);
+     65                   motor_straight(5);
+     66                   button_counter2 = 0;
+     67                   break;
+     68                case 2:
+     69                  display_1 = "";
+     70                  posL1 = 0;
+     71                  display_2 = "";
+     72                  posL2 = 0;
+     73                  display_3 = "Making A Circle";
+     74                  posL3 = 0;
+     75                  display_4 = "";
+     76                  posL4 = 0;
+     77                  Display_Process();
+     78                  five_msec_sleep(750);
+     79                   circle();
+     80                   button_counter2 = 0;
+     81                   break;
+     82                case 3:
+     83                  display_1 = "";
+     84                  posL1 = 0;
+     85                  display_2 = "";
+     86                  posL2 = 0;
+     87                  display_3 = "Making 3Angle";
+     88                  posL3 = 0;
+     89                  display_4 = "";
+     90                  posL4 = 0;
+     91                  Display_Process();
+     92                  five_msec_sleep(750);
+     93                  motor_straight(5);
+     94                  button_counter2 = 0;
+     95                  break;
+     96                case 4:
+     97                display_1 = "";
+     98                  posL1 = 0;
+     99                  display_2 = "";
+    100                  posL2 = 0;
+    101                  display_3 = "Figure8";
+    102                  posL3 = 0;
+    103                  display_4 = "";
+    104                  posL4 = 0;
+    105                  Display_Process();
+    106                  five_msec_sleep(FULL_SECOND);
+    107                  motor_straight(5);
+    108                  button_counter2 = 0;
+    109                  break;
+    110                default:
+    111                  display_1 = "";
+    112                  posL1 = 0;
+    113                  display_2 = "No Choice";
+    114                  posL2 = 0;
+    115                  display_3 = "Was Made!";
+    116                  posL3 = 0;
+    117                  display_4 = "";
+    118                  posL4 = 0;
+    119                  Display_Process();
+    120                  five_msec_sleep(FULL_SECOND);
+    121                  button_counter2 = 0;
+    122                  break;
+    123                }
+    124              }*/
+    125              display_1 = "Embedded";
    \   000042   B240........ MOV.W   #`?<Constant "Embedded">`, &display_1
-    127              posL1 = SW2_posL1;
+    126              posL1 = SW2_posL1;
    \   000048   D243....     MOV.B   #0x1, &posL1
-    128              display_2 = "Systems";
+    127              display_2 = "Systems";
    \   00004C   B240........ MOV.W   #`?<Constant "Systems">`, &display_2
-    129              posL2 = SW2_posL1;
+    128              posL2 = SW2_posL1;
    \   000052   D243....     MOV.B   #0x1, &posL2
-    130              display_3 = "Rock!";
+    129              display_3 = "Rock!";
    \   000056   B240........ MOV.W   #`?<Constant "Rock!">`, &display_3
-    131              posL3 = SW2_posL1;
+    130              posL3 = SW2_posL1;
    \   00005C   D243....     MOV.B   #0x1, &posL3
-    132              display_4 = "Go Pack!";
+    131              display_4 = "Go Pack!";
    \   000060   B240........ MOV.W   #`?<Constant "Go Pack!">`, &display_4
-    133              posL4 = SW2_posL1;
+    132              posL4 = SW2_posL1;
    \   000066   D243....     MOV.B   #0x1, &posL4
-    134              five_msec_sleep(FULL_SECOND); // wait 3s to run motor
-   \   00006A   3C40FA00     MOV.W   #0xfa, R12
+    133              five_msec_sleep(HALF_SECOND); // wait 3s to run motor
+   \   00006A   3C406400     MOV.W   #0x64, R12
    \   00006E   ........     CALLA   #five_msec_sleep
-    135              circle();
-   \   000072   ........     CALLA   #circle
-    136              button_counter2++;
-   \   000076   9253....     ADD.W   #0x1, &button_counter2
-    137            }
-    138          //------------------------------------------------------------------------------
-    139          }
+    134              if(button_counter2>0){
+   \   000072   9293....     CMP.W   #0x1, &button_counter2
+   \   000076   0538         JL      ??Switches_Process_2
+    135                circle();
+   \   000078   ........     CALLA   #circle
+    136                button_counter2 = 0;
+   \   00007C   8243....     MOV.W   #0x0, &button_counter2
+   \   000080   1001         RETA
+    137              }
+    138              else{
+    139                triangle();
+   \                     ??Switches_Process_2:
+   \   000082   ........     CALLA   #triangle
+    140                button_counter2++;
+   \   000086   9253....     ADD.W   #0x1, &button_counter2
+    141              }
+    142            }
+    143          //------------------------------------------------------------------------------
+    144          }
    \                     ??Switches_Process_1:
-   \   00007A   1001         RETA
-   \   00007C                REQUIRE _A_PBIN_L
+   \   00008A   1001         RETA
+   \   00008C                REQUIRE _A_PBIN_L
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "NCSU">`:
@@ -267,6 +278,7 @@
    ------ --------
       4   Switches_Process
         4   -> circle
+        4   -> figure_eight
         4   -> five_msec_sleep
         4   -> triangle
 
@@ -283,18 +295,18 @@
       10  ?<Constant "S Brigman">
        8  ?<Constant "Systems">
        9  ?<Constant "WOLFPACK">
-     124  Switches_Process
+     140  Switches_Process
        2  _A_PBIN_L
        2  button_counter1
        2  button_counter2
 
  
- 124 bytes in segment CODE
+ 140 bytes in segment CODE
    2 bytes in segment DATA16_AN
   63 bytes in segment DATA16_C
    4 bytes in segment DATA16_Z
  
- 124 bytes of CODE  memory
+ 140 bytes of CODE  memory
   63 bytes of CONST memory
    4 bytes of DATA  memory (+ 2 bytes shared)
 

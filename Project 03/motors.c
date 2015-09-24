@@ -42,33 +42,62 @@ while(i<(1*time))
   right_off();
 }
 
-void circle(void){
-  //motor_straight(2);
+void circle(void){ 
   int delay = 0;
   while(delay<2){
     int i = 0;
-    while(i<75){
+    while(i<30){
       motor_straight(2);
       left_on(13);
       left_off();
       i++;
     }
+    if(delay<2){
+      right_on(5);
+      right_off();
+    }
     delay++;
-    left_on(5);
-    left_off();
-    five_msec_sleep(FULL_SECOND);
+    five_msec_sleep(HALF_SECOND);
+  }
+}
+
+void figure_eight(void){
+  int delay = 0;
+  while(delay<2){
+    int i = 0;
+    while(i<22){// one complete circle
+      motor_straight(1);
+      left_on(13);
+      left_off();
+      i++;
+    }
+    i = 0;
+    while(i<18){
+      motor_straight(1);
+      right_on(13);
+      right_off();
+      i++;
+    }
+    delay++;
+    //left_on(5);
+    //left_off();
+    five_msec_sleep(HALF_SECOND);
   }
 }
 
 void triangle(void){
-  //int delay = 0;
-  int i = 0;
-  while(i<3){
-    motor_straight(70);
-    five_msec_sleep(10);
-    left_on(90);
-    left_off();
-    i++;
+  int delay = 0;
+  while(delay<2){
+    int i = 0;
+    while(i<3){
+      motor_straight(35);
+      five_msec_sleep(5);
+      left_on(90);
+      left_off();
+      i++;
+    }
+    delay++;
+    five_msec_sleep(HALF_SECOND);
   }
 }
 void right_off(void){

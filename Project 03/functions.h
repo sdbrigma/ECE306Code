@@ -58,6 +58,7 @@ void Init_Motors(void);
 void motor_straight(volatile unsigned int time);
 void circle(void);
 void triangle(void);
+void figure_eight(void);
 void left_off(void);
 void right_off(void);
 void right_on(volatile unsigned int time);
