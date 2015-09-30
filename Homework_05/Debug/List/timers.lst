@@ -1,0 +1,102 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           30/Sep/2015  12:03:36
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\timers.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\timers.c"
+#        -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\List\" -o
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\List\timers.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\Obj\timers.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\timers.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code to initialize the timers.
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Seppt 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+     15          #include  "functions.h"
+     16          
+
+   \                                 In  segment CODE, align 2
+     17          void Init_Timers(void){
+   \                     Init_Timers:
+     18            /*******************************************************************************
+     19          *        Author: Steffon Brigman
+     20          *        Date:   September 2015
+     21          *        Description: Funcetion to initialize timers
+     22          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     23          *
+     24          *        Function name: Init_Timers
+     25          *        Passed : no variables passed 
+     26          *        Locals: no variables declared 
+     27          *        Returned: no values returned 
+     28          *        Globlas: no values defined
+     29          *******************************************************************************/
+     30          //------------------------------------------------------------------------------
+     31          // Timer Configurations
+     32          //------------------------------------------------------------------------------
+     33          //  Init_Timer_A0(); //
+     34          //  Init_Timer_A1(); // 
+     35          //  Init_Timer_B0(); // 
+     36          //  Init_Timer_B1(); //  
+     37            Init_Timer_B2();   //  Required for provided compiled code to work
+   \   000000   ........     BRA     #Init_Timer_B2
+     38          //------------------------------------------------------------------------------
+     39          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Timers
+        0   -> Init_Timer_B2
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  Init_Timers
+
+ 
+ 4 bytes in segment CODE
+ 
+ 4 bytes of CODE memory
+
+Errors: none
+Warnings: none

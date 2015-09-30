@@ -1,0 +1,221 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           30/Sep/2015  12:06:01
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\switch.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\switch.c"
+#        -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\List\" -o
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\List\switch.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\Obj\switch.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for the switches prcesses function.
+      4          //   Controls currently being implemented by switch include the motors, LCD
+      5          //   and Port 3 configurations.
+      6          //
+      7          //  Steffon Brigman
+      8          //  Sept 2015
+      9          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+     10          //  File Name: switch.c
+     11          /*
+     12              Globals Used:
+     13                *display_1
+     14                *display_2
+     15                *display_3
+     16                *display_4
+     17                posL1
+     18                posL2
+     19                posL3
+     20                posL4
+     21          */
+     22          //******************************************************************************
+     23          
+     24          //------------------------------------------------------------------------------
+     25          // Includes
+     26          #include  "macros.h"
+     27          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     28          #include  "functions.h"
+     29          extern char *display_1;
+     30          extern char *display_2;
+     31          extern char *display_3;
+     32          extern char *display_4;
+     33          extern char posL1;
+     34          extern char posL2;
+     35          extern char posL3;
+     36          extern char posL4;
+     37          
+
+   \                                 In  segment CODE, align 2
+     38          void Switches_Process(void){
+   \                     Switches_Process:
+     39          /*******************************************************************************
+     40          *        Author: Steffon Brigman
+     41          *        Date:   September 2015
+     42          *        Description: Switch proccess sets LCD text or change Port 3 configuratiosn when SW1 and SW2 are pressed
+     43          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     44          *
+     45          *        Function name: Switches_Process 
+     46          *        Description: Adds functionality to switches SW1 and SW2
+     47          *        Passed : P4IN, SW1, and SW2 
+     48          *        Locals: no variables declared 
+     49          *        Returned: no values returned 
+     50          *        Globlas: display_1 throught display_4 and posL1 throught posL4
+     51          *******************************************************************************/
+     52            if (!(P4IN & SW1)){
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   182C         JC      ??Switches_Process_0
+     53              Init_Port3(USE_R_FORWARD);    
+   \   000006   4C43         MOV.B   #0x0, R12
+   \   000008   ........     CALLA   #Init_Port3
+     54              display_1 = "NCSU";
+   \   00000C   B240........ MOV.W   #`?<Constant "NCSU">`, &display_1
+     55              posL1 = SW1_posL1;
+   \   000012   F2400300.... MOV.B   #0x3, &posL1
+     56              display_2 = "WOLFPACK";
+   \   000018   B240........ MOV.W   #`?<Constant "WOLFPACK">`, &display_2
+     57              posL2 = SW1_posL2;
+   \   00001E   D243....     MOV.B   #0x1, &posL2
+     58              display_3 = "ECE306";
+   \   000022   B240........ MOV.W   #`?<Constant "ECE306">`, &display_3
+     59              posL3 = SW1_posL3;
+   \   000028   E243....     MOV.B   #0x2, &posL3
+     60              display_4 = "S Brigman";
+   \   00002C   B240........ MOV.W   #`?<Constant "S Brigman">`, &display_4
+     61              posL4 = SW1_posL4;
+   \   000032   D243....     MOV.B   #0x1, &posL4
+     62            }
+     63            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_0:
+   \   000036   E2B32102     BIT.B   #0x2, &0x221
+   \   00003A   172C         JC      ??Switches_Process_1
+     64              Init_Port3(USE_SMCLK);
+   \   00003C   5C43         MOV.B   #0x1, R12
+   \   00003E   ........     CALLA   #Init_Port3
+     65              display_1 = "Embedded";
+   \   000042   B240........ MOV.W   #`?<Constant "Embedded">`, &display_1
+     66              posL1 = SW2_posL1;
+   \   000048   D243....     MOV.B   #0x1, &posL1
+     67              display_2 = "Systems";
+   \   00004C   B240........ MOV.W   #`?<Constant "Systems">`, &display_2
+     68              posL2 = SW2_posL1;
+   \   000052   D243....     MOV.B   #0x1, &posL2
+     69              display_3 = "Rock!";
+   \   000056   B240........ MOV.W   #`?<Constant "Rock!">`, &display_3
+     70              posL3 = SW2_posL1;
+   \   00005C   D243....     MOV.B   #0x1, &posL3
+     71              display_4 = "Go Pack!";
+   \   000060   B240........ MOV.W   #`?<Constant "Go Pack!">`, &display_4
+     72              posL4 = SW2_posL1;    
+   \   000066   D243....     MOV.B   #0x1, &posL4
+     73            }
+     74          //------------------------------------------------------------------------------
+     75          }
+   \                     ??Switches_Process_1:
+   \   00006A   1001         RETA
+   \   00006C                REQUIRE _A_PBIN_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "NCSU">`:
+   \   000000   4E43535500   DC8 "NCSU"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "WOLFPACK">`:
+   \   000000   574F4C465041 DC8 "WOLFPACK"
+   \            434B00      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "ECE306">`:
+   \   000000   454345333036 DC8 "ECE306"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "S Brigman">`:
+   \   000000   532042726967 DC8 "S Brigman"
+   \            6D616E00    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Embedded">`:
+   \   000000   456D62656464 DC8 "Embedded"
+   \            656400      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Systems">`:
+   \   000000   53797374656D DC8 "Systems"
+   \            7300        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Rock!">`:
+   \   000000   526F636B2100 DC8 "Rock!"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Go Pack!">`:
+   \   000000   476F20506163 DC8 "Go Pack!"
+   \            6B2100      
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> Init_Port3
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       7  ?<Constant "ECE306">
+       9  ?<Constant "Embedded">
+       9  ?<Constant "Go Pack!">
+       5  ?<Constant "NCSU">
+       6  ?<Constant "Rock!">
+      10  ?<Constant "S Brigman">
+       8  ?<Constant "Systems">
+       9  ?<Constant "WOLFPACK">
+     108  Switches_Process
+       2  _A_PBIN_L
+
+ 
+ 108 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  63 bytes in segment DATA16_C
+ 
+ 108 bytes of CODE  memory
+  63 bytes of CONST memory
+   0 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

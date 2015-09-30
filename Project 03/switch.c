@@ -44,8 +44,8 @@ void Switches_Process(void){
     display_4 = "S Brigman";
     posL4 = SW1_posL4;
     five_msec_sleep(HALF_SECOND); // wait 3s to run motor
-    figure_eight();
-    
+    //figure_eight();
+    motor_straight(1000);
   }
   if (!(P4IN & SW2)) {
     /*while(button_counter2!=0){

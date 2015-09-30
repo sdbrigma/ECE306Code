@@ -1,0 +1,91 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           24/Sep/2015  14:25:07
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\system.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\system.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        03\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 03\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        03\Debug\List\system.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        03\Debug\Obj\system.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 03\system.c
+      1          #include  "msp430.h"
+      2          #include  "functions.h"
+      3          
+      4          
+      5          //------------------------------------------------------------------------------
+      6          // System Configurations
+      7          
+      8          // Tells the compiler to provide the value in reg as an input to an 
+      9          // inline assembly block.  Even though the block contains no instructions,
+     10          // the compiler may not optimize it away, and is told that the value
+     11          // may change and should not be relied upon.
+     12          
+     13          //inline void READ_AND_DISCARD(unsigned int reg) __attribute__((always_inline));
+     14          //void READ_AND_DISCARD(unsigned int reg){
+     15          //  asm volatile ("" : "=m" (reg) : "r" (reg));
+     16          //}
+     17          
+     18          //inline void enable_interrupts(void) __attribute__((always_inline));
+
+   \                                 In  segment CODE, align 2
+     19          void enable_interrupts(void){
+   \                     enable_interrupts:
+     20            __bis_SR_register(GIE);     // enable interrupts
+   \   000000   0343         NOP
+   \   000002   32D2         BIS.W   #0x8, SR
+     21          //  asm volatile ("eint \n");
+     22          }
+   \   000004   1001         RETA
+     23          
+     24          //inline void disable_interrupts(void) __attribute__((always_inline));
+     25          //void disable_interrupts(void){
+     26          //  asm volatile ("dint \n");
+     27          //}
+     28          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   enable_interrupts
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       6  enable_interrupts
+
+ 
+ 6 bytes in segment CODE
+ 
+ 6 bytes of CODE memory
+
+Errors: none
+Warnings: none

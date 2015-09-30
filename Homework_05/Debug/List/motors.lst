@@ -1,0 +1,510 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           30/Sep/2015  12:15:40
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\motors.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\motors.c"
+#        -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\List\" -o
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\List\motors.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_05\Debug\Obj\motors.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_05\motors.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for motor control functions.
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Seppt 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //  File Name: motors.c
+     10          //  Gloabls Used: tmp
+     11          //******************************************************************************
+     12          
+     13          //------------------------------------------------------------------------------
+     14          // Includes
+     15          #include  "macros.h"
+     16          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x222
+   \   union <unnamed> _A_PBOUT_L
+   \                     _A_PBOUT_L:
+   \   000000                DS8 2
+     17          #include  "functions.h"
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          unsigned int tmp;
+   \                     tmp:
+   \   000000                DS8 2
+     19          //volatile unsigned int Time_Sequence;
+     20          
+     21          // NOTE: Macros with *_1 and *_2 naming denote left and right motors respectively.
+     22          
+
+   \                                 In  segment CODE, align 2
+     23          void Init_Motors(void){
+   \                     Init_Motors:
+     24                /*******************************************************************************
+     25          *        Author: Steffon Brigman
+     26          *        Date:   September 2015
+     27          *        Description: Funcetion to turn off motor forward before any code runs.
+     28          *        Built with IAR Embedded Workbench Versiojn: V7.0.5/W32 (6.10.5)
+     29          *
+     30          *        Function name: Init_Motors
+     31          *        Description: Initializes motors by turning them off.
+     32          *        Passed : no variables passed 
+     33          *        Locals: no variables declared 
+     34          *        Returned: no values returned 
+     35          *        Globlas: no values defined
+     36          *******************************************************************************/
+     37            right_off();
+   \   000000   ........     CALLA   #right_off
+     38            left_off();
+   \   000004   ........     BRA     #left_off
+     39          }
+     40          
+
+   \                                 In  segment CODE, align 2
+     41          void motor_straight(unsigned int time){
+   \                     motor_straight:
+   \   000000   0E4C         MOV.W   R12, R14
+     42          /*******************************************************************************
+     43          *        Author: Steffon Brigman
+     44          *        Date:   September 2015
+     45          *        Description: Function to run both motors to make a straight line for a specified time.
+     46          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     47          *
+     48          *        Function name: motor_straight
+     49          *        Passed : time
+     50          *        Locals: i 
+     51          *        Returned: no values returned 
+     52          *        Globlas: no values defined
+     53          *******************************************************************************/
+     54            tmp = time + Time_Sequence;
+   \   000002   0F4E         MOV.W   R14, R15
+   \   000004   1F52....     ADD.W   &Time_Sequence, R15
+   \   000008   824F....     MOV.W   R15, &tmp
+     55            int i = ZERO;
+   \   00000C   0D43         MOV.W   #0x0, R13
+     56          while(i<time)
+   \                     ??motor_straight_0:
+   \   00000E   0D9E         CMP.W   R14, R13
+   \   000010   0C2C         JC      ??motor_straight_1
+     57            {  
+     58              right_on(STRAIGHT_SYNC); // On for 500 ms
+   \   000012   1C43         MOV.W   #0x1, R12
+   \   000014   ........     CALLA   #right_on
+     59              right_off();
+   \   000018   ........     CALLA   #right_off
+     60              left_on(STRAIGHT_SYNC);
+   \   00001C   1C43         MOV.W   #0x1, R12
+   \   00001E   ........     CALLA   #left_on
+     61              left_off();
+   \   000022   ........     CALLA   #left_off
+     62              i++;
+   \   000026   1D53         ADD.W   #0x1, R13
+   \   000028   F23F         JMP     ??motor_straight_0
+     63            }
+     64            left_off();
+   \                     ??motor_straight_1:
+   \   00002A   ........     CALLA   #left_off
+     65            right_off();
+   \   00002E   ........     BRA     #right_off
+     66          }
+     67          
+
+   \                                 In  segment CODE, align 2
+     68          void circle(void){ 
+   \                     circle:
+   \   000000   1B15         PUSHM.W #0x2, R11
+     69            /*******************************************************************************
+     70          *        Author: Steffon Brigman
+     71          *        Date:   September 2015
+     72          *        Description: Motor function that controls motors to make circle
+     73          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     74          *
+     75          *        Function name: circle
+     76          *        Passed : No varialbes passed
+     77          *        Locals: delay, i 
+     78          *        Returned: no values returned 
+     79          *        Globlas: no values defined
+     80          *******************************************************************************/
+     81            int delay = ZERO;
+   \   000002   0A43         MOV.W   #0x0, R10
+     82            while(delay<SHAPE_DELAY){
+   \                     ??circle_1:
+   \   000004   2A93         CMP.W   #0x2, R10
+   \   000006   1D34         JGE     ??circle_2
+     83              int i = ZERO;
+   \   000008   0B43         MOV.W   #0x0, R11
+     84              while(i<CIRCLE){
+   \                     ??circle_0:
+   \   00000A   3B901E00     CMP.W   #0x1e, R11
+   \   00000E   0B34         JGE     ??circle_3
+     85                motor_straight(CIRCLE_STRAIGHT);
+   \   000010   2C43         MOV.W   #0x2, R12
+   \   000012   ........     CALLA   #motor_straight
+     86                left_on(CIRCLE_1);
+   \   000016   3C400D00     MOV.W   #0xd, R12
+   \   00001A   ........     CALLA   #left_on
+     87                left_off();
+   \   00001E   ........     CALLA   #left_off
+     88                i++;
+   \   000022   1B53         ADD.W   #0x1, R11
+   \   000024   F23F         JMP     ??circle_0
+     89              }
+     90              if(delay<SHAPE_DELAY){
+   \                     ??circle_3:
+   \   000026   2A93         CMP.W   #0x2, R10
+   \   000028   0634         JGE     ??circle_4
+     91                right_on(CIRCLE_CORRECTION);
+   \   00002A   3C400500     MOV.W   #0x5, R12
+   \   00002E   ........     CALLA   #right_on
+     92                right_off();
+   \   000032   ........     CALLA   #right_off
+     93              }
+     94              delay++;
+   \                     ??circle_4:
+   \   000036   1A53         ADD.W   #0x1, R10
+     95              five_msec_sleep(HALF_SECOND);
+   \   000038   3C406400     MOV.W   #0x64, R12
+   \   00003C   ........     CALLA   #five_msec_sleep
+   \   000040   E13F         JMP     ??circle_1
+     96            }
+     97          }
+   \                     ??circle_2:
+   \   000042   1A17         POPM.W  #0x2, R11
+   \   000044   1001         RETA
+     98          
+
+   \                                 In  segment CODE, align 2
+     99          void figure_eight(void){
+   \                     figure_eight:
+   \   000000   1B15         PUSHM.W #0x2, R11
+    100          /*******************************************************************************
+    101          *        Author: Steffon Brigman
+    102          *        Date:   September 2015
+    103          *        Description: Motor function that controls motors to make a figure eight
+    104          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    105          *
+    106          *        Function name: figure_eight
+    107          *        Passed : No varialbes passed
+    108          *        Locals: delay, i 
+    109          *        Returned: no values returned 
+    110          *        Globlas: no values defined
+    111          *******************************************************************************/
+    112            int delay = ZERO;
+   \   000002   0A43         MOV.W   #0x0, R10
+    113            while(delay<SHAPE_DELAY){
+   \                     ??figure_eight_2:
+   \   000004   2A93         CMP.W   #0x2, R10
+   \   000006   2434         JGE     ??figure_eight_3
+    114              int i = ZERO;
+   \   000008   0B43         MOV.W   #0x0, R11
+    115              while(i<FIGURE_1){// one complete circle running left motor
+   \                     ??figure_eight_0:
+   \   00000A   3B901600     CMP.W   #0x16, R11
+   \   00000E   0B34         JGE     ??figure_eight_4
+    116                motor_straight(STRAIGHT_SYNC);
+   \   000010   1C43         MOV.W   #0x1, R12
+   \   000012   ........     CALLA   #motor_straight
+    117                left_on(CIRCLE_1);
+   \   000016   3C400D00     MOV.W   #0xd, R12
+   \   00001A   ........     CALLA   #left_on
+    118                left_off();
+   \   00001E   ........     CALLA   #left_off
+    119                i++;
+   \   000022   1B53         ADD.W   #0x1, R11
+   \   000024   F23F         JMP     ??figure_eight_0
+    120              }
+    121              i = ZERO;
+   \                     ??figure_eight_4:
+   \   000026   0B43         MOV.W   #0x0, R11
+    122              while(i<FIGURE_2){// one complete circle running right motor
+   \                     ??figure_eight_1:
+   \   000028   3B901200     CMP.W   #0x12, R11
+   \   00002C   0B34         JGE     ??figure_eight_5
+    123                motor_straight(STRAIGHT_SYNC);
+   \   00002E   1C43         MOV.W   #0x1, R12
+   \   000030   ........     CALLA   #motor_straight
+    124                right_on(CIRCLE_2);
+   \   000034   3C400D00     MOV.W   #0xd, R12
+   \   000038   ........     CALLA   #right_on
+    125                right_off();
+   \   00003C   ........     CALLA   #right_off
+    126                i++;
+   \   000040   1B53         ADD.W   #0x1, R11
+   \   000042   F23F         JMP     ??figure_eight_1
+    127              }
+    128              delay++;
+   \                     ??figure_eight_5:
+   \   000044   1A53         ADD.W   #0x1, R10
+    129              five_msec_sleep(HALF_SECOND);
+   \   000046   3C406400     MOV.W   #0x64, R12
+   \   00004A   ........     CALLA   #five_msec_sleep
+   \   00004E   DA3F         JMP     ??figure_eight_2
+    130            }
+    131          }
+   \                     ??figure_eight_3:
+   \   000050   1A17         POPM.W  #0x2, R11
+   \   000052   1001         RETA
+    132          
+
+   \                                 In  segment CODE, align 2
+    133          void triangle(void){ 
+   \                     triangle:
+   \   000000   1B15         PUSHM.W #0x2, R11
+    134          /*******************************************************************************
+    135          *        Author: Steffon Brigman
+    136          *        Date:   September 2015
+    137          *        Description: Motor control function used to make two triangles
+    138          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    139          *
+    140          *        Function name: triangle
+    141          *        Passed : No varialbes passed
+    142          *        Locals: delay, i 
+    143          *        Returned: no values returned 
+    144          *        Globlas: no values defined
+    145          *******************************************************************************/
+    146            int delay = ZERO;
+   \   000002   0A43         MOV.W   #0x0, R10
+    147            while(delay<SHAPE_DELAY){
+   \                     ??triangle_1:
+   \   000004   2A93         CMP.W   #0x2, R10
+   \   000006   1A34         JGE     ??triangle_2
+    148              int i = ZERO;
+   \   000008   0B43         MOV.W   #0x0, R11
+    149              while(i<TRI_COUNT){
+   \                     ??triangle_0:
+   \   00000A   3B900300     CMP.W   #0x3, R11
+   \   00000E   1034         JGE     ??triangle_3
+    150                motor_straight(TRI_STRAIGHT);
+   \   000010   3C402300     MOV.W   #0x23, R12
+   \   000014   ........     CALLA   #motor_straight
+    151                five_msec_sleep(TRI_DELAY);
+   \   000018   3C400500     MOV.W   #0x5, R12
+   \   00001C   ........     CALLA   #five_msec_sleep
+    152                left_on(TRI_ANGLE);
+   \   000020   3C405A00     MOV.W   #0x5a, R12
+   \   000024   ........     CALLA   #left_on
+    153                left_off();
+   \   000028   ........     CALLA   #left_off
+    154                i++;
+   \   00002C   1B53         ADD.W   #0x1, R11
+   \   00002E   ED3F         JMP     ??triangle_0
+    155              }
+    156              delay++;
+   \                     ??triangle_3:
+   \   000030   1A53         ADD.W   #0x1, R10
+    157              five_msec_sleep(HALF_SECOND);
+   \   000032   3C406400     MOV.W   #0x64, R12
+   \   000036   ........     CALLA   #five_msec_sleep
+   \   00003A   E43F         JMP     ??triangle_1
+    158            }
+    159          }
+   \                     ??triangle_2:
+   \   00003C   1A17         POPM.W  #0x2, R11
+   \   00003E   1001         RETA
+
+   \                                 In  segment CODE, align 2
+    160          void right_off(void){
+   \                     right_off:
+    161            /*******************************************************************************
+    162          *        Author: Steffon Brigman
+    163          *        Date:   September 2015
+    164          *        Description: Function to turn off right motor.
+    165          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    166          *
+    167          *        Function name: right_off
+    168          *        Passed : No varialbes passed
+    169          *        Locals: No variables defined
+    170          *        Returned: no values returned 
+    171          *        Globlas: no values defined
+    172          *******************************************************************************/
+    173            P3OUT &= ~R_FORWARD;
+   \   000000   F2C010002202 BIC.B   #0x10, &0x222
+    174          }
+   \   000006   1001         RETA
+   \   000008                REQUIRE _A_PBOUT_L
+    175          
+
+   \                                 In  segment CODE, align 2
+    176          void left_off(void){
+   \                     left_off:
+    177          /*******************************************************************************
+    178          *        Author: Steffon Brigman
+    179          *        Date:   September 2015
+    180          *        Description: Function to turn off left motor.
+    181          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    182          *
+    183          *        Function name: left_off
+    184          *        Passed : No varialbes passed
+    185          *        Locals: No variables defined
+    186          *        Returned: no values returned 
+    187          *        Globlas: no values defined
+    188          *******************************************************************************/
+    189              P3OUT &= ~L_FORWARD;
+   \   000000   F2C040002202 BIC.B   #0x40, &0x222
+    190          }
+   \   000006   1001         RETA
+   \   000008                REQUIRE _A_PBOUT_L
+    191          
+
+   \                                 In  segment CODE, align 2
+    192          void right_on(unsigned int time_synch){
+   \                     right_on:
+    193          /*******************************************************************************
+    194          *        Author: Steffon Brigman
+    195          *        Date:   September 2015
+    196          *        Description: Function to turn on right motor.
+    197          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    198          *
+    199          *        Function name: right_on
+    200          *        Passed : time_synch
+    201          *        Locals: No variables defined
+    202          *        Returned: no values returned 
+    203          *        Globlas: tmp
+    204          *******************************************************************************/
+    205              tmp = time_synch + Time_Sequence;
+   \   000000   0F4C         MOV.W   R12, R15
+   \   000002   1F52....     ADD.W   &Time_Sequence, R15
+   \   000006   824F....     MOV.W   R15, &tmp
+    206            while(Time_Sequence<tmp)
+   \                     ??right_on_0:
+   \   00000A   9292........ CMP.W   &tmp, &Time_Sequence
+   \   000010   042C         JC      ??right_on_1
+    207            {
+    208              P3OUT |= R_FORWARD;
+   \   000012   F2D010002202 BIS.B   #0x10, &0x222
+   \   000018   F83F         JMP     ??right_on_0
+    209            }
+    210          }
+   \                     ??right_on_1:
+   \   00001A   1001         RETA
+   \   00001C                REQUIRE _A_PBOUT_L
+    211          
+
+   \                                 In  segment CODE, align 2
+    212          void left_on(unsigned int time_synch){
+   \                     left_on:
+    213          /*******************************************************************************
+    214          *        Author: Steffon Brigman
+    215          *        Date:   September 2015
+    216          *        Description: Function to turn on left motor.
+    217          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    218          *
+    219          *        Function name: left_on
+    220          *        Passed : time_synch
+    221          *        Locals: No variables defined
+    222          *        Returned: no values returned 
+    223          *        Globlas: tmp
+    224          *******************************************************************************/
+    225            tmp = time_synch + Time_Sequence;
+   \   000000   0F4C         MOV.W   R12, R15
+   \   000002   1F52....     ADD.W   &Time_Sequence, R15
+   \   000006   824F....     MOV.W   R15, &tmp
+    226            while(Time_Sequence<tmp)
+   \                     ??left_on_0:
+   \   00000A   9292........ CMP.W   &tmp, &Time_Sequence
+   \   000010   042C         JC      ??left_on_1
+    227            {
+    228              P3OUT |= L_FORWARD;
+   \   000012   F2D040002202 BIS.B   #0x40, &0x222
+   \   000018   F83F         JMP     ??left_on_0
+    229            }
+    230          }
+   \                     ??left_on_1:
+   \   00001A   1001         RETA
+   \   00001C                REQUIRE _A_PBOUT_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Motors
+        0   -> left_off
+        4   -> right_off
+      8   circle
+        8   -> five_msec_sleep
+        8   -> left_off
+        8   -> left_on
+        8   -> motor_straight
+        8   -> right_off
+        8   -> right_on
+      8   figure_eight
+        8   -> five_msec_sleep
+        8   -> left_off
+        8   -> left_on
+        8   -> motor_straight
+        8   -> right_off
+        8   -> right_on
+      4   left_off
+      4   left_on
+      4   motor_straight
+        4   -> left_off
+        4   -> left_on
+        0   -> right_off
+        4   -> right_off
+        4   -> right_on
+      4   right_off
+      4   right_on
+      8   triangle
+        8   -> five_msec_sleep
+        8   -> left_off
+        8   -> left_on
+        8   -> motor_straight
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  Init_Motors
+       2  _A_PBOUT_L
+      70  circle
+      84  figure_eight
+       8  left_off
+      28  left_on
+      50  motor_straight
+       8  right_off
+      28  right_on
+       2  tmp
+      64  triangle
+
+ 
+ 348 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+   2 bytes in segment DATA16_Z
+ 
+ 348 bytes of CODE memory
+   2 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none
