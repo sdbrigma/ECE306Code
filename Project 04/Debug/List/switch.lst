@@ -1,0 +1,216 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Oct/2015  11:53:50
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 04\switch.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 04\switch.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        04\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 04\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        04\Debug\List\switch.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        04\Debug\Obj\switch.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 04\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for the switches prcesses function.
+      4          //   
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          extern char *display_1;
+     17          extern char *display_2;
+     18          extern char *display_3;
+     19          extern char *display_4;
+     20          extern char posL1;
+     21          extern char posL2;
+     22          extern char posL3;
+     23          extern char posL4;
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     24          int button_counter1 = ZERO;
+   \                     button_counter1:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          int button_counter2 = ZERO;
+   \                     button_counter2:
+   \   000000                DS8 2
+
+   \                                 In  segment CODE, align 2
+     26          void Switches_Process(void){
+   \                     Switches_Process:
+     27          //------------------------------------------------------------------------------
+     28          // Switch proccess sets LCD text when SW1 and SW2 are pressed
+     29            if (!(P4IN & SW1)){
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   152C         JC      ??Switches_Process_0
+     30              display_1 = "NCSU";
+   \   000006   B240........ MOV.W   #`?<Constant "NCSU">`, &display_1
+     31              posL1 = SW1_posL1;
+   \   00000C   F2400300.... MOV.B   #0x3, &posL1
+     32              display_2 = "WOLFPACK";
+   \   000012   B240........ MOV.W   #`?<Constant "WOLFPACK">`, &display_2
+     33              posL2 = SW1_posL2;
+   \   000018   D243....     MOV.B   #0x1, &posL2
+     34              display_3 = "ECE306";
+   \   00001C   B240........ MOV.W   #`?<Constant "ECE306">`, &display_3
+     35              posL3 = SW1_posL3;
+   \   000022   E243....     MOV.B   #0x2, &posL3
+     36              display_4 = "S Brigman";
+   \   000026   B240........ MOV.W   #`?<Constant "S Brigman">`, &display_4
+     37              posL4 = SW1_posL4;
+   \   00002C   D243....     MOV.B   #0x1, &posL4
+     38              //figure_eight();
+     39              //motor_straight();
+     40            }
+     41            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_0:
+   \   000030   E2B32102     BIT.B   #0x2, &0x221
+   \   000034   162C         JC      ??Switches_Process_1
+     42              display_1 = "Embedded";
+   \   000036   B240........ MOV.W   #`?<Constant "Embedded">`, &display_1
+     43              posL1 = SW2_posL1;
+   \   00003C   D243....     MOV.B   #0x1, &posL1
+     44              display_2 = "Systems";
+   \   000040   B240........ MOV.W   #`?<Constant "Systems">`, &display_2
+     45              posL2 = SW2_posL1;
+   \   000046   D243....     MOV.B   #0x1, &posL2
+     46              display_3 = "Rock!";
+   \   00004A   B240........ MOV.W   #`?<Constant "Rock!">`, &display_3
+     47              posL3 = SW2_posL1;
+   \   000050   D243....     MOV.B   #0x1, &posL3
+     48              display_4 = "Go Pack!";
+   \   000054   B240........ MOV.W   #`?<Constant "Go Pack!">`, &display_4
+     49              posL4 = SW2_posL1;
+   \   00005A   D243....     MOV.B   #0x1, &posL4
+     50              twerk();
+   \   00005E   ........     CALLA   #twerk
+     51               /*if(button_counter2>0){
+     52                circle();
+     53                button_counter2 = 0;
+     54              }
+     55              else{
+     56                triangle();
+     57                button_counter2++;
+     58              }*/
+     59            }
+     60          //------------------------------------------------------------------------------
+     61          }
+   \                     ??Switches_Process_1:
+   \   000062   1001         RETA
+   \   000064                REQUIRE _A_PBIN_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "NCSU">`:
+   \   000000   4E43535500   DC8 "NCSU"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "WOLFPACK">`:
+   \   000000   574F4C465041 DC8 "WOLFPACK"
+   \            434B00      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "ECE306">`:
+   \   000000   454345333036 DC8 "ECE306"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "S Brigman">`:
+   \   000000   532042726967 DC8 "S Brigman"
+   \            6D616E00    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Embedded">`:
+   \   000000   456D62656464 DC8 "Embedded"
+   \            656400      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Systems">`:
+   \   000000   53797374656D DC8 "Systems"
+   \            7300        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Rock!">`:
+   \   000000   526F636B2100 DC8 "Rock!"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Go Pack!">`:
+   \   000000   476F20506163 DC8 "Go Pack!"
+   \            6B2100      
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> twerk
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       7  ?<Constant "ECE306">
+       9  ?<Constant "Embedded">
+       9  ?<Constant "Go Pack!">
+       5  ?<Constant "NCSU">
+       6  ?<Constant "Rock!">
+      10  ?<Constant "S Brigman">
+       8  ?<Constant "Systems">
+       9  ?<Constant "WOLFPACK">
+     100  Switches_Process
+       2  _A_PBIN_L
+       2  button_counter1
+       2  button_counter2
+
+ 
+ 100 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  63 bytes in segment DATA16_C
+   4 bytes in segment DATA16_Z
+ 
+ 100 bytes of CODE  memory
+  63 bytes of CONST memory
+   4 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

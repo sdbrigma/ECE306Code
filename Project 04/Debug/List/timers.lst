@@ -1,0 +1,156 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Oct/2015  11:53:50
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 04\timers.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 04\timers.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        04\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 04\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        04\Debug\List\timers.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        04\Debug\Obj\timers.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 04\timers.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code to initialize the timers.
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Seppt 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x340
+   \   unsigned short volatile TA0CTL
+   \                     TA0CTL:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x342
+   \   unsigned short volatile TA0CCTL0
+   \                     TA0CCTL0:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x352
+   \   unsigned short volatile TA0CCR0
+   \                     TA0CCR0:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x360
+   \   unsigned short volatile TA0EX0
+   \                     TA0EX0:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          
+
+   \                                 In  segment CODE, align 2
+     17          void Init_Timers(void){
+   \                     Init_Timers:
+     18          //------------------------------------------------------------------------------
+     19          // Timer Configurations
+     20          //------------------------------------------------------------------------------
+     21            Init_Timer_A0(); //
+   \   000000   ........     CALLA   #Init_Timer_A0
+     22          //  Init_Timer_A1(); // 
+     23          //  Init_Timer_B0(); // 
+     24          //  Init_Timer_B1(); //  
+     25            Init_Timer_B2();   //  Required for provided compiled code to work
+   \   000004   ........     BRA     #Init_Timer_B2
+     26          //------------------------------------------------------------------------------
+     27          }
+     28          
+     29          //------------------------------------------------------------------------------
+     30          // Timer A0 initialization sets up both A0_0 and A0_1-A0_2
+
+   \                                 In  segment CODE, align 2
+     31          void Init_Timer_A0(void) {
+   \                     Init_Timer_A0:
+     32           TA0CTL = TASSEL__SMCLK; // SMCLK source
+   \   000000   B24000024003 MOV.W   #0x200, &0x340
+     33           TA0CTL |= TACLR; // Resets TA0R, clock divider, count direction
+   \   000006   A2D24003     BIS.W   #0x4, &0x340
+     34           TA0CTL |= MC__CONTINOUS; // Continuous up
+   \   00000A   B2D020004003 BIS.W   #0x20, &0x340
+     35           TA0CTL |= ID__2; // Divide clock by 2
+   \   000010   B2D040004003 BIS.W   #0x40, &0x340
+     36           TA0CTL &= ~TAIE; // Disable Overflow Interrupt
+   \   000016   A2C34003     BIC.W   #0x2, &0x340
+     37           TA0CTL &= ~TAIFG; // Clear Overflow Interrupt flag
+   \   00001A   92C34003     BIC.W   #0x1, &0x340
+     38          
+     39           TA0EX0 = TAIDEX_7; // Divide clock by an additional 8
+   \   00001E   B24007006003 MOV.W   #0x7, &0x360
+     40          
+     41           TA0CCR0 = TA0CCR0_INTERVAL; // CCR0
+   \   000024   B24010275203 MOV.W   #0x2710, &0x352
+     42           TA0CCTL0 |= CCIE; // CCR0 enable interrupt
+   \   00002A   B2D010004203 BIS.W   #0x10, &0x342
+     43          // TA0CCR1 = TA0CCR1_INTERVAL; // CCR1
+     44          // TA0CCTL1 |= CCIE; // CCR1 enable interrupt
+     45          // TA0CCR2 = TA0CCR2_INTERVAL; // CCR2
+     46          // TA0CCTL2 |= CCIE; // CCR2 enable interrupt
+     47          }
+   \   000030   1001         RETA
+   \   000032                REQUIRE TA0CTL
+   \   000032                REQUIRE TA0EX0
+   \   000032                REQUIRE TA0CCR0
+   \   000032                REQUIRE TA0CCTL0
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Timer_A0
+      4   Init_Timers
+        4   -> Init_Timer_A0
+        0   -> Init_Timer_B2
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      50  Init_Timer_A0
+       8  Init_Timers
+       2  TA0CCR0
+       2  TA0CCTL0
+       2  TA0CTL
+       2  TA0EX0
+
+ 
+ 58 bytes in segment CODE
+  8 bytes in segment DATA16_AN
+ 
+ 58 bytes of CODE memory
+  0 bytes of DATA memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none
