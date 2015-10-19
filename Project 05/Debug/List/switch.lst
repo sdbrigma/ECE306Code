@@ -1,0 +1,213 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           19/Oct/2015  17:00:17
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 05\switch.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 05\switch.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        05\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 05\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        05\Debug\List\switch.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        05\Debug\Obj\switch.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 05\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for the switches prcesses function.
+      4          //   
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          extern char *display_1;
+     17          extern char *display_2;
+     18          extern char *display_3;
+     19          extern char *display_4;
+     20          extern char posL1;
+     21          extern char posL2;
+     22          extern char posL3;
+     23          extern char ADC_TEST;
+     24          extern char posL4;
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          int button_counter1 = ZERO;
+   \                     button_counter1:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     26          int button_counter2 = ZERO;
+   \                     button_counter2:
+   \   000000                DS8 2
+
+   \                                 In  segment CODE, align 2
+     27          void Switches_Process(void){
+   \                     Switches_Process:
+     28          //------------------------------------------------------------------------------
+     29          // Switch proccess sets LCD text when SW1 and SW2 are pressed
+     30            if (!(P4IN & SW1)){
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   1E2C         JC      ??Switches_Process_2
+     31              display_1 = "          ";
+   \   000006   B240........ MOV.W   #`?<Constant "          ">`, &display_1
+     32              posL1 = ZERO;
+   \   00000C   C243....     MOV.B   #0x0, &posL1
+     33              display_2 = "          ";
+   \   000010   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     34              posL2 = ZERO;
+   \   000016   C243....     MOV.B   #0x0, &posL2
+     35              display_3 = "          ";
+   \   00001A   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     36              posL3 = ZERO;
+   \   000020   C243....     MOV.B   #0x0, &posL3
+     37              display_4 = "          ";
+   \   000024   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     38              posL4 = ZERO;
+   \   00002A   C243....     MOV.B   #0x0, &posL4
+     39              Display_Process();
+   \   00002E   ........     CALLA   #Display_Process
+     40              /*
+     41              display_1 = "NCSU";
+     42              posL1 = SW1_posL1;
+     43              display_2 = "WOLFPACK";
+     44              posL2 = SW1_posL2;
+     45              display_3 = "ECE306";
+     46              posL3 = SW1_posL3;
+     47              display_4 = "S Brigman";
+     48              posL4 = SW1_posL4;
+     49              */
+     50              while(ALWAYS){
+     51                ADC_read(2);
+   \                     ??Switches_Process_0:
+   \   000032   2C43         MOV.W   #0x2, R12
+   \   000034   ........     CALLA   #ADC_read
+     52                Five_msec_Delay(30);  
+   \   000038   3C401E00     MOV.W   #0x1e, R12
+   \   00003C   ........     CALLA   #Five_msec_Delay
+   \   000040   F83F         JMP     ??Switches_Process_0
+     53              }
+     54            }
+     55            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_2:
+   \   000042   E2B32102     BIT.B   #0x2, &0x221
+   \   000046   1E2C         JC      ??Switches_Process_3
+     56              /*display_1 = "Embedded";
+     57              posL1 = SW2_posL1;
+     58              display_2 = "Systems";
+     59              posL2 = SW2_posL1;
+     60              display_3 = "Rock!";
+     61              posL3 = SW2_posL1;
+     62              display_4 = "Go Pack!";
+     63              posL4 = SW2_posL1;*/
+     64              
+     65              display_1 = "          ";
+   \   000048   B240........ MOV.W   #`?<Constant "          ">`, &display_1
+     66              posL1 = ZERO;
+   \   00004E   C243....     MOV.B   #0x0, &posL1
+     67              display_2 = "          ";
+   \   000052   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     68              posL2 = ZERO;
+   \   000058   C243....     MOV.B   #0x0, &posL2
+     69              display_3 = "          ";
+   \   00005C   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     70              posL3 = ZERO;
+   \   000062   C243....     MOV.B   #0x0, &posL3
+     71              display_4 = "          ";
+   \   000066   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     72              posL4 = ZERO;
+   \   00006C   C243....     MOV.B   #0x0, &posL4
+     73              Display_Process();
+   \   000070   ........     CALLA   #Display_Process
+     74              
+     75              while(ALWAYS){
+     76                ADC_read(1); // read right detecter Black = 0x3E6 and White = 
+   \                     ??Switches_Process_1:
+   \   000074   1C43         MOV.W   #0x1, R12
+   \   000076   ........     CALLA   #ADC_read
+     77                Five_msec_Delay(25);  
+   \   00007A   3C401900     MOV.W   #0x19, R12
+   \   00007E   ........     CALLA   #Five_msec_Delay
+   \   000082   F83F         JMP     ??Switches_Process_1
+     78                /*ADC_read(1);
+     79                Five_msec_Delay(25);*/
+     80              }
+     81            }
+     82          //------------------------------------------------------------------------------
+     83          }
+   \                     ??Switches_Process_3:
+   \   000084   1001         RETA
+   \   000086                REQUIRE _A_PBIN_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> ADC_read
+        4   -> Display_Process
+        4   -> Five_msec_Delay
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+     134  Switches_Process
+       2  _A_PBIN_L
+       2  button_counter1
+       2  button_counter2
+
+ 
+ 134 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  11 bytes in segment DATA16_C
+   4 bytes in segment DATA16_Z
+ 
+ 134 bytes of CODE  memory
+  11 bytes of CONST memory
+   4 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none
