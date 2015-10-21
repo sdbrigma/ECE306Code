@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           20/Oct/2015  20:11:16
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           21/Oct/2015  02:07:27
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -93,20 +93,21 @@
    \                                 In  segment CODE, align 2
      29          void Switches_Process(void){
    \                     Switches_Process:
+   \   000000   0A12         PUSH.W  R10
      30          //------------------------------------------------------------------------------
      31          // Switch proccess sets LCD text when SW1 and SW2 are pressed
      32            if (!(P4IN & SW1)){
-   \   000000   D2B32102     BIT.B   #0x1, &0x221
-   \   000004   042C         JC      ??Switches_Process_0
-     33              calibrate_detector();    
-   \   000006   ........     CALLA   #calibrate_detector
+   \   000002   D2B32102     BIT.B   #0x1, &0x221
+   \   000006   042C         JC      ??Switches_Process_1
+     33              calibrate_detector();
+   \   000008   ........     CALLA   #calibrate_detector
      34              line_dance();
-   \   00000A   ........     CALLA   #line_dance
+   \   00000C   ........     CALLA   #line_dance
      35            }
      36            if (!(P4IN & SW2)) {
-   \                     ??Switches_Process_0:
-   \   00000E   E2B32102     BIT.B   #0x2, &0x221
-   \   000012   162C         JC      ??Switches_Process_1
+   \                     ??Switches_Process_1:
+   \   000010   E2B32102     BIT.B   #0x2, &0x221
+   \   000014   3D2C         JC      ??Switches_Process_2
      37              /*display_1 = "Embedded";
      38              posL1 = SW2_posL1;
      39              display_2 = "Systems";
@@ -117,29 +118,79 @@
      44              posL4 = SW2_posL1;*/
      45              
      46              display_1 = "          ";
-   \   000014   B240........ MOV.W   #`?<Constant "          ">`, &display_1
+   \   000016   B240........ MOV.W   #`?<Constant "          ">`, &display_1
      47              posL1 = ZERO;
-   \   00001A   C243....     MOV.B   #0x0, &posL1
+   \   00001C   C243....     MOV.B   #0x0, &posL1
      48              display_2 = "          ";
-   \   00001E   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+   \   000020   B240........ MOV.W   #`?<Constant "          ">`, &display_2
      49              posL2 = ZERO;
-   \   000024   C243....     MOV.B   #0x0, &posL2
+   \   000026   C243....     MOV.B   #0x0, &posL2
      50              display_3 = "          ";
-   \   000028   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+   \   00002A   B240........ MOV.W   #`?<Constant "          ">`, &display_3
      51              posL3 = ZERO;
-   \   00002E   C243....     MOV.B   #0x0, &posL3
+   \   000030   C243....     MOV.B   #0x0, &posL3
      52              display_4 = "          ";
-   \   000032   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+   \   000034   B240........ MOV.W   #`?<Constant "          ">`, &display_4
      53              posL4 = ZERO;
-   \   000038   C243....     MOV.B   #0x0, &posL4
+   \   00003A   C243....     MOV.B   #0x0, &posL4
      54              Display_Process();
-   \   00003C   ........     CALLA   #Display_Process
-     55          }
-     56          //------------------------------------------------------------------------------
-     57          }
-   \                     ??Switches_Process_1:
-   \   000040   1001         RETA
-   \   000042                REQUIRE _A_PBIN_L
+   \   00003E   ........     CALLA   #Display_Process
+     55          emitter_on();
+   \   000042   ........     CALLA   #emitter_on
+     56          unsigned int i = 0; // counter for time taken to reverse
+   \   000046   0A43         MOV.W   #0x0, R10
+     57              //ISR_COUNT = ZERO;
+     58            while(ALWAYS){// loop to travel in reverse
+     59              // give motors enough time to get away from black line
+     60              if(i == 0){
+   \                     ??Switches_Process_0:
+   \   000048   0A93         CMP.W   #0x0, R10
+   \   00004A   0520         JNE     ??Switches_Process_3
+     61                  motor_reverse(50);
+   \   00004C   3C403200     MOV.W   #0x32, R12
+   \   000050   ........     CALLA   #motor_reverse
+     62                  i++;
+   \   000054   1A53         ADD.W   #0x1, R10
+     63              }
+     64              i++;
+   \                     ??Switches_Process_3:
+   \   000056   1A53         ADD.W   #0x1, R10
+     65              // MOTORS IN REVERSE
+     66              ADC_Process();
+   \   000058   ........     CALLA   #ADC_Process
+     67              r_reverse_on();
+   \   00005C   ........     CALLA   #r_reverse_on
+     68              ADC_Process();
+   \   000060   ........     CALLA   #ADC_Process
+     69              l_reverse_on();
+   \   000064   ........     CALLA   #l_reverse_on
+     70              ADC_Process();
+   \   000068   ........     CALLA   #ADC_Process
+     71              if((ADC_Right_Detector>tracking_value_high) || (ADC_Left_Detector>tracking_value_high)){
+   \   00006C   9292........ CMP.W   &ADC_Right_Detector, &tracking_value_high
+   \   000072   0428         JNC     ??Switches_Process_4
+   \   000074   9292........ CMP.W   &ADC_Left_Detector, &tracking_value_high
+   \   00007A   E62F         JC      ??Switches_Process_0
+     72                l_reverse_off();
+   \                     ??Switches_Process_4:
+   \   00007C   ........     CALLA   #l_reverse_off
+     73                r_reverse_off();
+   \   000080   ........     CALLA   #r_reverse_off
+     74                Five_msec_Delay(25); // pause for quarter of a second
+   \   000084   3C401900     MOV.W   #0x19, R12
+   \   000088   ........     CALLA   #Five_msec_Delay
+     75                break;
+     76              }
+     77            }
+     78              emitter_off();
+   \   00008C   ........     CALLA   #emitter_off
+     79          }
+     80          //------------------------------------------------------------------------------
+     81          }
+   \                     ??Switches_Process_2:
+   \   000090   3A41         POP.W   R10
+   \   000092   1001         RETA
+   \   000094                REQUIRE _A_PBIN_L
 
    \                                 In  segment DATA16_ID, align 2, align-sorted
    \                     `?<Initializer for color_right>`:
@@ -158,10 +209,19 @@
 
    CSTACK Function
    ------ --------
-      4   Switches_Process
-        4   -> Display_Process
-        4   -> calibrate_detector
-        4   -> line_dance
+      6   Switches_Process
+        6   -> ADC_Process
+        6   -> Display_Process
+        6   -> Five_msec_Delay
+        6   -> calibrate_detector
+        6   -> emitter_off
+        6   -> emitter_on
+        6   -> l_reverse_off
+        6   -> l_reverse_on
+        6   -> line_dance
+        6   -> motor_reverse
+        6   -> r_reverse_off
+        6   -> r_reverse_on
 
 
    Segment part sizes:
@@ -171,7 +231,7 @@
       11  ?<Constant "          ">
        2  ?<Initializer for color_left>
        2  ?<Initializer for color_right>
-      66  Switches_Process
+     148  Switches_Process
        2  _A_PBIN_L
        2  button_counter1
        2  button_counter2
@@ -179,16 +239,16 @@
        2  color_right
 
  
- 66 bytes in segment CODE
-  2 bytes in segment DATA16_AN
- 11 bytes in segment DATA16_C
-  4 bytes in segment DATA16_I
-  4 bytes in segment DATA16_ID
-  4 bytes in segment DATA16_Z
+ 148 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  11 bytes in segment DATA16_C
+   4 bytes in segment DATA16_I
+   4 bytes in segment DATA16_ID
+   4 bytes in segment DATA16_Z
  
- 66 bytes of CODE  memory
- 15 bytes of CONST memory
-  8 bytes of DATA  memory (+ 2 bytes shared)
+ 148 bytes of CODE  memory
+  15 bytes of CONST memory
+   8 bytes of DATA  memory (+ 2 bytes shared)
 
 Errors: none
 Warnings: none

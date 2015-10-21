@@ -82,6 +82,7 @@ while(ISR_COUNT<time)
   }
   r_reverse_off();
   l_reverse_off();
+  ISR_COUNT = ZERO;
 }
 
 void circle(void){ 

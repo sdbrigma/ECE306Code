@@ -16,7 +16,10 @@ extern unsigned int ADC_Right_Detector;
 extern unsigned int ADC_Left_Detector;
 extern unsigned int ADC_Temp;
 extern unsigned int ADC_Bat;
+extern unsigned int tracking_value_high;
+extern unsigned int tracking_value_low;
 extern unsigned int tracking_value;
+extern unsigned int ambience;
 extern int ADC_Channel;
 #define ALWAYS                  (1)
 #define ONE                     (1)
@@ -158,3 +161,4 @@ extern int ADC_Channel;
 #define NIBBLE1                 (0x000F)
 #define NIBBLE2                 (0x00F0)
 #define NIBBLE3                 (0x0F00)
+#define ADC_RESOLUTION          (1024)

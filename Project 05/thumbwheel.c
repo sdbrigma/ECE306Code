@@ -18,9 +18,11 @@
 extern char *display_1;
 extern char *display_2;
 extern char *display_3;
+extern char *display_4;
 extern char posL1;
 extern char posL2;
 extern char posL3;
+extern char posL4;
 extern unsigned int ADC_Right_Detector;
 extern unsigned int ADC_thumb;
 extern unsigned int ADC_Left_Detector;
@@ -72,10 +74,19 @@ void ADC_read(int detect_mode){
       tmp = tmp | 0x0030;
     }
     if(detect_mode == 2)
-      {display_1[4] = tmp; display_2="          "; display_3="          ";}
+      {display_1[4] = tmp;}
     if(detect_mode == 1)
       {display_2[4] = tmp;} // left detect
     if(detect_mode == 0)
       {display_3[4] = tmp;} // right detect
+    
+    /*display_1 = "T";
+    posL1 = ZERO;
+    display_2 = "L";
+    posL2 = ZERO;
+    display_3 = "R";
+    posL3 = ZERO;
+    display_4 = "";
+    posL4 = ZERO;*/
     Display_Process();
 }

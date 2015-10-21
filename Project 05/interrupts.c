@@ -63,13 +63,13 @@ __interrupt void ADC10_ISR(void){
      case Right_Detector:
      ADC10MCTL0 = ADC10INCH_0; //  channel A0
      ADC_Right_Detector = ADC10MEM0; // Read Channel A0
-     //ADC_Channel++;
+     ADC_Channel++;
      break;
      
      case Left_Detector:
      ADC10MCTL0 = ADC10INCH_1; //  channel A1
      ADC_Left_Detector = ADC10MEM0; // Read Channel A1
-     //ADC_Channel++;
+     ADC_Channel = ZERO;
      break;
      
      case Thumbwheel:
@@ -92,7 +92,7 @@ __interrupt void ADC10_ISR(void){
      
      default: break;
      }
-   //ADC10CTL0 |= ADC10ENC | ADC10SC; // Start next sample.
+   ADC10CTL0 |= ADC10ENC | ADC10SC; // Start next sample.
  default: break;
    }
 }

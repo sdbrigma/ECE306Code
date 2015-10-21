@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           20/Oct/2015  20:06:16
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           20/Oct/2015  23:38:37
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -141,13 +141,13 @@
    \   000002   1F421E07     MOV.W   &0x71e, R15
    \   000006   E00F         ADDA    R15, PC
    \                     `?<Jumptable for ADC10_ISR>_0`:
-   \   000008   233C         JMP     ??ADC10_ISR_0
-   \   00000A   223C         JMP     ??ADC10_ISR_0
-   \   00000C   213C         JMP     ??ADC10_ISR_0
-   \   00000E   203C         JMP     ??ADC10_ISR_0
-   \   000010   1F3C         JMP     ??ADC10_ISR_0
-   \   000012   1E3C         JMP     ??ADC10_ISR_0
-   \   000014   003C         JMP     ??ADC10_ISR_4
+   \   000008   2A3C         JMP     ??ADC10_ISR_1
+   \   00000A   293C         JMP     ??ADC10_ISR_1
+   \   00000C   283C         JMP     ??ADC10_ISR_1
+   \   00000E   273C         JMP     ??ADC10_ISR_1
+   \   000010   263C         JMP     ??ADC10_ISR_1
+   \   000012   253C         JMP     ??ADC10_ISR_1
+   \   000014   003C         JMP     ??ADC10_ISR_5
      52           case 0: break; // No interrupt
      53           case 2: break; // conversion result overflow
      54           case 4: break; // conversion time overflow
@@ -157,44 +157,46 @@
      58           case 12:
      59                 // Need this to change the ADC10INCH_x value.
      60               ADC10CTL0 &= ~ADC10ENC; // Toggle ENC bit.
-   \                     ??ADC10_ISR_4:
+   \                     ??ADC10_ISR_5:
    \   000016   A2C30007     BIC.W   #0x2, &0x700
      61               
      62               switch (ADC_Channel){
    \   00001A   1F42....     MOV.W   &ADC_Channel, R15
    \   00001E   0F83         SUB.W   #0x0, R15
-   \   000020   0524         JEQ     ??ADC10_ISR_1
+   \   000020   0524         JEQ     ??ADC10_ISR_2
    \   000022   1F83         SUB.W   #0x1, R15
-   \   000024   0924         JEQ     ??ADC10_ISR_2
+   \   000024   0B24         JEQ     ??ADC10_ISR_3
    \   000026   1F83         SUB.W   #0x1, R15
-   \   000028   0D24         JEQ     ??ADC10_ISR_3
-   \   00002A   123C         JMP     ??ADC10_ISR_0
+   \   000028   1124         JEQ     ??ADC10_ISR_4
+   \   00002A   163C         JMP     ??ADC10_ISR_0
      63               case Right_Detector:
      64               ADC10MCTL0 = ADC10INCH_0; //  channel A0
-   \                     ??ADC10_ISR_1:
+   \                     ??ADC10_ISR_2:
    \   00002C   82430A07     MOV.W   #0x0, &0x70a
      65               ADC_Right_Detector = ADC10MEM0; // Read Channel A0
    \   000030   92421207.... MOV.W   &0x712, &ADC_Right_Detector
-     66               //ADC_Channel++;
+     66               ADC_Channel++;
+   \   000036   9253....     ADD.W   #0x1, &ADC_Channel
      67               break;
-   \   000036   0C3C         JMP     ??ADC10_ISR_0
+   \   00003A   0E3C         JMP     ??ADC10_ISR_0
      68               
      69               case Left_Detector:
      70               ADC10MCTL0 = ADC10INCH_1; //  channel A1
-   \                     ??ADC10_ISR_2:
-   \   000038   92430A07     MOV.W   #0x1, &0x70a
+   \                     ??ADC10_ISR_3:
+   \   00003C   92430A07     MOV.W   #0x1, &0x70a
      71               ADC_Left_Detector = ADC10MEM0; // Read Channel A1
-   \   00003C   92421207.... MOV.W   &0x712, &ADC_Left_Detector
-     72               //ADC_Channel++;
+   \   000040   92421207.... MOV.W   &0x712, &ADC_Left_Detector
+     72               ADC_Channel = ZERO;
+   \   000046   8243....     MOV.W   #0x0, &ADC_Channel
      73               break;
-   \   000042   063C         JMP     ??ADC10_ISR_0
+   \   00004A   063C         JMP     ??ADC10_ISR_0
      74               
      75               case Thumbwheel:
      76               ADC10MCTL0 = ADC10INCH_3; // Next channel A0
-   \                     ??ADC10_ISR_3:
-   \   000044   B24003000A07 MOV.W   #0x3, &0x70a
+   \                     ??ADC10_ISR_4:
+   \   00004C   B24003000A07 MOV.W   #0x3, &0x70a
      77               ADC_Thumb = ADC10MEM0; // Read Channel A3
-   \   00004A   92421207.... MOV.W   &0x712, &ADC_Thumb
+   \   000052   92421207.... MOV.W   &0x712, &ADC_Thumb
      78               //ADC_Channel = ZERO;
      79               break;
      80               
@@ -212,17 +214,19 @@
      92               
      93               default: break;
      94               }
-     95             //ADC10CTL0 |= ADC10ENC | ADC10SC; // Start next sample.
+     95             ADC10CTL0 |= ADC10ENC | ADC10SC; // Start next sample.
+   \                     ??ADC10_ISR_0:
+   \   000058   B2D003000007 BIS.W   #0x3, &0x700
      96           default: break;
      97             }
      98          }
-   \                     ??ADC10_ISR_0:
-   \   000050   3F41         POP.W   R15
-   \   000052   0013         RETI
-   \   000054                REQUIRE _A_ADC10CTL0_L
-   \   000054                REQUIRE _A_ADC10MCTL0_L
-   \   000054                REQUIRE _A_ADC10MEM0_L
-   \   000054                REQUIRE _A_ADC10IV_L
+   \                     ??ADC10_ISR_1:
+   \   00005E   3F41         POP.W   R15
+   \   000060   0013         RETI
+   \   000062                REQUIRE _A_ADC10CTL0_L
+   \   000062                REQUIRE _A_ADC10MCTL0_L
+   \   000062                REQUIRE _A_ADC10MEM0_L
+   \   000062                REQUIRE _A_ADC10IV_L
 
    \                                 In  segment INTVEC, offset 0x5a, root
    \                     `??Timer0_A0_ISR::??INTVEC 90`:
@@ -245,7 +249,7 @@
 
    Bytes  Function/Label
    -----  --------------
-      84  ADC10_ISR
+      98  ADC10_ISR
        2  ADC10_ISR::??INTVEC 92
        2  ADC_Thumb
        2  TA0CCR0
@@ -261,9 +265,9 @@
   12 bytes in segment DATA16_AN
    2 bytes in segment DATA16_Z
    4 bytes in segment INTVEC
- 112 bytes in segment ISR_CODE
+ 126 bytes in segment ISR_CODE
  
- 112 bytes of CODE  memory
+ 126 bytes of CODE  memory
    0 bytes of CONST memory (+  4 bytes shared)
    2 bytes of DATA  memory (+ 12 bytes shared)
 

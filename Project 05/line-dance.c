@@ -26,10 +26,13 @@ extern char posL4;
 extern unsigned int ADC_Right_Detector;
 extern unsigned int ADC_thumb;
 extern unsigned int ADC_Left_Detector;
+extern unsigned int tracking_value_high;
+extern unsigned int tracking_value_low;
 extern unsigned int tracking_value;
+extern unsigned int ambience;
 
 
-void line_dance(void){  
+void line_dance(void){
   emitter_on();
     display_1 = "==========";
     posL1 = ZERO;
@@ -40,12 +43,17 @@ void line_dance(void){
     display_4 = "          ";
     posL4 = ZERO;
     Display_Process();
-  
+
   while(ALWAYS){// loop to travel straight
     // read left and right detectors
+    /*if(ADC_Left_Detector>tracking_value_high){
+      Five_msec_Delay(25); // pause for quarter of a second
+      break;
+    }*/
     ADC_Process();
     motor_straight();
-    if((ADC_Left_Detector>=tracking_value) || (ADC_Right_Detector>=tracking_value)){
+    ADC_Process();
+    if((ADC_Right_Detector>tracking_value_high)||(ADC_Left_Detector>tracking_value_high)){
       Five_msec_Delay(25); // pause for quarter of a second
       break;
     }    
@@ -60,26 +68,30 @@ void line_dance(void){
     display_4 = "          ";
     posL4 = ZERO;
     Display_Process();
+
   
     unsigned int i = 0; // counter for time taken to reverse
+    //ISR_COUNT = ZERO;
   while(ALWAYS){// loop to travel in reverse
     // give motors enough time to get away from black line
     if(i == 0){
         motor_reverse(50);
+        i++;
     }
+    i++;
     // MOTORS IN REVERSE
     ADC_Process();
     r_reverse_on();
     l_reverse_on();
-    i++;
-    if((ADC_Right_Detector>=tracking_value) || (ADC_Left_Detector>=tracking_value)){
-      i = ISR_COUNT;
+    ADC_Process();
+    if((ADC_Right_Detector>(tracking_value_high*2)) || (ADC_Left_Detector>(tracking_value_high*2))){
       l_reverse_off();
       r_reverse_off();
       Five_msec_Delay(25); // pause for quarter of a second
       break;
     }
   }
+  ISR_COUNT = ZERO;
   emitter_off();
   display_1 = "==========";
     posL1 = ZERO;
@@ -91,13 +103,12 @@ void line_dance(void){
     posL4 = ZERO;
     Display_Process();
   
-  i = i / 2;
-  while(i>ZERO){
-    i--;
+  i = i / 756;
+  unsigned int a = ZERO;
+  while(a<i){
     motor_straight();
+    a++;
   }
-  
-  ISR_COUNT = ZERO;
   Five_msec_Delay(25);
   
   display_1 = "==========";
@@ -167,26 +178,22 @@ void calibrate_detector(void){
   display_4 = "==========";
   posL4 = ZERO;
   Display_Process();
-  
-  Five_msec_Delay(100);
-  
-  int i = 0;
-  emitter_on();
-  while(i < 10){
+  ISR_COUNT = ZERO;
+  while(ISR_COUNT<100){
     ADC_Process();
-    tracking_value = ADC_Right_Detector + ADC_Left_Detector / 2;
+    ambience = (ADC_Right_Detector + ADC_Left_Detector) / 2;
   }
-  emitter_off();
-  
-  display_1 = "==========";
-    posL1 = ZERO;
-    display_2 = "==========";
-    posL2 = ZERO;
-    display_3 = "DONE!!!";
-    posL3 = 2;
-    display_4 = "==========";
-    posL4 = ZERO;
-    Display_Process();
-  Five_msec_Delay(200);
-  
+  ISR_COUNT = ZERO;
+  ambience = ADC_RESOLUTION - ambience; // ambience correction factor
+  ambience = ambience * 2;
+    
+  emitter_on();
+  while(ISR_COUNT < 100){
+    ADC_Process();
+    tracking_value = (ADC_Right_Detector + ADC_Left_Detector) / 2;
+  }
+  ISR_COUNT = ZERO;
+  tracking_value_high = tracking_value + ambience;
+  tracking_value_low = tracking_value - ambience;
+  emitter_off();  
 }
