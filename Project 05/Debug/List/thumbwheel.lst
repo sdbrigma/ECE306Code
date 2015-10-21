@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           20/Oct/2015  22:30:59
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           21/Oct/2015  12:29:49
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -45,185 +45,190 @@
       8          *        Passed : No variables passed 
       9          *        Locals: No locals variables
      10          *        Returned: no values returned 
-     11          *        Globlas: No variables used
+     11          *        Globlas: Listed in the globals section
      12          *******************************************************************************/
      13          
      14          // Includes
      15          #include  "macros.h"
      16          #include  "msp430.h"
      17          #include  "functions.h"
-     18          extern char *display_1;
-     19          extern char *display_2;
-     20          extern char *display_3;
-     21          extern char *display_4;
-     22          extern char posL1;
-     23          extern char posL2;
-     24          extern char posL3;
-     25          extern char posL4;
-     26          extern unsigned int ADC_Right_Detector;
-     27          extern unsigned int ADC_thumb;
-     28          extern unsigned int ADC_Left_Detector;
-     29          
+     18          
+     19          // GLobal Variables
+     20          extern char *display_1;
+     21          extern char *display_2;
+     22          extern char *display_3;
+     23          extern char *display_4;
+     24          extern char posL1;
+     25          extern char posL2;
+     26          extern char posL3;
+     27          extern char posL4;
+     28          extern unsigned int ADC_Right_Detector;
+     29          extern unsigned int ADC_thumb;
+     30          extern unsigned int ADC_Left_Detector;
+     31          
 
    \                                 In  segment CODE, align 2
-     30          void ADC_read(int detect_mode){
+     32          void ADC_read(int detect_mode){
    \                     ADC_read:
    \   000000   3B15         PUSHM.W #0x4, R11
    \   000002   0B4C         MOV.W   R12, R11
-     31            // For detect mode 0 - right detector, 1 - left, 2 - thumbwheel
-     32            unsigned int value;
-     33            ADC_Channel = detect_mode;
+     33          /*******************************************************************************
+     34          *        Author: Steffon Brigman
+     35          *        Date:   October 2015
+     36          *        Description: This function converts ADC values to display to the LCD
+     37          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     38          *
+     39          *        Function name: ADC_read
+     40          *        Passed : detect_mode
+     41          *        Locals: value, tmp
+     42          *        Returned: no values returned 
+     43          *        Globlas: All listed in the globals section
+     44          *******************************************************************************/
+     45            // For detect mode 0 - right detector, 1 - left, 2 - thumbwheel
+     46            unsigned int value;
+     47            ADC_Channel = detect_mode;
    \   000004   824B....     MOV.W   R11, &ADC_Channel
-     34            if(ADC_Channel == Right_Detector){value = ADC_Right_Detector;}
+     48            if(ADC_Channel == Right_Detector){value = ADC_Right_Detector;}
    \   000008   8293....     CMP.W   #0x0, &ADC_Channel
    \   00000C   0220         JNE     ??ADC_read_0
    \   00000E   1842....     MOV.W   &ADC_Right_Detector, R8
-     35            if(ADC_Channel == Left_Detector){value = ADC_Left_Detector;}
+     49            if(ADC_Channel == Left_Detector){value = ADC_Left_Detector;}
    \                     ??ADC_read_0:
    \   000012   9293....     CMP.W   #0x1, &ADC_Channel
    \   000016   0220         JNE     ??ADC_read_1
    \   000018   1842....     MOV.W   &ADC_Left_Detector, R8
-     36            if(ADC_Channel == Thumbwheel){value = ADC_Thumb;}
+     50            if(ADC_Channel == Thumbwheel){value = ADC_Thumb;}
    \                     ??ADC_read_1:
    \   00001C   A293....     CMP.W   #0x2, &ADC_Channel
    \   000020   0220         JNE     ??ADC_read_2
    \   000022   1842....     MOV.W   &ADC_Thumb, R8
-     37            ADC_Process();
+     51            ADC_Process();
    \                     ??ADC_read_2:
    \   000026   ........     CALLA   #ADC_Process
-     38            // Hex conversion code
-     39              unsigned int tmp = value & 0x000F; // Preserver first nibble of thumbwheel register
+     52            // Hex conversion code
+     53              unsigned int tmp = value & NIBBLE1; // Preserver first nibble of thumbwheel register
    \   00002A   0A48         MOV.W   R8, R10
    \   00002C   3AF00F00     AND.W   #0xf, R10
-     40              if(tmp > 0x0009){
+     54              if(tmp > HEX_A){
    \   000030   3A900A00     CMP.W   #0xa, R10
    \   000034   0328         JNC     ??ADC_read_3
-     41                tmp = tmp + 0x0037;
+     55                tmp = tmp + ADC_conv1;
    \   000036   3A503700     ADD.W   #0x37, R10
    \   00003A   023C         JMP     ??ADC_read_4
-     42              }
-     43              else{
-     44                tmp = tmp | 0x0030;
+     56              }
+     57              else{
+     58                tmp = tmp | ADC_conv2;
    \                     ??ADC_read_3:
    \   00003C   3AD03000     BIS.W   #0x30, R10
-     45              }
-     46              if(detect_mode == 2)
+     59              }
+     60              if(detect_mode == Thumbwheel)
    \                     ??ADC_read_4:
    \   000040   2B93         CMP.W   #0x2, R11
    \   000042   0420         JNE     ??ADC_read_5
-     47                {display_1[6] = tmp;} // thumbwheel
+     61                {display_1[line1] = tmp;} // thumbwheel
    \   000044   1F42....     MOV.W   &display_1, R15
    \   000048   CF4A0600     MOV.B   R10, 0x6(R15)
-     48              if(detect_mode == 1)
+     62              if(detect_mode == Left_Detector)
    \                     ??ADC_read_5:
    \   00004C   1B93         CMP.W   #0x1, R11
    \   00004E   0420         JNE     ??ADC_read_6
-     49                {display_2[6] = tmp;} // left detect
+     63                {display_2[line1] = tmp;} // left detect
    \   000050   1F42....     MOV.W   &display_2, R15
    \   000054   CF4A0600     MOV.B   R10, 0x6(R15)
-     50              if(detect_mode == 0)
+     64              if(detect_mode == Right_Detector)
    \                     ??ADC_read_6:
    \   000058   0B93         CMP.W   #0x0, R11
    \   00005A   0420         JNE     ??ADC_read_7
-     51                {display_3[6] = tmp;} // right detect
+     65                {display_3[line1] = tmp;} // right detect
    \   00005C   1F42....     MOV.W   &display_3, R15
    \   000060   CF4A0600     MOV.B   R10, 0x6(R15)
-     52              
-     53              tmp = value & 0x00F0; // Preserver second nibble of thumbwheel register
+     66              
+     67              tmp = value & NIBBLE2; // Preserver second nibble of thumbwheel register
    \                     ??ADC_read_7:
    \   000064   0F48         MOV.W   R8, R15
    \   000066   3FF0F000     AND.W   #0xf0, R15
    \   00006A   0A4F         MOV.W   R15, R10
-     54              tmp >>= 4; 
+     68              tmp >>= shift1; 
    \   00006C   5A0F         RRUM.W  #0x4, R10
-     55              if(tmp > 0x0009){
+     69              if(tmp > HEX_A){
    \   00006E   3A900A00     CMP.W   #0xa, R10
    \   000072   0328         JNC     ??ADC_read_8
-     56                tmp = tmp + 0x0037;
+     70                tmp = tmp + ADC_conv1;
    \   000074   3A503700     ADD.W   #0x37, R10
    \   000078   023C         JMP     ??ADC_read_9
-     57              }
-     58              else{
-     59                tmp = tmp | 0x0030;
+     71              }
+     72              else{
+     73                tmp = tmp | ADC_conv2;
    \                     ??ADC_read_8:
    \   00007A   3AD03000     BIS.W   #0x30, R10
-     60              }
-     61              if(detect_mode == 2)
+     74              }
+     75              if(detect_mode == Thumbwheel)
    \                     ??ADC_read_9:
    \   00007E   2B93         CMP.W   #0x2, R11
    \   000080   0420         JNE     ??ADC_read_10
-     62                {display_1[5] = tmp;}
+     76                {display_1[line2] = tmp;}
    \   000082   1F42....     MOV.W   &display_1, R15
    \   000086   CF4A0500     MOV.B   R10, 0x5(R15)
-     63              if(detect_mode == 1)
+     77              if(detect_mode == Left_Detector)
    \                     ??ADC_read_10:
    \   00008A   1B93         CMP.W   #0x1, R11
    \   00008C   0420         JNE     ??ADC_read_11
-     64                {display_2[5] = tmp;} // left detect
+     78                {display_2[line2] = tmp;} // left detect
    \   00008E   1F42....     MOV.W   &display_2, R15
    \   000092   CF4A0500     MOV.B   R10, 0x5(R15)
-     65              if(detect_mode == 0)
+     79              if(detect_mode == Right_Detector)
    \                     ??ADC_read_11:
    \   000096   0B93         CMP.W   #0x0, R11
    \   000098   0420         JNE     ??ADC_read_12
-     66                {display_3[5] = tmp;} // right detect
+     80                {display_3[line2] = tmp;} // right detect
    \   00009A   1F42....     MOV.W   &display_3, R15
    \   00009E   CF4A0500     MOV.B   R10, 0x5(R15)
-     67              
-     68                tmp = value & 0x0F00; // Preserver last nibble of thumbwheel register
+     81              
+     82                tmp = value & NIBBLE3; // Preserver last nibble of thumbwheel register
    \                     ??ADC_read_12:
    \   0000A2   0F48         MOV.W   R8, R15
    \   0000A4   3FF0000F     AND.W   #0xf00, R15
    \   0000A8   0A4F         MOV.W   R15, R10
-     69                tmp >>= 8;
+     83                tmp >>= shift2;
    \   0000AA   8A10         SWPB    R10
    \   0000AC   3AF0FF00     AND.W   #0xff, R10
-     70              if(tmp > 0x0009){
+     84              if(tmp > HEX_A){
    \   0000B0   3A900A00     CMP.W   #0xa, R10
    \   0000B4   0328         JNC     ??ADC_read_13
-     71                tmp = tmp + 0x0037;
+     85                tmp = tmp + ADC_conv1;
    \   0000B6   3A503700     ADD.W   #0x37, R10
    \   0000BA   023C         JMP     ??ADC_read_14
-     72              }
-     73              else{
-     74                tmp = tmp | 0x0030;
+     86              }
+     87              else{
+     88                tmp = tmp | ADC_conv2;
    \                     ??ADC_read_13:
    \   0000BC   3AD03000     BIS.W   #0x30, R10
-     75              }
-     76              if(detect_mode == 2)
+     89              }
+     90              if(detect_mode == Thumbwheel)
    \                     ??ADC_read_14:
    \   0000C0   2B93         CMP.W   #0x2, R11
    \   0000C2   0420         JNE     ??ADC_read_15
-     77                {display_1[4] = tmp;}
+     91                {display_1[line3] = tmp;}
    \   0000C4   1F42....     MOV.W   &display_1, R15
    \   0000C8   CF4A0400     MOV.B   R10, 0x4(R15)
-     78              if(detect_mode == 1)
+     92              if(detect_mode == Left_Detector)
    \                     ??ADC_read_15:
    \   0000CC   1B93         CMP.W   #0x1, R11
    \   0000CE   0420         JNE     ??ADC_read_16
-     79                {display_2[4] = tmp;} // left detect
+     93                {display_2[line3] = tmp;} // left detect
    \   0000D0   1F42....     MOV.W   &display_2, R15
    \   0000D4   CF4A0400     MOV.B   R10, 0x4(R15)
-     80              if(detect_mode == 0)
+     94              if(detect_mode == Right_Detector)
    \                     ??ADC_read_16:
    \   0000D8   0B93         CMP.W   #0x0, R11
    \   0000DA   0420         JNE     ??ADC_read_17
-     81                {display_3[4] = tmp;} // right detect
+     95                {display_3[line3] = tmp;} // right detect
    \   0000DC   1F42....     MOV.W   &display_3, R15
    \   0000E0   CF4A0400     MOV.B   R10, 0x4(R15)
-     82              
-     83              /*display_1 = "T";
-     84              posL1 = ZERO;
-     85              display_2 = "L";
-     86              posL2 = ZERO;
-     87              display_3 = "R";
-     88              posL3 = ZERO;
-     89              display_4 = "";
-     90              posL4 = ZERO;*/
-     91              Display_Process();
+     96              Display_Process();
    \                     ??ADC_read_17:
    \   0000E4   ........     CALLA   #Display_Process
-     92          }
+     97          }
    \   0000E8   3817         POPM.W  #0x4, R11
    \   0000EA   1001         RETA
 

@@ -20,12 +20,7 @@ extern char *display_4;
 extern char posL1;
 extern char posL2;
 extern char posL3;
-extern char ADC_TEST;
 extern char posL4;
-int button_counter1 = ZERO;
-int button_counter2 = ZERO;
-  unsigned int color_right = black;
-  unsigned int color_left = black;
 void Switches_Process(void){
 //------------------------------------------------------------------------------
 // Switch proccess sets LCD text when SW1 and SW2 are pressed
@@ -52,30 +47,12 @@ void Switches_Process(void){
     display_4 = "          ";
     posL4 = ZERO;
     Display_Process();
-emitter_on();
-unsigned int i = 0; // counter for time taken to reverse
-    //ISR_COUNT = ZERO;
-  while(ALWAYS){// loop to travel in reverse
-    // give motors enough time to get away from black line
-    if(i == 0){
-        motor_reverse(50);
-        i++;
+    emitter_on();
+    while(ALWAYS & (P4IN & SW1)){
+      ADC_Process();
+      ADC_read(ZERO);
+      Five_msec_Delay(CIRCLE);
     }
-    i++;
-    // MOTORS IN REVERSE
-    ADC_Process();
-    r_reverse_on();
-    ADC_Process();
-    l_reverse_on();
-    ADC_Process();
-    if((ADC_Right_Detector>tracking_value_high) || (ADC_Left_Detector>tracking_value_high)){
-      l_reverse_off();
-      r_reverse_off();
-      Five_msec_Delay(25); // pause for quarter of a second
-      break;
-    }
-  }
-    emitter_off();
 }
 //------------------------------------------------------------------------------
 }

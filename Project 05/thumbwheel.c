@@ -8,13 +8,15 @@
 *        Passed : No variables passed 
 *        Locals: No locals variables
 *        Returned: no values returned 
-*        Globlas: No variables used
+*        Globlas: Listed in the globals section
 *******************************************************************************/
 
 // Includes
 #include  "macros.h"
 #include  "msp430.h"
 #include  "functions.h"
+
+// GLobal Variables
 extern char *display_1;
 extern char *display_2;
 extern char *display_3;
@@ -28,6 +30,18 @@ extern unsigned int ADC_thumb;
 extern unsigned int ADC_Left_Detector;
 
 void ADC_read(int detect_mode){
+/*******************************************************************************
+*        Author: Steffon Brigman
+*        Date:   October 2015
+*        Description: This function converts ADC values to display to the LCD
+*        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+*
+*        Function name: ADC_read
+*        Passed : detect_mode
+*        Locals: value, tmp
+*        Returned: no values returned 
+*        Globlas: All listed in the globals section
+*******************************************************************************/
   // For detect mode 0 - right detector, 1 - left, 2 - thumbwheel
   unsigned int value;
   ADC_Channel = detect_mode;
@@ -36,57 +50,48 @@ void ADC_read(int detect_mode){
   if(ADC_Channel == Thumbwheel){value = ADC_Thumb;}
   ADC_Process();
   // Hex conversion code
-    unsigned int tmp = value & 0x000F; // Preserver first nibble of thumbwheel register
-    if(tmp > 0x0009){
-      tmp = tmp + 0x0037;
+    unsigned int tmp = value & NIBBLE1; // Preserver first nibble of thumbwheel register
+    if(tmp > HEX_A){
+      tmp = tmp + ADC_conv1;
     }
     else{
-      tmp = tmp | 0x0030;
+      tmp = tmp | ADC_conv2;
     }
-    if(detect_mode == 2)
-      {display_1[6] = tmp;} // thumbwheel
-    if(detect_mode == 1)
-      {display_2[6] = tmp;} // left detect
-    if(detect_mode == 0)
-      {display_3[6] = tmp;} // right detect
+    if(detect_mode == Thumbwheel)
+      {display_1[line1] = tmp;} // thumbwheel
+    if(detect_mode == Left_Detector)
+      {display_2[line1] = tmp;} // left detect
+    if(detect_mode == Right_Detector)
+      {display_3[line1] = tmp;} // right detect
     
-    tmp = value & 0x00F0; // Preserver second nibble of thumbwheel register
-    tmp >>= 4; 
-    if(tmp > 0x0009){
-      tmp = tmp + 0x0037;
+    tmp = value & NIBBLE2; // Preserver second nibble of thumbwheel register
+    tmp >>= shift1; 
+    if(tmp > HEX_A){
+      tmp = tmp + ADC_conv1;
     }
     else{
-      tmp = tmp | 0x0030;
+      tmp = tmp | ADC_conv2;
     }
-    if(detect_mode == 2)
-      {display_1[5] = tmp;}
-    if(detect_mode == 1)
-      {display_2[5] = tmp;} // left detect
-    if(detect_mode == 0)
-      {display_3[5] = tmp;} // right detect
+    if(detect_mode == Thumbwheel)
+      {display_1[line2] = tmp;}
+    if(detect_mode == Left_Detector)
+      {display_2[line2] = tmp;} // left detect
+    if(detect_mode == Right_Detector)
+      {display_3[line2] = tmp;} // right detect
     
-      tmp = value & 0x0F00; // Preserver last nibble of thumbwheel register
-      tmp >>= 8;
-    if(tmp > 0x0009){
-      tmp = tmp + 0x0037;
+      tmp = value & NIBBLE3; // Preserver last nibble of thumbwheel register
+      tmp >>= shift2;
+    if(tmp > HEX_A){
+      tmp = tmp + ADC_conv1;
     }
     else{
-      tmp = tmp | 0x0030;
+      tmp = tmp | ADC_conv2;
     }
-    if(detect_mode == 2)
-      {display_1[4] = tmp;}
-    if(detect_mode == 1)
-      {display_2[4] = tmp;} // left detect
-    if(detect_mode == 0)
-      {display_3[4] = tmp;} // right detect
-    
-    /*display_1 = "T";
-    posL1 = ZERO;
-    display_2 = "L";
-    posL2 = ZERO;
-    display_3 = "R";
-    posL3 = ZERO;
-    display_4 = "";
-    posL4 = ZERO;*/
+    if(detect_mode == Thumbwheel)
+      {display_1[line3] = tmp;}
+    if(detect_mode == Left_Detector)
+      {display_2[line3] = tmp;} // left detect
+    if(detect_mode == Right_Detector)
+      {display_3[line3] = tmp;} // right detect
     Display_Process();
 }

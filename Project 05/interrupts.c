@@ -11,7 +11,7 @@
 *        Passed : No variables passed 
 *        Locals: No variables defined
 *        Returned: no values returned 
-*        Globlas: no variables defined
+*        Globlas: ADC_Thumb
 *******************************************************************************/
 unsigned int ADC_Thumb; 
 // TimerA0 0 Interrupt handler
@@ -48,6 +48,18 @@ __interrupt void Timer0_A0_ISR(void){
 // ADC_Bat; // A11 ADC10INCH_11 - Internal
 #pragma vector=ADC10_VECTOR
 __interrupt void ADC10_ISR(void){
+  /*******************************************************************************
+*        Author: Steffon Brigman
+*        Date:   October 2015
+*        Description: This functions is an interrupt used to control the motors.
+*        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+*
+*        Function name: ADC10_ISR
+*        Passed : No variables passed 
+*        Locals: none declared
+*        Returned: no values returned 
+*        Globlas: ADC_Right_Detector, ADC_Left_Detector, ADC_Thumb
+*******************************************************************************/
  switch(__even_in_range(ADC10IV,12)) {
  case 0: break; // No interrupt
  case 2: break; // conversion result overflow

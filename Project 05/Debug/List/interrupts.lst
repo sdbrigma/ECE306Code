@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           20/Oct/2015  23:38:37
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           21/Oct/2015  12:44:05
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -78,7 +78,7 @@
      11          *        Passed : No variables passed 
      12          *        Locals: No variables defined
      13          *        Returned: no values returned 
-     14          *        Globlas: no variables defined
+     14          *        Globlas: ADC_Thumb
      15          *******************************************************************************/
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
@@ -137,7 +137,19 @@
      50          __interrupt void ADC10_ISR(void){
    \                     ADC10_ISR:
    \   000000   0F12         PUSH.W  R15
-     51           switch(__even_in_range(ADC10IV,12)) {
+     51            /*******************************************************************************
+     52          *        Author: Steffon Brigman
+     53          *        Date:   October 2015
+     54          *        Description: This functions is an interrupt used to control the motors.
+     55          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     56          *
+     57          *        Function name: ADC10_ISR
+     58          *        Passed : No variables passed 
+     59          *        Locals: none declared
+     60          *        Returned: no values returned 
+     61          *        Globlas: ADC_Right_Detector, ADC_Left_Detector, ADC_Thumb
+     62          *******************************************************************************/
+     63           switch(__even_in_range(ADC10IV,12)) {
    \   000002   1F421E07     MOV.W   &0x71e, R15
    \   000006   E00F         ADDA    R15, PC
    \                     `?<Jumptable for ADC10_ISR>_0`:
@@ -148,19 +160,19 @@
    \   000010   263C         JMP     ??ADC10_ISR_1
    \   000012   253C         JMP     ??ADC10_ISR_1
    \   000014   003C         JMP     ??ADC10_ISR_5
-     52           case 0: break; // No interrupt
-     53           case 2: break; // conversion result overflow
-     54           case 4: break; // conversion time overflow
-     55           case 6: break; // ADC10HI
-     56           case 8: break; // ADC10LO
-     57           case 10: break; // ADC10IN
-     58           case 12:
-     59                 // Need this to change the ADC10INCH_x value.
-     60               ADC10CTL0 &= ~ADC10ENC; // Toggle ENC bit.
+     64           case 0: break; // No interrupt
+     65           case 2: break; // conversion result overflow
+     66           case 4: break; // conversion time overflow
+     67           case 6: break; // ADC10HI
+     68           case 8: break; // ADC10LO
+     69           case 10: break; // ADC10IN
+     70           case 12:
+     71                 // Need this to change the ADC10INCH_x value.
+     72               ADC10CTL0 &= ~ADC10ENC; // Toggle ENC bit.
    \                     ??ADC10_ISR_5:
    \   000016   A2C30007     BIC.W   #0x2, &0x700
-     61               
-     62               switch (ADC_Channel){
+     73               
+     74               switch (ADC_Channel){
    \   00001A   1F42....     MOV.W   &ADC_Channel, R15
    \   00001E   0F83         SUB.W   #0x0, R15
    \   000020   0524         JEQ     ??ADC10_ISR_2
@@ -169,57 +181,57 @@
    \   000026   1F83         SUB.W   #0x1, R15
    \   000028   1124         JEQ     ??ADC10_ISR_4
    \   00002A   163C         JMP     ??ADC10_ISR_0
-     63               case Right_Detector:
-     64               ADC10MCTL0 = ADC10INCH_0; //  channel A0
+     75               case Right_Detector:
+     76               ADC10MCTL0 = ADC10INCH_0; //  channel A0
    \                     ??ADC10_ISR_2:
    \   00002C   82430A07     MOV.W   #0x0, &0x70a
-     65               ADC_Right_Detector = ADC10MEM0; // Read Channel A0
+     77               ADC_Right_Detector = ADC10MEM0; // Read Channel A0
    \   000030   92421207.... MOV.W   &0x712, &ADC_Right_Detector
-     66               ADC_Channel++;
+     78               ADC_Channel++;
    \   000036   9253....     ADD.W   #0x1, &ADC_Channel
-     67               break;
+     79               break;
    \   00003A   0E3C         JMP     ??ADC10_ISR_0
-     68               
-     69               case Left_Detector:
-     70               ADC10MCTL0 = ADC10INCH_1; //  channel A1
+     80               
+     81               case Left_Detector:
+     82               ADC10MCTL0 = ADC10INCH_1; //  channel A1
    \                     ??ADC10_ISR_3:
    \   00003C   92430A07     MOV.W   #0x1, &0x70a
-     71               ADC_Left_Detector = ADC10MEM0; // Read Channel A1
+     83               ADC_Left_Detector = ADC10MEM0; // Read Channel A1
    \   000040   92421207.... MOV.W   &0x712, &ADC_Left_Detector
-     72               ADC_Channel = ZERO;
+     84               ADC_Channel = ZERO;
    \   000046   8243....     MOV.W   #0x0, &ADC_Channel
-     73               break;
+     85               break;
    \   00004A   063C         JMP     ??ADC10_ISR_0
-     74               
-     75               case Thumbwheel:
-     76               ADC10MCTL0 = ADC10INCH_3; // Next channel A0
+     86               
+     87               case Thumbwheel:
+     88               ADC10MCTL0 = ADC10INCH_3; // Next channel A0
    \                     ??ADC10_ISR_4:
    \   00004C   B24003000A07 MOV.W   #0x3, &0x70a
-     77               ADC_Thumb = ADC10MEM0; // Read Channel A3
+     89               ADC_Thumb = ADC10MEM0; // Read Channel A3
    \   000052   92421207.... MOV.W   &0x712, &ADC_Thumb
-     78               //ADC_Channel = ZERO;
-     79               break;
-     80               
-     81               /*case CHANNEL_A10:
-     82               ADC10MCTL0 = ADC10INCH_10; // Next channel A10
-     83               ADC_Temp = ADC10MEM0; // Read Channel A10
-     84               ADC_Channel++;
-     85               break;
-     86               
-     87               case CHANNEL_A11:
-     88               ADC10MCTL0 = ADC10INCH_0; // Next channel A0
-     89               ADC_Bat = ADC10MEM0; // Read Channel A11
-     90               ADC_Channel= ZERO;
-     91               break;*/
+     90               //ADC_Channel = ZERO;
+     91               break;
      92               
-     93               default: break;
-     94               }
-     95             ADC10CTL0 |= ADC10ENC | ADC10SC; // Start next sample.
+     93               /*case CHANNEL_A10:
+     94               ADC10MCTL0 = ADC10INCH_10; // Next channel A10
+     95               ADC_Temp = ADC10MEM0; // Read Channel A10
+     96               ADC_Channel++;
+     97               break;
+     98               
+     99               case CHANNEL_A11:
+    100               ADC10MCTL0 = ADC10INCH_0; // Next channel A0
+    101               ADC_Bat = ADC10MEM0; // Read Channel A11
+    102               ADC_Channel= ZERO;
+    103               break;*/
+    104               
+    105               default: break;
+    106               }
+    107             ADC10CTL0 |= ADC10ENC | ADC10SC; // Start next sample.
    \                     ??ADC10_ISR_0:
    \   000058   B2D003000007 BIS.W   #0x3, &0x700
-     96           default: break;
-     97             }
-     98          }
+    108           default: break;
+    109             }
+    110          }
    \                     ??ADC10_ISR_1:
    \   00005E   3F41         POP.W   R15
    \   000060   0013         RETI
@@ -235,7 +247,7 @@
    \                                 In  segment INTVEC, offset 0x5c, root
    \                     `??ADC10_ISR::??INTVEC 92`:
    \   00005C   ....         DC16    ADC10_ISR
-     99          //-----------------------------------------------------------------------------
+    111          //-----------------------------------------------------------------------------
 
    Maximum stack usage in bytes:
 
