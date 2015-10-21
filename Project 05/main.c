@@ -23,6 +23,7 @@ unsigned int ADC_Right_Detector;
 unsigned int ADC_Left_Detector;
 unsigned int ADC_Temp;
 unsigned int ADC_Bat;
+unsigned int tracking_value;
 int ADC_Channel = 0;
 volatile char one_time;
 extern char display_line_1[DISPLAY_LENGTH];

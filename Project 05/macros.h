@@ -16,6 +16,7 @@ extern unsigned int ADC_Right_Detector;
 extern unsigned int ADC_Left_Detector;
 extern unsigned int ADC_Temp;
 extern unsigned int ADC_Bat;
+extern unsigned int tracking_value;
 extern int ADC_Channel;
 #define ALWAYS                  (1)
 #define ONE                     (1)
@@ -152,6 +153,8 @@ extern int ADC_Channel;
 #define Thumbwheel              (2)
 #define CHANNEL_A10             (3)
 #define CHANNEL_A11             (4)
-
-
-
+#define white                   (0x064) //This is a high side value low side is 0x034
+#define black                   (0x250) // Lowest value that counts as black
+#define NIBBLE1                 (0x000F)
+#define NIBBLE2                 (0x00F0)
+#define NIBBLE3                 (0x0F00)

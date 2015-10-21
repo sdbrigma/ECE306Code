@@ -67,7 +67,7 @@ void Switches_Process(void);
 // Motors
 void Init_Motors(void);
 void motor_straight(void);
-void motor_reverse(volatile unsigned int time);
+void motor_reverse(unsigned int time);
 void circle(void);
 void triangle(void);
 void figure_eight(void);
@@ -81,3 +81,8 @@ void r_reverse_on(void);
 void l_reverse_on(void);
 void twerk(void);
 
+// Project 5 funciton
+void line_dance(void);
+void calibrate_detector(void);
+void emitter_on(void);
+void emitter_off(void);

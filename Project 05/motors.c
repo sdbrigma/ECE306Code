@@ -53,29 +53,13 @@ void motor_straight(void){
 *        Returned: no values returned 
 *        Globlas: no values defined
 *******************************************************************************/
-   //int test = ISR_COUNT;
-   while(ISR_COUNT<100){
-     right_on(); // On for 500 ms
-    //right_off();
+   while(ISR_COUNT<1){
+     right_on(); 
     left_on();
-    //left_off();
    }
   left_off();
   right_off();
-  ISR_COUNT = 0;
-  
-  /*tmp = time + Time_Sequence;
-  int i = ZERO;
-while(i<time)
-  {  
-    right_on(STRAIGHT_SYNC); // On for 500 ms
-    //right_off();
-    left_on(STRAIGHT_SYNC);
-    //left_off();
-    i++;
-  }
-  left_off();
-  right_off();*/
+  ISR_COUNT = ZERO;
 }
 
 void motor_reverse(unsigned int time){
@@ -91,15 +75,10 @@ void motor_reverse(unsigned int time){
 *        Returned: no values returned 
 *        Globlas: no values defined
 *******************************************************************************/
-  tmp = time + Time_Sequence;
-  int i = ZERO;
-while(i<time)
+while(ISR_COUNT<time)
   {  
-    r_reverse_on(); // On for 500 ms
-    //r_reverse_off();
+    r_reverse_on(); 
     l_reverse_on();
-    //l_reverse_off();
-    i++;
   }
   r_reverse_off();
   l_reverse_off();

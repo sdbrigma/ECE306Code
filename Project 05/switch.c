@@ -24,33 +24,14 @@ extern char ADC_TEST;
 extern char posL4;
 int button_counter1 = ZERO;
 int button_counter2 = ZERO;
+  unsigned int color_right = black;
+  unsigned int color_left = black;
 void Switches_Process(void){
 //------------------------------------------------------------------------------
 // Switch proccess sets LCD text when SW1 and SW2 are pressed
   if (!(P4IN & SW1)){
-    display_1 = "          ";
-    posL1 = ZERO;
-    display_2 = "          ";
-    posL2 = ZERO;
-    display_3 = "          ";
-    posL3 = ZERO;
-    display_4 = "          ";
-    posL4 = ZERO;
-    Display_Process();
-    /*
-    display_1 = "NCSU";
-    posL1 = SW1_posL1;
-    display_2 = "WOLFPACK";
-    posL2 = SW1_posL2;
-    display_3 = "ECE306";
-    posL3 = SW1_posL3;
-    display_4 = "S Brigman";
-    posL4 = SW1_posL4;
-    */
-    while(ALWAYS){
-      ADC_read(2);
-      Five_msec_Delay(30);  
-    }
+    calibrate_detector();    
+    line_dance();
   }
   if (!(P4IN & SW2)) {
     /*display_1 = "Embedded";
@@ -71,13 +52,6 @@ void Switches_Process(void){
     display_4 = "          ";
     posL4 = ZERO;
     Display_Process();
-    
-    while(ALWAYS){
-      ADC_read(1); // read right detecter Black = 0x3E6 and White = 
-      Five_msec_Delay(25);  
-      /*ADC_read(1);
-      Five_msec_Delay(25);*/
-    }
-  }
+}
 //------------------------------------------------------------------------------
 }

@@ -77,6 +77,5 @@ void ADC_read(int detect_mode){
       {display_2[4] = tmp;} // left detect
     if(detect_mode == 0)
       {display_3[4] = tmp;} // right detect
-   
     Display_Process();
 }

@@ -52,7 +52,7 @@ void Init_Port1(void){
  
  P1SEL0 &= ~IR_LED; // IR_LED GPI/O selected
  P1SEL1 &= ~IR_LED; // IR_LED GPI/O selected
- P1OUT |= IR_LED; // P1 IR_LED Port Pin set low
+ P1OUT &= ~IR_LED; // P1 IR_LED Port Pin set low
  P1DIR |= IR_LED; // Set P1 IR_LED direction to output
  
  P1SEL0 |= V_THUMB; // V_THUMB selected

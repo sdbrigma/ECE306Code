@@ -1985,6 +1985,9 @@
     <name>$PROJ_DIR$\LED.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\line-dance.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\macros.h</name>
   </file>
   <file>
