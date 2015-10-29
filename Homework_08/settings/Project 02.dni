@@ -31,8 +31,7 @@ Fmt4={W}1:UCA1TXBUF	5	0
 Fmt5={W}1:value	4	0
 [Breakpoints]
 Bp0=_ "STD_CODE" "Memory:0xC9E0" 0 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\switch.c}.34.9" 1 0 0 0 "" 0 ""
-Count=2
+Count=1
 [FET]
 Clock mode=46
 Extended Clock mode=1039

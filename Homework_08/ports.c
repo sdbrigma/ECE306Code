@@ -118,6 +118,7 @@ void Init_Port2(void){
  P2DIR &= ~UNK_2P4; // Direction = input
  P2REN &= ~UNK_2P4; // Enable pullup resistor
  P2IES &= ~UNK_2P4; // SW1 Hi/Lo edge interrupt
+ 
  P2SEL1 &= ~CPU_TXD;
  P2SEL0 |= CPU_TXD;
  

@@ -420,7 +420,7 @@
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 32</file>
+          <file> 32 44</file>
         </tool>
       </outputs>
       <inputs>
