@@ -13,7 +13,6 @@
 *        Returned: no values returned 
 *        Globlas: ADC_Thumb
 *******************************************************************************/
-unsigned int ADC_Thumb; 
 // TimerA0 0 Interrupt handler
 #pragma vector = TIMER0_A0_VECTOR
 
@@ -119,11 +118,10 @@ __interrupt void USCI_A1_ISR(void){
  break;
  case 2: // Vector 2 – RXIFG
    temp = cpu_rx_ring_wr;
-   CPU_Char_Rx[0] = UCA1RXBUF; // RX -> CPU_Char_Rx character
-   if (++cpu_rx_ring_wr >= (SMALL_RING_SIZE)){
+   CPU_Char_Rx[temp] = UCA1RXBUF; // RX -> CPU_Char_Rx character
+   if (++cpu_rx_ring_wr >= (RING_8)){
    cpu_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
    }
-   cpu_rx_ring_wr++;
  break;
  case 4: // Vector 4 – TXIFG
 // Code for Transmit

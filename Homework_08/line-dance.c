@@ -16,23 +16,6 @@
 #include  "msp430.h"
 #include  "functions.h"
 
-// Global Variables used
-extern char *display_1;
-extern char *display_2;
-extern char *display_3;
-extern char *display_4;
-extern char posL1;
-extern char posL2;
-extern char posL3;
-extern char posL4;
-extern unsigned int ADC_Right_Detector;
-extern unsigned int ADC_thumb;
-extern unsigned int ADC_Left_Detector;
-extern unsigned int tracking_value_high;
-extern unsigned int tracking_value_low;
-extern unsigned int tracking_value;
-extern unsigned int ambience;
-
 void line_dance(void){
     /*******************************************************************************
 *        Author: Steffon Brigman

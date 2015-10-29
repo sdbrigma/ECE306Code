@@ -13,14 +13,6 @@
 #include  "macros.h"
 #include  "msp430.h"
 #include  "functions.h"
-extern char *display_1;
-extern char *display_2;
-extern char *display_3;
-extern char *display_4;
-char posL1;
-char posL2;
-char posL3;
-char posL4;
 
 void Display_Process(void){
 // Function that initialezes LCD display

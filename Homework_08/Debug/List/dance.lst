@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           28/Oct/2015  20:47:56
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           29/Oct/2015  01:18:15
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -51,313 +51,304 @@
      14          #include  "msp430.h"
      15          #include  "functions.h"
      16          
-     17          extern char *display_1;
-     18          extern char *display_2;
-     19          extern char *display_3;
-     20          extern char *display_4;
-     21          extern char posL1;
-     22          extern char posL2;
-     23          extern char posL3;
-     24          extern char posL4;
-     25          
 
    \                                 In  segment CODE, align 2
-     26          void twerk(void){
+     17          void twerk(void){
    \                     twerk:
    \                     ??twerk_0:
-     27            /*******************************************************************************
-     28          *        Author: Steffon Brigman
-     29          *        Date:   October 2015
-     30          *        Description: This functions is an interrupt used to control the motors.
-     31          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
-     32          *
-     33          *        Function name: twerk.c
-     34          *        Passed : No variables passed 
-     35          *        Locals: No locals variables
-     36          *        Returned: no values returned 
-     37          *        Globlas: ISR_COUNT, display_1 through display_4, and posL1 through posL4
-     38          *******************************************************************************/
-     39              while(ISR_COUNT<TWO_s){ // pause for 2 s
+     18            /*******************************************************************************
+     19          *        Author: Steffon Brigman
+     20          *        Date:   October 2015
+     21          *        Description: This functions is an interrupt used to control the motors.
+     22          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     23          *
+     24          *        Function name: twerk.c
+     25          *        Passed : No variables passed 
+     26          *        Locals: No locals variables
+     27          *        Returned: no values returned 
+     28          *        Globlas: ISR_COUNT, display_1 through display_4, and posL1 through posL4
+     29          *******************************************************************************/
+     30              while(ISR_COUNT<TWO_s){ // pause for 2 s
    \   000000   B290C800.... CMP.W   #0xc8, &ISR_COUNT
    \   000006   0534         JGE     ??twerk_10
-     40             left_off();
+     31             left_off();
    \   000008   ........     CALLA   #left_off
-     41             right_off();
+     32             right_off();
    \   00000C   ........     CALLA   #right_off
    \   000010   F73F         JMP     ??twerk_0
-     42            }
-     43            ISR_COUNT = ZERO;
+     33            }
+     34            ISR_COUNT = ZERO;
    \                     ??twerk_10:
    \   000012   8243....     MOV.W   #0x0, &ISR_COUNT
-     44            
-     45               display_1 = "=====";
+     35            
+     36               display_1 = "=====";
    \   000016   B240........ MOV.W   #`?<Constant "=====">`, &display_1
-     46              posL1 = ZERO;
+     37              posL1 = ZERO;
    \   00001C   C243....     MOV.B   #0x0, &posL1
-     47              display_2 = "FORWARD";
+     38              display_2 = "FORWARD";
    \   000020   B240........ MOV.W   #`?<Constant "FORWARD">`, &display_2
-     48              posL2 = ZERO;
+     39              posL2 = ZERO;
    \   000026   C243....     MOV.B   #0x0, &posL2
-     49              display_3 = "=====";
+     40              display_3 = "=====";
    \   00002A   B240........ MOV.W   #`?<Constant "=====">`, &display_3
-     50              posL3 = ZERO;
+     41              posL3 = ZERO;
    \   000030   C243....     MOV.B   #0x0, &posL3
-     51              display_4 = "=====";
+     42              display_4 = "=====";
    \   000034   B240........ MOV.W   #`?<Constant "=====">`, &display_4
-     52              posL4 = ZERO;
+     43              posL4 = ZERO;
    \   00003A   C243....     MOV.B   #0x0, &posL4
-     53              Display_Process();
+     44              Display_Process();
    \   00003E   ........     CALLA   #Display_Process
-     54            
-     55            // STRAIGHT
-     56               while(ISR_COUNT<STRAIGHT_TIME){ // straight for 1 s
+     45            
+     46            // STRAIGHT
+     47               while(ISR_COUNT<STRAIGHT_TIME){ // straight for 1 s
    \                     ??twerk_1:
    \   000042   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   000048   0534         JGE     ??twerk_11
-     57               right_on();
+     48               right_on();
    \   00004A   ........     CALLA   #right_on
-     58              left_on();
+     49              left_on();
    \   00004E   ........     CALLA   #left_on
    \   000052   F73F         JMP     ??twerk_1
-     59             }
-     60            left_off();
+     50             }
+     51            left_off();
    \                     ??twerk_11:
    \   000054   ........     CALLA   #left_off
-     61            right_off();
+     52            right_off();
    \   000058   ........     CALLA   #right_off
-     62            ISR_COUNT = ZERO;
+     53            ISR_COUNT = ZERO;
    \   00005C   8243....     MOV.W   #0x0, &ISR_COUNT
-     63          //------------------------------------------------------------------------------  
-     64          
-     65            while(ISR_COUNT<PAUSE){ // pause for 1/2 s
+     54          //------------------------------------------------------------------------------  
+     55          
+     56            while(ISR_COUNT<PAUSE){ // pause for 1/2 s
    \                     ??twerk_2:
    \   000060   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   000066   0534         JGE     ??twerk_12
-     66             left_off();
+     57             left_off();
    \   000068   ........     CALLA   #left_off
-     67             right_off();
+     58             right_off();
    \   00006C   ........     CALLA   #right_off
    \   000070   F73F         JMP     ??twerk_2
-     68            }
-     69            ISR_COUNT = ZERO;
+     59            }
+     60            ISR_COUNT = ZERO;
    \                     ??twerk_12:
    \   000072   8243....     MOV.W   #0x0, &ISR_COUNT
-     70            
-     71            display_1 = "=====";
+     61            
+     62            display_1 = "=====";
    \   000076   B240........ MOV.W   #`?<Constant "=====">`, &display_1
-     72              posL1 = ZERO;
+     63              posL1 = ZERO;
    \   00007C   C243....     MOV.B   #0x0, &posL1
-     73              display_2 = "REVERSE";
+     64              display_2 = "REVERSE";
    \   000080   B240........ MOV.W   #`?<Constant "REVERSE">`, &display_2
-     74              posL2 = ZERO;
+     65              posL2 = ZERO;
    \   000086   C243....     MOV.B   #0x0, &posL2
-     75              display_3 = "=====";
+     66              display_3 = "=====";
    \   00008A   B240........ MOV.W   #`?<Constant "=====">`, &display_3
-     76              posL3 = ZERO;
+     67              posL3 = ZERO;
    \   000090   C243....     MOV.B   #0x0, &posL3
-     77              display_4 = "======";
+     68              display_4 = "======";
    \   000094   B240........ MOV.W   #`?<Constant "======">`, &display_4
-     78              posL4 = ZERO;
+     69              posL4 = ZERO;
    \   00009A   C243....     MOV.B   #0x0, &posL4
-     79              Display_Process();
+     70              Display_Process();
    \   00009E   ........     CALLA   #Display_Process
-     80            
-     81            // REVERSE for 2 seconds
-     82            while(ISR_COUNT<REVERSE_TIME){
+     71            
+     72            // REVERSE for 2 seconds
+     73            while(ISR_COUNT<REVERSE_TIME){
    \                     ??twerk_3:
    \   0000A2   B2906400.... CMP.W   #0x64, &ISR_COUNT
    \   0000A8   0534         JGE     ??twerk_13
-     83              l_reverse_on();
+     74              l_reverse_on();
    \   0000AA   ........     CALLA   #l_reverse_on
-     84              r_reverse_on();
+     75              r_reverse_on();
    \   0000AE   ........     CALLA   #r_reverse_on
    \   0000B2   F73F         JMP     ??twerk_3
-     85            }
-     86            
-     87            l_reverse_off();
+     76            }
+     77            
+     78            l_reverse_off();
    \                     ??twerk_13:
    \   0000B4   ........     CALLA   #l_reverse_off
-     88            r_reverse_off();
+     79            r_reverse_off();
    \   0000B8   ........     CALLA   #r_reverse_off
-     89            ISR_COUNT = ZERO;
+     80            ISR_COUNT = ZERO;
    \   0000BC   8243....     MOV.W   #0x0, &ISR_COUNT
-     90            
-     91          //------------------------------------------------------------------------------  
-     92            
-     93            while(ISR_COUNT<PAUSE){ // pause for 1/2 s
+     81            
+     82          //------------------------------------------------------------------------------  
+     83            
+     84            while(ISR_COUNT<PAUSE){ // pause for 1/2 s
    \                     ??twerk_4:
    \   0000C0   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   0000C6   0534         JGE     ??twerk_14
-     94             left_off();
+     85             left_off();
    \   0000C8   ........     CALLA   #left_off
-     95             right_off();
+     86             right_off();
    \   0000CC   ........     CALLA   #right_off
    \   0000D0   F73F         JMP     ??twerk_4
-     96            }
-     97            ISR_COUNT = ZERO;
+     87            }
+     88            ISR_COUNT = ZERO;
    \                     ??twerk_14:
    \   0000D2   8243....     MOV.W   #0x0, &ISR_COUNT
-     98            
-     99            display_1 = "=====";
+     89            
+     90            display_1 = "=====";
    \   0000D6   B240........ MOV.W   #`?<Constant "=====">`, &display_1
-    100              posL1 = ZERO;
+     91              posL1 = ZERO;
    \   0000DC   C243....     MOV.B   #0x0, &posL1
-    101              display_2 = "FORWARD";
+     92              display_2 = "FORWARD";
    \   0000E0   B240........ MOV.W   #`?<Constant "FORWARD">`, &display_2
-    102              posL2 = ZERO;
+     93              posL2 = ZERO;
    \   0000E6   C243....     MOV.B   #0x0, &posL2
-    103              display_3 = "=====";
+     94              display_3 = "=====";
    \   0000EA   B240........ MOV.W   #`?<Constant "=====">`, &display_3
-    104              posL3 = ZERO;
+     95              posL3 = ZERO;
    \   0000F0   C243....     MOV.B   #0x0, &posL3
-    105              display_4 = "=====";
+     96              display_4 = "=====";
    \   0000F4   B240........ MOV.W   #`?<Constant "=====">`, &display_4
-    106              posL4 = ZERO;
+     97              posL4 = ZERO;
    \   0000FA   C243....     MOV.B   #0x0, &posL4
-    107              Display_Process();
+     98              Display_Process();
    \   0000FE   ........     CALLA   #Display_Process
-    108            
-    109              // straight
-    110               while(ISR_COUNT<STRAIGHT_TIME){ // straight for 1s
+     99            
+    100              // straight
+    101               while(ISR_COUNT<STRAIGHT_TIME){ // straight for 1s
    \                     ??twerk_5:
    \   000102   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   000108   0534         JGE     ??twerk_15
-    111               right_on();
+    102               right_on();
    \   00010A   ........     CALLA   #right_on
-    112              left_on();
+    103              left_on();
    \   00010E   ........     CALLA   #left_on
    \   000112   F73F         JMP     ??twerk_5
-    113             }
-    114            left_off();
+    104             }
+    105            left_off();
    \                     ??twerk_15:
    \   000114   ........     CALLA   #left_off
-    115            right_off();
+    106            right_off();
    \   000118   ........     CALLA   #right_off
-    116            ISR_COUNT = ZERO;
+    107            ISR_COUNT = ZERO;
    \   00011C   8243....     MOV.W   #0x0, &ISR_COUNT
-    117          //------------------------------------------------------------------------------
-    118            while(ISR_COUNT<PAUSE){ // pause for 1/2 s
+    108          //------------------------------------------------------------------------------
+    109            while(ISR_COUNT<PAUSE){ // pause for 1/2 s
    \                     ??twerk_6:
    \   000120   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   000126   0534         JGE     ??twerk_16
-    119             left_off();
+    110             left_off();
    \   000128   ........     CALLA   #left_off
-    120             right_off();
+    111             right_off();
    \   00012C   ........     CALLA   #right_off
    \   000130   F73F         JMP     ??twerk_6
-    121            }
-    122            ISR_COUNT = ZERO;
+    112            }
+    113            ISR_COUNT = ZERO;
    \                     ??twerk_16:
    \   000132   8243....     MOV.W   #0x0, &ISR_COUNT
-    123            
-    124               display_1 = "=====";
+    114            
+    115               display_1 = "=====";
    \   000136   B240........ MOV.W   #`?<Constant "=====">`, &display_1
-    125              posL1 = ZERO;
+    116              posL1 = ZERO;
    \   00013C   C243....     MOV.B   #0x0, &posL1
-    126              display_2 = "Clockwise";
+    117              display_2 = "Clockwise";
    \   000140   B240........ MOV.W   #`?<Constant "Clockwise">`, &display_2
-    127              posL2 = ZERO;
+    118              posL2 = ZERO;
    \   000146   C243....     MOV.B   #0x0, &posL2
-    128              display_3 = "=====";
+    119              display_3 = "=====";
    \   00014A   B240........ MOV.W   #`?<Constant "=====">`, &display_3
-    129              posL3 = ZERO;
+    120              posL3 = ZERO;
    \   000150   C243....     MOV.B   #0x0, &posL3
-    130              display_4 = "=====";
+    121              display_4 = "=====";
    \   000154   B240........ MOV.W   #`?<Constant "=====">`, &display_4
-    131              posL4 = ZERO;
+    122              posL4 = ZERO;
    \   00015A   C243....     MOV.B   #0x0, &posL4
-    132              Display_Process();
+    123              Display_Process();
    \   00015E   ........     CALLA   #Display_Process
-    133            
-    134            // CW CIrcle
-    135            while(ISR_COUNT<STRAIGHT_TIME){
+    124            
+    125            // CW CIrcle
+    126            while(ISR_COUNT<STRAIGHT_TIME){
    \                     ??twerk_7:
    \   000162   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   000168   0534         JGE     ??twerk_17
-    136              left_on();
+    127              left_on();
    \   00016A   ........     CALLA   #left_on
-    137              r_reverse_on();
+    128              r_reverse_on();
    \   00016E   ........     CALLA   #r_reverse_on
    \   000172   F73F         JMP     ??twerk_7
-    138            }
-    139            left_off();
+    129            }
+    130            left_off();
    \                     ??twerk_17:
    \   000174   ........     CALLA   #left_off
-    140            r_reverse_off();
+    131            r_reverse_off();
    \   000178   ........     CALLA   #r_reverse_off
-    141            ISR_COUNT = ZERO;
+    132            ISR_COUNT = ZERO;
    \   00017C   8243....     MOV.W   #0x0, &ISR_COUNT
-    142          //------------------------------------------------------------------------------
-    143             while(ISR_COUNT<PAUSE){ // pause for 1/2 s
+    133          //------------------------------------------------------------------------------
+    134             while(ISR_COUNT<PAUSE){ // pause for 1/2 s
    \                     ??twerk_8:
    \   000180   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   000186   0534         JGE     ??twerk_18
-    144             left_off();
+    135             left_off();
    \   000188   ........     CALLA   #left_off
-    145             right_off();
+    136             right_off();
    \   00018C   ........     CALLA   #right_off
    \   000190   F73F         JMP     ??twerk_8
-    146            }
-    147            ISR_COUNT = ZERO;
+    137            }
+    138            ISR_COUNT = ZERO;
    \                     ??twerk_18:
    \   000192   8243....     MOV.W   #0x0, &ISR_COUNT
-    148            
-    149               display_1 = "=====";
+    139            
+    140               display_1 = "=====";
    \   000196   B240........ MOV.W   #`?<Constant "=====">`, &display_1
-    150              posL1 = ZERO;
+    141              posL1 = ZERO;
    \   00019C   C243....     MOV.B   #0x0, &posL1
-    151              display_2 = "CCW CIRCLE";
+    142              display_2 = "CCW CIRCLE";
    \   0001A0   B240........ MOV.W   #`?<Constant "CCW CIRCLE">`, &display_2
-    152              posL2 = ZERO;
+    143              posL2 = ZERO;
    \   0001A6   C243....     MOV.B   #0x0, &posL2
-    153              display_3 = "=====";
+    144              display_3 = "=====";
    \   0001AA   B240........ MOV.W   #`?<Constant "=====">`, &display_3
-    154              posL3 = ZERO;
+    145              posL3 = ZERO;
    \   0001B0   C243....     MOV.B   #0x0, &posL3
-    155              display_4 = "=====";
+    146              display_4 = "=====";
    \   0001B4   B240........ MOV.W   #`?<Constant "=====">`, &display_4
-    156              posL4 = ZERO;
+    147              posL4 = ZERO;
    \   0001BA   C243....     MOV.B   #0x0, &posL4
-    157              Display_Process();
+    148              Display_Process();
    \   0001BE   ........     CALLA   #Display_Process
-    158            
-    159            while(ISR_COUNT<STRAIGHT_TIME){
+    149            
+    150            while(ISR_COUNT<STRAIGHT_TIME){
    \                     ??twerk_9:
    \   0001C2   B2903200.... CMP.W   #0x32, &ISR_COUNT
    \   0001C8   0534         JGE     ??twerk_19
-    160              right_on();
+    151              right_on();
    \   0001CA   ........     CALLA   #right_on
-    161              l_reverse_on();
+    152              l_reverse_on();
    \   0001CE   ........     CALLA   #l_reverse_on
    \   0001D2   F73F         JMP     ??twerk_9
-    162            }
-    163            right_off();
+    153            }
+    154            right_off();
    \                     ??twerk_19:
    \   0001D4   ........     CALLA   #right_off
-    164            l_reverse_off();
+    155            l_reverse_off();
    \   0001D8   ........     CALLA   #l_reverse_off
-    165            ISR_COUNT = ZERO;
+    156            ISR_COUNT = ZERO;
    \   0001DC   8243....     MOV.W   #0x0, &ISR_COUNT
-    166            
-    167            display_1 = "Embedded";
+    157            
+    158            display_1 = "Embedded";
    \   0001E0   B240........ MOV.W   #`?<Constant "Embedded">`, &display_1
-    168              posL1 = SW2_posL1;
+    159              posL1 = SW2_posL1;
    \   0001E6   D243....     MOV.B   #0x1, &posL1
-    169              display_2 = "Systems";
+    160              display_2 = "Systems";
    \   0001EA   B240........ MOV.W   #`?<Constant "Systems">`, &display_2
-    170              posL2 = SW2_posL1;
+    161              posL2 = SW2_posL1;
    \   0001F0   D243....     MOV.B   #0x1, &posL2
-    171              display_3 = "Rock!";
+    162              display_3 = "Rock!";
    \   0001F4   B240........ MOV.W   #`?<Constant "Rock!">`, &display_3
-    172              posL3 = SW2_posL1;
+    163              posL3 = SW2_posL1;
    \   0001FA   D243....     MOV.B   #0x1, &posL3
-    173              display_4 = "Go Pack!";
+    164              display_4 = "Go Pack!";
    \   0001FE   B240........ MOV.W   #`?<Constant "Go Pack!">`, &display_4
-    174              posL4 = SW2_posL1;
+    165              posL4 = SW2_posL1;
    \   000204   D243....     MOV.B   #0x1, &posL4
-    175              Display_Process();
+    166              Display_Process();
    \   000208   ........     BRA     #Display_Process
-    176           }
+    167           }
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "=====">`:

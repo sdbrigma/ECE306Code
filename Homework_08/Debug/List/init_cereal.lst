@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           28/Oct/2015  20:47:59
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           29/Oct/2015  01:18:17
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -81,111 +81,85 @@
    \   000000                DS8 2
       3          #include  "functions.h"
       4          
-
-   \                                 In  segment DATA16_Z, align 2, align-sorted
-   \   000000                REQUIRE ?cstart_init_zero
-      5          unsigned int cpu_tx_ring_wr;
-   \                     cpu_tx_ring_wr:
-   \   000000                DS8 2
-
-   \                                 In  segment DATA16_Z, align 2, align-sorted
-   \   000000                REQUIRE ?cstart_init_zero
-      6          unsigned int cpu_tx_ring_rd;
-   \                     cpu_tx_ring_rd:
-   \   000000                DS8 2
-
-   \                                 In  segment DATA16_Z, align 2, align-sorted
-   \   000000                REQUIRE ?cstart_init_zero
-      7          unsigned int cpu_rx_ring_wr;
-   \                     cpu_rx_ring_wr:
-   \   000000                DS8 2
-
-   \                                 In  segment DATA16_Z, align 2, align-sorted
-   \   000000                REQUIRE ?cstart_init_zero
-      8          unsigned int cpu_rx_ring_rd;
-   \                     cpu_rx_ring_rd:
-   \   000000                DS8 2
-      9          /*
-     10          Transmit flag is already set
-     11          Set the baud rate
-     12          Set transmission buffer
-     13          */
+      5          /*
+      6          Transmit flag is already set
+      7          Set the baud rate
+      8          Set transmission buffer
+      9          */
 
    \                                 In  segment CODE, align 2
-     14          void Init_Serial_UCA1(void){
+     10          void Init_Serial_UCA1(void){
    \                     Init_Serial_UCA1:
-     15           int i;
-     16           
-     17           for(i=0; i<SMALL_RING_SIZE; i++){
+     11           int i;
+     12           
+     13           for(i=0; i<SMALL_RING_SIZE; i++){
    \   000000   0F43         MOV.W   #0x0, R15
    \                     ??Init_Serial_UCA1_0:
    \   000002   3F901000     CMP.W   #0x10, R15
    \   000006   0434         JGE     ??Init_Serial_UCA1_2
-     18           CPU_Char_Rx[i] = 0x00; // USB Rx Buffer
+     14           CPU_Char_Rx[i] = 0x00; // USB Rx Buffer
    \   000008   CF43....     MOV.B   #0x0, CPU_Char_Rx(R15)
-     19           }
+     15           }
    \   00000C   1F53         ADD.W   #0x1, R15
    \   00000E   F93F         JMP     ??Init_Serial_UCA1_0
-     20           cpu_rx_ring_wr = BEGINNING;
+     16           cpu_rx_ring_wr = BEGINNING;
    \                     ??Init_Serial_UCA1_2:
    \   000010   8243....     MOV.W   #0x0, &cpu_rx_ring_wr
-     21           cpu_rx_ring_rd = BEGINNING;
+     17           cpu_rx_ring_rd = BEGINNING;
    \   000014   8243....     MOV.W   #0x0, &cpu_rx_ring_rd
-     22          
-     23           for(i=0; i<SMALL_RING_SIZE; i++){ // May not use this
+     18          
+     19           for(i=0; i<SMALL_RING_SIZE; i++){ // May not use this
    \   000018   0F43         MOV.W   #0x0, R15
    \                     ??Init_Serial_UCA1_1:
    \   00001A   3F901000     CMP.W   #0x10, R15
    \   00001E   0434         JGE     ??Init_Serial_UCA1_3
-     24           CPU_Char_Tx[i] = 0x00; // USB Tx Buffer
+     20           CPU_Char_Tx[i] = 0x00; // USB Tx Buffer
    \   000020   CF43....     MOV.B   #0x0, CPU_Char_Tx(R15)
-     25           }
+     21           }
    \   000024   1F53         ADD.W   #0x1, R15
    \   000026   F93F         JMP     ??Init_Serial_UCA1_1
-     26           cpu_tx_ring_wr = BEGINNING;
+     22           cpu_tx_ring_wr = BEGINNING;
    \                     ??Init_Serial_UCA1_3:
    \   000028   8243....     MOV.W   #0x0, &cpu_tx_ring_wr
-     27           cpu_tx_ring_rd = BEGINNING;
+     23           cpu_tx_ring_rd = BEGINNING;
    \   00002C   8243....     MOV.W   #0x0, &cpu_tx_ring_rd
-     28           // Configure UART 0
-     29           UCA1CTLW0 = ZERO; // Use word register
+     24           // Configure UART 0
+     25           UCA1CTLW0 = ZERO; // Use word register
    \   000030   8243E005     MOV.W   #0x0, &0x5e0
-     30           UCA1CTLW0 |= UCSSEL__SMCLK; // Set SMCLK as fBRCLK
+     26           UCA1CTLW0 |= UCSSEL__SMCLK; // Set SMCLK as fBRCLK
    \   000034   B2D08000E005 BIS.W   #0x80, &0x5e0
-     31           UCA1CTLW0 |= UCSWRST; // Set Software reset enable, logic held in reset state
+     27           UCA1CTLW0 |= UCSWRST; // Set Software reset enable, logic held in reset state
    \   00003A   92D3E005     BIS.W   #0x1, &0x5e0
-     32           UCA1BRW = BAUD_9600; // 9600 baud
+     28           UCA1BRW = BAUD_9600; // 9600 baud
    \   00003E   B2403400E605 MOV.W   #0x34, &0x5e6
-     33           UCA1MCTLW = MOD_CTRL1 ;
+     29           UCA1MCTLW = MOD_CTRL1;
    \   000044   B2401149E805 MOV.W   #0x4911, &0x5e8
-     34           
-     35            P2SEL1 |= CPU_TXD;
+     30           
+     31           P2SEL1 |= CPU_TXD;
    \   00004A   F2D020000D02 BIS.B   #0x20, &0x20d
-     36           P2SEL0 &= ~CPU_TXD;
+     32           P2SEL0 &= ~CPU_TXD;
    \   000050   F2C020000B02 BIC.B   #0x20, &0x20b
-     37           P2OUT  |= CPU_TXD;
+     33           P2OUT  |= CPU_TXD;
    \   000056   F2D020000302 BIS.B   #0x20, &0x203
-     38           P2DIR |= CPU_TXD;
+     34           P2DIR |= CPU_TXD;
    \   00005C   F2D020000502 BIS.B   #0x20, &0x205
-     39           
-     40           P2SEL1 |= CPU_RXD;
+     35           
+     36           P2SEL1 |= CPU_RXD;
    \   000062   F2D040000D02 BIS.B   #0x40, &0x20d
-     41           P2SEL0 &= ~CPU_RXD;
+     37           P2SEL0 &= ~CPU_RXD;
    \   000068   F2C040000B02 BIC.B   #0x40, &0x20b
-     42           P2OUT &= ~CPU_RXD;
+     38           P2OUT &= ~CPU_RXD;
    \   00006E   F2C040000302 BIC.B   #0x40, &0x203
-     43           P2DIR &= ~CPU_RXD;
+     39           P2DIR &= ~CPU_RXD;
    \   000074   F2C040000502 BIC.B   #0x40, &0x205
-     44           
-     45           UCA1CTLW0 &= ~UCSWRST; // Release from reset
+     40           
+     41           UCA1CTLW0 &= ~UCSWRST; // Release from reset
    \   00007A   92C3E005     BIC.W   #0x1, &0x5e0
-     46           UCA1IE |= UCRXIE; // Enable RX (receive) interrupt
+     42           UCA1IE |= UCRXIE; // Enable RX (receive) interrupt
    \   00007E   92D3FA05     BIS.W   #0x1, &0x5fa
-     47           UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt
+     43           UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt 
    \   000082   A2D3FA05     BIS.W   #0x2, &0x5fa
-     48           
-     49           
-     50          }
+     44          }
    \   000086   1001         RETA
    \   000088                REQUIRE _A_UCA1CTLW0_L
    \   000088                REQUIRE _A_UCA1BRW_L
@@ -216,18 +190,13 @@
        2  _A_UCA1CTLW0_L
        2  _A_UCA1IE_L
        2  _A_UCA1MCTLW_L
-       2  cpu_rx_ring_rd
-       2  cpu_rx_ring_wr
-       2  cpu_tx_ring_rd
-       2  cpu_tx_ring_wr
 
  
  136 bytes in segment CODE
   16 bytes in segment DATA16_AN
-   8 bytes in segment DATA16_Z
  
  136 bytes of CODE memory
-   8 bytes of DATA memory (+ 16 bytes shared)
+   0 bytes of DATA memory (+ 16 bytes shared)
 
 Errors: none
 Warnings: none

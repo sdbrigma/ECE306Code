@@ -18,7 +18,7 @@ volatile unsigned char control_state[CNTL_STATE_INDEX];
 volatile unsigned int Time_Sequence;
 char led_smclk;
 int ISR_COUNT;
-unsigned int ADC_thumb;
+unsigned int ADC_Thumb;
 unsigned int ADC_Right_Detector;
 unsigned int ADC_Left_Detector;
 unsigned int ADC_Temp;
@@ -37,11 +37,15 @@ extern char *display_1;
 extern char *display_2;
 extern char *display_3;
 extern char *display_4;
-extern char posL1;
-extern char posL2;
-extern char posL3;
-extern char posL4;
+char posL1;
+char posL2;
+char posL3;
+char posL4;
 char size_count;
+unsigned int cpu_rx_ring_wr;
+unsigned int cpu_rx_ring_rd;
+unsigned int cpu_tx_ring_wr;
+unsigned int cpu_tx_ring_rd;
 char big;
 volatile char CPU_Char_Rx[16];
 volatile char CPU_Char_Tx[16];
@@ -67,6 +71,7 @@ void main(void){
   Init_Serial_UCA1();
   
 //             1234567890
+  ClrDisplay();
   display_1 = "NCSU";
   posL1 = SW1_posL1;
   display_2 = "WOLFPACK";
@@ -78,6 +83,17 @@ void main(void){
   big = ZERO;
   Display_Process();
   
+  Five_msec_Delay(FIVE_SECONDS); // delay for 5s
+  
+    display_1 = "          ";
+    posL1 = ZERO;
+    display_2 = "          ";
+    posL2 = ZERO;
+    display_3 = "Baud Rate";
+    posL3 = ALWAYS;
+    display_4 = "          ";
+    posL4 = ZERO;
+    Display_Process();
   //ADC_Process();
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System

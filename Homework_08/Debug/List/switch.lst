@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           28/Oct/2015  20:59:37
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           29/Oct/2015  01:22:52
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -65,127 +65,253 @@
    \                     _A_UCA1MCTLW_L:
    \   000000                DS8 2
 
+   \                                 In  segment DATA16_AN, at 0x5ec
+   \   union <unnamed> _A_UCA1RXBUF_L
+   \                     _A_UCA1RXBUF_L:
+   \   000000                DS8 2
+
    \                                 In  segment DATA16_AN, at 0x5ee
    \   union <unnamed> _A_UCA1TXBUF_L
    \                     _A_UCA1TXBUF_L:
    \   000000                DS8 2
-
-   \                                 In  segment DATA16_AN, at 0x5fa
-   \   union <unnamed> _A_UCA1IE_L
-   \                     _A_UCA1IE_L:
-   \   000000                DS8 2
      15          #include  "functions.h"
-     16          extern char *display_1;
-     17          extern char *display_2;
-     18          extern char *display_3;
-     19          extern char *display_4;
-     20          extern char posL1;
-     21          extern char posL2;
-     22          extern char posL3;
-     23          extern char posL4;
 
    \                                 In  segment CODE, align 2
-     24          void Switches_Process(void){
+     16          void Switches_Process(void){
    \                     Switches_Process:
-     25          //------------------------------------------------------------------------------
-     26          // Switch proccess sets LCD text when SW1 and SW2 are pressed
-     27            if (!(P4IN & SW1)){ // Transmission at 9600 baud
-   \   000000   D2B32102     BIT.B   #0x1, &0x221
-   \   000004   1F2C         JC      ??Switches_Process_0
-     28              display_1 = "Baud Rate";
-   \   000006   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_1
-     29              posL1 = ZERO;
-   \   00000C   C243....     MOV.B   #0x0, &posL1
-     30              display_2 = "9600";
-   \   000010   B240........ MOV.W   #`?<Constant "9600">`, &display_2
-     31              posL2 = 2;
-   \   000016   E243....     MOV.B   #0x2, &posL2
-     32              display_3 = "          ";
-   \   00001A   B240........ MOV.W   #`?<Constant "          ">`, &display_3
-     33              posL3 = ZERO;
-   \   000020   C243....     MOV.B   #0x0, &posL3
-     34              display_4 = "          ";
-   \   000024   B240........ MOV.W   #`?<Constant "          ">`, &display_4
-     35              posL4 = ZERO;
-   \   00002A   C243....     MOV.B   #0x0, &posL4
-     36              Display_Process();
-   \   00002E   ........     CALLA   #Display_Process
-     37              
-     38              UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt
-   \   000032   A2D3FA05     BIS.W   #0x2, &0x5fa
-     39              CPU_Char_Tx[0] = 0x04;
-   \   000036   E242....     MOV.B   #0x4, &CPU_Char_Tx
-     40              UCA1TXBUF = CPU_Char_Tx[0];
-   \   00003A   5F42....     MOV.B   &CPU_Char_Tx, R15
-   \   00003E   4F4F         MOV.B   R15, R15
-   \   000040   824FEE05     MOV.W   R15, &0x5ee
-     41            }
-     42            if (!(P4IN & SW2)) {
+   \   000000   31800C00     SUB.W   #0xc, SP
+     17          //------------------------------------------------------------------------------
+     18          // Switch proccess sets LCD text when SW1 and SW2 are pressed
+     19            const char HW8_String[] = "NCSU  #1  ";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "NCSU  #1  ">`, R14
+   \   00000A   3D400B00     MOV.W   #0xb, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+     20            if (!(P4IN & SW1)){ // Transmission at 9600 baud
+   \   000012   D2B32102     BIT.B   #0x1, &0x221
+   \   000016   822C         JC      ??Switches_Process_3
+     21              UCA1BRW = BAUD_9600;
+   \   000018   B2403400E605 MOV.W   #0x34, &0x5e6
+     22              UCA1MCTLW = MOD_CTRL1;
+   \   00001E   B2401149E805 MOV.W   #0x4911, &0x5e8
+     23              display_1 = "          ";
+   \   000024   B240........ MOV.W   #`?<Constant "          ">`, &display_1
+     24              posL1 = ZERO;
+   \   00002A   C243....     MOV.B   #0x0, &posL1
+     25              display_2 = "          ";
+   \   00002E   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     26              posL2 = ZERO;
+   \   000034   C243....     MOV.B   #0x0, &posL2
+     27              display_3 = "Baud Rate";
+   \   000038   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_3
+     28              posL3 = ALWAYS;
+   \   00003E   D243....     MOV.B   #0x1, &posL3
+     29              display_4 = "   9600   ";
+   \   000042   B240........ MOV.W   #`?<Constant "   9600   ">`, &display_4
+     30              posL4 = ZERO;
+   \   000048   C243....     MOV.B   #0x0, &posL4
+     31              Display_Process();
+   \   00004C   ........     CALLA   #Display_Process
+     32              
+     33                while(ALWAYS){
+     34                  if (!(P4IN & SW2)) { break; }
    \                     ??Switches_Process_0:
-   \   000044   E2B32102     BIT.B   #0x2, &0x221
-   \   000048   252C         JC      ??Switches_Process_1
-     43              /*display_1 = "Embedded";
-     44              posL1 = SW2_posL1;
-     45              display_2 = "Systems";
-     46              posL2 = SW2_posL1;
-     47              display_3 = "Rock!";
-     48              posL3 = SW2_posL1;
-     49              display_4 = "Go Pack!";
-     50              posL4 = SW2_posL1;*/
-     51                
-     52                    
-     53              display_1 = "Baud Rate";
-   \   00004A   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_1
-     54              posL1 = ZERO;
-   \   000050   C243....     MOV.B   #0x0, &posL1
-     55              display_2 = "115000";
-   \   000054   B240........ MOV.W   #`?<Constant "115000">`, &display_2
-     56              posL2 = 2;
-   \   00005A   E243....     MOV.B   #0x2, &posL2
-     57              display_3 = "          ";
-   \   00005E   B240........ MOV.W   #`?<Constant "          ">`, &display_3
-     58              posL3 = ZERO;
-   \   000064   C243....     MOV.B   #0x0, &posL3
-     59              display_4 = "          ";
-   \   000068   B240........ MOV.W   #`?<Constant "          ">`, &display_4
-     60              posL4 = ZERO;
-   \   00006E   C243....     MOV.B   #0x0, &posL4
-     61              Display_Process();
-   \   000072   ........     CALLA   #Display_Process
-     62                
-     63              // transmission at 115200 baud
-     64              UCA1BRW = BAUD_115200;
-   \   000076   A242E605     MOV.W   #0x4, &0x5e6
-     65              UCA1MCTLW = MOD_CTRL2;
-   \   00007A   B2405155E805 MOV.W   #0x5551, &0x5e8
-     66              
-     67              UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt
-   \   000080   A2D3FA05     BIS.W   #0x2, &0x5fa
-     68              CPU_Char_Tx[0] = 0x09;
-   \   000084   F2400900.... MOV.B   #0x9, &CPU_Char_Tx
-     69              UCA1TXBUF = CPU_Char_Tx[0];
-   \   00008A   5F42....     MOV.B   &CPU_Char_Tx, R15
-   \   00008E   4F4F         MOV.B   R15, R15
-   \   000090   824FEE05     MOV.W   R15, &0x5ee
-     70          }
-     71          //------------------------------------------------------------------------------
-     72          }
+   \   000050   E2B32102     BIT.B   #0x2, &0x221
+   \   000054   6328         JNC     ??Switches_Process_3
+     35                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
+   \   000056   1F42....     MOV.W   &cpu_rx_ring_wr, R15
+   \   00005A   0F51         ADD.W   SP, R15
+   \   00005C   6F4F         MOV.B   @R15, R15
+   \   00005E   4F4F         MOV.B   R15, R15
+   \   000060   824FEE05     MOV.W   R15, &0x5ee
+     36                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
+   \   000064   1F42....     MOV.W   &display_1, R15
+   \   000068   1E42....     MOV.W   &display_1, R14
+   \   00006C   DE4F08000900 MOV.B   0x8(R15), 0x9(R14)
+     37                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
+   \   000072   1F42....     MOV.W   &display_1, R15
+   \   000076   1E42....     MOV.W   &display_1, R14
+   \   00007A   DE4F07000800 MOV.B   0x7(R15), 0x8(R14)
+     38                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
+   \   000080   1F42....     MOV.W   &display_1, R15
+   \   000084   1E42....     MOV.W   &display_1, R14
+   \   000088   DE4F06000700 MOV.B   0x6(R15), 0x7(R14)
+     39                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
+   \   00008E   1F42....     MOV.W   &display_1, R15
+   \   000092   1E42....     MOV.W   &display_1, R14
+   \   000096   DE4F05000600 MOV.B   0x5(R15), 0x6(R14)
+     40                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
+   \   00009C   1F42....     MOV.W   &display_1, R15
+   \   0000A0   1E42....     MOV.W   &display_1, R14
+   \   0000A4   DE4F04000500 MOV.B   0x4(R15), 0x5(R14)
+     41                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
+   \   0000AA   1F42....     MOV.W   &display_1, R15
+   \   0000AE   1E42....     MOV.W   &display_1, R14
+   \   0000B2   DE4F03000400 MOV.B   0x3(R15), 0x4(R14)
+     42                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
+   \   0000B8   1F42....     MOV.W   &display_1, R15
+   \   0000BC   1E42....     MOV.W   &display_1, R14
+   \   0000C0   DE4F02000300 MOV.B   0x2(R15), 0x3(R14)
+     43                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
+   \   0000C6   1F42....     MOV.W   &display_1, R15
+   \   0000CA   1E42....     MOV.W   &display_1, R14
+   \   0000CE   DE4F01000200 MOV.B   0x1(R15), 0x2(R14)
+     44                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
+   \   0000D4   1F42....     MOV.W   &display_1, R15
+   \   0000D8   1E42....     MOV.W   &display_1, R14
+   \   0000DC   EE4F0100     MOV.B   @R15, 0x1(R14)
+     45                  display_1[LINE_POS_L0] = UCA1RXBUF;
+   \   0000E0   1E42EC05     MOV.W   &0x5ec, R14
+   \   0000E4   1F42....     MOV.W   &display_1, R15
+   \   0000E8   CF4E0000     MOV.B   R14, 0(R15)
+     46                  posL1 = ZERO;
+   \   0000EC   C243....     MOV.B   #0x0, &posL1
+     47                  display_2 = "          ";
+   \   0000F0   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     48                  posL2 = ZERO;
+   \   0000F6   C243....     MOV.B   #0x0, &posL2
+     49                  display_3 = " Baud Rate";
+   \   0000FA   B240........ MOV.W   #`?<Constant " Baud Rate">`, &display_3
+     50                  posL3 = ZERO;
+   \   000100   C243....     MOV.B   #0x0, &posL3
+     51                  display_4 = "  9600  ";
+   \   000104   B240........ MOV.W   #`?<Constant "  9600  ">`, &display_4
+     52                  posL4 = ZERO;
+   \   00010A   C243....     MOV.B   #0x0, &posL4
+     53                  Display_Process();
+   \   00010E   ........     CALLA   #Display_Process
+     54                  Five_msec_Delay(75);
+   \   000112   3C404B00     MOV.W   #0x4b, R12
+   \   000116   ........     CALLA   #Five_msec_Delay
+   \   00011A   9A3F         JMP     ??Switches_Process_0
+     55                }
+     56            }
+     57            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_3:
+   \   00011C   E2B32102     BIT.B   #0x2, &0x221
+   \   000120   812C         JC      ??Switches_Process_5
+     58              /*display_1 = "Embedded";
+     59              posL1 = SW2_posL1;
+     60              display_2 = "Systems";
+     61              posL2 = SW2_posL1;
+     62              display_3 = "Rock!";
+     63              posL3 = SW2_posL1;
+     64              display_4 = "Go Pack!";
+     65              posL4 = SW2_posL1;*/
+     66               
+     67              display_1 = "          ";
+   \   000122   B240........ MOV.W   #`?<Constant "          ">`, &display_1
+     68              posL1 = ZERO;
+   \   000128   C243....     MOV.B   #0x0, &posL1
+     69              display_2 = "          ";
+   \   00012C   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     70              posL2 = ZERO;
+   \   000132   C243....     MOV.B   #0x0, &posL2
+     71              display_3 = "Baud Rate";
+   \   000136   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_3
+     72              posL3 = ALWAYS;
+   \   00013C   D243....     MOV.B   #0x1, &posL3
+     73              display_4 = " 115200 ";
+   \   000140   B240........ MOV.W   #`?<Constant " 115200 ">`, &display_4
+     74              posL4 = ZERO;
+   \   000146   C243....     MOV.B   #0x0, &posL4
+     75              Display_Process();
+   \   00014A   ........     CALLA   #Display_Process
+     76                
+     77              // transmission at 115200 baud
+     78              UCA1BRW = BAUD_115200;
+   \   00014E   A242E605     MOV.W   #0x4, &0x5e6
+     79              UCA1MCTLW = MOD_CTRL2;
+   \   000152   B2405155E805 MOV.W   #0x5551, &0x5e8
+     80              
+     81              while(ALWAYS){
+     82                  if (!(P4IN & SW1)) { break; }
    \                     ??Switches_Process_1:
-   \   000094   1001         RETA
-   \   000096                REQUIRE _A_PBIN_L
-   \   000096                REQUIRE _A_UCA1IE_L
-   \   000096                REQUIRE _A_UCA1TXBUF_L
-   \   000096                REQUIRE _A_UCA1BRW_L
-   \   000096                REQUIRE _A_UCA1MCTLW_L
+   \   000158   D2B32102     BIT.B   #0x1, &0x221
+   \   00015C   6328         JNC     ??Switches_Process_5
+     83                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
+   \   00015E   1F42....     MOV.W   &cpu_rx_ring_wr, R15
+   \   000162   0F51         ADD.W   SP, R15
+   \   000164   6F4F         MOV.B   @R15, R15
+   \   000166   4F4F         MOV.B   R15, R15
+   \   000168   824FEE05     MOV.W   R15, &0x5ee
+     84                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
+   \   00016C   1F42....     MOV.W   &display_1, R15
+   \   000170   1E42....     MOV.W   &display_1, R14
+   \   000174   DE4F08000900 MOV.B   0x8(R15), 0x9(R14)
+     85                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
+   \   00017A   1F42....     MOV.W   &display_1, R15
+   \   00017E   1E42....     MOV.W   &display_1, R14
+   \   000182   DE4F07000800 MOV.B   0x7(R15), 0x8(R14)
+     86                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
+   \   000188   1F42....     MOV.W   &display_1, R15
+   \   00018C   1E42....     MOV.W   &display_1, R14
+   \   000190   DE4F06000700 MOV.B   0x6(R15), 0x7(R14)
+     87                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
+   \   000196   1F42....     MOV.W   &display_1, R15
+   \   00019A   1E42....     MOV.W   &display_1, R14
+   \   00019E   DE4F05000600 MOV.B   0x5(R15), 0x6(R14)
+     88                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
+   \   0001A4   1F42....     MOV.W   &display_1, R15
+   \   0001A8   1E42....     MOV.W   &display_1, R14
+   \   0001AC   DE4F04000500 MOV.B   0x4(R15), 0x5(R14)
+     89                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
+   \   0001B2   1F42....     MOV.W   &display_1, R15
+   \   0001B6   1E42....     MOV.W   &display_1, R14
+   \   0001BA   DE4F03000400 MOV.B   0x3(R15), 0x4(R14)
+     90                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
+   \   0001C0   1F42....     MOV.W   &display_1, R15
+   \   0001C4   1E42....     MOV.W   &display_1, R14
+   \   0001C8   DE4F02000300 MOV.B   0x2(R15), 0x3(R14)
+     91                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
+   \   0001CE   1F42....     MOV.W   &display_1, R15
+   \   0001D2   1E42....     MOV.W   &display_1, R14
+   \   0001D6   DE4F01000200 MOV.B   0x1(R15), 0x2(R14)
+     92                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
+   \   0001DC   1F42....     MOV.W   &display_1, R15
+   \   0001E0   1E42....     MOV.W   &display_1, R14
+   \   0001E4   EE4F0100     MOV.B   @R15, 0x1(R14)
+     93                  display_1[LINE_POS_L0] = UCA1RXBUF;
+   \   0001E8   1E42EC05     MOV.W   &0x5ec, R14
+   \   0001EC   1F42....     MOV.W   &display_1, R15
+   \   0001F0   CF4E0000     MOV.B   R14, 0(R15)
+     94                  posL1 = ZERO;
+   \   0001F4   C243....     MOV.B   #0x0, &posL1
+     95                  display_2 = "          ";
+   \   0001F8   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     96                  posL2 = ZERO;
+   \   0001FE   C243....     MOV.B   #0x0, &posL2
+     97                  display_3 = " Baud Rate";
+   \   000202   B240........ MOV.W   #`?<Constant " Baud Rate">`, &display_3
+     98                  posL3 = ZERO;
+   \   000208   C243....     MOV.B   #0x0, &posL3
+     99                  display_4 = " 115200 ";
+   \   00020C   B240........ MOV.W   #`?<Constant " 115200 ">`, &display_4
+    100                  posL4 = ZERO;
+   \   000212   C243....     MOV.B   #0x0, &posL4
+    101                  Display_Process();
+   \   000216   ........     CALLA   #Display_Process
+    102                  Five_msec_Delay(75);
+   \   00021A   3C404B00     MOV.W   #0x4b, R12
+   \   00021E   ........     CALLA   #Five_msec_Delay
+   \   000222   9A3F         JMP     ??Switches_Process_1
+    103              }
+    104          }
+    105          //------------------------------------------------------------------------------
+    106          }
+   \                     ??Switches_Process_5:
+   \   000224   31500C00     ADD.W   #0xc, SP
+   \   000228   1001         RETA
+   \   00022A                REQUIRE _A_PBIN_L
+   \   00022A                REQUIRE _A_UCA1BRW_L
+   \   00022A                REQUIRE _A_UCA1MCTLW_L
+   \   00022A                REQUIRE _A_UCA1TXBUF_L
+   \   00022A                REQUIRE _A_UCA1RXBUF_L
 
    \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "Baud Rate">`:
-   \   000000   426175642052 DC8 "Baud Rate"
-   \            61746500    
-
-   \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "9600">`:
-   \   000000   3936303000   DC8 "9600"
+   \                     `?<Constant "NCSU  #1  ">`:
+   \   000000   4E4353552020 DC8 "NCSU  #1  "
+   \            2331202000  
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "          ">`:
@@ -193,16 +319,38 @@
    \            2020202000  
 
    \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "115000">`:
-   \   000000   313135303030 DC8 "115000"
-   \            00          
+   \                     `?<Constant "Baud Rate">`:
+   \   000000   426175642052 DC8 "Baud Rate"
+   \            61746500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   9600   ">`:
+   \   000000   202020393630 DC8 "   9600   "
+   \            3020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " Baud Rate">`:
+   \   000000   204261756420 DC8 " Baud Rate"
+   \            5261746500  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  9600  ">`:
+   \   000000   202039363030 DC8 "  9600  "
+   \            202000      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " 115200 ">`:
+   \   000000   203131353230 DC8 " 115200 "
+   \            302000      
 
    Maximum stack usage in bytes:
 
    CSTACK Function
    ------ --------
-      4   Switches_Process
-        4   -> Display_Process
+     16   Switches_Process
+       16   -> Display_Process
+       16   -> Five_msec_Delay
+       16 ?CopyMemoryBytes
 
 
    Segment part sizes:
@@ -210,23 +358,26 @@
    Bytes  Function/Label
    -----  --------------
       11  ?<Constant "          ">
-       7  ?<Constant "115000">
-       5  ?<Constant "9600">
+      11  ?<Constant "   9600   ">
+       9  ?<Constant "  9600  ">
+       9  ?<Constant " 115200 ">
+      11  ?<Constant " Baud Rate">
       10  ?<Constant "Baud Rate">
-     150  Switches_Process
+      11  ?<Constant "NCSU  #1  ">
+     554  Switches_Process
        2  _A_PBIN_L
        2  _A_UCA1BRW_L
-       2  _A_UCA1IE_L
        2  _A_UCA1MCTLW_L
+       2  _A_UCA1RXBUF_L
        2  _A_UCA1TXBUF_L
 
  
- 150 bytes in segment CODE
+ 554 bytes in segment CODE
   10 bytes in segment DATA16_AN
-  33 bytes in segment DATA16_C
+  72 bytes in segment DATA16_C
  
- 150 bytes of CODE  memory
-  33 bytes of CONST memory
+ 554 bytes of CODE  memory
+  72 bytes of CONST memory
    0 bytes of DATA  memory (+ 10 bytes shared)
 
 Errors: none

@@ -9,24 +9,6 @@
 //******************************************************************************
 
 //------------------------------------------------------------------------------
-extern volatile unsigned int Time_Sequence;
-extern int ISR_COUNT;
-extern unsigned int ADC_Thumb;
-extern unsigned int ADC_Right_Detector;
-extern unsigned int ADC_Left_Detector;
-extern unsigned int ADC_Temp;
-extern unsigned int ADC_Bat;
-extern unsigned int tracking_value_high;
-extern unsigned int tracking_value_low;
-extern unsigned int tracking_value;
-extern unsigned int ambience;
-extern volatile char CPU_Char_Rx[16];
-extern volatile char CPU_Char_Tx[16];
-extern unsigned int cpu_rx_ring_wr;
-extern unsigned int cpu_rx_ring_rd;
-extern unsigned int cpu_tx_ring_wr;
-extern unsigned int cpu_tx_ring_rd;
-extern int ADC_Channel;
 #define ALWAYS                  (1)
 #define ONE                     (1)
 #define DISPLAY_LENGTH          (11)
@@ -191,3 +173,48 @@ extern int ADC_Channel;
 // For baude rate 115200
 #define BAUD_115200 (4)
 #define MOD_CTRL2 (0x5551)
+
+#define LINE_POS_L0 (0)
+#define LINE_POS_L1 (1)
+#define LINE_POS_L2 (2)
+#define LINE_POS_L3 (3)
+#define LINE_POS_L4 (4)
+#define LINE_POS_L5 (5)
+#define LINE_POS_L6 (6)
+#define LINE_POS_L7 (7)
+#define LINE_POS_L8 (8)
+#define LINE_POS_L9 (9)
+
+#define RING_8 (10) // ring of size 8
+
+
+extern volatile unsigned int Time_Sequence;
+extern int ISR_COUNT;
+extern unsigned int ADC_Thumb;
+extern unsigned int ADC_Right_Detector;
+extern unsigned int ADC_Left_Detector;
+extern unsigned int ADC_Temp;
+extern unsigned int ADC_Bat;
+extern unsigned int tracking_value_high;
+extern unsigned int tracking_value_low;
+extern unsigned int tracking_value;
+extern unsigned int ambience;
+extern volatile char CPU_Char_Rx[16];
+extern volatile char CPU_Char_Tx[16];
+extern unsigned int cpu_rx_ring_wr;
+extern unsigned int cpu_rx_ring_rd;
+extern unsigned int cpu_tx_ring_wr;
+extern unsigned int cpu_tx_ring_rd;
+extern int ADC_Channel;
+extern char display_line_1[DISPLAY_LENGTH];
+extern char display_line_2[DISPLAY_LENGTH];
+extern char display_line_3[DISPLAY_LENGTH];
+extern char display_line_4[DISPLAY_LENGTH];
+extern char *display_1;
+extern char *display_2;
+extern char *display_3;
+extern char *display_4;
+extern char posL1;
+extern char posL2;
+extern char posL3;
+extern char posL4;

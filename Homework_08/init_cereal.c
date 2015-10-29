@@ -2,10 +2,6 @@
 #include  "msp430.h"
 #include  "functions.h"
 
-unsigned int cpu_tx_ring_wr;
-unsigned int cpu_tx_ring_rd;
-unsigned int cpu_rx_ring_wr;
-unsigned int cpu_rx_ring_rd;
 /*
 Transmit flag is already set
 Set the baud rate
@@ -30,9 +26,9 @@ void Init_Serial_UCA1(void){
  UCA1CTLW0 |= UCSSEL__SMCLK; // Set SMCLK as fBRCLK
  UCA1CTLW0 |= UCSWRST; // Set Software reset enable, logic held in reset state
  UCA1BRW = BAUD_9600; // 9600 baud
- UCA1MCTLW = MOD_CTRL1 ;
+ UCA1MCTLW = MOD_CTRL1;
  
-  P2SEL1 |= CPU_TXD;
+ P2SEL1 |= CPU_TXD;
  P2SEL0 &= ~CPU_TXD;
  P2OUT  |= CPU_TXD;
  P2DIR |= CPU_TXD;
@@ -44,7 +40,5 @@ void Init_Serial_UCA1(void){
  
  UCA1CTLW0 &= ~UCSWRST; // Release from reset
  UCA1IE |= UCRXIE; // Enable RX (receive) interrupt
- UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt
- 
- 
+ UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt 
 }

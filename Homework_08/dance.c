@@ -14,15 +14,6 @@
 #include  "msp430.h"
 #include  "functions.h"
 
-extern char *display_1;
-extern char *display_2;
-extern char *display_3;
-extern char *display_4;
-extern char posL1;
-extern char posL2;
-extern char posL3;
-extern char posL4;
-
 void twerk(void){
   /*******************************************************************************
 *        Author: Steffon Brigman
