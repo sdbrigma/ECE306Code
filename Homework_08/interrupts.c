@@ -112,18 +112,29 @@ __interrupt void ADC10_ISR(void){
 //------------------------------------------------------------------------------
 #pragma vector=USCI_A1_VECTOR
 __interrupt void USCI_A1_ISR(void){
+/*******************************************************************************
+*        Author: Steffon Brigman
+*        Date:   October 2015
+*        Description: This function is the transmit and receive interrupt for UART
+*        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+*
+*        Function name: USCI_A1_ISR
+*        Passed : No variables passed 
+*        Returned: no values returned 
+*        Globlas: temp, cpu_rx_ring_wr
+*******************************************************************************/
  unsigned int temp;
- switch(__even_in_range(UCA1IV,0x08)){
- case 0: // Vector 0 - no interrupt
+ switch(__even_in_range(UCA1IV,UART_MAX)){
+ case ZERO: // Vector 0 - no interrupt
  break;
- case 2: // Vector 2 – RXIFG
+ case RECEIVE: // Vector 2 – RXIFG
    temp = cpu_rx_ring_wr;
    CPU_Char_Rx[temp] = UCA1RXBUF; // RX -> CPU_Char_Rx character
    if (++cpu_rx_ring_wr >= (RING_8)){
    cpu_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
    }
  break;
- case 4: // Vector 4 – TXIFG
+ case TRANSMIT: // Vector 4 – TXIFG
 // Code for Transmit
  break;
  default: break;

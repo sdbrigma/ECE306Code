@@ -1,23 +1,45 @@
 #include  "macros.h"
 #include  "msp430.h"
 #include  "functions.h"
-
+/*******************************************************************************
+*        Author: Steffon Brigman
+*        Date:   October 2015
+*        Description: This file contains code to initialize UART serial communication.
+*        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+*
+*        File name: init_cereal.c
+*        Passed : No variables passed 
+*        Returned: no values returned 
+*        Globlas: None used
+*******************************************************************************/
 /*
 Transmit flag is already set
 Set the baud rate
 Set transmission buffer
 */
 void Init_Serial_UCA1(void){
+  /*******************************************************************************
+*        Author: Steffon Brigman
+*        Date:   October 2015
+*        Description: This fucntion initialize UART serial communication for A1 registers.
+*        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+*
+*        Funcction name: Init_Serial_UCA1
+*        Passed : No variables passed 
+*        Returned: no values returned 
+*        Locals: i
+*        Globlas: cpu_rx_ring_wr, cpu_rx_ring_rd, cpu_rx_ring_wr,cpu_rt_ring_rd
+*******************************************************************************/
  int i;
  
- for(i=0; i<SMALL_RING_SIZE; i++){
- CPU_Char_Rx[i] = 0x00; // USB Rx Buffer
+ for(i=ZERO; i<SMALL_RING_SIZE; i++){
+ CPU_Char_Rx[i] = ORIGINAL; // USB Rx Buffer
  }
  cpu_rx_ring_wr = BEGINNING;
  cpu_rx_ring_rd = BEGINNING;
 
- for(i=0; i<SMALL_RING_SIZE; i++){ // May not use this
- CPU_Char_Tx[i] = 0x00; // USB Tx Buffer
+ for(i=ZERO; i<SMALL_RING_SIZE; i++){ // May not use this
+ CPU_Char_Tx[i] = ORIGINAL; // USB Tx Buffer
  }
  cpu_tx_ring_wr = BEGINNING;
  cpu_tx_ring_rd = BEGINNING;

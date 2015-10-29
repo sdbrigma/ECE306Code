@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           29/Oct/2015  01:22:52
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           29/Oct/2015  14:42:42
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -80,225 +80,231 @@
      16          void Switches_Process(void){
    \                     Switches_Process:
    \   000000   31800C00     SUB.W   #0xc, SP
-     17          //------------------------------------------------------------------------------
-     18          // Switch proccess sets LCD text when SW1 and SW2 are pressed
-     19            const char HW8_String[] = "NCSU  #1  ";
+     17          //******************************************************************************
+     18          //
+     19          //  Description: This functions sets code for switch 1 and 2 upon being pressed
+     20          //
+     21          //  Steffon Brigman
+     22          //  Sept 2015
+     23          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+     24          //******************************************************************************
+     25            const char HW8_String[] = "NCSU  #1  ";
    \   000004   0C41         MOV.W   SP, R12
    \   000006   3E40....     MOV.W   #`?<Constant "NCSU  #1  ">`, R14
    \   00000A   3D400B00     MOV.W   #0xb, R13
    \   00000E   ........     CALLA   #?CopyMemoryBytes
-     20            if (!(P4IN & SW1)){ // Transmission at 9600 baud
+     26            if (!(P4IN & SW1)){ // Transmission at 9600 baud
    \   000012   D2B32102     BIT.B   #0x1, &0x221
    \   000016   822C         JC      ??Switches_Process_3
-     21              UCA1BRW = BAUD_9600;
+     27              UCA1BRW = BAUD_9600;
    \   000018   B2403400E605 MOV.W   #0x34, &0x5e6
-     22              UCA1MCTLW = MOD_CTRL1;
+     28              UCA1MCTLW = MOD_CTRL1;
    \   00001E   B2401149E805 MOV.W   #0x4911, &0x5e8
-     23              display_1 = "          ";
+     29              display_1 = "          ";
    \   000024   B240........ MOV.W   #`?<Constant "          ">`, &display_1
-     24              posL1 = ZERO;
+     30              posL1 = ZERO;
    \   00002A   C243....     MOV.B   #0x0, &posL1
-     25              display_2 = "          ";
+     31              display_2 = "          ";
    \   00002E   B240........ MOV.W   #`?<Constant "          ">`, &display_2
-     26              posL2 = ZERO;
+     32              posL2 = ZERO;
    \   000034   C243....     MOV.B   #0x0, &posL2
-     27              display_3 = "Baud Rate";
+     33              display_3 = "Baud Rate";
    \   000038   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_3
-     28              posL3 = ALWAYS;
+     34              posL3 = ALWAYS;
    \   00003E   D243....     MOV.B   #0x1, &posL3
-     29              display_4 = "   9600   ";
+     35              display_4 = "   9600   ";
    \   000042   B240........ MOV.W   #`?<Constant "   9600   ">`, &display_4
-     30              posL4 = ZERO;
+     36              posL4 = ZERO;
    \   000048   C243....     MOV.B   #0x0, &posL4
-     31              Display_Process();
+     37              Display_Process();
    \   00004C   ........     CALLA   #Display_Process
-     32              
-     33                while(ALWAYS){
-     34                  if (!(P4IN & SW2)) { break; }
+     38              
+     39                while(ALWAYS){
+     40                  if (!(P4IN & SW2)) { break; }
    \                     ??Switches_Process_0:
    \   000050   E2B32102     BIT.B   #0x2, &0x221
    \   000054   6328         JNC     ??Switches_Process_3
-     35                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
+     41                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
    \   000056   1F42....     MOV.W   &cpu_rx_ring_wr, R15
    \   00005A   0F51         ADD.W   SP, R15
    \   00005C   6F4F         MOV.B   @R15, R15
    \   00005E   4F4F         MOV.B   R15, R15
    \   000060   824FEE05     MOV.W   R15, &0x5ee
-     36                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
+     42                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
    \   000064   1F42....     MOV.W   &display_1, R15
    \   000068   1E42....     MOV.W   &display_1, R14
    \   00006C   DE4F08000900 MOV.B   0x8(R15), 0x9(R14)
-     37                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
+     43                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
    \   000072   1F42....     MOV.W   &display_1, R15
    \   000076   1E42....     MOV.W   &display_1, R14
    \   00007A   DE4F07000800 MOV.B   0x7(R15), 0x8(R14)
-     38                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
+     44                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
    \   000080   1F42....     MOV.W   &display_1, R15
    \   000084   1E42....     MOV.W   &display_1, R14
    \   000088   DE4F06000700 MOV.B   0x6(R15), 0x7(R14)
-     39                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
+     45                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
    \   00008E   1F42....     MOV.W   &display_1, R15
    \   000092   1E42....     MOV.W   &display_1, R14
    \   000096   DE4F05000600 MOV.B   0x5(R15), 0x6(R14)
-     40                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
+     46                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
    \   00009C   1F42....     MOV.W   &display_1, R15
    \   0000A0   1E42....     MOV.W   &display_1, R14
    \   0000A4   DE4F04000500 MOV.B   0x4(R15), 0x5(R14)
-     41                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
+     47                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
    \   0000AA   1F42....     MOV.W   &display_1, R15
    \   0000AE   1E42....     MOV.W   &display_1, R14
    \   0000B2   DE4F03000400 MOV.B   0x3(R15), 0x4(R14)
-     42                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
+     48                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
    \   0000B8   1F42....     MOV.W   &display_1, R15
    \   0000BC   1E42....     MOV.W   &display_1, R14
    \   0000C0   DE4F02000300 MOV.B   0x2(R15), 0x3(R14)
-     43                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
+     49                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
    \   0000C6   1F42....     MOV.W   &display_1, R15
    \   0000CA   1E42....     MOV.W   &display_1, R14
    \   0000CE   DE4F01000200 MOV.B   0x1(R15), 0x2(R14)
-     44                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
+     50                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
    \   0000D4   1F42....     MOV.W   &display_1, R15
    \   0000D8   1E42....     MOV.W   &display_1, R14
    \   0000DC   EE4F0100     MOV.B   @R15, 0x1(R14)
-     45                  display_1[LINE_POS_L0] = UCA1RXBUF;
+     51                  display_1[LINE_POS_L0] = UCA1RXBUF;
    \   0000E0   1E42EC05     MOV.W   &0x5ec, R14
    \   0000E4   1F42....     MOV.W   &display_1, R15
    \   0000E8   CF4E0000     MOV.B   R14, 0(R15)
-     46                  posL1 = ZERO;
+     52                  posL1 = ZERO;
    \   0000EC   C243....     MOV.B   #0x0, &posL1
-     47                  display_2 = "          ";
+     53                  display_2 = "          ";
    \   0000F0   B240........ MOV.W   #`?<Constant "          ">`, &display_2
-     48                  posL2 = ZERO;
+     54                  posL2 = ZERO;
    \   0000F6   C243....     MOV.B   #0x0, &posL2
-     49                  display_3 = " Baud Rate";
+     55                  display_3 = " Baud Rate";
    \   0000FA   B240........ MOV.W   #`?<Constant " Baud Rate">`, &display_3
-     50                  posL3 = ZERO;
+     56                  posL3 = ZERO;
    \   000100   C243....     MOV.B   #0x0, &posL3
-     51                  display_4 = "  9600  ";
+     57                  display_4 = "  9600  ";
    \   000104   B240........ MOV.W   #`?<Constant "  9600  ">`, &display_4
-     52                  posL4 = ZERO;
+     58                  posL4 = ZERO;
    \   00010A   C243....     MOV.B   #0x0, &posL4
-     53                  Display_Process();
+     59                  Display_Process();
    \   00010E   ........     CALLA   #Display_Process
-     54                  Five_msec_Delay(75);
+     60                  Five_msec_Delay(transmit_delay);
    \   000112   3C404B00     MOV.W   #0x4b, R12
    \   000116   ........     CALLA   #Five_msec_Delay
    \   00011A   9A3F         JMP     ??Switches_Process_0
-     55                }
-     56            }
-     57            if (!(P4IN & SW2)) {
+     61                }
+     62            }
+     63            if (!(P4IN & SW2)) {
    \                     ??Switches_Process_3:
    \   00011C   E2B32102     BIT.B   #0x2, &0x221
    \   000120   812C         JC      ??Switches_Process_5
-     58              /*display_1 = "Embedded";
-     59              posL1 = SW2_posL1;
-     60              display_2 = "Systems";
-     61              posL2 = SW2_posL1;
-     62              display_3 = "Rock!";
-     63              posL3 = SW2_posL1;
-     64              display_4 = "Go Pack!";
-     65              posL4 = SW2_posL1;*/
-     66               
-     67              display_1 = "          ";
+     64              /*display_1 = "Embedded";
+     65              posL1 = SW2_posL1;
+     66              display_2 = "Systems";
+     67              posL2 = SW2_posL1;
+     68              display_3 = "Rock!";
+     69              posL3 = SW2_posL1;
+     70              display_4 = "Go Pack!";
+     71              posL4 = SW2_posL1;*/
+     72               
+     73              display_1 = "          ";
    \   000122   B240........ MOV.W   #`?<Constant "          ">`, &display_1
-     68              posL1 = ZERO;
+     74              posL1 = ZERO;
    \   000128   C243....     MOV.B   #0x0, &posL1
-     69              display_2 = "          ";
+     75              display_2 = "          ";
    \   00012C   B240........ MOV.W   #`?<Constant "          ">`, &display_2
-     70              posL2 = ZERO;
+     76              posL2 = ZERO;
    \   000132   C243....     MOV.B   #0x0, &posL2
-     71              display_3 = "Baud Rate";
+     77              display_3 = "Baud Rate";
    \   000136   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_3
-     72              posL3 = ALWAYS;
+     78              posL3 = ALWAYS;
    \   00013C   D243....     MOV.B   #0x1, &posL3
-     73              display_4 = " 115200 ";
+     79              display_4 = " 115200 ";
    \   000140   B240........ MOV.W   #`?<Constant " 115200 ">`, &display_4
-     74              posL4 = ZERO;
+     80              posL4 = ZERO;
    \   000146   C243....     MOV.B   #0x0, &posL4
-     75              Display_Process();
+     81              Display_Process();
    \   00014A   ........     CALLA   #Display_Process
-     76                
-     77              // transmission at 115200 baud
-     78              UCA1BRW = BAUD_115200;
+     82                
+     83              // transmission at 115200 baud
+     84              UCA1BRW = BAUD_115200;
    \   00014E   A242E605     MOV.W   #0x4, &0x5e6
-     79              UCA1MCTLW = MOD_CTRL2;
+     85              UCA1MCTLW = MOD_CTRL2;
    \   000152   B2405155E805 MOV.W   #0x5551, &0x5e8
-     80              
-     81              while(ALWAYS){
-     82                  if (!(P4IN & SW1)) { break; }
+     86              
+     87              while(ALWAYS){
+     88                  if (!(P4IN & SW1)) { break; }
    \                     ??Switches_Process_1:
    \   000158   D2B32102     BIT.B   #0x1, &0x221
    \   00015C   6328         JNC     ??Switches_Process_5
-     83                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
+     89                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
    \   00015E   1F42....     MOV.W   &cpu_rx_ring_wr, R15
    \   000162   0F51         ADD.W   SP, R15
    \   000164   6F4F         MOV.B   @R15, R15
    \   000166   4F4F         MOV.B   R15, R15
    \   000168   824FEE05     MOV.W   R15, &0x5ee
-     84                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
+     90                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
    \   00016C   1F42....     MOV.W   &display_1, R15
    \   000170   1E42....     MOV.W   &display_1, R14
    \   000174   DE4F08000900 MOV.B   0x8(R15), 0x9(R14)
-     85                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
+     91                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
    \   00017A   1F42....     MOV.W   &display_1, R15
    \   00017E   1E42....     MOV.W   &display_1, R14
    \   000182   DE4F07000800 MOV.B   0x7(R15), 0x8(R14)
-     86                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
+     92                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
    \   000188   1F42....     MOV.W   &display_1, R15
    \   00018C   1E42....     MOV.W   &display_1, R14
    \   000190   DE4F06000700 MOV.B   0x6(R15), 0x7(R14)
-     87                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
+     93                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
    \   000196   1F42....     MOV.W   &display_1, R15
    \   00019A   1E42....     MOV.W   &display_1, R14
    \   00019E   DE4F05000600 MOV.B   0x5(R15), 0x6(R14)
-     88                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
+     94                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
    \   0001A4   1F42....     MOV.W   &display_1, R15
    \   0001A8   1E42....     MOV.W   &display_1, R14
    \   0001AC   DE4F04000500 MOV.B   0x4(R15), 0x5(R14)
-     89                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
+     95                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
    \   0001B2   1F42....     MOV.W   &display_1, R15
    \   0001B6   1E42....     MOV.W   &display_1, R14
    \   0001BA   DE4F03000400 MOV.B   0x3(R15), 0x4(R14)
-     90                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
+     96                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
    \   0001C0   1F42....     MOV.W   &display_1, R15
    \   0001C4   1E42....     MOV.W   &display_1, R14
    \   0001C8   DE4F02000300 MOV.B   0x2(R15), 0x3(R14)
-     91                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
+     97                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
    \   0001CE   1F42....     MOV.W   &display_1, R15
    \   0001D2   1E42....     MOV.W   &display_1, R14
    \   0001D6   DE4F01000200 MOV.B   0x1(R15), 0x2(R14)
-     92                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
+     98                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
    \   0001DC   1F42....     MOV.W   &display_1, R15
    \   0001E0   1E42....     MOV.W   &display_1, R14
    \   0001E4   EE4F0100     MOV.B   @R15, 0x1(R14)
-     93                  display_1[LINE_POS_L0] = UCA1RXBUF;
+     99                  display_1[LINE_POS_L0] = UCA1RXBUF;
    \   0001E8   1E42EC05     MOV.W   &0x5ec, R14
    \   0001EC   1F42....     MOV.W   &display_1, R15
    \   0001F0   CF4E0000     MOV.B   R14, 0(R15)
-     94                  posL1 = ZERO;
+    100                  posL1 = ZERO;
    \   0001F4   C243....     MOV.B   #0x0, &posL1
-     95                  display_2 = "          ";
+    101                  display_2 = "          ";
    \   0001F8   B240........ MOV.W   #`?<Constant "          ">`, &display_2
-     96                  posL2 = ZERO;
+    102                  posL2 = ZERO;
    \   0001FE   C243....     MOV.B   #0x0, &posL2
-     97                  display_3 = " Baud Rate";
+    103                  display_3 = " Baud Rate";
    \   000202   B240........ MOV.W   #`?<Constant " Baud Rate">`, &display_3
-     98                  posL3 = ZERO;
+    104                  posL3 = ZERO;
    \   000208   C243....     MOV.B   #0x0, &posL3
-     99                  display_4 = " 115200 ";
+    105                  display_4 = " 115200 ";
    \   00020C   B240........ MOV.W   #`?<Constant " 115200 ">`, &display_4
-    100                  posL4 = ZERO;
+    106                  posL4 = ZERO;
    \   000212   C243....     MOV.B   #0x0, &posL4
-    101                  Display_Process();
+    107                  Display_Process();
    \   000216   ........     CALLA   #Display_Process
-    102                  Five_msec_Delay(75);
+    108                  Five_msec_Delay(transmit_delay);
    \   00021A   3C404B00     MOV.W   #0x4b, R12
    \   00021E   ........     CALLA   #Five_msec_Delay
    \   000222   9A3F         JMP     ??Switches_Process_1
-    103              }
-    104          }
-    105          //------------------------------------------------------------------------------
-    106          }
+    109              }
+    110          }
+    111          //------------------------------------------------------------------------------
+    112          }
    \                     ??Switches_Process_5:
    \   000224   31500C00     ADD.W   #0xc, SP
    \   000228   1001         RETA

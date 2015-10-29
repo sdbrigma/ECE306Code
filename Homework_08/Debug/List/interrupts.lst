@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           29/Oct/2015  01:18:18
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           29/Oct/2015  14:42:38
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -254,8 +254,19 @@
     114          __interrupt void USCI_A1_ISR(void){
    \                     USCI_A1_ISR:
    \   000000   1F15         PUSHM.W #0x2, R15
-    115           unsigned int temp;
-    116           switch(__even_in_range(UCA1IV,0x08)){
+    115          /*******************************************************************************
+    116          *        Author: Steffon Brigman
+    117          *        Date:   October 2015
+    118          *        Description: This function is the transmit and receive interrupt for UART
+    119          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    120          *
+    121          *        Function name: USCI_A1_ISR
+    122          *        Passed : No variables passed 
+    123          *        Returned: no values returned 
+    124          *        Globlas: temp, cpu_rx_ring_wr
+    125          *******************************************************************************/
+    126           unsigned int temp;
+    127           switch(__even_in_range(UCA1IV,UART_MAX)){
    \   000002   1E42FE05     MOV.W   &0x5fe, R14
    \   000006   E00E         ADDA    R14, PC
    \                     `?<Jumptable for USCI_A1_ISR>_0`:
@@ -264,29 +275,29 @@
    \   00000C   103C         JMP     ??USCI_A1_ISR_2
    \   00000E   0F3C         JMP     ??USCI_A1_ISR_2
    \   000010   0E3C         JMP     ??USCI_A1_ISR_2
-    117           case 0: // Vector 0 - no interrupt
-    118           break;
-    119           case 2: // Vector 2 – RXIFG
-    120             temp = cpu_rx_ring_wr;
+    128           case ZERO: // Vector 0 - no interrupt
+    129           break;
+    130           case RECEIVE: // Vector 2 – RXIFG
+    131             temp = cpu_rx_ring_wr;
    \                     ??USCI_A1_ISR_3:
    \   000012   1F42....     MOV.W   &cpu_rx_ring_wr, R15
-    121             CPU_Char_Rx[temp] = UCA1RXBUF; // RX -> CPU_Char_Rx character
+    132             CPU_Char_Rx[temp] = UCA1RXBUF; // RX -> CPU_Char_Rx character
    \   000016   1E42EC05     MOV.W   &0x5ec, R14
    \   00001A   CF4E....     MOV.B   R14, CPU_Char_Rx(R15)
-    122             if (++cpu_rx_ring_wr >= (RING_8)){
+    133             if (++cpu_rx_ring_wr >= (RING_8)){
    \   00001E   9253....     ADD.W   #0x1, &cpu_rx_ring_wr
    \   000022   B2900A00.... CMP.W   #0xa, &cpu_rx_ring_wr
    \   000028   0228         JNC     ??USCI_A1_ISR_2
-    123             cpu_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
+    134             cpu_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
    \   00002A   8243....     MOV.W   #0x0, &cpu_rx_ring_wr
-    124             }
-    125           break;
-    126           case 4: // Vector 4 – TXIFG
-    127          // Code for Transmit
-    128           break;
-    129           default: break;
-    130           }
-    131          }
+    135             }
+    136           break;
+    137           case TRANSMIT: // Vector 4 – TXIFG
+    138          // Code for Transmit
+    139           break;
+    140           default: break;
+    141           }
+    142          }
    \                     ??USCI_A1_ISR_2:
    \   00002E   1E17         POPM.W  #0x2, R15
    \   000030   0013         RETI
@@ -304,7 +315,7 @@
    \                                 In  segment INTVEC, offset 0x5c, root
    \                     `??ADC10_ISR::??INTVEC 92`:
    \   00005C   ....         DC16    ADC10_ISR
-    132          //------------------------------------------------------------------------------
+    143          //------------------------------------------------------------------------------
 
    Maximum stack usage in bytes:
 

@@ -14,8 +14,14 @@
 #include  "msp430.h"
 #include  "functions.h"
 void Switches_Process(void){
-//------------------------------------------------------------------------------
-// Switch proccess sets LCD text when SW1 and SW2 are pressed
+//******************************************************************************
+//
+//  Description: This functions sets code for switch 1 and 2 upon being pressed
+//
+//  Steffon Brigman
+//  Sept 2015
+//  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+//******************************************************************************
   const char HW8_String[] = "NCSU  #1  ";
   if (!(P4IN & SW1)){ // Transmission at 9600 baud
     UCA1BRW = BAUD_9600;
@@ -51,7 +57,7 @@ void Switches_Process(void){
         display_4 = "  9600  ";
         posL4 = ZERO;
         Display_Process();
-        Five_msec_Delay(75);
+        Five_msec_Delay(transmit_delay);
       }
   }
   if (!(P4IN & SW2)) {
@@ -99,7 +105,7 @@ void Switches_Process(void){
         display_4 = " 115200 ";
         posL4 = ZERO;
         Display_Process();
-        Five_msec_Delay(75);
+        Five_msec_Delay(transmit_delay);
     }
 }
 //------------------------------------------------------------------------------

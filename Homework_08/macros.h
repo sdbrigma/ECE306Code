@@ -186,6 +186,10 @@
 #define LINE_POS_L9 (9)
 
 #define RING_8 (10) // ring of size 8
+#define transmit_delay (75)
+#define RECEIVE (2)
+#define TRANSMIT (4)
+#define UART_MAX (0x08)
 
 
 extern volatile unsigned int Time_Sequence;
