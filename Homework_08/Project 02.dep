@@ -2,20 +2,25 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>2007932607</fileChecksum>
+  <fileChecksum>522226817</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
+      <file>$PROJ_DIR$\Debug\Obj\timers.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\dance.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\interrupts.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\interrupts.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\dance.pbi</file>
+      <file>$PROJ_DIR$\Debug\List\dance.lst</file>
       <file>$PROJ_DIR$\Debug\Obj\timers.r43</file>
       <file>$PROJ_DIR$\Debug\List\switch.lst</file>
       <file>$PROJ_DIR$\Debug\List\interrupts.lst</file>
-      <file>$PROJ_DIR$\Debug\Obj\line-dance.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\line-dance.r43</file>
-      <file>$PROJ_DIR$\Debug\Obj\display.r43</file>
-      <file>$PROJ_DIR$\Debug\Obj\thumbwheel.pbi</file>
-      <file>$PROJ_DIR$\drive.c</file>
-      <file>$PROJ_DIR$\Debug\List\line-dance.lst</file>
       <file>$PROJ_DIR$\Debug\List\adc.lst</file>
+      <file>$PROJ_DIR$\Debug\List\line-dance.lst</file>
+      <file>$PROJ_DIR$\Debug\Obj\thumbwheel.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\display.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\line-dance.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\line-dance.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\switch.r43</file>
       <file>$PROJ_DIR$\Debug\Obj\LED.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\init.r43</file>
@@ -23,8 +28,6 @@
       <file>$PROJ_DIR$\Debug\Obj\adc.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\thumbwheel.r43</file>
       <file>$PROJ_DIR$\Debug\List\thumbwheel.lst</file>
-      <file>$PROJ_DIR$\Debug\Exe\Project 02.ulp</file>
-      <file>$PROJ_DIR$\..\..\..\..\..\[ROOT_NODE]</file>
       <file>$PROJ_DIR$\Debug\Obj\ports.r43</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
       <file>$PROJ_DIR$\Debug\Exe\Project 02.d43</file>
@@ -32,28 +35,18 @@
       <file>$PROJ_DIR$\Debug\List\timers.lst</file>
       <file>$PROJ_DIR$\Debug\Obj\clocks.r43</file>
       <file>$PROJ_DIR$\Debug\Obj\system.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\Project 02.pbd</file>
-      <file>$PROJ_DIR$\Debug\Obj\clocks.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.r43</file>
-      <file>$PROJ_DIR$\Debug\Obj\system.r43</file>
-      <file>$TOOLKIT_DIR$\inc\msp430.h</file>
-      <file>$PROJ_DIR$\Debug\List\main.lst</file>
-      <file>$PROJ_DIR$\Debug\List\ports.lst</file>
-      <file>$TOOLKIT_DIR$\inc\in430.h</file>
-      <file>$TOOLKIT_DIR$\lib\dlib\dl430xlsfn.r43</file>
-      <file>$PROJ_DIR$\Debug\List\init.lst</file>
-      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\interrupt_timer.pbi</file>
-      <file>$PROJ_DIR$\Debug\List\motors.lst</file>
-      <file>$PROJ_DIR$\Debug\Obj\ports.__cstat.et</file>
-      <file>$PROJ_DIR$\Debug\Obj\clocks.__cstat.et</file>
-      <file>$PROJ_DIR$\Debug\List\clocks.lst</file>
+      <file>$PROJ_DIR$\Debug\List\init_cereal.lst</file>
+      <file>$PROJ_DIR$\Debug\Obj\init_cereal.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\init_cereal.r43</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\[ROOT_NODE]</file>
+      <file>$PROJ_DIR$\Debug\Exe\Project 02.ulp</file>
       <file>$PROJ_DIR$\dance.c</file>
       <file>$PROJ_DIR$\clocks.c</file>
       <file>$PROJ_DIR$\adc.c</file>
       <file>$PROJ_DIR$\display.c</file>
       <file>$PROJ_DIR$\functions.h</file>
       <file>$PROJ_DIR$\init.c</file>
+      <file>$PROJ_DIR$\init_cereal.c</file>
       <file>$PROJ_DIR$\interrupt_timer.c</file>
       <file>$PROJ_DIR$\interrupts.c</file>
       <file>$PROJ_DIR$\LCD.r43</file>
@@ -70,118 +63,90 @@
       <file>$PROJ_DIR$\thumbwheel.c</file>
       <file>$PROJ_DIR$\timers.c</file>
       <file>$PROJ_DIR$\timersB2.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\Project 02.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\clocks.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r43</file>
+      <file>$TOOLKIT_DIR$\inc\in430.h</file>
+      <file>$PROJ_DIR$\Debug\List\init.lst</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dl430xlsfn.r43</file>
+      <file>$PROJ_DIR$\Debug\List\ports.lst</file>
+      <file>$PROJ_DIR$\Debug\List\main.lst</file>
+      <file>$TOOLKIT_DIR$\inc\msp430.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\system.r43</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\interrupt_timer.pbi</file>
+      <file>$PROJ_DIR$\Debug\List\motors.lst</file>
+      <file>$PROJ_DIR$\Debug\List\clocks.lst</file>
       <file>$PROJ_DIR$\Debug\List\Project 02.map</file>
       <file>$PROJ_DIR$\Debug\Obj\interrupt_timer.r43</file>
       <file>$PROJ_DIR$\Debug\List\interrupt_timer.lst</file>
       <file>$PROJ_DIR$\Debug\Obj\init.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\timers.__cstat.et</file>
-      <file>$PROJ_DIR$\Debug\Obj\LED.__cstat.et</file>
-      <file>$PROJ_DIR$\Debug\Obj\init.__cstat.et</file>
       <file>$PROJ_DIR$\Debug\Obj\motors.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\system.__cstat.et</file>
-      <file>$PROJ_DIR$\Debug\Obj\switch.__cstat.et</file>
       <file>$PROJ_DIR$\Debug\Obj\motors.r43</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
       <file>$PROJ_DIR$\Debug\List\system.lst</file>
       <file>$PROJ_DIR$\Debug\Obj\display.pbi</file>
       <file>$PROJ_DIR$\Debug\List\display.lst</file>
       <file>$PROJ_DIR$\Debug\Obj\ports.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\switch.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\LED.r43</file>
-      <file>$PROJ_DIR$\Debug\Obj\timers.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\dance.r43</file>
-      <file>$PROJ_DIR$\Debug\List\drive.lst</file>
-      <file>$PROJ_DIR$\Debug\Obj\drive.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\interrupts.r43</file>
-      <file>$PROJ_DIR$\Debug\Obj\interrupts.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\drive.r43</file>
-      <file>$PROJ_DIR$\Debug\Obj\dance.pbi</file>
-      <file>$PROJ_DIR$\Debug\List\dance.lst</file>
     </outputs>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 21 64</file>
-        </tool>
-        <tool>
-          <name>ULP430</name>
-          <file> 17</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\drive.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 85</file>
-        </tool>
-        <tool>
-          <name>ICC430</name>
-          <file> 84 88</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 57 36 30 33 53 46</file>
-        </tool>
-        <tool>
-          <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 21 64</file>
-        </tool>
-        <tool>
-          <name>ULP430</name>
-          <file> 17</file>
-        </tool>
-      </outputs>
-    </file>
     <file>
       <name>$PROJ_DIR$\Debug\Exe\Project 02.d43</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 64</file>
+          <file> 71</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 13 24 83 5 12 65 86 50 81 4 28 74 19 10 29 15 0 63 34</file>
+          <file> 18 27 1 12 17 31 72 2 43 82 13 59 76 22 15 66 20 6 56 62</file>
         </tool>
       </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 24 71</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 24 71</file>
+        </tool>
+        <tool>
+          <name>ULP430</name>
+          <file> 33</file>
+        </tool>
+      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\dance.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 89</file>
+          <file> 4</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 90 83</file>
+          <file> 5 1</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 46 33 30 57 36 53</file>
+          <file> 38 60 65 50 67 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -190,25 +155,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 27</file>
+          <file> 58</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 41 24</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 40</file>
+          <file> 70 27</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 53 33 46 57 36 30</file>
+          <file> 46 60 38 50 67 65</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 30 57 33 36 46 53</file>
+          <file> 65 50 60 67 38 46</file>
         </tool>
       </inputs>
     </file>
@@ -217,21 +178,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 14</file>
+          <file> 19</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 9 13</file>
+          <file> 9 18</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 33 46 57 36 30 53</file>
+          <file> 60 38 50 67 65 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -240,21 +201,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 77</file>
+          <file> 78</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 78 5</file>
+          <file> 79 12</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 46 33 30 57 36 53</file>
+          <file> 38 60 65 50 67 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -263,25 +224,44 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 67</file>
+          <file> 74</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 35 12</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 70</file>
+          <file> 61 17</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 46 33 30 57 36 53</file>
+          <file> 38 60 65 50 67 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\init_cereal.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 29 31</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 60 38 65 50 67 46</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -290,21 +270,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 37</file>
+          <file> 68</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 66 65</file>
+          <file> 73 72</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 33 46 30 57 36 53</file>
+          <file> 60 38 65 50 67 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -313,21 +293,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 87</file>
+          <file> 3</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 2 86</file>
+          <file> 8 2</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 57 36 46 33 30 53</file>
+          <file> 60 38 50 67 65 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -336,25 +316,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 11</file>
+          <file> 16</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 22 81</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 69</file>
+          <file> 25 82</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 46 33 30 57 36 53</file>
+          <file> 38 60 65 50 67 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -363,21 +339,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 3</file>
+          <file> 14</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 8 4</file>
+          <file> 10 13</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 33 46 30 57 36 53</file>
+          <file> 60 67 38 65 50 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -386,25 +362,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 20</file>
+          <file> 23</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 31 28</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 75</file>
+          <file> 64 59</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 46 33 30 57 36 53</file>
+          <file> 38 60 65 50 67 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -413,21 +385,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 71</file>
+          <file> 75</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 38 74</file>
+          <file> 69 76</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 36 57 46 33 30 53</file>
+          <file> 50 67 38 60 65 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -436,25 +408,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 79</file>
+          <file> 80</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 32 19</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 39</file>
+          <file> 63 22</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 33 46 30 57 53 36</file>
+          <file> 60 67 38 65 50 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -463,25 +431,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 80</file>
+          <file> 81</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 1 10</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 73</file>
+          <file> 7 15</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 57 36 46 33 30 53</file>
+          <file> 60 38 65 50 67 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -490,25 +454,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 25</file>
+          <file> 28</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 76 29</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 72</file>
+          <file> 77 66</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 33 36 46 57 30</file>
+          <file> 60 67 38 50 65</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 30 57 33 36 46</file>
+          <file> 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -517,21 +477,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 6</file>
+          <file> 11</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 16 15</file>
+          <file> 21 20</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 33 46 57 36 30 53</file>
+          <file> 60 38 50 67 65 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>
@@ -540,25 +500,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 82</file>
+          <file> 0</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 23 0</file>
-        </tool>
-        <tool>
-          <name>__cstat</name>
-          <file> 68</file>
+          <file> 26 6</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 57 36 46 33 30 53</file>
+          <file> 50 67 38 60 65 46</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 53 30 57 33 36 46</file>
+          <file> 46 65 50 60 67 38</file>
         </tool>
       </inputs>
     </file>

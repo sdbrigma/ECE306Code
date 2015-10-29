@@ -1,0 +1,233 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           28/Oct/2015  20:59:37
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_08\switch.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_08\switch.c"
+#        -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_08\Debug\List\" -o
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_08\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_08\Debug\List\switch.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_08\Debug\Obj\switch.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_08\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for the switches prcesses function.
+      4          //   
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5e6
+   \   union <unnamed> _A_UCA1BRW_L
+   \                     _A_UCA1BRW_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5e8
+   \   union <unnamed> _A_UCA1MCTLW_L
+   \                     _A_UCA1MCTLW_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5fa
+   \   union <unnamed> _A_UCA1IE_L
+   \                     _A_UCA1IE_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          extern char *display_1;
+     17          extern char *display_2;
+     18          extern char *display_3;
+     19          extern char *display_4;
+     20          extern char posL1;
+     21          extern char posL2;
+     22          extern char posL3;
+     23          extern char posL4;
+
+   \                                 In  segment CODE, align 2
+     24          void Switches_Process(void){
+   \                     Switches_Process:
+     25          //------------------------------------------------------------------------------
+     26          // Switch proccess sets LCD text when SW1 and SW2 are pressed
+     27            if (!(P4IN & SW1)){ // Transmission at 9600 baud
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   1F2C         JC      ??Switches_Process_0
+     28              display_1 = "Baud Rate";
+   \   000006   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_1
+     29              posL1 = ZERO;
+   \   00000C   C243....     MOV.B   #0x0, &posL1
+     30              display_2 = "9600";
+   \   000010   B240........ MOV.W   #`?<Constant "9600">`, &display_2
+     31              posL2 = 2;
+   \   000016   E243....     MOV.B   #0x2, &posL2
+     32              display_3 = "          ";
+   \   00001A   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     33              posL3 = ZERO;
+   \   000020   C243....     MOV.B   #0x0, &posL3
+     34              display_4 = "          ";
+   \   000024   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     35              posL4 = ZERO;
+   \   00002A   C243....     MOV.B   #0x0, &posL4
+     36              Display_Process();
+   \   00002E   ........     CALLA   #Display_Process
+     37              
+     38              UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt
+   \   000032   A2D3FA05     BIS.W   #0x2, &0x5fa
+     39              CPU_Char_Tx[0] = 0x04;
+   \   000036   E242....     MOV.B   #0x4, &CPU_Char_Tx
+     40              UCA1TXBUF = CPU_Char_Tx[0];
+   \   00003A   5F42....     MOV.B   &CPU_Char_Tx, R15
+   \   00003E   4F4F         MOV.B   R15, R15
+   \   000040   824FEE05     MOV.W   R15, &0x5ee
+     41            }
+     42            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_0:
+   \   000044   E2B32102     BIT.B   #0x2, &0x221
+   \   000048   252C         JC      ??Switches_Process_1
+     43              /*display_1 = "Embedded";
+     44              posL1 = SW2_posL1;
+     45              display_2 = "Systems";
+     46              posL2 = SW2_posL1;
+     47              display_3 = "Rock!";
+     48              posL3 = SW2_posL1;
+     49              display_4 = "Go Pack!";
+     50              posL4 = SW2_posL1;*/
+     51                
+     52                    
+     53              display_1 = "Baud Rate";
+   \   00004A   B240........ MOV.W   #`?<Constant "Baud Rate">`, &display_1
+     54              posL1 = ZERO;
+   \   000050   C243....     MOV.B   #0x0, &posL1
+     55              display_2 = "115000";
+   \   000054   B240........ MOV.W   #`?<Constant "115000">`, &display_2
+     56              posL2 = 2;
+   \   00005A   E243....     MOV.B   #0x2, &posL2
+     57              display_3 = "          ";
+   \   00005E   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     58              posL3 = ZERO;
+   \   000064   C243....     MOV.B   #0x0, &posL3
+     59              display_4 = "          ";
+   \   000068   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     60              posL4 = ZERO;
+   \   00006E   C243....     MOV.B   #0x0, &posL4
+     61              Display_Process();
+   \   000072   ........     CALLA   #Display_Process
+     62                
+     63              // transmission at 115200 baud
+     64              UCA1BRW = BAUD_115200;
+   \   000076   A242E605     MOV.W   #0x4, &0x5e6
+     65              UCA1MCTLW = MOD_CTRL2;
+   \   00007A   B2405155E805 MOV.W   #0x5551, &0x5e8
+     66              
+     67              UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt
+   \   000080   A2D3FA05     BIS.W   #0x2, &0x5fa
+     68              CPU_Char_Tx[0] = 0x09;
+   \   000084   F2400900.... MOV.B   #0x9, &CPU_Char_Tx
+     69              UCA1TXBUF = CPU_Char_Tx[0];
+   \   00008A   5F42....     MOV.B   &CPU_Char_Tx, R15
+   \   00008E   4F4F         MOV.B   R15, R15
+   \   000090   824FEE05     MOV.W   R15, &0x5ee
+     70          }
+     71          //------------------------------------------------------------------------------
+     72          }
+   \                     ??Switches_Process_1:
+   \   000094   1001         RETA
+   \   000096                REQUIRE _A_PBIN_L
+   \   000096                REQUIRE _A_UCA1IE_L
+   \   000096                REQUIRE _A_UCA1TXBUF_L
+   \   000096                REQUIRE _A_UCA1BRW_L
+   \   000096                REQUIRE _A_UCA1MCTLW_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Baud Rate">`:
+   \   000000   426175642052 DC8 "Baud Rate"
+   \            61746500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "9600">`:
+   \   000000   3936303000   DC8 "9600"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "115000">`:
+   \   000000   313135303030 DC8 "115000"
+   \            00          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> Display_Process
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+       7  ?<Constant "115000">
+       5  ?<Constant "9600">
+      10  ?<Constant "Baud Rate">
+     150  Switches_Process
+       2  _A_PBIN_L
+       2  _A_UCA1BRW_L
+       2  _A_UCA1IE_L
+       2  _A_UCA1MCTLW_L
+       2  _A_UCA1TXBUF_L
+
+ 
+ 150 bytes in segment CODE
+  10 bytes in segment DATA16_AN
+  33 bytes in segment DATA16_C
+ 
+ 150 bytes of CODE  memory
+  33 bytes of CONST memory
+   0 bytes of DATA  memory (+ 10 bytes shared)
+
+Errors: none
+Warnings: none

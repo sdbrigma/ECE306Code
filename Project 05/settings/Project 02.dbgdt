@@ -34,7 +34,7 @@
         
         
       <ShowCodeCoverage>1</ShowCodeCoverage><ShowInstrProfiling>1</ShowInstrProfiling></Disassembly>
-    <WATCH_1><expressions><item>ADC_Right_Detector</item><item>ADC_Left_Detector</item><item>left</item><item>right</item><item>i</item><item>ISR_COUNT</item><item>tracking_value_high</item><item>ambience</item><item>tracking_value</item><item></item></expressions><col-names><item>Expression</item><item>Location</item><item>Type</item><item>Value</item></col-names><col-widths><item>100</item><item>150</item><item>100</item><item>146</item></col-widths></WATCH_1><QuickWatch><col-names><item>Expression</item><item>Location</item><item>Type</item><item>Value</item></col-names><col-widths><item>100</item><item>150</item><item>100</item><item>100</item></col-widths><QWatchHistory><item>left</item><item>right</item></QWatchHistory></QuickWatch></Static>
+    <WATCH_1><expressions><item>ADC_Right_Detector</item><item>ADC_Left_Detector</item><item>left</item><item>right</item><item>i</item><item>ISR_COUNT</item><item>tracking_value_high</item><item>ambience</item><item>tracking_value</item><item/></expressions><col-names><item>Expression</item><item>Location</item><item>Type</item><item>Value</item></col-names><col-widths><item>100</item><item>150</item><item>100</item><item>146</item></col-widths></WATCH_1><QuickWatch><col-names><item>Expression</item><item>Location</item><item>Type</item><item>Value</item></col-names><col-widths><item>100</item><item>150</item><item>100</item><item>100</item></col-widths><QWatchHistory><item>left</item><item>right</item></QWatchHistory></QuickWatch></Static>
     <Windows>
       
       
