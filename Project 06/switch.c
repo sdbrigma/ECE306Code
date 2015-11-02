@@ -24,7 +24,16 @@ void Switches_Process(void){
 //******************************************************************************
   //const char HW8_String[] = "NCSU  #1  ";
   if (!(P4IN & SW1)){ // Transmission at 9600 baud    
-  count(0x00FE); // tilde reset
+  count(0x007E); // tilde reset
+    display_1 = "    000    ";
+    posL1 = ZERO;
+    display_2 = "          ";
+    posL2 = ZERO;
+    display_3 = "          ";
+    posL3 = ZERO;
+    display_4 = "          ";
+    posL4 = ZERO;
+    Display_Process();
   }
   if (!(P4IN & SW2)) {
     display_1 = "    000    ";
@@ -38,8 +47,8 @@ void Switches_Process(void){
     Display_Process();
      UCA1TXBUF = 0x0030;
     while(ALWAYS){
-    if (!(P4IN & SW1)) { count(0x00FE); break; }
-      count(UCA1TXBUF);
+    if (!(P4IN & SW1)) { count(0x007E); break; }
+      count(UCA1RXBUF);
     }
    }
 }

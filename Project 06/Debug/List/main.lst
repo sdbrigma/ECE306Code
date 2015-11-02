@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  04:28:24
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  14:25:50
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -240,19 +240,19 @@
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     54          unsigned int decimal1;
+     54          unsigned int decimal1 = ZERO;
    \                     decimal1:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     55          unsigned int decimal2;
+     55          unsigned int decimal2 = ZERO;
    \                     decimal2:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     56          unsigned int decimal3;
+     56          unsigned int decimal3 = ZERO;
    \                     decimal3:
    \   000000                DS8 2
      57          

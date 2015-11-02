@@ -63,8 +63,12 @@ void count(unsigned int counter){
 *        Returned: converted_char
 *        Globlas: All listed in the globals section
 *******************************************************************************/
-  if(counter == 0x00FE){
-    counter = ZERO;
+  counter = UCA1RXBUF;
+  if(counter == 0x007E){
+    counter = ADC_conv2;
+    display_1[line1] = ORIGINAL;
+    display_1[line2] = ORIGINAL;
+    display_1[line3] = ORIGINAL;
   }
   else {counter++;}
   Five_msec_Delay(30);
@@ -78,16 +82,19 @@ void count(unsigned int counter){
   decimal2 = nibble2;
   decimal3 = nibble3;
   
-  if(decimal1 >= 10) {
+  if(decimal2 != ZERO){decimal1 = decimal1 + decimal2; }
+  if(decimal3 != ZERO){decimal2 = decimal2 + decimal3; }
+  
+  if(decimal1 > 10) {
     nibble1 = decimal1 - 10;
     nibble1 = nibble1 + ADC_conv2;
-    nibble2 = decimal2 + 1;
+    //nibble2 = decimal2 + 1;
     nibble2 = nibble2 + ADC_conv2;
-    if(decimal2 >= 10){
+    if(decimal2 > 10){
       nibble2 = decimal2 - 10;
-      nibble3 = decimal3 + 1;
+      //nibble3 = decimal3 + 1;
       nibble3 = nibble3 + ADC_conv2;
-      if(decimal3 >= 10) {nibble3 = decimal3 - 10;}
+      if(decimal3 > 10) {nibble3 = decimal3 - 10;}
     }
     else{
       nibble3 = nibble3 + ADC_conv2;

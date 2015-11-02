@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  04:59:54
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  14:57:09
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -50,6 +50,11 @@
      14          // Includes
      15          #include  "macros.h"
      16          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x5ec
+   \   union <unnamed> _A_UCA1RXBUF_L
+   \                     _A_UCA1RXBUF_L:
+   \   000000                DS8 2
 
    \                                 In  segment DATA16_AN, at 0x5ee
    \   union <unnamed> _A_UCA1TXBUF_L
@@ -120,142 +125,159 @@
      63          *        Returned: converted_char
      64          *        Globlas: All listed in the globals section
      65          *******************************************************************************/
-     66            if(counter == 0x00FE){
-   \   000004   3A90FE00     CMP.W   #0xfe, R10
-   \   000008   0220         JNE     ??count_0
-     67              counter = ZERO;
-   \   00000A   0A43         MOV.W   #0x0, R10
-   \   00000C   013C         JMP     ??count_1
-     68            }
-     69            else {counter++;}
+     66            counter = UCA1RXBUF;
+   \   000004   1A42EC05     MOV.W   &0x5ec, R10
+     67            if(counter == 0x007E){
+   \   000008   3A907E00     CMP.W   #0x7e, R10
+   \   00000C   0F20         JNE     ??count_0
+     68              counter = ADC_conv2;
+   \   00000E   3A403000     MOV.W   #0x30, R10
+     69              display_1[line1] = ORIGINAL;
+   \   000012   1F42....     MOV.W   &display_1, R15
+   \   000016   CF430600     MOV.B   #0x0, 0x6(R15)
+     70              display_1[line2] = ORIGINAL;
+   \   00001A   1F42....     MOV.W   &display_1, R15
+   \   00001E   CF430500     MOV.B   #0x0, 0x5(R15)
+     71              display_1[line3] = ORIGINAL;
+   \   000022   1F42....     MOV.W   &display_1, R15
+   \   000026   CF430400     MOV.B   #0x0, 0x4(R15)
+   \   00002A   013C         JMP     ??count_1
+     72            }
+     73            else {counter++;}
    \                     ??count_0:
-   \   00000E   1A53         ADD.W   #0x1, R10
-     70            Five_msec_Delay(30);
+   \   00002C   1A53         ADD.W   #0x1, R10
+     74            Five_msec_Delay(30);
    \                     ??count_1:
-   \   000010   3C401E00     MOV.W   #0x1e, R12
-   \   000014   ........     CALLA   #Five_msec_Delay
-     71            counter = counter - ADC_conv2;
-   \   000018   3A50D0FF     ADD.W   #0xffd0, R10
-     72            
-     73            char nibble1 = (counter & NIBBLE1);
-   \   00001C   0912         PUSH.W  R9
-   \   00001E   C14A0000     MOV.B   R10, 0(SP)
-   \   000022   3941         POP.W   R9
-   \   000024   79F00F00     AND.B   #0xf, R9
-     74            char nibble2 = (counter & NIBBLE2);
-   \   000028   0812         PUSH.W  R8
-   \   00002A   C14A0000     MOV.B   R10, 0(SP)
-   \   00002E   3841         POP.W   R8
-   \   000030   78F0F000     AND.B   #0xf0, R8
-     75            char nibble3 = (counter & NIBBLE3);
-   \   000034   4B43         MOV.B   #0x0, R11
+   \   00002E   3C401E00     MOV.W   #0x1e, R12
+   \   000032   ........     CALLA   #Five_msec_Delay
+     75            counter = counter - ADC_conv2;
+   \   000036   3A50D0FF     ADD.W   #0xffd0, R10
      76            
-     77            decimal1 = nibble1;
-   \   000036   4949         MOV.B   R9, R9
-   \   000038   8249....     MOV.W   R9, &decimal1
-     78            decimal2 = nibble2;
-   \   00003C   4848         MOV.B   R8, R8
-   \   00003E   8248....     MOV.W   R8, &decimal2
-     79            decimal3 = nibble3;
-   \   000042   4B4B         MOV.B   R11, R11
-   \   000044   824B....     MOV.W   R11, &decimal3
+     77            char nibble1 = (counter & NIBBLE1);
+   \   00003A   0912         PUSH.W  R9
+   \   00003C   C14A0000     MOV.B   R10, 0(SP)
+   \   000040   3941         POP.W   R9
+   \   000042   79F00F00     AND.B   #0xf, R9
+     78            char nibble2 = (counter & NIBBLE2);
+   \   000046   0812         PUSH.W  R8
+   \   000048   C14A0000     MOV.B   R10, 0(SP)
+   \   00004C   3841         POP.W   R8
+   \   00004E   78F0F000     AND.B   #0xf0, R8
+     79            char nibble3 = (counter & NIBBLE3);
+   \   000052   4B43         MOV.B   #0x0, R11
      80            
-     81            if(decimal1 >= 10) {
-   \   000048   B2900A00.... CMP.W   #0xa, &decimal1
-   \   00004E   2928         JNC     ??count_2
-     82              nibble1 = decimal1 - 10;
-   \   000050   5E42....     MOV.B   &decimal1, R14
-   \   000054   7E50F600     ADD.B   #0xf6, R14
-   \   000058   494E         MOV.B   R14, R9
-     83              nibble1 = nibble1 + ADC_conv2;
-   \   00005A   79503000     ADD.B   #0x30, R9
-     84              nibble2 = decimal2 + 1;
-   \   00005E   5E42....     MOV.B   &decimal2, R14
-   \   000062   5E53         ADD.B   #0x1, R14
-   \   000064   484E         MOV.B   R14, R8
-     85              nibble2 = nibble2 + ADC_conv2;
-   \   000066   78503000     ADD.B   #0x30, R8
-     86              if(decimal2 >= 10){
-   \   00006A   B2900A00.... CMP.W   #0xa, &decimal2
-   \   000070   1528         JNC     ??count_3
-     87                nibble2 = decimal2 - 10;
-   \   000072   5E42....     MOV.B   &decimal2, R14
-   \   000076   7E50F600     ADD.B   #0xf6, R14
-   \   00007A   484E         MOV.B   R14, R8
-     88                nibble3 = decimal3 + 1;
-   \   00007C   5E42....     MOV.B   &decimal3, R14
-   \   000080   5E53         ADD.B   #0x1, R14
-   \   000082   4B4E         MOV.B   R14, R11
-     89                nibble3 = nibble3 + ADC_conv2;
-   \   000084   7B503000     ADD.B   #0x30, R11
-     90                if(decimal3 >= 10) {nibble3 = decimal3 - 10;}
-   \   000088   B2900A00.... CMP.W   #0xa, &decimal3
-   \   00008E   1328         JNC     ??count_4
-   \   000090   5E42....     MOV.B   &decimal3, R14
-   \   000094   7E50F600     ADD.B   #0xf6, R14
-   \   000098   4B4E         MOV.B   R14, R11
-   \   00009A   0D3C         JMP     ??count_4
-     91              }
-     92              else{
-     93                nibble3 = nibble3 + ADC_conv2;
-   \                     ??count_3:
-   \   00009C   7B503000     ADD.B   #0x30, R11
-   \   0000A0   0A3C         JMP     ??count_4
-     94              }
-     95            }
-     96            else{ 
-     97              nibble1 = nibble1 + ADC_conv2;
+     81            decimal1 = nibble1;
+   \   000054   4949         MOV.B   R9, R9
+   \   000056   8249....     MOV.W   R9, &decimal1
+     82            decimal2 = nibble2;
+   \   00005A   4848         MOV.B   R8, R8
+   \   00005C   8248....     MOV.W   R8, &decimal2
+     83            decimal3 = nibble3;
+   \   000060   4B4B         MOV.B   R11, R11
+   \   000062   824B....     MOV.W   R11, &decimal3
+     84            
+     85            if(decimal2 != ZERO){decimal1 = decimal1 + decimal2; }
+   \   000066   8293....     CMP.W   #0x0, &decimal2
+   \   00006A   0324         JEQ     ??count_2
+   \   00006C   9252........ ADD.W   &decimal2, &decimal1
+     86            if(decimal3 != ZERO){decimal2 = decimal2 + decimal3; }
    \                     ??count_2:
-   \   0000A2   79503000     ADD.B   #0x30, R9
-     98              
-     99              nibble2 >>= 4;
-   \   0000A6                RPT     #0x4
-   \   0000A6   43194810     RRUX.B  R8
-    100              nibble2 = nibble2 + ADC_conv2;
-   \   0000AA   78503000     ADD.B   #0x30, R8
-    101              
-    102              nibble3 >>= 4;
-   \   0000AE                RPT     #0x4
-   \   0000AE   43194B10     RRUX.B  R11
-    103              nibble3 = nibble3 + ADC_conv2;
-   \   0000B2   7B503000     ADD.B   #0x30, R11
-    104            }  
-    105            
-    106            
-    107            display_1[line1] = nibble1;
+   \   000072   8293....     CMP.W   #0x0, &decimal3
+   \   000076   0324         JEQ     ??count_3
+   \   000078   9252........ ADD.W   &decimal3, &decimal2
+     87            
+     88            if(decimal1 > 10) {
+   \                     ??count_3:
+   \   00007E   B2900B00.... CMP.W   #0xb, &decimal1
+   \   000084   2128         JNC     ??count_4
+     89              nibble1 = decimal1 - 10;
+   \   000086   5E42....     MOV.B   &decimal1, R14
+   \   00008A   7E50F600     ADD.B   #0xf6, R14
+   \   00008E   494E         MOV.B   R14, R9
+     90              nibble1 = nibble1 + ADC_conv2;
+   \   000090   79503000     ADD.B   #0x30, R9
+     91              //nibble2 = decimal2 + 1;
+     92              nibble2 = nibble2 + ADC_conv2;
+   \   000094   78503000     ADD.B   #0x30, R8
+     93              if(decimal2 > 10){
+   \   000098   B2900B00.... CMP.W   #0xb, &decimal2
+   \   00009E   1128         JNC     ??count_5
+     94                nibble2 = decimal2 - 10;
+   \   0000A0   5E42....     MOV.B   &decimal2, R14
+   \   0000A4   7E50F600     ADD.B   #0xf6, R14
+   \   0000A8   484E         MOV.B   R14, R8
+     95                //nibble3 = decimal3 + 1;
+     96                nibble3 = nibble3 + ADC_conv2;
+   \   0000AA   7B503000     ADD.B   #0x30, R11
+     97                if(decimal3 > 10) {nibble3 = decimal3 - 10;}
+   \   0000AE   B2900B00.... CMP.W   #0xb, &decimal3
+   \   0000B4   1328         JNC     ??count_6
+   \   0000B6   5E42....     MOV.B   &decimal3, R14
+   \   0000BA   7E50F600     ADD.B   #0xf6, R14
+   \   0000BE   4B4E         MOV.B   R14, R11
+   \   0000C0   0D3C         JMP     ??count_6
+     98              }
+     99              else{
+    100                nibble3 = nibble3 + ADC_conv2;
+   \                     ??count_5:
+   \   0000C2   7B503000     ADD.B   #0x30, R11
+   \   0000C6   0A3C         JMP     ??count_6
+    101              }
+    102            }
+    103            else{ 
+    104              nibble1 = nibble1 + ADC_conv2;
    \                     ??count_4:
-   \   0000B6   1F42....     MOV.W   &display_1, R15
-   \   0000BA   CF490600     MOV.B   R9, 0x6(R15)
-    108            display_1[line2] = nibble2;
-   \   0000BE   1F42....     MOV.W   &display_1, R15
-   \   0000C2   CF480500     MOV.B   R8, 0x5(R15)
-    109            display_1[line3] = nibble3;
-   \   0000C6   1F42....     MOV.W   &display_1, R15
-   \   0000CA   CF4B0400     MOV.B   R11, 0x4(R15)
-    110            posL1 = ZERO;
-   \   0000CE   C243....     MOV.B   #0x0, &posL1
-    111            display_2 = "          ";
-   \   0000D2   B240........ MOV.W   #`?<Constant "          ">`, &display_2
-    112            posL2 = ZERO;
-   \   0000D8   C243....     MOV.B   #0x0, &posL2
-    113            display_3 = "          ";
-   \   0000DC   B240........ MOV.W   #`?<Constant "          ">`, &display_3
-    114            posL3 = ZERO;
-   \   0000E2   C243....     MOV.B   #0x0, &posL3
-    115            display_4 = "          ";
-   \   0000E6   B240........ MOV.W   #`?<Constant "          ">`, &display_4
-    116            posL4 = ZERO;
-   \   0000EC   C243....     MOV.B   #0x0, &posL4
-    117            Display_Process();
-   \   0000F0   ........     CALLA   #Display_Process
-    118            UCA1TXBUF = counter + ADC_conv2;
-   \   0000F4   0F4A         MOV.W   R10, R15
-   \   0000F6   3F503000     ADD.W   #0x30, R15
-   \   0000FA   824FEE05     MOV.W   R15, &0x5ee
-    119          }
-   \   0000FE   3817         POPM.W  #0x4, R11
-   \   000100   1001         RETA
-   \   000102                REQUIRE _A_UCA1TXBUF_L
+   \   0000C8   79503000     ADD.B   #0x30, R9
+    105              
+    106              nibble2 >>= 4;
+   \   0000CC                RPT     #0x4
+   \   0000CC   43194810     RRUX.B  R8
+    107              nibble2 = nibble2 + ADC_conv2;
+   \   0000D0   78503000     ADD.B   #0x30, R8
+    108              
+    109              nibble3 >>= 4;
+   \   0000D4                RPT     #0x4
+   \   0000D4   43194B10     RRUX.B  R11
+    110              nibble3 = nibble3 + ADC_conv2;
+   \   0000D8   7B503000     ADD.B   #0x30, R11
+    111            }  
+    112            
+    113            
+    114            display_1[line1] = nibble1;
+   \                     ??count_6:
+   \   0000DC   1F42....     MOV.W   &display_1, R15
+   \   0000E0   CF490600     MOV.B   R9, 0x6(R15)
+    115            display_1[line2] = nibble2;
+   \   0000E4   1F42....     MOV.W   &display_1, R15
+   \   0000E8   CF480500     MOV.B   R8, 0x5(R15)
+    116            display_1[line3] = nibble3;
+   \   0000EC   1F42....     MOV.W   &display_1, R15
+   \   0000F0   CF4B0400     MOV.B   R11, 0x4(R15)
+    117            posL1 = ZERO;
+   \   0000F4   C243....     MOV.B   #0x0, &posL1
+    118            display_2 = "          ";
+   \   0000F8   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+    119            posL2 = ZERO;
+   \   0000FE   C243....     MOV.B   #0x0, &posL2
+    120            display_3 = "          ";
+   \   000102   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+    121            posL3 = ZERO;
+   \   000108   C243....     MOV.B   #0x0, &posL3
+    122            display_4 = "          ";
+   \   00010C   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+    123            posL4 = ZERO;
+   \   000112   C243....     MOV.B   #0x0, &posL4
+    124            Display_Process();
+   \   000116   ........     CALLA   #Display_Process
+    125            UCA1TXBUF = counter + ADC_conv2;
+   \   00011A   0F4A         MOV.W   R10, R15
+   \   00011C   3F503000     ADD.W   #0x30, R15
+   \   000120   824FEE05     MOV.W   R15, &0x5ee
+    126          }
+   \   000124   3817         POPM.W  #0x4, R11
+   \   000126   1001         RETA
+   \   000128                REQUIRE _A_UCA1RXBUF_L
+   \   000128                REQUIRE _A_UCA1TXBUF_L
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "          ">`:
@@ -278,19 +300,20 @@
    Bytes  Function/Label
    -----  --------------
       11  ?<Constant "          ">
+       2  _A_UCA1RXBUF_L
        2  _A_UCA1TXBUF_L
-     258  count
+     296  count
        2  hex_int_conversion
       10  int_hex_conversion
 
  
- 270 bytes in segment CODE
-   2 bytes in segment DATA16_AN
+ 308 bytes in segment CODE
+   4 bytes in segment DATA16_AN
   11 bytes in segment DATA16_C
  
- 270 bytes of CODE  memory
+ 308 bytes of CODE  memory
   11 bytes of CONST memory
-   0 bytes of DATA  memory (+ 2 bytes shared)
+   0 bytes of DATA  memory (+ 4 bytes shared)
 
 Errors: none
 Warnings: none

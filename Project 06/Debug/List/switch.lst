@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  04:28:27
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  13:56:29
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -54,6 +54,11 @@
    \                     _A_PBIN_L:
    \   000000                DS8 2
 
+   \                                 In  segment DATA16_AN, at 0x5ec
+   \   union <unnamed> _A_UCA1RXBUF_L
+   \                     _A_UCA1RXBUF_L:
+   \   000000                DS8 2
+
    \                                 In  segment DATA16_AN, at 0x5ee
    \   union <unnamed> _A_UCA1TXBUF_L
    \                     _A_UCA1TXBUF_L:
@@ -74,54 +79,73 @@
      25            //const char HW8_String[] = "NCSU  #1  ";
      26            if (!(P4IN & SW1)){ // Transmission at 9600 baud    
    \   000000   D2B32102     BIT.B   #0x1, &0x221
-   \   000004   042C         JC      ??Switches_Process_1
-     27            count(0x00FE); // tilde reset
-   \   000006   3C40FE00     MOV.W   #0xfe, R12
+   \   000004   1A2C         JC      ??Switches_Process_1
+     27            count(0x007E); // tilde reset
+   \   000006   3C407E00     MOV.W   #0x7e, R12
    \   00000A   ........     CALLA   #count
-     28            }
-     29            if (!(P4IN & SW2)) {
+     28              display_1 = "    000    ";
+   \   00000E   B240........ MOV.W   #`?<Constant "    000    ">`, &display_1
+     29              posL1 = ZERO;
+   \   000014   C243....     MOV.B   #0x0, &posL1
+     30              display_2 = "          ";
+   \   000018   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     31              posL2 = ZERO;
+   \   00001E   C243....     MOV.B   #0x0, &posL2
+     32              display_3 = "          ";
+   \   000022   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     33              posL3 = ZERO;
+   \   000028   C243....     MOV.B   #0x0, &posL3
+     34              display_4 = "          ";
+   \   00002C   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     35              posL4 = ZERO;
+   \   000032   C243....     MOV.B   #0x0, &posL4
+     36              Display_Process();
+   \   000036   ........     CALLA   #Display_Process
+     37            }
+     38            if (!(P4IN & SW2)) {
    \                     ??Switches_Process_1:
-   \   00000E   E2B32102     BIT.B   #0x2, &0x221
-   \   000012   252C         JC      ??Switches_Process_2
-     30              display_1 = "    000    ";
-   \   000014   B240........ MOV.W   #`?<Constant "    000    ">`, &display_1
-     31              posL1 = ZERO;
-   \   00001A   C243....     MOV.B   #0x0, &posL1
-     32              display_2 = "          ";
-   \   00001E   B240........ MOV.W   #`?<Constant "          ">`, &display_2
-     33              posL2 = ZERO;
-   \   000024   C243....     MOV.B   #0x0, &posL2
-     34              display_3 = "          ";
-   \   000028   B240........ MOV.W   #`?<Constant "          ">`, &display_3
-     35              posL3 = ZERO;
-   \   00002E   C243....     MOV.B   #0x0, &posL3
-     36              display_4 = "          ";
-   \   000032   B240........ MOV.W   #`?<Constant "          ">`, &display_4
-     37              posL4 = ZERO;
-   \   000038   C243....     MOV.B   #0x0, &posL4
-     38              Display_Process();
-   \   00003C   ........     CALLA   #Display_Process
-     39               UCA1TXBUF = 0x0030;
-   \   000040   B2403000EE05 MOV.W   #0x30, &0x5ee
-     40              while(ALWAYS){
-     41              if (!(P4IN & SW1)) { count(0x00FE); break; }
+   \   00003A   E2B32102     BIT.B   #0x2, &0x221
+   \   00003E   252C         JC      ??Switches_Process_2
+     39              display_1 = "    000    ";
+   \   000040   B240........ MOV.W   #`?<Constant "    000    ">`, &display_1
+     40              posL1 = ZERO;
+   \   000046   C243....     MOV.B   #0x0, &posL1
+     41              display_2 = "          ";
+   \   00004A   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     42              posL2 = ZERO;
+   \   000050   C243....     MOV.B   #0x0, &posL2
+     43              display_3 = "          ";
+   \   000054   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     44              posL3 = ZERO;
+   \   00005A   C243....     MOV.B   #0x0, &posL3
+     45              display_4 = "          ";
+   \   00005E   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     46              posL4 = ZERO;
+   \   000064   C243....     MOV.B   #0x0, &posL4
+     47              Display_Process();
+   \   000068   ........     CALLA   #Display_Process
+     48               UCA1TXBUF = 0x0030;
+   \   00006C   B2403000EE05 MOV.W   #0x30, &0x5ee
+     49              while(ALWAYS){
+     50              if (!(P4IN & SW1)) { count(0x007E); break; }
    \                     ??Switches_Process_0:
-   \   000046   D2B32102     BIT.B   #0x1, &0x221
-   \   00004A   042C         JC      ??Switches_Process_3
-   \   00004C   3C40FE00     MOV.W   #0xfe, R12
-   \   000050   ........     BRA     #count
-     42                count(UCA1TXBUF);
+   \   000072   D2B32102     BIT.B   #0x1, &0x221
+   \   000076   042C         JC      ??Switches_Process_3
+   \   000078   3C407E00     MOV.W   #0x7e, R12
+   \   00007C   ........     BRA     #count
+     51                count(UCA1RXBUF);
    \                     ??Switches_Process_3:
-   \   000054   1C42EE05     MOV.W   &0x5ee, R12
-   \   000058   ........     CALLA   #count
-   \   00005C   F43F         JMP     ??Switches_Process_0
-     43              }
-     44             }
-     45          }
+   \   000080   1C42EC05     MOV.W   &0x5ec, R12
+   \   000084   ........     CALLA   #count
+   \   000088   F43F         JMP     ??Switches_Process_0
+     52              }
+     53             }
+     54          }
    \                     ??Switches_Process_2:
-   \   00005E   1001         RETA
-   \   000060                REQUIRE _A_PBIN_L
-   \   000060                REQUIRE _A_UCA1TXBUF_L
+   \   00008A   1001         RETA
+   \   00008C                REQUIRE _A_PBIN_L
+   \   00008C                REQUIRE _A_UCA1TXBUF_L
+   \   00008C                REQUIRE _A_UCA1RXBUF_L
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "    000    ">`:
@@ -132,7 +156,7 @@
    \                     `?<Constant "          ">`:
    \   000000   202020202020 DC8 "          "
    \            2020202000  
-     46          //------------------------------------------------------------------------------
+     55          //------------------------------------------------------------------------------
 
    Maximum stack usage in bytes:
 
@@ -149,18 +173,19 @@
    -----  --------------
       11  ?<Constant "          ">
       12  ?<Constant "    000    ">
-      96  Switches_Process
+     140  Switches_Process
        2  _A_PBIN_L
+       2  _A_UCA1RXBUF_L
        2  _A_UCA1TXBUF_L
 
  
- 96 bytes in segment CODE
-  4 bytes in segment DATA16_AN
- 23 bytes in segment DATA16_C
+ 140 bytes in segment CODE
+   6 bytes in segment DATA16_AN
+  23 bytes in segment DATA16_C
  
- 96 bytes of CODE  memory
- 23 bytes of CONST memory
-  0 bytes of DATA  memory (+ 4 bytes shared)
+ 140 bytes of CODE  memory
+  23 bytes of CONST memory
+   0 bytes of DATA  memory (+ 6 bytes shared)
 
 Errors: none
 Warnings: none
