@@ -1,0 +1,297 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  04:12:26
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 06\int_hex.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 06\int_hex.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 06\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\List\int_hex.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\Obj\int_hex.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 06\int_hex.c
+      1          /*******************************************************************************
+      2          *        Author: Steffon Brigman
+      3          *        Date:   October 2015
+      4          *        Description: This file contains code to read data from the thumb wheel.
+      5          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+      6          *
+      7          *        File name: int_hex.c
+      8          *        Passed : No variables passed 
+      9          *        Locals: No locals variables
+     10          *        Returned: no values returned 
+     11          *        Globlas: Listed in the globals section
+     12          *******************************************************************************/
+     13          
+     14          // Includes
+     15          #include  "macros.h"
+     16          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+     17          #include  "functions.h"
+     18          
+
+   \                                 In  segment CODE, align 2
+     19          char int_hex_conversion(char received_char){ // receiving characters are chars
+   \                     int_hex_conversion:
+   \   000000   4E4C         MOV.B   R12, R14
+     20          /*******************************************************************************
+     21          *        Author: Steffon Brigman
+     22          *        Date:   November 2015
+     23          *        Description: This function converts integers into chars to display on LCD
+     24          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     25          *
+     26          *        Function name: int_hex_conversion
+     27          *        Passed : number
+     28          *        Locals: 
+     29          *        Returned: converted_char
+     30          *        Globlas: All listed in the globals section
+     31          *******************************************************************************/
+     32              int converted_number = received_char - ADC_conv2;
+   \   000002   4C4E         MOV.B   R14, R12
+   \   000004   3C50D0FF     ADD.W   #0xffd0, R12
+     33              return converted_number;
+   \   000008   1001         RETA
+     34          }
+     35          
+
+   \                                 In  segment CODE, align 2
+     36          char hex_int_conversion(int number){ // receiving characters are chars
+   \                     hex_int_conversion:
+     37          /*******************************************************************************
+     38          *        Author: Steffon Brigman
+     39          *        Date:   November 2015
+     40          *        Description: This function converts integers into chars to display on LCD
+     41          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     42          *
+     43          *        Function name: int_hex_conversion
+     44          *        Passed : number
+     45          *        Locals: 
+     46          *        Returned: converted_char
+     47          *        Globlas: All listed in the globals section
+     48          *******************************************************************************/
+     49              char converted_number = number;
+     50              return converted_number;
+   \   000000   1001         RETA
+     51          }
+     52          
+
+   \                                 In  segment CODE, align 2
+     53          void count(unsigned int counter){
+   \                     count:
+   \   000000   7B15         PUSHM.W #0x8, R11
+   \   000002   0A4C         MOV.W   R12, R10
+     54          /*******************************************************************************
+     55          *        Author: Steffon Brigman
+     56          *        Date:   November 2015
+     57          *        Description: This function converts integers into chars to display on LCD
+     58          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     59          *
+     60          *        Function name: int_hex_conversion
+     61          *        Passed : number
+     62          *        Locals: 
+     63          *        Returned: converted_char
+     64          *        Globlas: All listed in the globals section
+     65          *******************************************************************************/
+     66            if(counter == 0x00FE){
+   \   000004   3A90FE00     CMP.W   #0xfe, R10
+   \   000008   0220         JNE     ??count_0
+     67              counter = ZERO;
+   \   00000A   0A43         MOV.W   #0x0, R10
+   \   00000C   013C         JMP     ??count_1
+     68            }
+     69            else {counter++;}
+   \                     ??count_0:
+   \   00000E   1A53         ADD.W   #0x1, R10
+     70            Five_msec_Delay(30);
+   \                     ??count_1:
+   \   000010   3C401E00     MOV.W   #0x1e, R12
+   \   000014   ........     CALLA   #Five_msec_Delay
+     71            counter = counter - ADC_conv2;
+   \   000018   3A50D0FF     ADD.W   #0xffd0, R10
+     72            
+     73            char nibble1 = (counter & NIBBLE1);
+   \   00001C   0612         PUSH.W  R6
+   \   00001E   C14A0000     MOV.B   R10, 0(SP)
+   \   000022   3641         POP.W   R6
+   \   000024   76F00F00     AND.B   #0xf, R6
+     74            unsigned int test1 = nibble1;
+   \   000028   4946         MOV.B   R6, R9
+     75            
+     76            char nibble2 = (counter & NIBBLE2);
+   \   00002A   0712         PUSH.W  R7
+   \   00002C   C14A0000     MOV.B   R10, 0(SP)
+   \   000030   3741         POP.W   R7
+   \   000032   77F0F000     AND.B   #0xf0, R7
+     77            unsigned int test2 = nibble2;
+   \   000036   4B47         MOV.B   R7, R11
+     78            
+     79            char nibble3 = (counter & NIBBLE3);
+   \   000038   4443         MOV.B   #0x0, R4
+     80            unsigned int test3 = nibble3;
+   \   00003A   4844         MOV.B   R4, R8
+     81            
+     82            if(test1 >= 10) {
+   \   00003C   39900A00     CMP.W   #0xa, R9
+   \   000040   1B28         JNC     ??count_2
+     83              nibble1 = test1 - 10;
+   \   000042   0E12         PUSH.W  R14
+   \   000044   C1490000     MOV.B   R9, 0(SP)
+   \   000048   3E41         POP.W   R14
+   \   00004A   7E50F600     ADD.B   #0xf6, R14
+   \   00004E   464E         MOV.B   R14, R6
+     84              if(test2 >= 10){
+   \   000050   3B900A00     CMP.W   #0xa, R11
+   \   000054   1128         JNC     ??count_2
+     85                nibble2 = test2 - 10;
+   \   000056   0E12         PUSH.W  R14
+   \   000058   C14B0000     MOV.B   R11, 0(SP)
+   \   00005C   3E41         POP.W   R14
+   \   00005E   7E50F600     ADD.B   #0xf6, R14
+   \   000062   474E         MOV.B   R14, R7
+     86                if(test3 >= 10) {nibble3 = test3 - 10;}
+   \   000064   38900A00     CMP.W   #0xa, R8
+   \   000068   0728         JNC     ??count_2
+   \   00006A   0E12         PUSH.W  R14
+   \   00006C   C1480000     MOV.B   R8, 0(SP)
+   \   000070   3E41         POP.W   R14
+   \   000072   7E50F600     ADD.B   #0xf6, R14
+   \   000076   444E         MOV.B   R14, R4
+     87              }
+     88            }
+     89            
+     90            if(test2 >= 10) {nibble2 = test2 - 10;}
+   \                     ??count_2:
+   \   000078   3B900A00     CMP.W   #0xa, R11
+   \   00007C   0728         JNC     ??count_3
+   \   00007E   0E12         PUSH.W  R14
+   \   000080   C14B0000     MOV.B   R11, 0(SP)
+   \   000084   3E41         POP.W   R14
+   \   000086   7E50F600     ADD.B   #0xf6, R14
+   \   00008A   474E         MOV.B   R14, R7
+     91            
+     92            if(test3 >= 10) {nibble3 = test3 - 10;}
+   \                     ??count_3:
+   \   00008C   38900A00     CMP.W   #0xa, R8
+   \   000090   0728         JNC     ??count_4
+   \   000092   0E12         PUSH.W  R14
+   \   000094   C1480000     MOV.B   R8, 0(SP)
+   \   000098   3E41         POP.W   R14
+   \   00009A   7E50F600     ADD.B   #0xf6, R14
+   \   00009E   444E         MOV.B   R14, R4
+     93            
+     94            nibble1 = nibble1 + ADC_conv2;
+   \                     ??count_4:
+   \   0000A0   76503000     ADD.B   #0x30, R6
+     95            
+     96            nibble2 >>= 4;
+   \   0000A4                RPT     #0x4
+   \   0000A4   43194710     RRUX.B  R7
+     97            nibble2 = nibble2 + ADC_conv2;
+   \   0000A8   77503000     ADD.B   #0x30, R7
+     98            
+     99            nibble3 >>= 4;
+   \   0000AC                RPT     #0x4
+   \   0000AC   43194410     RRUX.B  R4
+    100            nibble3 = nibble3 + ADC_conv2;
+   \   0000B0   74503000     ADD.B   #0x30, R4
+    101            
+    102            
+    103            display_1[line1] = nibble1;
+   \   0000B4   1F42....     MOV.W   &display_1, R15
+   \   0000B8   CF460600     MOV.B   R6, 0x6(R15)
+    104            display_1[line2] = nibble2;
+   \   0000BC   1F42....     MOV.W   &display_1, R15
+   \   0000C0   CF470500     MOV.B   R7, 0x5(R15)
+    105            display_1[line3] = nibble3;
+   \   0000C4   1F42....     MOV.W   &display_1, R15
+   \   0000C8   CF440400     MOV.B   R4, 0x4(R15)
+    106            posL1 = ZERO;
+   \   0000CC   C243....     MOV.B   #0x0, &posL1
+    107            display_2 = "          ";
+   \   0000D0   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+    108            posL2 = ZERO;
+   \   0000D6   C243....     MOV.B   #0x0, &posL2
+    109            display_3 = "          ";
+   \   0000DA   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+    110            posL3 = ZERO;
+   \   0000E0   C243....     MOV.B   #0x0, &posL3
+    111            display_4 = "          ";
+   \   0000E4   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+    112            posL4 = ZERO;
+   \   0000EA   C243....     MOV.B   #0x0, &posL4
+    113            Display_Process();
+   \   0000EE   ........     CALLA   #Display_Process
+    114            UCA1TXBUF = counter + ADC_conv2;
+   \   0000F2   0F4A         MOV.W   R10, R15
+   \   0000F4   3F503000     ADD.W   #0x30, R15
+   \   0000F8   824FEE05     MOV.W   R15, &0x5ee
+    115          }
+   \   0000FC   7417         POPM.W  #0x8, R11
+   \   0000FE   1001         RETA
+   \   000100                REQUIRE _A_UCA1TXBUF_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     22   count
+       20   -> Display_Process
+       20   -> Five_msec_Delay
+      4   hex_int_conversion
+      4   int_hex_conversion
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+       2  _A_UCA1TXBUF_L
+     256  count
+       2  hex_int_conversion
+      10  int_hex_conversion
+
+ 
+ 268 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  11 bytes in segment DATA16_C
+ 
+ 268 bytes of CODE  memory
+  11 bytes of CONST memory
+   0 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

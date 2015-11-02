@@ -1,0 +1,578 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  03:14:37
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\line-dance.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\line-dance.c" -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 06\Debug\List\" -o
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\Obj\" --no_cse --no_unroll --no_inline --no_code_motion
+#        --no_tbaa --debug -D__MSP430FR5739__ -e --double=32 --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.2\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -On
+#        --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\List\line-dance.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\Obj\line-dance.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 06\line-dance.c
+      1          /*******************************************************************************
+      2          *        Author: Steffon Brigman
+      3          *        Date:   October 2015
+      4          *        Description: This file contains code that runs motor with ADC values
+      5          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+      6          *
+      7          *        File name: line-dance.c
+      8          *        Passed : No variables passed 
+      9          *        Locals: No locals variables
+     10          *        Returned: no values returned 
+     11          *        Globlas: Listed below includes section
+     12          *******************************************************************************/
+     13          
+     14          // Includes
+     15          #include  "macros.h"
+     16          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x202
+   \   union <unnamed> _A_PAOUT_L
+   \                     _A_PAOUT_L:
+   \   000000                DS8 2
+     17          #include  "functions.h"
+     18          
+
+   \                                 In  segment CODE, align 2
+     19          void line_dance(void){
+   \                     line_dance:
+   \   000000   1B15         PUSHM.W #0x2, R11
+     20              /*******************************************************************************
+     21          *        Author: Steffon Brigman
+     22          *        Date:   October 2015
+     23          *        Description: This functions is an interrupt used to control the motors.
+     24          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     25          *
+     26          *        Function name: line_dance
+     27          *        Passed : No variables passed 
+     28          *        Locals: i
+     29          *        Returned: no values returned 
+     30          *        Globlas: Uses all gloabls listed in the globals section
+     31          *******************************************************************************/
+     32            emitter_on();
+   \   000002   ........     CALLA   #emitter_on
+     33              display_1 = "==========";
+   \   000006   B240........ MOV.W   #`?<Constant "==========">`, &display_1
+     34              posL1 = ZERO;
+   \   00000C   C243....     MOV.B   #0x0, &posL1
+     35              display_2 = "FORWARD";
+   \   000010   B240........ MOV.W   #`?<Constant "FORWARD">`, &display_2
+     36              posL2 = ZERO;
+   \   000016   C243....     MOV.B   #0x0, &posL2
+     37              display_3 = "==========";
+   \   00001A   B240........ MOV.W   #`?<Constant "==========">`, &display_3
+     38              posL3 = ZERO;
+   \   000020   C243....     MOV.B   #0x0, &posL3
+     39              display_4 = "          ";
+   \   000024   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     40              posL4 = ZERO;
+   \   00002A   C243....     MOV.B   #0x0, &posL4
+     41              Display_Process();
+   \   00002E   ........     CALLA   #Display_Process
+     42          
+     43            while(ALWAYS){// loop to travel straight
+     44              // read left and right detectors
+     45              /*if(ADC_Left_Detector>tracking_value_high){
+     46                Five_msec_Delay(25); // pause for quarter of a second
+     47                break;
+     48              }*/
+     49              ADC_Process();ADC_Process();ADC_Process();ADC_Process();ADC_Process();
+   \                     ??line_dance_0:
+   \   000032   ........     CALLA   #ADC_Process
+   \   000036   ........     CALLA   #ADC_Process
+   \   00003A   ........     CALLA   #ADC_Process
+   \   00003E   ........     CALLA   #ADC_Process
+   \   000042   ........     CALLA   #ADC_Process
+     50              motor_straight();
+   \   000046   ........     CALLA   #motor_straight
+     51              ADC_Process();
+   \   00004A   ........     CALLA   #ADC_Process
+     52              if((ADC_Right_Detector>tracking_value_high)||(ADC_Left_Detector>tracking_value_high)){
+   \   00004E   9292........ CMP.W   &ADC_Right_Detector, &tracking_value_high
+   \   000054   0428         JNC     ??line_dance_5
+   \   000056   9292........ CMP.W   &ADC_Left_Detector, &tracking_value_high
+   \   00005C   EA2F         JC      ??line_dance_0
+     53                Five_msec_Delay(QUARTER_WAIT); // pause for quarter of a second
+   \                     ??line_dance_5:
+   \   00005E   3C401900     MOV.W   #0x19, R12
+   \   000062   ........     CALLA   #Five_msec_Delay
+     54                break;
+     55              }    
+     56            }
+     57            
+     58            display_1 = "==========";
+   \   000066   B240........ MOV.W   #`?<Constant "==========">`, &display_1
+     59              posL1 = ZERO;
+   \   00006C   C243....     MOV.B   #0x0, &posL1
+     60              display_2 = "REVERSE";
+   \   000070   B240........ MOV.W   #`?<Constant "REVERSE">`, &display_2
+     61              posL2 = ZERO;
+   \   000076   C243....     MOV.B   #0x0, &posL2
+     62              display_3 = "==========";
+   \   00007A   B240........ MOV.W   #`?<Constant "==========">`, &display_3
+     63              posL3 = ZERO;
+   \   000080   C243....     MOV.B   #0x0, &posL3
+     64              display_4 = "          ";
+   \   000084   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     65              posL4 = ZERO;
+   \   00008A   C243....     MOV.B   #0x0, &posL4
+     66              Display_Process();
+   \   00008E   ........     CALLA   #Display_Process
+     67          
+     68            
+     69              unsigned int i = ZERO; // counter for time taken to reverse
+   \   000092   0A43         MOV.W   #0x0, R10
+     70              //ISR_COUNT = ZERO;
+     71            while(ALWAYS){// loop to travel in reverse
+     72              // give motors enough time to get away from black line
+     73              if(i == ZERO){
+   \                     ??line_dance_1:
+   \   000094   0A93         CMP.W   #0x0, R10
+   \   000096   0520         JNE     ??line_dance_6
+     74                  motor_reverse(PAUSE);
+   \   000098   3C403200     MOV.W   #0x32, R12
+   \   00009C   ........     CALLA   #motor_reverse
+     75                  i++;
+   \   0000A0   1A53         ADD.W   #0x1, R10
+     76              }
+     77              i++;
+   \                     ??line_dance_6:
+   \   0000A2   1A53         ADD.W   #0x1, R10
+     78              // MOTORS IN REVERSE
+     79              ADC_Process();
+   \   0000A4   ........     CALLA   #ADC_Process
+     80              r_reverse_on();
+   \   0000A8   ........     CALLA   #r_reverse_on
+     81              l_reverse_on();
+   \   0000AC   ........     CALLA   #l_reverse_on
+     82              ADC_Process();
+   \   0000B0   ........     CALLA   #ADC_Process
+     83              if((ADC_Right_Detector>(tracking_value_high*avg)) || (ADC_Left_Detector>(tracking_value_high*avg))){
+   \   0000B4   1F42....     MOV.W   &tracking_value_high, R15
+   \   0000B8   0F5F         RLA.W   R15
+   \   0000BA   1F92....     CMP.W   &ADC_Right_Detector, R15
+   \   0000BE   0628         JNC     ??line_dance_7
+   \   0000C0   1F42....     MOV.W   &tracking_value_high, R15
+   \   0000C4   0F5F         RLA.W   R15
+   \   0000C6   1F92....     CMP.W   &ADC_Left_Detector, R15
+   \   0000CA   E42F         JC      ??line_dance_1
+     84                l_reverse_off();
+   \                     ??line_dance_7:
+   \   0000CC   ........     CALLA   #l_reverse_off
+     85                r_reverse_off();
+   \   0000D0   ........     CALLA   #r_reverse_off
+     86                Five_msec_Delay(QUARTER_WAIT); // pause for quarter of a second
+   \   0000D4   3C401900     MOV.W   #0x19, R12
+   \   0000D8   ........     CALLA   #Five_msec_Delay
+     87                break;
+     88              }
+     89            }
+     90            ISR_COUNT = ZERO;
+   \   0000DC   8243....     MOV.W   #0x0, &ISR_COUNT
+     91            emitter_off();
+   \   0000E0   ........     CALLA   #emitter_off
+     92            display_1 = "==========";
+   \   0000E4   B240........ MOV.W   #`?<Constant "==========">`, &display_1
+     93              posL1 = ZERO;
+   \   0000EA   C243....     MOV.B   #0x0, &posL1
+     94              display_2 = "FORWARD";
+   \   0000EE   B240........ MOV.W   #`?<Constant "FORWARD">`, &display_2
+     95              posL2 = ZERO;
+   \   0000F4   C243....     MOV.B   #0x0, &posL2
+     96              display_3 = "==========";
+   \   0000F8   B240........ MOV.W   #`?<Constant "==========">`, &display_3
+     97              posL3 = ZERO;
+   \   0000FE   C243....     MOV.B   #0x0, &posL3
+     98              display_4 = "          ";
+   \   000102   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     99              posL4 = ZERO;
+   \   000108   C243....     MOV.B   #0x0, &posL4
+    100              Display_Process();
+   \   00010C   ........     CALLA   #Display_Process
+    101            
+    102            i = i / time_correction;
+   \   000110   0C4A         MOV.W   R10, R12
+   \   000112   3E40F402     MOV.W   #0x2f4, R14
+   \   000116   ........     CALLA   #?DivMod16u
+   \   00011A   0A4C         MOV.W   R12, R10
+    103            unsigned int a = ZERO;
+   \   00011C   0B43         MOV.W   #0x0, R11
+    104            while(a<i){
+   \                     ??line_dance_2:
+   \   00011E   0B9A         CMP.W   R10, R11
+   \   000120   042C         JC      ??line_dance_8
+    105              motor_straight();
+   \   000122   ........     CALLA   #motor_straight
+    106              a++;
+   \   000126   1B53         ADD.W   #0x1, R11
+   \   000128   FA3F         JMP     ??line_dance_2
+    107            }
+    108            Five_msec_Delay(QUARTER_WAIT);
+   \                     ??line_dance_8:
+   \   00012A   3C401900     MOV.W   #0x19, R12
+   \   00012E   ........     CALLA   #Five_msec_Delay
+    109            
+    110            display_1 = "==========";
+   \   000132   B240........ MOV.W   #`?<Constant "==========">`, &display_1
+    111              posL1 = ZERO;
+   \   000138   C243....     MOV.B   #0x0, &posL1
+    112              display_2 = "CLOCKWISE";
+   \   00013C   B240........ MOV.W   #`?<Constant "CLOCKWISE">`, &display_2
+    113              posL2 = ZERO;
+   \   000142   C243....     MOV.B   #0x0, &posL2
+    114              display_3 = "==========";
+   \   000146   B240........ MOV.W   #`?<Constant "==========">`, &display_3
+    115              posL3 = ZERO;
+   \   00014C   C243....     MOV.B   #0x0, &posL3
+    116              display_4 = "          ";
+   \   000150   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+    117              posL4 = ZERO;
+   \   000156   C243....     MOV.B   #0x0, &posL4
+    118              Display_Process();
+   \   00015A   ........     CALLA   #Display_Process
+    119            
+    120            // CW Circle
+    121            while(ISR_COUNT<clock_wise_time){
+   \                     ??line_dance_3:
+   \   00015E   B290E100.... CMP.W   #0xe1, &ISR_COUNT
+   \   000164   0534         JGE     ??line_dance_9
+    122              left_on();
+   \   000166   ........     CALLA   #left_on
+    123              r_reverse_on();
+   \   00016A   ........     CALLA   #r_reverse_on
+   \   00016E   F73F         JMP     ??line_dance_3
+    124            }
+    125            left_off();
+   \                     ??line_dance_9:
+   \   000170   ........     CALLA   #left_off
+    126            r_reverse_off();
+   \   000174   ........     CALLA   #r_reverse_off
+    127            ISR_COUNT = ZERO;
+   \   000178   8243....     MOV.W   #0x0, &ISR_COUNT
+    128            
+    129            display_1 = "==========";
+   \   00017C   B240........ MOV.W   #`?<Constant "==========">`, &display_1
+    130              posL1 = ZERO;
+   \   000182   C243....     MOV.B   #0x0, &posL1
+    131              display_2 = "COUNTER";
+   \   000186   B240........ MOV.W   #`?<Constant "COUNTER">`, &display_2
+    132              posL2 = ZERO;
+   \   00018C   C243....     MOV.B   #0x0, &posL2
+    133              display_3 = "CLOCKWISE";
+   \   000190   B240........ MOV.W   #`?<Constant "CLOCKWISE">`, &display_3
+    134              posL3 = ZERO;
+   \   000196   C243....     MOV.B   #0x0, &posL3
+    135              display_4 = "==========";
+   \   00019A   B240........ MOV.W   #`?<Constant "==========">`, &display_4
+    136              posL4 = ZERO;
+   \   0001A0   C243....     MOV.B   #0x0, &posL4
+    137              Display_Process();
+   \   0001A4   ........     CALLA   #Display_Process
+    138            
+    139            // CCW Circle
+    140            while(ISR_COUNT<clock_wise_time){
+   \                     ??line_dance_4:
+   \   0001A8   B290E100.... CMP.W   #0xe1, &ISR_COUNT
+   \   0001AE   0534         JGE     ??line_dance_10
+    141              right_on();
+   \   0001B0   ........     CALLA   #right_on
+    142              l_reverse_on();
+   \   0001B4   ........     CALLA   #l_reverse_on
+   \   0001B8   F73F         JMP     ??line_dance_4
+    143            }
+    144            right_off();
+   \                     ??line_dance_10:
+   \   0001BA   ........     CALLA   #right_off
+    145            l_reverse_off();
+   \   0001BE   ........     CALLA   #l_reverse_off
+    146            ISR_COUNT = ZERO;
+   \   0001C2   8243....     MOV.W   #0x0, &ISR_COUNT
+    147            
+    148              display_1 = "==========";
+   \   0001C6   B240........ MOV.W   #`?<Constant "==========">`, &display_1
+    149              posL1 = ZERO;
+   \   0001CC   C243....     MOV.B   #0x0, &posL1
+    150              display_2 = "==========";
+   \   0001D0   B240........ MOV.W   #`?<Constant "==========">`, &display_2
+    151              posL2 = ZERO;
+   \   0001D6   C243....     MOV.B   #0x0, &posL2
+    152              display_3 = "DONE!!!";
+   \   0001DA   B240........ MOV.W   #`?<Constant "DONE!!!">`, &display_3
+    153              posL3 = ZERO;
+   \   0001E0   C243....     MOV.B   #0x0, &posL3
+    154              display_4 = "==========";
+   \   0001E4   B240........ MOV.W   #`?<Constant "==========">`, &display_4
+    155              posL4 = ZERO;
+   \   0001EA   C243....     MOV.B   #0x0, &posL4
+    156              Display_Process();
+   \   0001EE   ........     CALLA   #Display_Process
+    157          }
+   \   0001F2   1A17         POPM.W  #0x2, R11
+   \   0001F4   1001         RETA
+    158          
+
+   \                                 In  segment CODE, align 2
+    159          void emitter_on(void){
+   \                     emitter_on:
+    160          /*******************************************************************************
+    161          *        Author: Steffon Brigman
+    162          *        Date:   October 2015
+    163          *        Description: This function turns on the emitter
+    164          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    165          *
+    166          *        Function name: emitter_on
+    167          *        Passed : No variables passed 
+    168          *        Locals: No variables declared
+    169          *        Returned: no values returned 
+    170          *        Globlas: None used
+    171          *******************************************************************************/
+    172            P1OUT |= IR_LED;
+   \   000000   E2D20202     BIS.B   #0x4, &0x202
+    173          }
+   \   000004   1001         RETA
+   \   000006                REQUIRE _A_PAOUT_L
+    174          
+
+   \                                 In  segment CODE, align 2
+    175          void emitter_off(void){
+   \                     emitter_off:
+    176          /*******************************************************************************
+    177          *        Author: Steffon Brigman
+    178          *        Date:   October 2015
+    179          *        Description: This function turns off the emitter
+    180          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    181          *
+    182          *        Function name: emitter_off
+    183          *        Passed : No variables passed 
+    184          *        Locals: No variables declared
+    185          *        Returned: no values returned 
+    186          *        Globlas: None used
+    187          *******************************************************************************/
+    188            P1OUT &= ~IR_LED;
+   \   000000   E2C20202     BIC.B   #0x4, &0x202
+    189          }
+   \   000004   1001         RETA
+   \   000006                REQUIRE _A_PAOUT_L
+    190          
+
+   \                                 In  segment CODE, align 2
+    191          void calibrate_detector(void){
+   \                     calibrate_detector:
+    192                /*******************************************************************************
+    193          *        Author: Steffon Brigman
+    194          *        Date:   October 2015
+    195          *        Description: This function calibrates the detectors for the ADC
+    196          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    197          *
+    198          *        Function name: calibrate_detectors
+    199          *        Passed : No variables passed 
+    200          *        Locals: No variables declared
+    201          *        Returned: no values returned 
+    202          *        Globlas: Uses all gloabls listed in the globals section
+    203          *******************************************************************************/
+    204            display_1 = "==========";
+   \   000000   B240........ MOV.W   #`?<Constant "==========">`, &display_1
+    205            posL1 = ZERO;
+   \   000006   C243....     MOV.B   #0x0, &posL1
+    206            display_2 = "CALIBRATE";
+   \   00000A   B240........ MOV.W   #`?<Constant "CALIBRATE">`, &display_2
+    207            posL2 = ZERO;
+   \   000010   C243....     MOV.B   #0x0, &posL2
+    208            display_3 = "DETECTORS";
+   \   000014   B240........ MOV.W   #`?<Constant "DETECTORS">`, &display_3
+    209            posL3 = ZERO;
+   \   00001A   C243....     MOV.B   #0x0, &posL3
+    210            display_4 = "==========";
+   \   00001E   B240........ MOV.W   #`?<Constant "==========">`, &display_4
+    211            posL4 = ZERO;
+   \   000024   C243....     MOV.B   #0x0, &posL4
+    212            Display_Process();
+   \   000028   ........     CALLA   #Display_Process
+    213            ISR_COUNT = ZERO;
+   \   00002C   8243....     MOV.W   #0x0, &ISR_COUNT
+    214            while(ISR_COUNT<calibrate){
+   \                     ??calibrate_detector_0:
+   \   000030   B2906400.... CMP.W   #0x64, &ISR_COUNT
+   \   000036   0A34         JGE     ??calibrate_detector_2
+    215              ADC_Process();
+   \   000038   ........     CALLA   #ADC_Process
+    216              ambience = (ADC_Right_Detector + ADC_Left_Detector) / avg;
+   \   00003C   1F42....     MOV.W   &ADC_Right_Detector, R15
+   \   000040   1F52....     ADD.W   &ADC_Left_Detector, R15
+   \   000044   5F03         RRUM.W  #0x1, R15
+   \   000046   824F....     MOV.W   R15, &ambience
+   \   00004A   F23F         JMP     ??calibrate_detector_0
+    217            }
+    218            ISR_COUNT = ZERO;
+   \                     ??calibrate_detector_2:
+   \   00004C   8243....     MOV.W   #0x0, &ISR_COUNT
+    219            ambience = ADC_RESOLUTION - ambience; // ambience correction factor
+   \   000050   3F400004     MOV.W   #0x400, R15
+   \   000054   1F82....     SUB.W   &ambience, R15
+   \   000058   824F....     MOV.W   R15, &ambience
+    220            ambience = ambience * avg;
+   \   00005C   1F42....     MOV.W   &ambience, R15
+   \   000060   0F5F         RLA.W   R15
+   \   000062   824F....     MOV.W   R15, &ambience
+    221              
+    222            emitter_on();
+   \   000066   ........     CALLA   #emitter_on
+    223            while(ISR_COUNT < calibrate){
+   \                     ??calibrate_detector_1:
+   \   00006A   B2906400.... CMP.W   #0x64, &ISR_COUNT
+   \   000070   0A34         JGE     ??calibrate_detector_3
+    224              ADC_Process();
+   \   000072   ........     CALLA   #ADC_Process
+    225              tracking_value = (ADC_Right_Detector + ADC_Left_Detector) / avg;
+   \   000076   1F42....     MOV.W   &ADC_Right_Detector, R15
+   \   00007A   1F52....     ADD.W   &ADC_Left_Detector, R15
+   \   00007E   5F03         RRUM.W  #0x1, R15
+   \   000080   824F....     MOV.W   R15, &tracking_value
+   \   000084   F23F         JMP     ??calibrate_detector_1
+    226            }
+    227            ISR_COUNT = ZERO;
+   \                     ??calibrate_detector_3:
+   \   000086   8243....     MOV.W   #0x0, &ISR_COUNT
+    228            tracking_value_high = tracking_value + ambience;
+   \   00008A   1F42....     MOV.W   &tracking_value, R15
+   \   00008E   1F52....     ADD.W   &ambience, R15
+   \   000092   824F....     MOV.W   R15, &tracking_value_high
+    229            tracking_value_low = tracking_value - ambience;
+   \   000096   1F42....     MOV.W   &tracking_value, R15
+   \   00009A   1F82....     SUB.W   &ambience, R15
+   \   00009E   824F....     MOV.W   R15, &tracking_value_low
+    230            emitter_off();  
+   \   0000A2   ........     BRA     #emitter_off
+    231          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "==========">`:
+   \   000000   3D3D3D3D3D3D DC8 "=========="
+   \            3D3D3D3D00  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "FORWARD">`:
+   \   000000   464F52574152 DC8 "FORWARD"
+   \            4400        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "REVERSE">`:
+   \   000000   524556455253 DC8 "REVERSE"
+   \            4500        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "CLOCKWISE">`:
+   \   000000   434C4F434B57 DC8 "CLOCKWISE"
+   \            49534500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "COUNTER">`:
+   \   000000   434F554E5445 DC8 "COUNTER"
+   \            5200        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "DONE!!!">`:
+   \   000000   444F4E452121 DC8 "DONE!!!"
+   \            2100        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "CALIBRATE">`:
+   \   000000   43414C494252 DC8 "CALIBRATE"
+   \            41544500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "DETECTORS">`:
+   \   000000   444554454354 DC8 "DETECTORS"
+   \            4F525300    
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   calibrate_detector
+        4   -> ADC_Process
+        4   -> Display_Process
+        0   -> emitter_off
+        4   -> emitter_on
+      4   emitter_off
+      4   emitter_on
+      8   line_dance
+        8   -> ADC_Process
+        8   -> Display_Process
+        8   -> Five_msec_Delay
+        8   -> emitter_off
+        8   -> emitter_on
+        8   -> l_reverse_off
+        8   -> l_reverse_on
+        8   -> left_off
+        8   -> left_on
+        8   -> motor_reverse
+        8   -> motor_straight
+        8   -> r_reverse_off
+        8   -> r_reverse_on
+        8   -> right_off
+        8   -> right_on
+        8 ?DivMod16u
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+      11  ?<Constant "==========">
+      10  ?<Constant "CALIBRATE">
+      10  ?<Constant "CLOCKWISE">
+       8  ?<Constant "COUNTER">
+      10  ?<Constant "DETECTORS">
+       8  ?<Constant "DONE!!!">
+       8  ?<Constant "FORWARD">
+       8  ?<Constant "REVERSE">
+       2  _A_PAOUT_L
+     166  calibrate_detector
+       6  emitter_off
+       6  emitter_on
+     502  line_dance
+
+ 
+ 680 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  84 bytes in segment DATA16_C
+ 
+ 680 bytes of CODE  memory
+  84 bytes of CONST memory
+   0 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

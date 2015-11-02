@@ -1,0 +1,166 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  03:25:26
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 06\switch.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 06\switch.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 06\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\List\switch.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        06\Debug\Obj\switch.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 06\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for the switches prcesses function.
+      4          //   
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+
+   \                                 In  segment CODE, align 2
+     16          void Switches_Process(void){
+   \                     Switches_Process:
+     17          //******************************************************************************
+     18          //
+     19          //  Description: This functions sets code for switch 1 and 2 upon being pressed
+     20          //
+     21          //  Steffon Brigman
+     22          //  Sept 2015
+     23          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+     24          //******************************************************************************
+     25            //const char HW8_String[] = "NCSU  #1  ";
+     26            if (!(P4IN & SW1)){ // Transmission at 9600 baud    
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   042C         JC      ??Switches_Process_1
+     27            count(0x00FE); // tilde reset
+   \   000006   3C40FE00     MOV.W   #0xfe, R12
+   \   00000A   ........     CALLA   #count
+     28            }
+     29            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_1:
+   \   00000E   E2B32102     BIT.B   #0x2, &0x221
+   \   000012   252C         JC      ??Switches_Process_2
+     30              display_1 = "    000    ";
+   \   000014   B240........ MOV.W   #`?<Constant "    000    ">`, &display_1
+     31              posL1 = ZERO;
+   \   00001A   C243....     MOV.B   #0x0, &posL1
+     32              display_2 = "          ";
+   \   00001E   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     33              posL2 = ZERO;
+   \   000024   C243....     MOV.B   #0x0, &posL2
+     34              display_3 = "          ";
+   \   000028   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     35              posL3 = ZERO;
+   \   00002E   C243....     MOV.B   #0x0, &posL3
+     36              display_4 = "          ";
+   \   000032   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     37              posL4 = ZERO;
+   \   000038   C243....     MOV.B   #0x0, &posL4
+     38              Display_Process();
+   \   00003C   ........     CALLA   #Display_Process
+     39               UCA1TXBUF = 0x0030;
+   \   000040   B2403000EE05 MOV.W   #0x30, &0x5ee
+     40              while(ALWAYS){
+     41              if (!(P4IN & SW1)) { count(0x00FE); break; }
+   \                     ??Switches_Process_0:
+   \   000046   D2B32102     BIT.B   #0x1, &0x221
+   \   00004A   042C         JC      ??Switches_Process_3
+   \   00004C   3C40FE00     MOV.W   #0xfe, R12
+   \   000050   ........     BRA     #count
+     42                count(UCA1TXBUF);
+   \                     ??Switches_Process_3:
+   \   000054   1C42EE05     MOV.W   &0x5ee, R12
+   \   000058   ........     CALLA   #count
+   \   00005C   F43F         JMP     ??Switches_Process_0
+     43              }
+     44             }
+     45          }
+   \                     ??Switches_Process_2:
+   \   00005E   1001         RETA
+   \   000060                REQUIRE _A_PBIN_L
+   \   000060                REQUIRE _A_UCA1TXBUF_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    000    ">`:
+   \   000000   202020203030 DC8 "    000    "
+   \            302020202000
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+     46          //------------------------------------------------------------------------------
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> Display_Process
+        4   -> count
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+      12  ?<Constant "    000    ">
+      96  Switches_Process
+       2  _A_PBIN_L
+       2  _A_UCA1TXBUF_L
+
+ 
+ 96 bytes in segment CODE
+  4 bytes in segment DATA16_AN
+ 23 bytes in segment DATA16_C
+ 
+ 96 bytes of CODE  memory
+ 23 bytes of CONST memory
+  0 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none
