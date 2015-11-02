@@ -71,31 +71,37 @@ void count(unsigned int counter){
   counter = counter - ADC_conv2;
   
   char nibble1 = (counter & NIBBLE1);
-  decimal1 = nibble1;
-  
   char nibble2 = (counter & NIBBLE2);
-  decimal2 = nibble2;
-  
   char nibble3 = (counter & NIBBLE3);
+  
+  decimal1 = nibble1;
+  decimal2 = nibble2;
   decimal3 = nibble3;
   
   if(decimal1 >= 10) {
     nibble1 = decimal1 - 10;
+    nibble1 = nibble1 + ADC_conv2;
     nibble2 = decimal2 + 1;
+    nibble2 = nibble2 + ADC_conv2;
     if(decimal2 >= 10){
       nibble2 = decimal2 - 10;
       nibble3 = decimal3 + 1;
+      nibble3 = nibble3 + ADC_conv2;
       if(decimal3 >= 10) {nibble3 = decimal3 - 10;}
     }
+    else{
+      nibble3 = nibble3 + ADC_conv2;
+    }
   }
+  else{ 
+    nibble1 = nibble1 + ADC_conv2;
     
-  nibble1 = nibble1 + ADC_conv2;
-  
-  nibble2 >>= 4;
-  nibble2 = nibble2 + ADC_conv2;
-  
-  nibble3 >>= 4;
-  nibble3 = nibble3 + ADC_conv2;
+    nibble2 >>= 4;
+    nibble2 = nibble2 + ADC_conv2;
+    
+    nibble3 >>= 4;
+    nibble3 = nibble3 + ADC_conv2;
+  }  
   
   
   display_1[line1] = nibble1;
