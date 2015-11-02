@@ -224,3 +224,6 @@ extern char posL2;
 extern char posL3;
 extern char posL4;
 extern char converted_char;
+extern unsigned int decimal1;
+extern unsigned int decimal2;
+extern unsigned int decimal3;

@@ -51,6 +51,9 @@ volatile char CPU_Char_Rx[16];
 volatile char CPU_Char_Tx[16];
 char converted_char;
 unsigned int counter = ZERO;
+unsigned int decimal1;
+unsigned int decimal2;
+unsigned int decimal3;
 
 void main(void){
 //------------------------------------------------------------------------------

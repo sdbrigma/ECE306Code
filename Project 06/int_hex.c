@@ -71,26 +71,24 @@ void count(unsigned int counter){
   counter = counter - ADC_conv2;
   
   char nibble1 = (counter & NIBBLE1);
-  unsigned int test1 = nibble1;
+  decimal1 = nibble1;
   
   char nibble2 = (counter & NIBBLE2);
-  unsigned int test2 = nibble2;
+  decimal2 = nibble2;
   
   char nibble3 = (counter & NIBBLE3);
-  unsigned int test3 = nibble3;
+  decimal3 = nibble3;
   
-  if(test1 >= 10) {
-    nibble1 = test1 - 10;
-    if(test2 >= 10){
-      nibble2 = test2 - 10;
-      if(test3 >= 10) {nibble3 = test3 - 10;}
+  if(decimal1 >= 10) {
+    nibble1 = decimal1 - 10;
+    nibble2 = decimal2 + 1;
+    if(decimal2 >= 10){
+      nibble2 = decimal2 - 10;
+      nibble3 = decimal3 + 1;
+      if(decimal3 >= 10) {nibble3 = decimal3 - 10;}
     }
   }
-  
-  if(test2 >= 10) {nibble2 = test2 - 10;}
-  
-  if(test3 >= 10) {nibble3 = test3 - 10;}
-  
+    
   nibble1 = nibble1 + ADC_conv2;
   
   nibble2 >>= 4;
