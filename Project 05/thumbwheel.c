@@ -45,6 +45,7 @@ void ADC_read(int detect_mode){
   // For detect mode 0 - right detector, 1 - left, 2 - thumbwheel
   unsigned int value;
   ADC_Channel = detect_mode;
+  ADC_Process();
   if(ADC_Channel == Right_Detector){value = ADC_Right_Detector;}
   if(ADC_Channel == Left_Detector){value = ADC_Left_Detector;}
   if(ADC_Channel == Thumbwheel){value = ADC_Thumb;}

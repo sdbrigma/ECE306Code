@@ -50,7 +50,7 @@ void Switches_Process(void){
     emitter_on();
     while(ALWAYS & (P4IN & SW1)){
       ADC_Process();
-      ADC_read(ZERO);
+      ADC_read(Thumbwheel);
       Five_msec_Delay(CIRCLE);
     }
 }

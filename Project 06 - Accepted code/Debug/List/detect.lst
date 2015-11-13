@@ -1,0 +1,152 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  17:54:45
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Christopher\Documents\ECE 306\Project_06\detect.c
+#    Command line  =  
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\detect.c" -lC
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\List\" -o
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\Obj\"
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "D:\IAR Embedded
+#        Workbench\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small
+#        -On --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Christopher\Documents\ECE
+#        306\Project_06\Debug\List\detect.lst
+#    Object file   =  
+#        C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\Obj\detect.r43
+#
+###############################################################################
+
+C:\Users\Christopher\Documents\ECE 306\Project_06\detect.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains the ADC detection routine module
+      4          //
+      5          //
+      6          //  Christopher Woedy
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+      9          //******************************************************************************
+     10          
+     11          //Points to Header files for Preprocessing
+     12          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     13          #include  "functions.h"
+     14          #include  "macros.h"
+     15          
+
+   \                                 In  segment CODE, align 2
+     16          void Detect(void){
+   \                     Detect:
+     17          //******************************************************************************
+     18          //
+     19          //  Description: This file contains the ADC detection routine module
+     20          //
+     21          //
+     22          //  Christopher Woedy
+     23          //  Sept 2015
+     24          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     25          //
+     26          // Globals: adc_RD_Enable, adc_LD_Enable, thumbEnable, tempEnable
+     27          // batEnable
+     28          //
+     29          // Passed:
+     30          //
+     31          // Local: 
+     32          //
+     33          // Return: VOID
+     34          //
+     35          //****************************************************************************** 
+     36            
+     37            adc_RD_Enable = FALSE;
+   \   000000   C243....     MOV.B   #0x0, &adc_RD_Enable
+     38            adc_LD_Enable = FALSE; 
+   \   000004   C243....     MOV.B   #0x0, &adc_LD_Enable
+     39            thumbEnable = FALSE;
+   \   000008   C243....     MOV.B   #0x0, &thumbEnable
+     40            tempEnable = FALSE;
+   \   00000C   C243....     MOV.B   #0x0, &tempEnable
+     41            batEnable  = FALSE;   
+   \   000010   C243....     MOV.B   #0x0, &batEnable
+     42          
+     43            while(ALWAYS) {
+     44                
+     45              if (!(P4IN & SW1)) break;
+   \                     ??Detect_0:
+   \   000014   D2B32102     BIT.B   #0x1, &0x221
+   \   000018   1728         JNC     ??Detect_2
+     46              // Left Detector
+     47              adc_RD_Enable = FALSE;
+     48              adc_LD_Enable = TRUE; 
+     49              ADC10_Process();
+     50              Display_ADC();
+     51              Five_msec_Delay(FOUR_CYCLES);
+     52              // Right Detector
+     53              adc_RD_Enable = TRUE;
+     54              adc_LD_Enable = FALSE; 
+     55              ADC10_Process();
+     56              Display_ADC();
+     57              Five_msec_Delay(FOUR_CYCLES);
+     58            }
+     59            
+     60          }
+   \   00001A   C243....     MOV.B   #0x0, &adc_RD_Enable
+   \   00001E   D243....     MOV.B   #0x1, &adc_LD_Enable
+   \   000022   ........     CALLA   #ADC10_Process
+   \   000026   ........     CALLA   #Display_ADC
+   \   00002A   2C42         MOV.W   #0x4, R12
+   \   00002C   ........     CALLA   #Five_msec_Delay
+   \   000030   D243....     MOV.B   #0x1, &adc_RD_Enable
+   \   000034   C243....     MOV.B   #0x0, &adc_LD_Enable
+   \   000038   ........     CALLA   #ADC10_Process
+   \   00003C   ........     CALLA   #Display_ADC
+   \   000040   2C42         MOV.W   #0x4, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   E63F         JMP     ??Detect_0
+   \                     ??Detect_2:
+   \   000048   1001         RETA
+   \   00004A                REQUIRE _A_PBIN_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Detect
+        4   -> ADC10_Process
+        4   -> Display_ADC
+        4   -> Five_msec_Delay
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      74  Detect
+       2  _A_PBIN_L
+
+ 
+ 74 bytes in segment CODE
+  2 bytes in segment DATA16_AN
+ 
+ 74 bytes of CODE memory
+  0 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

@@ -82,19 +82,20 @@ void count(unsigned int counter){
   decimal2 = nibble2;
   decimal3 = nibble3;
   
-  if(decimal2 != ZERO){decimal1 = decimal1 + decimal2; }
-  if(decimal3 != ZERO){decimal2 = decimal2 + decimal3; }
   
-  if(decimal1 > 10) {
+  if(decimal1 > 9) {
     nibble1 = decimal1 - 10;
     nibble1 = nibble1 + ADC_conv2;
-    //nibble2 = decimal2 + 1;
-    nibble2 = nibble2 + ADC_conv2;
-    if(decimal2 > 10){
+    
+    if(decimal2 != ZERO){decimal1 = decimal1 + decimal2; }
+    else {nibble2 = decimal2 + 1;nibble2 = nibble2 + ADC_conv2;}
+    
+    if(decimal2 > 9){
       nibble2 = decimal2 - 10;
-      //nibble3 = decimal3 + 1;
-      nibble3 = nibble3 + ADC_conv2;
-      if(decimal3 > 10) {nibble3 = decimal3 - 10;}
+      
+      if(decimal3 != ZERO){decimal2 = decimal2 + decimal3; }
+      else {nibble3 = decimal3 + 1;nibble3 = nibble3 + ADC_conv2;}
+      if(decimal3 > 9) {nibble3 = decimal3 - 10;}
     }
     else{
       nibble3 = nibble3 + ADC_conv2;

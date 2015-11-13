@@ -1,0 +1,512 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  17:54:48
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Christopher\Documents\ECE 306\Project_06\switch.c
+#    Command line  =  
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\switch.c" -lC
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\List\" -o
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\Obj\"
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "D:\IAR Embedded
+#        Workbench\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small
+#        -On --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Christopher\Documents\ECE
+#        306\Project_06\Debug\List\switch.lst
+#    Object file   =  
+#        C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\Obj\switch.r43
+#
+###############################################################################
+
+C:\Users\Christopher\Documents\ECE 306\Project_06\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains the Switch Routine
+      4          //
+      5          //
+      6          //  Christopher Woedy
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          
+     13          //Points to Header files for Preprocessing
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include  "macros.h"
+     17          
+
+   \                                 In  segment CODE, align 2
+     18          void Switches_Process(void){
+   \                     Switches_Process:
+     19          //******************************************************************************
+     20          //
+     21          //  Description: This file contains the Switch Routine
+     22          //
+     23          //
+     24          //  Christopher Woedy
+     25          //  Sept 2015
+     26          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     27          //
+     28          // Globals:
+     29          //
+     30          // Passed:
+     31          //
+     32          // Local:
+     33          //
+     34          // Return: VOID
+     35          //
+     36          //****************************************************************************** 
+     37            
+     38          if (!(P4IN & SW1)){
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   C62C         JC      ??Switches_Process_0
+     39              Five_msec_Delay(LIL_SW_DELAY);                      // 'debounce' delay
+   \   000006   3C401F00     MOV.W   #0x1f, R12
+   \   00000A   ........     CALLA   #Five_msec_Delay
+     40              if (switch_select == SW_SEL_0) {
+   \   00000E   C293....     CMP.B   #0x0, &switch_select
+   \   000012   1920         JNE     ??Switches_Process_1
+     41                display_1 = "Function:";
+   \   000014   B240........ MOV.W   #`?<Constant "Function:">`, &display_1
+     42                posL1 = LINE_POS_L0;
+   \   00001A   C243....     MOV.B   #0x0, &posL1
+     43                display_2 = "|> P.Six";
+   \   00001E   B240........ MOV.W   #`?<Constant "|> P.Six">`, &display_2
+     44                posL2 = LINE_POS_L0;
+   \   000024   C243....     MOV.B   #0x0, &posL2
+     45                display_3 = "| HW7";
+   \   000028   B240........ MOV.W   #`?<Constant "| HW7">`, &display_3
+     46                posL3 = LINE_POS_L0;
+   \   00002E   C243....     MOV.B   #0x0, &posL3
+     47                display_4 =  "| Detect";
+   \   000032   B240........ MOV.W   #`?<Constant "| Detect">`, &display_4
+     48                posL4 = LINE_POS_L0; 
+   \   000038   C243....     MOV.B   #0x0, &posL4
+     49                Display_Process();      
+   \   00003C   ........     CALLA   #Display_Process
+     50                switch_select++;  // Set to 1
+   \   000040   D253....     ADD.B   #0x1, &switch_select
+   \   000044   A63C         JMP     ??Switches_Process_0
+     51                }
+     52              else if (switch_select == SW_SEL_1) {
+   \                     ??Switches_Process_1:
+   \   000046   D293....     CMP.B   #0x1, &switch_select
+   \   00004A   1920         JNE     ??Switches_Process_2
+     53                display_1 = "Function:";
+   \   00004C   B240........ MOV.W   #`?<Constant "Function:">`, &display_1
+     54                posL1 = LINE_POS_L0;
+   \   000052   C243....     MOV.B   #0x0, &posL1
+     55                display_2 = "| P.Six";
+   \   000056   B240........ MOV.W   #`?<Constant "| P.Six">`, &display_2
+     56                posL2 = LINE_POS_L0;
+   \   00005C   C243....     MOV.B   #0x0, &posL2
+     57                display_3 = "|> HW7";
+   \   000060   B240........ MOV.W   #`?<Constant "|> HW7">`, &display_3
+     58                posL3 = LINE_POS_L0;
+   \   000066   C243....     MOV.B   #0x0, &posL3
+     59                display_4 =  "| Detect";
+   \   00006A   B240........ MOV.W   #`?<Constant "| Detect">`, &display_4
+     60                posL4 = LINE_POS_L0;
+   \   000070   C243....     MOV.B   #0x0, &posL4
+     61                Display_Process();      
+   \   000074   ........     CALLA   #Display_Process
+     62                switch_select++;  // Set to 2
+   \   000078   D253....     ADD.B   #0x1, &switch_select
+   \   00007C   8A3C         JMP     ??Switches_Process_0
+     63                }
+     64              else if (switch_select == SW_SEL_2) {
+   \                     ??Switches_Process_2:
+   \   00007E   E293....     CMP.B   #0x2, &switch_select
+   \   000082   1920         JNE     ??Switches_Process_3
+     65                display_1 = "Function:";
+   \   000084   B240........ MOV.W   #`?<Constant "Function:">`, &display_1
+     66                posL1 = LINE_POS_L0;
+   \   00008A   C243....     MOV.B   #0x0, &posL1
+     67                display_2 = "| HW7";
+   \   00008E   B240........ MOV.W   #`?<Constant "| HW7">`, &display_2
+     68                posL2 = LINE_POS_L0;
+   \   000094   C243....     MOV.B   #0x0, &posL2
+     69                display_3 = "|> Detect";
+   \   000098   B240........ MOV.W   #`?<Constant "|> Detect">`, &display_3
+     70                posL3 = LINE_POS_L0;
+   \   00009E   C243....     MOV.B   #0x0, &posL3
+     71                display_4 =  "| Calibr8";
+   \   0000A2   B240........ MOV.W   #`?<Constant "| Calibr8">`, &display_4
+     72                posL4 = LINE_POS_L0;
+   \   0000A8   C243....     MOV.B   #0x0, &posL4
+     73                Display_Process();      
+   \   0000AC   ........     CALLA   #Display_Process
+     74                switch_select++;  // Set to 3
+   \   0000B0   D253....     ADD.B   #0x1, &switch_select
+   \   0000B4   6E3C         JMP     ??Switches_Process_0
+     75                }
+     76              else if (switch_select == SW_SEL_3) {
+   \                     ??Switches_Process_3:
+   \   0000B6   F2900300.... CMP.B   #0x3, &switch_select
+   \   0000BC   1920         JNE     ??Switches_Process_4
+     77                display_1 = "Function:";
+   \   0000BE   B240........ MOV.W   #`?<Constant "Function:">`, &display_1
+     78                posL1 = LINE_POS_L0;
+   \   0000C4   C243....     MOV.B   #0x0, &posL1
+     79                display_2 = "| Detect";
+   \   0000C8   B240........ MOV.W   #`?<Constant "| Detect">`, &display_2
+     80                posL2 = LINE_POS_L0;
+   \   0000CE   C243....     MOV.B   #0x0, &posL2
+     81                display_3 = "|> Calibr8";
+   \   0000D2   B240........ MOV.W   #`?<Constant "|> Calibr8">`, &display_3
+     82                posL3 = LINE_POS_L0;
+   \   0000D8   C243....     MOV.B   #0x0, &posL3
+     83                display_4 =  "| P.Five";
+   \   0000DC   B240........ MOV.W   #`?<Constant "| P.Five">`, &display_4
+     84                posL4 = LINE_POS_L0;
+   \   0000E2   C243....     MOV.B   #0x0, &posL4
+     85                Display_Process();      
+   \   0000E6   ........     CALLA   #Display_Process
+     86                switch_select++;  // Set to 4
+   \   0000EA   D253....     ADD.B   #0x1, &switch_select
+   \   0000EE   513C         JMP     ??Switches_Process_0
+     87                }
+     88              else if (switch_select == SW_SEL_4) {
+   \                     ??Switches_Process_4:
+   \   0000F0   E292....     CMP.B   #0x4, &switch_select
+   \   0000F4   1920         JNE     ??Switches_Process_5
+     89                display_1 = "Function:";
+   \   0000F6   B240........ MOV.W   #`?<Constant "Function:">`, &display_1
+     90                posL1 = LINE_POS_L0;
+   \   0000FC   C243....     MOV.B   #0x0, &posL1
+     91                display_2 = "| Calibr8";
+   \   000100   B240........ MOV.W   #`?<Constant "| Calibr8">`, &display_2
+     92                posL2 = LINE_POS_L0;
+   \   000106   C243....     MOV.B   #0x0, &posL2
+     93                display_3 = "|> P.Five";
+   \   00010A   B240........ MOV.W   #`?<Constant "|> P.Five">`, &display_3
+     94                posL3 = LINE_POS_L0;
+   \   000110   C243....     MOV.B   #0x0, &posL3
+     95                display_4 =  "| P.Four";
+   \   000114   B240........ MOV.W   #`?<Constant "| P.Four">`, &display_4
+     96                posL4 = LINE_POS_L0; 
+   \   00011A   C243....     MOV.B   #0x0, &posL4
+     97                Display_Process();      
+   \   00011E   ........     CALLA   #Display_Process
+     98                switch_select++;  // Set to 5
+   \   000122   D253....     ADD.B   #0x1, &switch_select
+   \   000126   353C         JMP     ??Switches_Process_0
+     99                }
+    100              else if (switch_select == SW_SEL_5) {
+   \                     ??Switches_Process_5:
+   \   000128   F2900500.... CMP.B   #0x5, &switch_select
+   \   00012E   1920         JNE     ??Switches_Process_6
+    101                display_1 = "Function:";
+   \   000130   B240........ MOV.W   #`?<Constant "Function:">`, &display_1
+    102                posL1 = LINE_POS_L0;
+   \   000136   C243....     MOV.B   #0x0, &posL1
+    103                display_2 = "| P.Five";
+   \   00013A   B240........ MOV.W   #`?<Constant "| P.Five">`, &display_2
+    104                posL2 = LINE_POS_L0;
+   \   000140   C243....     MOV.B   #0x0, &posL2
+    105                display_3 = "|> P. Four";
+   \   000144   B240........ MOV.W   #`?<Constant "|> P. Four">`, &display_3
+    106                posL3 = LINE_POS_L0;
+   \   00014A   C243....     MOV.B   #0x0, &posL3
+    107                display_4 =  "| P.Six";
+   \   00014E   B240........ MOV.W   #`?<Constant "| P.Six">`, &display_4
+    108                posL4 = LINE_POS_L0; 
+   \   000154   C243....     MOV.B   #0x0, &posL4
+    109                Display_Process();      
+   \   000158   ........     CALLA   #Display_Process
+    110                switch_select++;  // Set to 6
+   \   00015C   D253....     ADD.B   #0x1, &switch_select
+   \   000160   183C         JMP     ??Switches_Process_0
+    111                }
+    112              else {
+    113                display_1 = "Function:";
+   \                     ??Switches_Process_6:
+   \   000162   B240........ MOV.W   #`?<Constant "Function:">`, &display_1
+    114                posL1 = LINE_POS_L0;
+   \   000168   C243....     MOV.B   #0x0, &posL1
+    115                display_2 = "| P.Four";
+   \   00016C   B240........ MOV.W   #`?<Constant "| P.Four">`, &display_2
+    116                posL2 = LINE_POS_L0;
+   \   000172   C243....     MOV.B   #0x0, &posL2
+    117                display_3 = "|> P.Six";
+   \   000176   B240........ MOV.W   #`?<Constant "|> P.Six">`, &display_3
+    118                posL3 = LINE_POS_L0;
+   \   00017C   C243....     MOV.B   #0x0, &posL3
+    119                display_4 =  "| HW7";
+   \   000180   B240........ MOV.W   #`?<Constant "| HW7">`, &display_4
+    120                posL4 = LINE_POS_L0; 
+   \   000186   C243....     MOV.B   #0x0, &posL4
+    121                Display_Process();
+   \   00018A   ........     CALLA   #Display_Process
+    122                switch_select = SW_SEL_1; // Set to 1
+   \   00018E   D243....     MOV.B   #0x1, &switch_select
+    123                }
+    124             
+    125            }
+    126            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_0:
+   \   000192   E2B32102     BIT.B   #0x2, &0x221
+   \   000196   512C         JC      ??Switches_Process_7
+    127              Five_msec_Delay(LIL_SW_DELAY);                      // 'debounce' delay
+   \   000198   3C401F00     MOV.W   #0x1f, R12
+   \   00019C   ........     CALLA   #Five_msec_Delay
+    128            
+    129              
+    130              if (switch_select == SW_SEL_1) {
+   \   0001A0   D293....     CMP.B   #0x1, &switch_select
+   \   0001A4   0220         JNE     ??Switches_Process_8
+    131                Project_6();     
+   \   0001A6   ........     BRA     #Project_6
+    132                }
+    133              else if (switch_select == SW_SEL_2) {
+   \                     ??Switches_Process_8:
+   \   0001AA   E293....     CMP.B   #0x2, &switch_select
+   \   0001AE   0220         JNE     ??Switches_Process_9
+    134                Homework_7();     
+   \   0001B0   ........     BRA     #Homework_7
+    135                }
+    136              else if (switch_select == SW_SEL_3) {
+   \                     ??Switches_Process_9:
+   \   0001B4   F2900300.... CMP.B   #0x3, &switch_select
+   \   0001BA   1820         JNE     ??Switches_Process_10
+    137                display_1 = "Detecting:";
+   \   0001BC   B240........ MOV.W   #`?<Constant "Detecting:">`, &display_1
+    138                posL1 = LINE_POS_L0;
+   \   0001C2   C243....     MOV.B   #0x0, &posL1
+    139                display_2 = " L: 0xXXX ";
+   \   0001C6   B240........ MOV.W   #`?<Constant " L: 0xXXX ">`, &display_2
+    140                posL2 = LINE_POS_L0;
+   \   0001CC   C243....     MOV.B   #0x0, &posL2
+    141                display_3 = " R: 0xXXX ";
+   \   0001D0   B240........ MOV.W   #`?<Constant " R: 0xXXX ">`, &display_3
+    142                posL3 = LINE_POS_L0;
+   \   0001D6   C243....     MOV.B   #0x0, &posL3
+    143                display_4 =  "          ";
+   \   0001DA   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+    144                posL4 = LINE_POS_L0; 
+   \   0001E0   C243....     MOV.B   #0x0, &posL4
+    145                Display_Process();
+   \   0001E4   ........     CALLA   #Display_Process
+    146                Detect();
+   \   0001E8   ........     BRA     #Detect
+    147              }
+    148              else if (switch_select == SW_SEL_4) {
+   \                     ??Switches_Process_10:
+   \   0001EC   E292....     CMP.B   #0x4, &switch_select
+   \   0001F0   0220         JNE     ??Switches_Process_11
+    149                Calibrate();     
+   \   0001F2   ........     BRA     #Calibrate
+    150                }
+    151              else if (switch_select == SW_SEL_5) {
+   \                     ??Switches_Process_11:
+   \   0001F6   F2900500.... CMP.B   #0x5, &switch_select
+   \   0001FC   0220         JNE     ??Switches_Process_12
+    152                P_Five_Drive();    
+   \   0001FE   ........     BRA     #P_Five_Drive
+    153                }
+    154              else if (switch_select == SW_SEL_6) {
+   \                     ??Switches_Process_12:
+   \   000202   F2900600.... CMP.B   #0x6, &switch_select
+   \   000208   0220         JNE     ??Switches_Process_13
+    155                P_Four_Drive();    
+   \   00020A   ........     BRA     #P_Four_Drive
+    156                }
+    157              else {
+    158                display_1 = "No Valid";
+   \                     ??Switches_Process_13:
+   \   00020E   B240........ MOV.W   #`?<Constant "No Valid">`, &display_1
+    159                posL1 = LINE_POS_L1;
+   \   000214   D243....     MOV.B   #0x1, &posL1
+    160                display_2 = "Function";
+   \   000218   B240........ MOV.W   #`?<Constant "Function">`, &display_2
+    161                posL2 = LINE_POS_L1;
+   \   00021E   D243....     MOV.B   #0x1, &posL2
+    162                display_3 = "Detected";
+   \   000222   B240........ MOV.W   #`?<Constant "Detected">`, &display_3
+    163                posL3 = LINE_POS_L1;
+   \   000228   D243....     MOV.B   #0x1, &posL3
+    164                display_4 =  "";
+   \   00022C   B240........ MOV.W   #`?<Constant "">`, &display_4
+    165                posL4 = LINE_POS_L0;
+   \   000232   C243....     MOV.B   #0x0, &posL4
+    166                Display_Process();
+   \   000236   ........     CALLA   #Display_Process
+    167                }
+    168              
+    169            }
+    170            
+    171          }
+   \                     ??Switches_Process_7:
+   \   00023A   1001         RETA
+   \   00023C                REQUIRE _A_PBIN_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Function:">`:
+   \   000000   46756E637469 DC8 "Function:"
+   \            6F6E3A00    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "|> P.Six">`:
+   \   000000   7C3E20502E53 DC8 "|> P.Six"
+   \            697800      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "| HW7">`:
+   \   000000   7C2048573700 DC8 "| HW7"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "| Detect">`:
+   \   000000   7C2044657465 DC8 "| Detect"
+   \            637400      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "| P.Six">`:
+   \   000000   7C20502E5369 DC8 "| P.Six"
+   \            7800        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "|> HW7">`:
+   \   000000   7C3E20485737 DC8 "|> HW7"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "|> Detect">`:
+   \   000000   7C3E20446574 DC8 "|> Detect"
+   \            65637400    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "| Calibr8">`:
+   \   000000   7C2043616C69 DC8 "| Calibr8"
+   \            62723800    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "|> Calibr8">`:
+   \   000000   7C3E2043616C DC8 "|> Calibr8"
+   \            6962723800  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "| P.Five">`:
+   \   000000   7C20502E4669 DC8 "| P.Five"
+   \            766500      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "|> P.Five">`:
+   \   000000   7C3E20502E46 DC8 "|> P.Five"
+   \            69766500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "| P.Four">`:
+   \   000000   7C20502E466F DC8 "| P.Four"
+   \            757200      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "|> P. Four">`:
+   \   000000   7C3E20502E20 DC8 "|> P. Four"
+   \            466F757200  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Detecting:">`:
+   \   000000   446574656374 DC8 "Detecting:"
+   \            696E673A00  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " L: 0xXXX ">`:
+   \   000000   204C3A203078 DC8 " L: 0xXXX "
+   \            5858582000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " R: 0xXXX ">`:
+   \   000000   20523A203078 DC8 " R: 0xXXX "
+   \            5858582000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "No Valid">`:
+   \   000000   4E6F2056616C DC8 "No Valid"
+   \            696400      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Function">`:
+   \   000000   46756E637469 DC8 "Function"
+   \            6F6E00      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Detected">`:
+   \   000000   446574656374 DC8 "Detected"
+   \            656400      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "">`:
+   \   000000   00           DC8 ""
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> Display_Process
+        4   -> Five_msec_Delay
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+      11  ?<Constant " L: 0xXXX ">
+      11  ?<Constant " R: 0xXXX ">
+       1  ?<Constant "">
+       9  ?<Constant "Detected">
+      11  ?<Constant "Detecting:">
+       9  ?<Constant "Function">
+      10  ?<Constant "Function:">
+       9  ?<Constant "No Valid">
+      10  ?<Constant "| Calibr8">
+       9  ?<Constant "| Detect">
+       6  ?<Constant "| HW7">
+       9  ?<Constant "| P.Five">
+       9  ?<Constant "| P.Four">
+       8  ?<Constant "| P.Six">
+      11  ?<Constant "|> Calibr8">
+      10  ?<Constant "|> Detect">
+       7  ?<Constant "|> HW7">
+      11  ?<Constant "|> P. Four">
+      10  ?<Constant "|> P.Five">
+       9  ?<Constant "|> P.Six">
+     572  Switches_Process
+       2  _A_PBIN_L
+
+ 
+ 572 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+ 191 bytes in segment DATA16_C
+ 
+ 572 bytes of CODE  memory
+ 191 bytes of CONST memory
+   0 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

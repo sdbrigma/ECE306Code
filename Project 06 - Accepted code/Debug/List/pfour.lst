@@ -1,0 +1,535 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  17:54:47
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Christopher\Documents\ECE 306\Project_06\pfour.c
+#    Command line  =  
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\pfour.c" -lC
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\List\" -o
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\Obj\"
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "D:\IAR Embedded
+#        Workbench\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small
+#        -On --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\List\pfour.lst
+#    Object file   =  
+#        C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\Obj\pfour.r43
+#
+###############################################################################
+
+C:\Users\Christopher\Documents\ECE 306\Project_06\pfour.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file is used to implement the test code for project 4
+      4          //
+      5          //
+      6          //  Christopher Woedy
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          
+     13          //Points to Header files for Preprocessing
+     14          #include  "msp430.h"
+     15          #include  "functions.h"
+     16          #include  "macros.h"
+     17          
+
+   \                                 In  segment CODE, align 2
+     18          void P_Four_Drive(void){
+   \                     P_Four_Drive:
+     19          //******************************************************************************
+     20          //
+     21          //  Description: This file is used to implement the test code for project 4
+     22          //
+     23          //
+     24          //  Christopher Woedy
+     25          //  Sept 2015
+     26          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     27          //
+     28          // Globals: display_1, display_2, display_3, display_4, posL1, posL2, posL3, 
+     29          // posL4, Time_Sequence, A0_time_count
+     30          //
+     31          // Passed: 
+     32          //
+     33          // Local: i
+     34          //
+     35          // Return: VOID
+     36          //
+     37          //****************************************************************************** 
+     38            
+     39          	// Display GUI
+     40                lcd_BIG_mid();
+   \   000000   ........     CALLA   #lcd_BIG_mid
+     41            
+     42                display_1 = "----------";
+   \   000004   B240........ MOV.W   #`?<Constant "----------">`, &display_1
+     43                posL1 = LINE_POS_L0;
+   \   00000A   C243....     MOV.B   #0x0, &posL1
+     44                display_2 = "FORWARD";
+   \   00000E   B240........ MOV.W   #`?<Constant "FORWARD">`, &display_2
+     45                posL2 = LINE_POS_L2;
+   \   000014   E243....     MOV.B   #0x2, &posL2
+     46                display_3 = "----------";
+   \   000018   B240........ MOV.W   #`?<Constant "----------">`, &display_3
+     47                posL3 = LINE_POS_L0;
+   \   00001E   C243....     MOV.B   #0x0, &posL3
+     48                display_4 =  "";
+   \   000022   B240........ MOV.W   #`?<Constant "">`, &display_4
+     49                posL4 = LINE_POS_L0;
+   \   000028   C243....     MOV.B   #0x0, &posL4
+     50                
+     51                Display_Process();
+   \   00002C   ........     CALLA   #Display_Process
+     52                
+     53                // Initialize
+     54                Right_Forward_Off();
+   \   000030   ........     CALLA   #Right_Forward_Off
+     55                Left_Forward_Off();
+   \   000034   ........     CALLA   #Left_Forward_Off
+     56                Right_Reverse_Off();
+   \   000038   ........     CALLA   #Right_Reverse_Off
+     57                Left_Reverse_Off();
+   \   00003C   ........     CALLA   #Left_Reverse_Off
+     58                
+     59                // Forward  
+     60                Time_Sequence = INITIAL;
+   \   000040   8243....     MOV.W   #0x0, &Time_Sequence
+     61                A0_time_count = INITIAL;
+   \   000044   8243....     MOV.W   #0x0, &A0_time_count
+     62                
+     63            while(A0_time_count <= ONE_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_0:
+   \   000048   B290E903.... CMP.W   #0x3e9, &A0_time_count
+   \   00004E   0B2C         JC      ??P_Four_Drive_10
+     64                
+     65                Left_Forward_On(MOTOR_ENABLE);
+   \   000050   1C43         MOV.W   #0x1, R12
+   \   000052   ........     CALLA   #Left_Forward_On
+     66                Left_Forward_Off();
+   \   000056   ........     CALLA   #Left_Forward_Off
+     67                Right_Forward_On(MOTOR_ENABLE);
+   \   00005A   1C43         MOV.W   #0x1, R12
+   \   00005C   ........     CALLA   #Right_Forward_On
+     68                Right_Forward_Off();
+   \   000060   ........     CALLA   #Right_Forward_Off
+   \   000064   F13F         JMP     ??P_Four_Drive_0
+     69          
+     70              }
+     71            
+     72                // Pause
+     73                display_2 =  "WAIT...";
+   \                     ??P_Four_Drive_10:
+   \   000066   B240........ MOV.W   #`?<Constant "WAIT...">`, &display_2
+     74                Display_Process();
+   \   00006C   ........     CALLA   #Display_Process
+     75                Time_Sequence = INITIAL;
+   \   000070   8243....     MOV.W   #0x0, &Time_Sequence
+     76                A0_time_count = INITIAL;
+   \   000074   8243....     MOV.W   #0x0, &A0_time_count
+     77          
+     78            while(A0_time_count <= HALF_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_1:
+   \   000078   B290F501.... CMP.W   #0x1f5, &A0_time_count
+   \   00007E   092C         JC      ??P_Four_Drive_11
+     79                
+     80                Right_Forward_Off();
+   \   000080   ........     CALLA   #Right_Forward_Off
+     81                Left_Forward_Off();
+   \   000084   ........     CALLA   #Left_Forward_Off
+     82                Right_Reverse_Off();
+   \   000088   ........     CALLA   #Right_Reverse_Off
+     83                Left_Reverse_Off();
+   \   00008C   ........     CALLA   #Left_Reverse_Off
+   \   000090   F33F         JMP     ??P_Four_Drive_1
+     84              }
+     85            
+     86            // Reverse  
+     87                display_2 =  "REVERSE";
+   \                     ??P_Four_Drive_11:
+   \   000092   B240........ MOV.W   #`?<Constant "REVERSE">`, &display_2
+     88                Display_Process();
+   \   000098   ........     CALLA   #Display_Process
+     89                Time_Sequence = INITIAL;
+   \   00009C   8243....     MOV.W   #0x0, &Time_Sequence
+     90                A0_time_count = INITIAL;
+   \   0000A0   8243....     MOV.W   #0x0, &A0_time_count
+     91                
+     92            while(A0_time_count <= TWO_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_2:
+   \   0000A4   B290D107.... CMP.W   #0x7d1, &A0_time_count
+   \   0000AA   0B2C         JC      ??P_Four_Drive_12
+     93                
+     94                Left_Reverse_On(MOTOR_ENABLE);
+   \   0000AC   1C43         MOV.W   #0x1, R12
+   \   0000AE   ........     CALLA   #Left_Reverse_On
+     95                Left_Reverse_Off();
+   \   0000B2   ........     CALLA   #Left_Reverse_Off
+     96                Right_Reverse_On(MOTOR_ENABLE);
+   \   0000B6   1C43         MOV.W   #0x1, R12
+   \   0000B8   ........     CALLA   #Right_Reverse_On
+     97                Right_Reverse_Off();
+   \   0000BC   ........     CALLA   #Right_Reverse_Off
+   \   0000C0   F13F         JMP     ??P_Four_Drive_2
+     98          
+     99              }
+    100            
+    101                // Pause
+    102                display_2 =  "WAIT...";
+   \                     ??P_Four_Drive_12:
+   \   0000C2   B240........ MOV.W   #`?<Constant "WAIT...">`, &display_2
+    103                Display_Process();
+   \   0000C8   ........     CALLA   #Display_Process
+    104                Time_Sequence = INITIAL;
+   \   0000CC   8243....     MOV.W   #0x0, &Time_Sequence
+    105                A0_time_count = INITIAL;
+   \   0000D0   8243....     MOV.W   #0x0, &A0_time_count
+    106            
+    107              while(A0_time_count <= HALF_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_3:
+   \   0000D4   B290F501.... CMP.W   #0x1f5, &A0_time_count
+   \   0000DA   0B2C         JC      ??P_Four_Drive_13
+    108                Right_Forward_Off();
+   \   0000DC   ........     CALLA   #Right_Forward_Off
+    109                Left_Forward_Off();
+   \   0000E0   ........     CALLA   #Left_Forward_Off
+    110                Right_Reverse_Off();
+   \   0000E4   ........     CALLA   #Right_Reverse_Off
+    111                Left_Reverse_Off();
+   \   0000E8   ........     CALLA   #Left_Reverse_Off
+    112                Time_Sequence = INITIAL;
+   \   0000EC   8243....     MOV.W   #0x0, &Time_Sequence
+   \   0000F0   F13F         JMP     ??P_Four_Drive_3
+    113              }
+    114          
+    115              // Forward  
+    116                display_2 =  "FORWARD";
+   \                     ??P_Four_Drive_13:
+   \   0000F2   B240........ MOV.W   #`?<Constant "FORWARD">`, &display_2
+    117                Display_Process();
+   \   0000F8   ........     CALLA   #Display_Process
+    118                Time_Sequence = INITIAL;
+   \   0000FC   8243....     MOV.W   #0x0, &Time_Sequence
+    119                A0_time_count = INITIAL;
+   \   000100   8243....     MOV.W   #0x0, &A0_time_count
+    120            
+    121              while(A0_time_count <= ONE_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_4:
+   \   000104   B290E903.... CMP.W   #0x3e9, &A0_time_count
+   \   00010A   0B2C         JC      ??P_Four_Drive_14
+    122                
+    123                Left_Forward_On(MOTOR_ENABLE);
+   \   00010C   1C43         MOV.W   #0x1, R12
+   \   00010E   ........     CALLA   #Left_Forward_On
+    124                Left_Forward_Off();
+   \   000112   ........     CALLA   #Left_Forward_Off
+    125                Right_Forward_On(MOTOR_ENABLE);
+   \   000116   1C43         MOV.W   #0x1, R12
+   \   000118   ........     CALLA   #Right_Forward_On
+    126                Right_Forward_Off();
+   \   00011C   ........     CALLA   #Right_Forward_Off
+   \   000120   F13F         JMP     ??P_Four_Drive_4
+    127          
+    128              }
+    129          
+    130                // Pause
+    131                display_2 =  "WAIT...";
+   \                     ??P_Four_Drive_14:
+   \   000122   B240........ MOV.W   #`?<Constant "WAIT...">`, &display_2
+    132                Display_Process();
+   \   000128   ........     CALLA   #Display_Process
+    133                Time_Sequence = INITIAL;
+   \   00012C   8243....     MOV.W   #0x0, &Time_Sequence
+    134                A0_time_count = INITIAL;
+   \   000130   8243....     MOV.W   #0x0, &A0_time_count
+    135          
+    136            while(A0_time_count <= HALF_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_5:
+   \   000134   B290F501.... CMP.W   #0x1f5, &A0_time_count
+   \   00013A   092C         JC      ??P_Four_Drive_15
+    137                
+    138                Right_Forward_Off();
+   \   00013C   ........     CALLA   #Right_Forward_Off
+    139                Left_Forward_Off();
+   \   000140   ........     CALLA   #Left_Forward_Off
+    140                Right_Reverse_Off();
+   \   000144   ........     CALLA   #Right_Reverse_Off
+    141                Left_Reverse_Off();
+   \   000148   ........     CALLA   #Left_Reverse_Off
+   \   00014C   F33F         JMP     ??P_Four_Drive_5
+    142              }
+    143          
+    144                // Clockwise  
+    145                display_2 =  "CLOCKWISE";
+   \                     ??P_Four_Drive_15:
+   \   00014E   B240........ MOV.W   #`?<Constant "CLOCKWISE">`, &display_2
+    146                posL2 = LINE_POS_L1;
+   \   000154   D243....     MOV.B   #0x1, &posL2
+    147                Display_Process();
+   \   000158   ........     CALLA   #Display_Process
+    148                Time_Sequence = INITIAL;
+   \   00015C   8243....     MOV.W   #0x0, &Time_Sequence
+    149                A0_time_count = INITIAL;
+   \   000160   8243....     MOV.W   #0x0, &A0_time_count
+    150            
+    151              while(A0_time_count <= ONE_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_6:
+   \   000164   B290E903.... CMP.W   #0x3e9, &A0_time_count
+   \   00016A   0B2C         JC      ??P_Four_Drive_16
+    152                
+    153                Left_Forward_On(MOTOR_ENABLE);
+   \   00016C   1C43         MOV.W   #0x1, R12
+   \   00016E   ........     CALLA   #Left_Forward_On
+    154                Left_Forward_Off();
+   \   000172   ........     CALLA   #Left_Forward_Off
+    155                Right_Reverse_On(MOTOR_ENABLE);
+   \   000176   1C43         MOV.W   #0x1, R12
+   \   000178   ........     CALLA   #Right_Reverse_On
+    156                Right_Reverse_Off();
+   \   00017C   ........     CALLA   #Right_Reverse_Off
+   \   000180   F13F         JMP     ??P_Four_Drive_6
+    157          
+    158              }
+    159          
+    160                // Pause
+    161                display_2 =  "WAIT...";
+   \                     ??P_Four_Drive_16:
+   \   000182   B240........ MOV.W   #`?<Constant "WAIT...">`, &display_2
+    162                Display_Process();
+   \   000188   ........     CALLA   #Display_Process
+    163                Time_Sequence = INITIAL;
+   \   00018C   8243....     MOV.W   #0x0, &Time_Sequence
+    164                A0_time_count = INITIAL;
+   \   000190   8243....     MOV.W   #0x0, &A0_time_count
+    165          
+    166            while(A0_time_count <= HALF_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_7:
+   \   000194   B290F501.... CMP.W   #0x1f5, &A0_time_count
+   \   00019A   092C         JC      ??P_Four_Drive_17
+    167                
+    168                Right_Forward_Off();
+   \   00019C   ........     CALLA   #Right_Forward_Off
+    169                Left_Forward_Off();
+   \   0001A0   ........     CALLA   #Left_Forward_Off
+    170                Right_Reverse_Off();
+   \   0001A4   ........     CALLA   #Right_Reverse_Off
+    171                Left_Reverse_Off();
+   \   0001A8   ........     CALLA   #Left_Reverse_Off
+   \   0001AC   F33F         JMP     ??P_Four_Drive_7
+    172              }
+    173            
+    174            
+    175                // Counter-clockwise  
+    176                display_1 =  "COUNTER";
+   \                     ??P_Four_Drive_17:
+   \   0001AE   B240........ MOV.W   #`?<Constant "COUNTER">`, &display_1
+    177                posL1 = LINE_POS_L2;
+   \   0001B4   E243....     MOV.B   #0x2, &posL1
+    178                display_2 =  "CLOCKWISE";
+   \   0001B8   B240........ MOV.W   #`?<Constant "CLOCKWISE">`, &display_2
+    179                posL2 = LINE_POS_L1;
+   \   0001BE   D243....     MOV.B   #0x1, &posL2
+    180                Display_Process();
+   \   0001C2   ........     CALLA   #Display_Process
+    181                Time_Sequence = INITIAL;
+   \   0001C6   8243....     MOV.W   #0x0, &Time_Sequence
+    182                A0_time_count = INITIAL;
+   \   0001CA   8243....     MOV.W   #0x0, &A0_time_count
+    183            
+    184              while(A0_time_count <= ONE_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_8:
+   \   0001CE   B290E903.... CMP.W   #0x3e9, &A0_time_count
+   \   0001D4   0B2C         JC      ??P_Four_Drive_18
+    185                
+    186                Left_Reverse_On(MOTOR_ENABLE);
+   \   0001D6   1C43         MOV.W   #0x1, R12
+   \   0001D8   ........     CALLA   #Left_Reverse_On
+    187                Left_Reverse_Off();
+   \   0001DC   ........     CALLA   #Left_Reverse_Off
+    188                Right_Forward_On(MOTOR_ENABLE);
+   \   0001E0   1C43         MOV.W   #0x1, R12
+   \   0001E2   ........     CALLA   #Right_Forward_On
+    189                Right_Forward_Off();
+   \   0001E6   ........     CALLA   #Right_Forward_Off
+   \   0001EA   F13F         JMP     ??P_Four_Drive_8
+    190          
+    191              }
+    192          
+    193                // Pause
+    194                display_1 =  "----------";
+   \                     ??P_Four_Drive_18:
+   \   0001EC   B240........ MOV.W   #`?<Constant "----------">`, &display_1
+    195                posL1 = LINE_POS_L0;
+   \   0001F2   C243....     MOV.B   #0x0, &posL1
+    196                display_2 =  "WAIT...";
+   \   0001F6   B240........ MOV.W   #`?<Constant "WAIT...">`, &display_2
+    197                Display_Process();
+   \   0001FC   ........     CALLA   #Display_Process
+    198                Time_Sequence = INITIAL;
+   \   000200   8243....     MOV.W   #0x0, &Time_Sequence
+    199                A0_time_count = INITIAL;
+   \   000204   8243....     MOV.W   #0x0, &A0_time_count
+    200          
+    201            while(A0_time_count <= HALF_SEC_COUNT) {                            
+   \                     ??P_Four_Drive_9:
+   \   000208   B290F501.... CMP.W   #0x1f5, &A0_time_count
+   \   00020E   092C         JC      ??P_Four_Drive_19
+    202                
+    203                Right_Forward_Off();
+   \   000210   ........     CALLA   #Right_Forward_Off
+    204                Left_Forward_Off();
+   \   000214   ........     CALLA   #Left_Forward_Off
+    205                Right_Reverse_Off();
+   \   000218   ........     CALLA   #Right_Reverse_Off
+    206                Left_Reverse_Off();
+   \   00021C   ........     CALLA   #Left_Reverse_Off
+   \   000220   F33F         JMP     ??P_Four_Drive_9
+    207              }
+    208              
+    209          	// Finalize Function
+    210                Time_Sequence = INITIAL;
+   \                     ??P_Four_Drive_19:
+   \   000222   8243....     MOV.W   #0x0, &Time_Sequence
+    211                Right_Forward_Off();
+   \   000226   ........     CALLA   #Right_Forward_Off
+    212                Left_Forward_Off();
+   \   00022A   ........     CALLA   #Left_Forward_Off
+    213                Right_Reverse_Off();
+   \   00022E   ........     CALLA   #Right_Reverse_Off
+    214                Left_Reverse_Off();
+   \   000232   ........     CALLA   #Left_Reverse_Off
+    215                
+    216                display_1 = "P. Four";
+   \   000236   B240........ MOV.W   #`?<Constant "P. Four">`, &display_1
+    217                posL1 = LINE_POS_L2;
+   \   00023C   E243....     MOV.B   #0x2, &posL1
+    218                display_2 = "Complete!";
+   \   000240   B240........ MOV.W   #`?<Constant "Complete!">`, &display_2
+    219                posL2 = LINE_POS_L1;
+   \   000246   D243....     MOV.B   #0x1, &posL2
+    220                display_3 = "Push";
+   \   00024A   B240........ MOV.W   #`?<Constant "Push">`, &display_3
+    221                posL3 = LINE_POS_L3;
+   \   000250   F2400300.... MOV.B   #0x3, &posL3
+    222                display_4 =  "Select";
+   \   000256   B240........ MOV.W   #`?<Constant "Select">`, &display_4
+    223                posL4 = LINE_POS_L2;
+   \   00025C   E243....     MOV.B   #0x2, &posL4
+    224          
+    225                lcd_4line();      
+   \   000260   ........     CALLA   #lcd_4line
+    226                Display_Process();
+   \   000264   ........     BRA     #Display_Process
+    227                
+    228          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "----------">`:
+   \   000000   2D2D2D2D2D2D DC8 "----------"
+   \            2D2D2D2D00  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "FORWARD">`:
+   \   000000   464F52574152 DC8 "FORWARD"
+   \            4400        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "">`:
+   \   000000   00           DC8 ""
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "WAIT...">`:
+   \   000000   574149542E2E DC8 "WAIT..."
+   \            2E00        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "REVERSE">`:
+   \   000000   524556455253 DC8 "REVERSE"
+   \            4500        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "CLOCKWISE">`:
+   \   000000   434C4F434B57 DC8 "CLOCKWISE"
+   \            49534500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "COUNTER">`:
+   \   000000   434F554E5445 DC8 "COUNTER"
+   \            5200        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "P. Four">`:
+   \   000000   502E20466F75 DC8 "P. Four"
+   \            7200        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Complete!">`:
+   \   000000   436F6D706C65 DC8 "Complete!"
+   \            74652100    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Push">`:
+   \   000000   5075736800   DC8 "Push"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Select">`:
+   \   000000   53656C656374 DC8 "Select"
+   \            00          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   P_Four_Drive
+        0   -> Display_Process
+        4   -> Display_Process
+        4   -> Left_Forward_Off
+        4   -> Left_Forward_On
+        4   -> Left_Reverse_Off
+        4   -> Left_Reverse_On
+        4   -> Right_Forward_Off
+        4   -> Right_Forward_On
+        4   -> Right_Reverse_Off
+        4   -> Right_Reverse_On
+        4   -> lcd_4line
+        4   -> lcd_BIG_mid
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       1  ?<Constant "">
+      11  ?<Constant "----------">
+      10  ?<Constant "CLOCKWISE">
+       8  ?<Constant "COUNTER">
+      10  ?<Constant "Complete!">
+       8  ?<Constant "FORWARD">
+       8  ?<Constant "P. Four">
+       5  ?<Constant "Push">
+       8  ?<Constant "REVERSE">
+       7  ?<Constant "Select">
+       8  ?<Constant "WAIT...">
+     616  P_Four_Drive
+
+ 
+ 616 bytes in segment CODE
+  84 bytes in segment DATA16_C
+ 
+ 616 bytes of CODE  memory
+  84 bytes of CONST memory
+
+Errors: none
+Warnings: none

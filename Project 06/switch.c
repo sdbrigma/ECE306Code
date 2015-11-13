@@ -25,6 +25,7 @@ void Switches_Process(void){
   //const char HW8_String[] = "NCSU  #1  ";
   if (!(P4IN & SW1)){ // Transmission at 9600 baud    
   count(0x007E); // tilde reset
+  Five_msec_Delay(20);
     display_1 = "    000    ";
     posL1 = ZERO;
     display_2 = "          ";
@@ -36,7 +37,8 @@ void Switches_Process(void){
     Display_Process();
   }
   if (!(P4IN & SW2)) {
-    display_1 = "    000    ";
+    Five_msec_Delay(35);
+    display_1 = "    000   ";
     posL1 = ZERO;
     display_2 = "          ";
     posL2 = ZERO;

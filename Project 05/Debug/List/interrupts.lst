@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           21/Oct/2015  12:44:05
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  14:27:33
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -66,6 +66,11 @@
    \                                 In  segment DATA16_AN, at 0x352
    \   unsigned short volatile TA0CCR0
    \                     TA0CCR0:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5de
+   \   unsigned short volatile UCA0IV
+   \                     UCA0IV:
    \   000000                DS8 2
       3          #include  "functions.h"
       4          /*******************************************************************************
@@ -153,12 +158,12 @@
    \   000002   1F421E07     MOV.W   &0x71e, R15
    \   000006   E00F         ADDA    R15, PC
    \                     `?<Jumptable for ADC10_ISR>_0`:
-   \   000008   2A3C         JMP     ??ADC10_ISR_1
-   \   00000A   293C         JMP     ??ADC10_ISR_1
-   \   00000C   283C         JMP     ??ADC10_ISR_1
-   \   00000E   273C         JMP     ??ADC10_ISR_1
-   \   000010   263C         JMP     ??ADC10_ISR_1
-   \   000012   253C         JMP     ??ADC10_ISR_1
+   \   000008   2C3C         JMP     ??ADC10_ISR_1
+   \   00000A   2B3C         JMP     ??ADC10_ISR_1
+   \   00000C   2A3C         JMP     ??ADC10_ISR_1
+   \   00000E   293C         JMP     ??ADC10_ISR_1
+   \   000010   283C         JMP     ??ADC10_ISR_1
+   \   000012   273C         JMP     ??ADC10_ISR_1
    \   000014   003C         JMP     ??ADC10_ISR_5
      64           case 0: break; // No interrupt
      65           case 2: break; // conversion result overflow
@@ -180,17 +185,17 @@
    \   000024   0B24         JEQ     ??ADC10_ISR_3
    \   000026   1F83         SUB.W   #0x1, R15
    \   000028   1124         JEQ     ??ADC10_ISR_4
-   \   00002A   163C         JMP     ??ADC10_ISR_0
+   \   00002A   183C         JMP     ??ADC10_ISR_0
      75               case Right_Detector:
      76               ADC10MCTL0 = ADC10INCH_0; //  channel A0
    \                     ??ADC10_ISR_2:
    \   00002C   82430A07     MOV.W   #0x0, &0x70a
      77               ADC_Right_Detector = ADC10MEM0; // Read Channel A0
    \   000030   92421207.... MOV.W   &0x712, &ADC_Right_Detector
-     78               ADC_Channel++;
-   \   000036   9253....     ADD.W   #0x1, &ADC_Channel
+     78               ADC_Channel = ZERO;
+   \   000036   8243....     MOV.W   #0x0, &ADC_Channel
      79               break;
-   \   00003A   0E3C         JMP     ??ADC10_ISR_0
+   \   00003A   103C         JMP     ??ADC10_ISR_0
      80               
      81               case Left_Detector:
      82               ADC10MCTL0 = ADC10INCH_1; //  channel A1
@@ -201,7 +206,7 @@
      84               ADC_Channel = ZERO;
    \   000046   8243....     MOV.W   #0x0, &ADC_Channel
      85               break;
-   \   00004A   063C         JMP     ??ADC10_ISR_0
+   \   00004A   083C         JMP     ??ADC10_ISR_0
      86               
      87               case Thumbwheel:
      88               ADC10MCTL0 = ADC10INCH_3; // Next channel A0
@@ -209,7 +214,8 @@
    \   00004C   B24003000A07 MOV.W   #0x3, &0x70a
      89               ADC_Thumb = ADC10MEM0; // Read Channel A3
    \   000052   92421207.... MOV.W   &0x712, &ADC_Thumb
-     90               //ADC_Channel = ZERO;
+     90               ADC_Channel = ZERO;
+   \   000058   8243....     MOV.W   #0x0, &ADC_Channel
      91               break;
      92               
      93               /*case CHANNEL_A10:
@@ -228,17 +234,50 @@
     106               }
     107             ADC10CTL0 |= ADC10ENC | ADC10SC; // Start next sample.
    \                     ??ADC10_ISR_0:
-   \   000058   B2D003000007 BIS.W   #0x3, &0x700
+   \   00005C   B2D003000007 BIS.W   #0x3, &0x700
     108           default: break;
     109             }
     110          }
    \                     ??ADC10_ISR_1:
-   \   00005E   3F41         POP.W   R15
-   \   000060   0013         RETI
-   \   000062                REQUIRE _A_ADC10CTL0_L
-   \   000062                REQUIRE _A_ADC10MCTL0_L
-   \   000062                REQUIRE _A_ADC10MEM0_L
-   \   000062                REQUIRE _A_ADC10IV_L
+   \   000062   3F41         POP.W   R15
+   \   000064   0013         RETI
+   \   000066                REQUIRE _A_ADC10CTL0_L
+   \   000066                REQUIRE _A_ADC10MCTL0_L
+   \   000066                REQUIRE _A_ADC10MEM0_L
+   \   000066                REQUIRE _A_ADC10IV_L
+    111          //-----------------------------------------------------------------------------
+    112          
+    113          //------------------------------------------------------------------------------
+    114          #pragma vector=USCI_A0_VECTOR
+
+   \                                 In  segment ISR_CODE, align 2
+    115          __interrupt void USCI_A0_ISR(void){
+   \                     USCI_A0_ISR:
+   \   000000   0F12         PUSH.W  R15
+    116           switch(__even_in_range(UCA0IV,0x08)){
+   \   000002   1F42DE05     MOV.W   &0x5de, R15
+   \   000006   E00F         ADDA    R15, PC
+   \                     `?<Jumptable for USCI_A0_ISR>_0`:
+   \   000008   043C         JMP     ??USCI_A0_ISR_1
+   \   00000A   033C         JMP     ??USCI_A0_ISR_1
+   \   00000C   023C         JMP     ??USCI_A0_ISR_1
+   \   00000E   013C         JMP     ??USCI_A0_ISR_1
+   \   000010   003C         JMP     ??USCI_A0_ISR_1
+    117           case 0: // Vector 0 - no interrupt
+    118           break;
+    119           case 2: // Vector 2 – RXIFG
+    120          // code for Receive
+    121           break;
+    122           case 4: // Vector 4 – TXIFG
+    123          // Code for Transmit
+    124           break;
+    125           default: break;
+    126           }
+    127          }
+   \                     ??USCI_A0_ISR_1:
+   \   000012   3F41         POP.W   R15
+   \   000014   0013         RETI
+   \   000016                REQUIRE UCA0IV
 
    \                                 In  segment INTVEC, offset 0x5a, root
    \                     `??Timer0_A0_ISR::??INTVEC 90`:
@@ -247,7 +286,11 @@
    \                                 In  segment INTVEC, offset 0x5c, root
    \                     `??ADC10_ISR::??INTVEC 92`:
    \   00005C   ....         DC16    ADC10_ISR
-    111          //-----------------------------------------------------------------------------
+
+   \                                 In  segment INTVEC, offset 0x60, root
+   \                     `??USCI_A0_ISR::??INTVEC 96`:
+   \   000060   ....         DC16    USCI_A0_ISR
+    128          //------------------------------------------------------------------------------
 
    Maximum stack usage in bytes:
 
@@ -255,18 +298,22 @@
    ------ --------
       6   ADC10_ISR
       4   Timer0_A0_ISR
+      6   USCI_A0_ISR
 
 
    Segment part sizes:
 
    Bytes  Function/Label
    -----  --------------
-      98  ADC10_ISR
+     102  ADC10_ISR
        2  ADC10_ISR::??INTVEC 92
        2  ADC_Thumb
        2  TA0CCR0
       28  Timer0_A0_ISR
        2  Timer0_A0_ISR::??INTVEC 90
+       2  UCA0IV
+      22  USCI_A0_ISR
+       2  USCI_A0_ISR::??INTVEC 96
        2  _A_ADC10CTL0_L
        2  _A_ADC10IV_L
        2  _A_ADC10MCTL0_L
@@ -274,14 +321,14 @@
        2  _A_PJOUT_L
 
  
-  12 bytes in segment DATA16_AN
+  14 bytes in segment DATA16_AN
    2 bytes in segment DATA16_Z
-   4 bytes in segment INTVEC
- 126 bytes in segment ISR_CODE
+   6 bytes in segment INTVEC
+ 152 bytes in segment ISR_CODE
  
- 126 bytes of CODE  memory
-   0 bytes of CONST memory (+  4 bytes shared)
-   2 bytes of DATA  memory (+ 12 bytes shared)
+ 152 bytes of CODE  memory
+   0 bytes of CONST memory (+  6 bytes shared)
+   2 bytes of DATA  memory (+ 14 bytes shared)
 
 Errors: none
 Warnings: none

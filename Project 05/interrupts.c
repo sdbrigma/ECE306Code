@@ -75,7 +75,7 @@ __interrupt void ADC10_ISR(void){
      case Right_Detector:
      ADC10MCTL0 = ADC10INCH_0; //  channel A0
      ADC_Right_Detector = ADC10MEM0; // Read Channel A0
-     ADC_Channel++;
+     ADC_Channel = ZERO;
      break;
      
      case Left_Detector:
@@ -87,7 +87,7 @@ __interrupt void ADC10_ISR(void){
      case Thumbwheel:
      ADC10MCTL0 = ADC10INCH_3; // Next channel A0
      ADC_Thumb = ADC10MEM0; // Read Channel A3
-     //ADC_Channel = ZERO;
+     ADC_Channel = ZERO;
      break;
      
      /*case CHANNEL_A10:
@@ -113,7 +113,6 @@ __interrupt void ADC10_ISR(void){
 //------------------------------------------------------------------------------
 #pragma vector=USCI_A0_VECTOR
 __interrupt void USCI_A0_ISR(void){
- unsigned int temp;
  switch(__even_in_range(UCA0IV,0x08)){
  case 0: // Vector 0 - no interrupt
  break;

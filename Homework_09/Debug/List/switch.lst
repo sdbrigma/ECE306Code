@@ -1,0 +1,300 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  15:26:51
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_09\switch.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_09\switch.c"
+#        -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\List\" -o
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\List\switch.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\Obj\switch.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_09\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains code for the switches prcesses function.
+      4          //   
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          // Includes
+     13          #include  "macros.h"
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+
+   \                                 In  segment CODE, align 2
+     16          void Switches_Process(void){
+   \                     Switches_Process:
+     17          //******************************************************************************
+     18          //
+     19          //  Description: This functions sets code for switch 1 and 2 upon being pressed
+     20          //
+     21          //  Steffon Brigman
+     22          //  Sept 2015
+     23          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+     24          //******************************************************************************
+     25            if (!(P4IN & SW1)){ 
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   562C         JC      ??Switches_Process_3
+     26              ADC_Process();
+   \   000006   ........     CALLA   #ADC_Process
+     27              display_1 = "          ";
+   \   00000A   B240........ MOV.W   #`?<Constant "          ">`, &display_1
+     28              posL1 = ZERO;
+   \   000010   C243....     MOV.B   #0x0, &posL1
+     29              display_2 = "          ";
+   \   000014   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+     30              posL2 = ZERO;
+   \   00001A   C243....     MOV.B   #0x0, &posL2
+     31              display_3 = "          ";
+   \   00001E   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+     32              posL3 = ZERO;
+   \   000024   C243....     MOV.B   #0x0, &posL3
+     33              display_4 = "          ";
+   \   000028   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     34              posL4 = ZERO;
+   \   00002E   C243....     MOV.B   #0x0, &posL4
+     35              while(ALWAYS){
+     36                if (!(P4IN & SW2)){break;}
+   \                     ??Switches_Process_0:
+   \   000032   E2B32102     BIT.B   #0x2, &0x221
+   \   000036   3D28         JNC     ??Switches_Process_3
+     37                ADC_Process(); // read ADC value for thumbwheel
+   \   000038   ........     CALLA   #ADC_Process
+     38                if(ADC_Thumb <= 340){// Divides range of ADC values into three for main menu
+   \   00003C   B2905501.... CMP.W   #0x155, &ADC_Thumb
+   \   000042   222C         JC      ??Switches_Process_5
+     39                  display_1 = "Resistors"; 
+   \   000044   B240........ MOV.W   #`?<Constant "Resistors">`, &display_1
+     40                  posL1 = ZERO;
+   \   00004A   C243....     MOV.B   #0x0, &posL1
+     41                  //Display_Process();
+     42                  ADC_Process();
+   \   00004E   ........     CALLA   #ADC_Process
+     43                  
+     44                  // RESISTOR CODES
+     45                  if(!(P4IN & SW1)){
+   \   000052   D2B32102     BIT.B   #0x1, &0x221
+   \   000056   ED2F         JC      ??Switches_Process_0
+     46                    ClrDisplay();
+   \   000058   ........     CALLA   #ClrDisplay
+     47                    display_1 = "Color";
+   \   00005C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     48                    posL1 = 3;
+   \   000062   F2400300.... MOV.B   #0x3, &posL1
+     49                    display_3 = "Value";
+   \   000068   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     50                    posL3 = 3;
+   \   00006E   F2400300.... MOV.B   #0x3, &posL3
+     51                    while(ALWAYS){
+     52                      if (!(P4IN & SW1)){break;}
+   \                     ??Switches_Process_1:
+   \   000074   D2B32102     BIT.B   #0x1, &0x221
+   \   000078   DC2B         JNC     ??Switches_Process_0
+     53                      ADC_Process();
+   \   00007A   ........     CALLA   #ADC_Process
+     54                      getResistorMenu(ADC_Thumb);
+   \   00007E   1C42....     MOV.W   &ADC_Thumb, R12
+   \   000082   ........     CALLA   #getResistorMenu
+   \   000086   F63F         JMP     ??Switches_Process_1
+     55                    }
+     56                  }
+     57                } 
+     58                
+     59                else if(ADC_Thumb >= 681){ // this range the last third of the full range of values for the ADC
+   \                     ??Switches_Process_5:
+   \   000088   B290A902.... CMP.W   #0x2a9, &ADC_Thumb
+   \   00008E   0928         JNC     ??Switches_Process_6
+     60                  display_1 = "Song";
+   \   000090   B240........ MOV.W   #`?<Constant "Song">`, &display_1
+     61                  posL1 = 3;  
+   \   000096   F2400300.... MOV.B   #0x3, &posL1
+     62                  //Display_Process();
+     63                  ADC_Process();
+   \   00009C   ........     CALLA   #ADC_Process
+   \   0000A0   C83F         JMP     ??Switches_Process_0
+     64                }
+     65                
+     66                else{ // If it's not in the lower or upper third it's in the middle
+     67                  display_1 = "Shapes";
+   \                     ??Switches_Process_6:
+   \   0000A2   B240........ MOV.W   #`?<Constant "Shapes">`, &display_1
+     68                  posL1 = 2;
+   \   0000A8   E243....     MOV.B   #0x2, &posL1
+     69                  //Display_Process();
+     70                  ADC_Process();
+   \   0000AC   ........     CALLA   #ADC_Process
+   \   0000B0   C03F         JMP     ??Switches_Process_0
+     71                }
+     72              }
+     73              
+     74              
+     75                /*while(ALWAYS){
+     76                  if (!(P4IN & SW2)) { break; }
+     77                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
+     78                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
+     79                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
+     80                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
+     81                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
+     82                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
+     83                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
+     84                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
+     85                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
+     86                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
+     87                  display_1[LINE_POS_L0] = UCA1RXBUF;
+     88                  posL1 = ZERO;
+     89                  display_2 = "          ";
+     90                  posL2 = ZERO;
+     91                  display_3 = " Baud Rate";
+     92                  posL3 = ZERO;
+     93                  display_4 = "  9600  ";
+     94                  posL4 = ZERO;
+     95                  Display_Process();
+     96                  Five_msec_Delay(transmit_delay);
+     97                }*/
+     98            }
+     99            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_3:
+   \   0000B2   E2B32102     BIT.B   #0x2, &0x221
+   \   0000B6   152C         JC      ??Switches_Process_7
+    100            display_1 = "NCSU";
+   \   0000B8   B240........ MOV.W   #`?<Constant "NCSU">`, &display_1
+    101            posL1 = SW1_posL1;
+   \   0000BE   F2400300.... MOV.B   #0x3, &posL1
+    102            display_2 = "WOLFPACK";
+   \   0000C4   B240........ MOV.W   #`?<Constant "WOLFPACK">`, &display_2
+    103            posL2 = SW1_posL2;
+   \   0000CA   D243....     MOV.B   #0x1, &posL2
+    104            display_3 = "ECE306";
+   \   0000CE   B240........ MOV.W   #`?<Constant "ECE306">`, &display_3
+    105            posL3 = SW1_posL3;
+   \   0000D4   E243....     MOV.B   #0x2, &posL3
+    106            display_4 = "S Brigman";
+   \   0000D8   B240........ MOV.W   #`?<Constant "S Brigman">`, &display_4
+    107            posL4 = SW1_posL4;
+   \   0000DE   D243....     MOV.B   #0x1, &posL4
+    108          }
+    109          //------------------------------------------------------------------------------
+    110          }
+   \                     ??Switches_Process_7:
+   \   0000E2   1001         RETA
+   \   0000E4                REQUIRE _A_PBIN_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Resistors">`:
+   \   000000   526573697374 DC8 "Resistors"
+   \            6F727300    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Color">`:
+   \   000000   436F6C6F7200 DC8 "Color"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Value">`:
+   \   000000   56616C756500 DC8 "Value"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Song">`:
+   \   000000   536F6E6700   DC8 "Song"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Shapes">`:
+   \   000000   536861706573 DC8 "Shapes"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "NCSU">`:
+   \   000000   4E43535500   DC8 "NCSU"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "WOLFPACK">`:
+   \   000000   574F4C465041 DC8 "WOLFPACK"
+   \            434B00      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "ECE306">`:
+   \   000000   454345333036 DC8 "ECE306"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "S Brigman">`:
+   \   000000   532042726967 DC8 "S Brigman"
+   \            6D616E00    
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> ADC_Process
+        4   -> ClrDisplay
+        4   -> getResistorMenu
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+       6  ?<Constant "Color">
+       7  ?<Constant "ECE306">
+       5  ?<Constant "NCSU">
+      10  ?<Constant "Resistors">
+      10  ?<Constant "S Brigman">
+       7  ?<Constant "Shapes">
+       5  ?<Constant "Song">
+       6  ?<Constant "Value">
+       9  ?<Constant "WOLFPACK">
+     228  Switches_Process
+       2  _A_PBIN_L
+
+ 
+ 228 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  76 bytes in segment DATA16_C
+ 
+ 228 bytes of CODE  memory
+  76 bytes of CONST memory
+   0 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

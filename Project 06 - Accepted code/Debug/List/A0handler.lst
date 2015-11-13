@@ -1,0 +1,125 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           02/Nov/2015  17:54:44
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Christopher\Documents\ECE 306\Project_06\A0handler.c
+#    Command line  =  
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\A0handler.c" -lC
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\List\" -o
+#        "C:\Users\Christopher\Documents\ECE 306\Project_06\Debug\Obj\"
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "D:\IAR Embedded
+#        Workbench\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small
+#        -On --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Christopher\Documents\ECE
+#        306\Project_06\Debug\List\A0handler.lst
+#    Object file   =  
+#        C:\Users\Christopher\Documents\ECE
+#        306\Project_06\Debug\Obj\A0handler.r43
+#
+###############################################################################
+
+C:\Users\Christopher\Documents\ECE 306\Project_06\A0handler.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: Handles interrupts from the A0 Timer
+      4          //
+      5          //
+      6          //  Christopher Woedy
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+      9          //******************************************************************************
+     10          
+     11          //Points to Header files for Preprocessing
+     12          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x352
+   \   unsigned short volatile TA0CCR0
+   \                     TA0CCR0:
+   \   000000                DS8 2
+     13          #include  "functions.h"
+     14          #include  "macros.h"
+     15          
+     16          #pragma vector = TIMER0_A0_VECTOR
+
+   \                                 In  segment ISR_CODE, align 2
+     17          __interrupt void Timer_A0_ISR(void){
+   \                     Timer_A0_ISR:
+     18          //******************************************************************************
+     19          //
+     20          //  Description: Handles interrupts from the A0 Timer
+     21          //
+     22          //
+     23          //  Christopher Woedy
+     24          //  Sept 2015
+     25          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     26          //
+     27          // Globals: A0_time_count
+     28          //
+     29          // Passed:
+     30          //
+     31          // Local:
+     32          //
+     33          // Return: VOID
+     34          //
+     35          //****************************************************************************** 
+     36          
+     37          if (A0_time_count >= TEN_SEC_COUNT) {
+   \   000000   B2901027.... CMP.W   #0x2710, &A0_time_count
+   \   000006   0228         JNC     ??Timer_A0_ISR_0
+     38            A0_time_count = INITIAL;               // Reset A0 Time Count
+   \   000008   8243....     MOV.W   #0x0, &A0_time_count
+     39          }
+     40          
+     41          A0_time_count++;                         // Increment A0 Time Counter
+   \                     ??Timer_A0_ISR_0:
+   \   00000C   9253....     ADD.W   #0x1, &A0_time_count
+     42          TA0CCR0 += TA0CCR0_INTERVAL;             // Increment CCR0 Register
+   \   000010   B2507D005203 ADD.W   #0x7d, &0x352
+     43          
+     44          }
+   \   000016   0013         RETI
+   \   000018                REQUIRE TA0CCR0
+
+   \                                 In  segment INTVEC, offset 0x5a, root
+   \                     `??Timer_A0_ISR::??INTVEC 90`:
+   \   00005A   ....         DC16    Timer_A0_ISR
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Timer_A0_ISR
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  TA0CCR0
+      24  Timer_A0_ISR
+       2  Timer_A0_ISR::??INTVEC 90
+
+ 
+  2 bytes in segment DATA16_AN
+  2 bytes in segment INTVEC
+ 24 bytes in segment ISR_CODE
+ 
+ 24 bytes of CODE  memory
+  0 bytes of CONST memory (+ 2 bytes shared)
+  0 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none
