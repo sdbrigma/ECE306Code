@@ -4,8 +4,8 @@
 #include  "functions.h"
 
 void getResistorMenu(unsigned int adc_value){
-  adc_value = adc_value >> 6; // shift 10 bit value by 6 bits
-    if(adc_value <= MENU1){
+  char value = adc_value >> 6; // shift 10 bit value by 6 bits
+    if(value <= MENU1){
       display_1 = "Color";
       posL1 = LINE_POS_L3;
       display_3 = "Value";
@@ -16,7 +16,7 @@ void getResistorMenu(unsigned int adc_value){
       posL4 = LINE_POS_L5;
       ADC_Process();
     }
-  else if((adc_value <= MENU2) && (adc_value > MENU1)){
+  else if(value == MENU2){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";
@@ -27,7 +27,7 @@ void getResistorMenu(unsigned int adc_value){
     posL4 = LINE_POS_L5;
     ADC_Process();
   }
-  else if((adc_value <= MENU3) && (adc_value > MENU2)){
+  else if(value == MENU3){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";
@@ -38,7 +38,7 @@ void getResistorMenu(unsigned int adc_value){
     posL4 = LINE_POS_L5;
     ADC_Process();
   }
-  else if((adc_value <= MENU4) && (adc_value > MENU3)){
+  else if(value == MENU4){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";
@@ -49,7 +49,7 @@ void getResistorMenu(unsigned int adc_value){
     posL4 = LINE_POS_L5;
     ADC_Process();
   }
-  else if((adc_value <= MENU5) && (adc_value > MENU4)){
+  else if(value == MENU5){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";
@@ -60,7 +60,7 @@ void getResistorMenu(unsigned int adc_value){
     posL4 = LINE_POS_L5;
     ADC_Process();
   }
-  else if((adc_value <= MENU6) && (adc_value > MENU5)){
+  else if(value == MENU6){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";
@@ -71,7 +71,7 @@ void getResistorMenu(unsigned int adc_value){
     posL4 = LINE_POS_L5;
     ADC_Process();
   }
-  else if((adc_value <= MENU7) && (adc_value > MENU6)){
+  else if(value == MENU7){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";
@@ -82,7 +82,7 @@ void getResistorMenu(unsigned int adc_value){
     posL4 = LINE_POS_L5;
     ADC_Process();
   }
-  else if((adc_value <= MENU8) && (adc_value > MENU9)){
+  else if(value == MENU8){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";
@@ -93,7 +93,7 @@ void getResistorMenu(unsigned int adc_value){
     posL4 = LINE_POS_L5;
     ADC_Process();
   }
-  else if((adc_value <= MENU9) && (adc_value > MENU8)){
+  else if(value == MENU9){
     display_1 = "Color";
     posL1 = LINE_POS_L3;
     display_3 = "Value";

@@ -39,9 +39,9 @@ void Switches_Process(void){
         ADC_Process();
         
         // RESISTOR CODES
-        if(!(P4IN & SW2)){
+        if(!(P4IN & SW1)){
           while(ALWAYS){
-            if (!(P4IN & SW1)){break;}
+            if (!(P4IN & SW2)){break;}
             ADC_Process();
             getResistorMenu(ADC_Thumb);
           }
