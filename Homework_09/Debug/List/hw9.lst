@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  15:42:33
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  16:17:43
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -49,236 +49,262 @@
       7            adc_value = adc_value >> 6; // shift 10 bit value by 6 bits
    \   000004                RPT     #0x6
    \   000004   45190A10     RRUX.W  R10
-      8            switch(adc_value){
-   \   000008   0F4A         MOV.W   R10, R15
-   \   00000A   1F83         SUB.W   #0x1, R15
-   \   00000C   1324         JEQ     ??getResistorMenu_0
-   \   00000E   1F83         SUB.W   #0x1, R15
-   \   000010   2B24         JEQ     ??getResistorMenu_1
-   \   000012   1F83         SUB.W   #0x1, R15
-   \   000014   4324         JEQ     ??getResistorMenu_2
-   \   000016   1F83         SUB.W   #0x1, R15
-   \   000018   5A24         JEQ     ??getResistorMenu_3
-   \   00001A   1F83         SUB.W   #0x1, R15
-   \   00001C   7124         JEQ     ??getResistorMenu_4
-   \   00001E   1F83         SUB.W   #0x1, R15
-   \   000020   8824         JEQ     ??getResistorMenu_5
-   \   000022   1F83         SUB.W   #0x1, R15
-   \   000024   A024         JEQ     ??getResistorMenu_6
-   \   000026   1F83         SUB.W   #0x1, R15
-   \   000028   B824         JEQ     ??getResistorMenu_7
-   \   00002A   1F83         SUB.W   #0x1, R15
-   \   00002C   CF24         JEQ     ??getResistorMenu_8
-   \   00002E   1F83         SUB.W   #0x1, R15
-   \   000030   E724         JEQ     ??getResistorMenu_9
-   \   000032   003D         JMP     ??getResistorMenu_10
-      9            case MENU1:
-     10              display_1 = "Color";
+      8              if(adc_value <= MENU1){
+   \   000008   2A93         CMP.W   #0x2, R10
+   \   00000A   1B2C         JC      ??getResistorMenu_0
+      9                display_1 = "Color";
+   \   00000C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     10                posL1 = LINE_POS_L3;
+   \   000012   F2400300.... MOV.B   #0x3, &posL1
+     11                display_3 = "Value";
+   \   000018   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     12                posL3 = LINE_POS_L3;
+   \   00001E   F2400300.... MOV.B   #0x3, &posL3
+     13                display_2 = "Black";
+   \   000024   B240........ MOV.W   #`?<Constant "Black">`, &display_2
+     14                posL2 = LINE_POS_L3;
+   \   00002A   F2400300.... MOV.B   #0x3, &posL2
+     15                display_4 = "0";
+   \   000030   B240........ MOV.W   #`?<Constant "0">`, &display_4
+     16                posL4 = LINE_POS_L5;
+   \   000036   F2400500.... MOV.B   #0x5, &posL4
+     17                ADC_Process();
+   \   00003C   ........     CALLA   #ADC_Process
+   \   000040   1A3D         JMP     ??getResistorMenu_1
+     18              }
+     19            else if((adc_value <= MENU2) && (adc_value > MENU1)){
    \                     ??getResistorMenu_0:
-   \   000034   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     11              posL1 = LINE_POS_L3;
-   \   00003A   F2400300.... MOV.B   #0x3, &posL1
-     12              display_3 = "Value";
-   \   000040   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     13              posL3 = LINE_POS_L3;
-   \   000046   F2400300.... MOV.B   #0x3, &posL3
-     14              display_2 = "Black";
-   \   00004C   B240........ MOV.W   #`?<Constant "Black">`, &display_2
-     15              posL2 = LINE_POS_L3;
-   \   000052   F2400300.... MOV.B   #0x3, &posL2
-     16              display_4 = "0";
-   \   000058   B240........ MOV.W   #`?<Constant "0">`, &display_4
-     17              posL4 = LINE_POS_L5;
-   \   00005E   F2400500.... MOV.B   #0x5, &posL4
-     18              ADC_Process();
-   \   000064   ........     CALLA   #ADC_Process
-     19            case MENU2:
+   \   000042   3A900300     CMP.W   #0x3, R10
+   \   000046   1D2C         JC      ??getResistorMenu_2
+   \   000048   2A93         CMP.W   #0x2, R10
+   \   00004A   1B28         JNC     ??getResistorMenu_2
      20              display_1 = "Color";
-   \                     ??getResistorMenu_1:
-   \   000068   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+   \   00004C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
      21              posL1 = LINE_POS_L3;
-   \   00006E   F2400300.... MOV.B   #0x3, &posL1
+   \   000052   F2400300.... MOV.B   #0x3, &posL1
      22              display_3 = "Value";
-   \   000074   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+   \   000058   B240........ MOV.W   #`?<Constant "Value">`, &display_3
      23              posL3 = LINE_POS_L3;
-   \   00007A   F2400300.... MOV.B   #0x3, &posL3
+   \   00005E   F2400300.... MOV.B   #0x3, &posL3
      24              display_2 = "Brown";
-   \   000080   B240........ MOV.W   #`?<Constant "Brown">`, &display_2
+   \   000064   B240........ MOV.W   #`?<Constant "Brown">`, &display_2
      25              posL2 = LINE_POS_L3;
-   \   000086   F2400300.... MOV.B   #0x3, &posL2
+   \   00006A   F2400300.... MOV.B   #0x3, &posL2
      26              display_4 = "1";
-   \   00008C   B240........ MOV.W   #`?<Constant "1">`, &display_4
+   \   000070   B240........ MOV.W   #`?<Constant "1">`, &display_4
      27              posL4 = LINE_POS_L5;
-   \   000092   F2400500.... MOV.B   #0x5, &posL4
+   \   000076   F2400500.... MOV.B   #0x5, &posL4
      28              ADC_Process();
-   \   000098   ........     CALLA   #ADC_Process
-     29            case MENU3:
-     30              display_1 = "Color";
+   \   00007C   ........     CALLA   #ADC_Process
+   \   000080   FA3C         JMP     ??getResistorMenu_1
+     29            }
+     30            else if((adc_value <= MENU3) && (adc_value > MENU2)){
    \                     ??getResistorMenu_2:
-   \   00009C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     31              posL1 = LINE_POS_L3;
-   \   0000A2   F2400300.... MOV.B   #0x3, &posL1
-     32              display_3 = "Value";
-   \   0000A8   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     33              posL3 = LINE_POS_L3;
-   \   0000AE   F2400300.... MOV.B   #0x3, &posL3
-     34              display_2 = "Red";
-   \   0000B4   B240........ MOV.W   #`?<Constant "Red">`, &display_2
-     35              posL2 = LINE_POS_L4;
-   \   0000BA   E242....     MOV.B   #0x4, &posL2
-     36              display_4 = "2";
-   \   0000BE   B240........ MOV.W   #`?<Constant "2">`, &display_4
-     37              posL4 = LINE_POS_L5;
-   \   0000C4   F2400500.... MOV.B   #0x5, &posL4
-     38              ADC_Process();
-   \   0000CA   ........     CALLA   #ADC_Process
-     39            case MENU4:
-     40              display_1 = "Color";
+   \   000082   2A92         CMP.W   #0x4, R10
+   \   000084   1D2C         JC      ??getResistorMenu_3
+   \   000086   3A900300     CMP.W   #0x3, R10
+   \   00008A   1A28         JNC     ??getResistorMenu_3
+     31              display_1 = "Color";
+   \   00008C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     32              posL1 = LINE_POS_L3;
+   \   000092   F2400300.... MOV.B   #0x3, &posL1
+     33              display_3 = "Value";
+   \   000098   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     34              posL3 = LINE_POS_L3;
+   \   00009E   F2400300.... MOV.B   #0x3, &posL3
+     35              display_2 = "Red";
+   \   0000A4   B240........ MOV.W   #`?<Constant "Red">`, &display_2
+     36              posL2 = LINE_POS_L4;
+   \   0000AA   E242....     MOV.B   #0x4, &posL2
+     37              display_4 = "2";
+   \   0000AE   B240........ MOV.W   #`?<Constant "2">`, &display_4
+     38              posL4 = LINE_POS_L5;
+   \   0000B4   F2400500.... MOV.B   #0x5, &posL4
+     39              ADC_Process();
+   \   0000BA   ........     CALLA   #ADC_Process
+   \   0000BE   DB3C         JMP     ??getResistorMenu_1
+     40            }
+     41            else if((adc_value <= MENU4) && (adc_value > MENU3)){
    \                     ??getResistorMenu_3:
-   \   0000CE   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     41              posL1 = LINE_POS_L3;
-   \   0000D4   F2400300.... MOV.B   #0x3, &posL1
-     42              display_3 = "Value";
-   \   0000DA   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     43              posL3 = LINE_POS_L3;
-   \   0000E0   F2400300.... MOV.B   #0x3, &posL3
-     44              display_2 = "Orange";
-   \   0000E6   B240........ MOV.W   #`?<Constant "Orange">`, &display_2
-     45              posL2 = LINE_POS_L2;
-   \   0000EC   E243....     MOV.B   #0x2, &posL2
-     46              display_4 = "3";
-   \   0000F0   B240........ MOV.W   #`?<Constant "3">`, &display_4
-     47              posL4 = LINE_POS_L5;
-   \   0000F6   F2400500.... MOV.B   #0x5, &posL4
-     48              ADC_Process();
-   \   0000FC   ........     CALLA   #ADC_Process
-     49            case MENU5:
-     50              display_1 = "Color";
+   \   0000C0   3A900500     CMP.W   #0x5, R10
+   \   0000C4   1C2C         JC      ??getResistorMenu_4
+   \   0000C6   2A92         CMP.W   #0x4, R10
+   \   0000C8   1A28         JNC     ??getResistorMenu_4
+     42              display_1 = "Color";
+   \   0000CA   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     43              posL1 = LINE_POS_L3;
+   \   0000D0   F2400300.... MOV.B   #0x3, &posL1
+     44              display_3 = "Value";
+   \   0000D6   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     45              posL3 = LINE_POS_L3;
+   \   0000DC   F2400300.... MOV.B   #0x3, &posL3
+     46              display_2 = "Orange";
+   \   0000E2   B240........ MOV.W   #`?<Constant "Orange">`, &display_2
+     47              posL2 = LINE_POS_L2;
+   \   0000E8   E243....     MOV.B   #0x2, &posL2
+     48              display_4 = "3";
+   \   0000EC   B240........ MOV.W   #`?<Constant "3">`, &display_4
+     49              posL4 = LINE_POS_L5;
+   \   0000F2   F2400500.... MOV.B   #0x5, &posL4
+     50              ADC_Process();
+   \   0000F8   ........     CALLA   #ADC_Process
+   \   0000FC   BC3C         JMP     ??getResistorMenu_1
+     51            }
+     52            else if((adc_value <= MENU5) && (adc_value > MENU4)){
    \                     ??getResistorMenu_4:
-   \   000100   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     51              posL1 = LINE_POS_L3;
-   \   000106   F2400300.... MOV.B   #0x3, &posL1
-     52              display_3 = "Value";
-   \   00010C   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     53              posL3 = LINE_POS_L3;
-   \   000112   F2400300.... MOV.B   #0x3, &posL3
-     54              display_2 = "Yellow";
-   \   000118   B240........ MOV.W   #`?<Constant "Yellow">`, &display_2
-     55              posL2 = LINE_POS_L2;
-   \   00011E   E243....     MOV.B   #0x2, &posL2
-     56              display_4 = "4";
-   \   000122   B240........ MOV.W   #`?<Constant "4">`, &display_4
-     57              posL4 = LINE_POS_L5;
-   \   000128   F2400500.... MOV.B   #0x5, &posL4
-     58              ADC_Process();
-   \   00012E   ........     CALLA   #ADC_Process
-     59            case MENU6:
-     60              display_1 = "Color";
+   \   0000FE   3A900600     CMP.W   #0x6, R10
+   \   000102   1D2C         JC      ??getResistorMenu_5
+   \   000104   3A900500     CMP.W   #0x5, R10
+   \   000108   1A28         JNC     ??getResistorMenu_5
+     53              display_1 = "Color";
+   \   00010A   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     54              posL1 = LINE_POS_L3;
+   \   000110   F2400300.... MOV.B   #0x3, &posL1
+     55              display_3 = "Value";
+   \   000116   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     56              posL3 = LINE_POS_L3;
+   \   00011C   F2400300.... MOV.B   #0x3, &posL3
+     57              display_2 = "Yellow";
+   \   000122   B240........ MOV.W   #`?<Constant "Yellow">`, &display_2
+     58              posL2 = LINE_POS_L2;
+   \   000128   E243....     MOV.B   #0x2, &posL2
+     59              display_4 = "4";
+   \   00012C   B240........ MOV.W   #`?<Constant "4">`, &display_4
+     60              posL4 = LINE_POS_L5;
+   \   000132   F2400500.... MOV.B   #0x5, &posL4
+     61              ADC_Process();
+   \   000138   ........     CALLA   #ADC_Process
+   \   00013C   9C3C         JMP     ??getResistorMenu_1
+     62            }
+     63            else if((adc_value <= MENU6) && (adc_value > MENU5)){
    \                     ??getResistorMenu_5:
-   \   000132   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     61              posL1 = LINE_POS_L3;
-   \   000138   F2400300.... MOV.B   #0x3, &posL1
-     62              display_3 = "Value";
-   \   00013E   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     63              posL3 = LINE_POS_L3;
-   \   000144   F2400300.... MOV.B   #0x3, &posL3
-     64              display_2 = "Green";
-   \   00014A   B240........ MOV.W   #`?<Constant "Green">`, &display_2
-     65              posL2 = LINE_POS_L3;
-   \   000150   F2400300.... MOV.B   #0x3, &posL2
-     66              display_4 = "5";
-   \   000156   B240........ MOV.W   #`?<Constant "5">`, &display_4
-     67              posL4 = LINE_POS_L5;
-   \   00015C   F2400500.... MOV.B   #0x5, &posL4
-     68              ADC_Process();
-   \   000162   ........     CALLA   #ADC_Process
-     69            case MENU7:
-     70              display_1 = "Color";
+   \   00013E   3A900700     CMP.W   #0x7, R10
+   \   000142   1E2C         JC      ??getResistorMenu_6
+   \   000144   3A900600     CMP.W   #0x6, R10
+   \   000148   1B28         JNC     ??getResistorMenu_6
+     64              display_1 = "Color";
+   \   00014A   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     65              posL1 = LINE_POS_L3;
+   \   000150   F2400300.... MOV.B   #0x3, &posL1
+     66              display_3 = "Value";
+   \   000156   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     67              posL3 = LINE_POS_L3;
+   \   00015C   F2400300.... MOV.B   #0x3, &posL3
+     68              display_2 = "Green";
+   \   000162   B240........ MOV.W   #`?<Constant "Green">`, &display_2
+     69              posL2 = LINE_POS_L3;
+   \   000168   F2400300.... MOV.B   #0x3, &posL2
+     70              display_4 = "5";
+   \   00016E   B240........ MOV.W   #`?<Constant "5">`, &display_4
+     71              posL4 = LINE_POS_L5;
+   \   000174   F2400500.... MOV.B   #0x5, &posL4
+     72              ADC_Process();
+   \   00017A   ........     CALLA   #ADC_Process
+   \   00017E   7B3C         JMP     ??getResistorMenu_1
+     73            }
+     74            else if((adc_value <= MENU7) && (adc_value > MENU6)){
    \                     ??getResistorMenu_6:
-   \   000166   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     71              posL1 = LINE_POS_L3;
-   \   00016C   F2400300.... MOV.B   #0x3, &posL1
-     72              display_3 = "Value";
-   \   000172   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     73              posL3 = LINE_POS_L3;
-   \   000178   F2400300.... MOV.B   #0x3, &posL3
-     74              display_2 = "Blue";
-   \   00017E   B240........ MOV.W   #`?<Constant "Blue">`, &display_2
-     75              posL2 = LINE_POS_L3;
-   \   000184   F2400300.... MOV.B   #0x3, &posL2
-     76              display_4 = "6";
-   \   00018A   B240........ MOV.W   #`?<Constant "6">`, &display_4
-     77              posL4 = LINE_POS_L5;
-   \   000190   F2400500.... MOV.B   #0x5, &posL4
-     78              ADC_Process();
-   \   000196   ........     CALLA   #ADC_Process
-     79            case MENU8:
-     80              display_1 = "Color";
+   \   000180   3A92         CMP.W   #0x8, R10
+   \   000182   1E2C         JC      ??getResistorMenu_7
+   \   000184   3A900700     CMP.W   #0x7, R10
+   \   000188   1B28         JNC     ??getResistorMenu_7
+     75              display_1 = "Color";
+   \   00018A   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     76              posL1 = LINE_POS_L3;
+   \   000190   F2400300.... MOV.B   #0x3, &posL1
+     77              display_3 = "Value";
+   \   000196   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     78              posL3 = LINE_POS_L3;
+   \   00019C   F2400300.... MOV.B   #0x3, &posL3
+     79              display_2 = "Blue";
+   \   0001A2   B240........ MOV.W   #`?<Constant "Blue">`, &display_2
+     80              posL2 = LINE_POS_L3;
+   \   0001A8   F2400300.... MOV.B   #0x3, &posL2
+     81              display_4 = "6";
+   \   0001AE   B240........ MOV.W   #`?<Constant "6">`, &display_4
+     82              posL4 = LINE_POS_L5;
+   \   0001B4   F2400500.... MOV.B   #0x5, &posL4
+     83              ADC_Process();
+   \   0001BA   ........     CALLA   #ADC_Process
+   \   0001BE   5B3C         JMP     ??getResistorMenu_1
+     84            }
+     85            else if((adc_value <= MENU8) && (adc_value > MENU9)){
    \                     ??getResistorMenu_7:
-   \   00019A   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     81              posL1 = LINE_POS_L3;
-   \   0001A0   F2400300.... MOV.B   #0x3, &posL1
-     82              display_3 = "Value";
-   \   0001A6   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     83              posL3 = LINE_POS_L3;
-   \   0001AC   F2400300.... MOV.B   #0x3, &posL3
-     84              display_2 = "Violet";
-   \   0001B2   B240........ MOV.W   #`?<Constant "Violet">`, &display_2
-     85              posL2 = LINE_POS_L2;
-   \   0001B8   E243....     MOV.B   #0x2, &posL2
-     86              display_4 = "7";
-   \   0001BC   B240........ MOV.W   #`?<Constant "7">`, &display_4
-     87              posL4 = LINE_POS_L5;
-   \   0001C2   F2400500.... MOV.B   #0x5, &posL4
-     88              ADC_Process();
-   \   0001C8   ........     CALLA   #ADC_Process
-     89            case MENU9:
-     90              display_1 = "Color";
-   \                     ??getResistorMenu_8:
+   \   0001C0   3A900900     CMP.W   #0x9, R10
+   \   0001C4   1D2C         JC      ??getResistorMenu_8
+   \   0001C6   3A900A00     CMP.W   #0xa, R10
+   \   0001CA   1A28         JNC     ??getResistorMenu_8
+     86              display_1 = "Color";
    \   0001CC   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-     91              posL1 = LINE_POS_L3;
+     87              posL1 = LINE_POS_L3;
    \   0001D2   F2400300.... MOV.B   #0x3, &posL1
-     92              display_3 = "Value";
+     88              display_3 = "Value";
    \   0001D8   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-     93              posL3 = LINE_POS_L3;
+     89              posL3 = LINE_POS_L3;
    \   0001DE   F2400300.... MOV.B   #0x3, &posL3
-     94              display_2 = "Gray";
-   \   0001E4   B240........ MOV.W   #`?<Constant "Gray">`, &display_2
-     95              posL2 = LINE_POS_L3;
-   \   0001EA   F2400300.... MOV.B   #0x3, &posL2
-     96              display_4 = "8";
-   \   0001F0   B240........ MOV.W   #`?<Constant "8">`, &display_4
-     97              posL4 = LINE_POS_L5;
-   \   0001F6   F2400500.... MOV.B   #0x5, &posL4
-     98              ADC_Process();
-   \   0001FC   ........     CALLA   #ADC_Process
-     99            case MENU10:
-    100              display_1 = "Color";
+     90              display_2 = "Violet";
+   \   0001E4   B240........ MOV.W   #`?<Constant "Violet">`, &display_2
+     91              posL2 = LINE_POS_L2;
+   \   0001EA   E243....     MOV.B   #0x2, &posL2
+     92              display_4 = "7";
+   \   0001EE   B240........ MOV.W   #`?<Constant "7">`, &display_4
+     93              posL4 = LINE_POS_L5;
+   \   0001F4   F2400500.... MOV.B   #0x5, &posL4
+     94              ADC_Process();
+   \   0001FA   ........     CALLA   #ADC_Process
+   \   0001FE   3B3C         JMP     ??getResistorMenu_1
+     95            }
+     96            else if((adc_value <= MENU9) && (adc_value > MENU8)){
+   \                     ??getResistorMenu_8:
+   \   000200   3A900A00     CMP.W   #0xa, R10
+   \   000204   1E2C         JC      ??getResistorMenu_9
+   \   000206   3A900900     CMP.W   #0x9, R10
+   \   00020A   1B28         JNC     ??getResistorMenu_9
+     97              display_1 = "Color";
+   \   00020C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     98              posL1 = LINE_POS_L3;
+   \   000212   F2400300.... MOV.B   #0x3, &posL1
+     99              display_3 = "Value";
+   \   000218   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+    100              posL3 = LINE_POS_L3;
+   \   00021E   F2400300.... MOV.B   #0x3, &posL3
+    101              display_2 = "Gray";
+   \   000224   B240........ MOV.W   #`?<Constant "Gray">`, &display_2
+    102              posL2 = LINE_POS_L3;
+   \   00022A   F2400300.... MOV.B   #0x3, &posL2
+    103              display_4 = "8";
+   \   000230   B240........ MOV.W   #`?<Constant "8">`, &display_4
+    104              posL4 = LINE_POS_L5;
+   \   000236   F2400500.... MOV.B   #0x5, &posL4
+    105              ADC_Process();
+   \   00023C   ........     CALLA   #ADC_Process
+   \   000240   1A3C         JMP     ??getResistorMenu_1
+    106            }
+    107            else{
+    108              display_1 = "Color";
    \                     ??getResistorMenu_9:
-   \   000200   B240........ MOV.W   #`?<Constant "Color">`, &display_1
-    101              posL1 = LINE_POS_L3;
-   \   000206   F2400300.... MOV.B   #0x3, &posL1
-    102              display_3 = "Value";
-   \   00020C   B240........ MOV.W   #`?<Constant "Value">`, &display_3
-    103              posL3 = LINE_POS_L3;
-   \   000212   F2400300.... MOV.B   #0x3, &posL3
-    104              display_2 = "White";
-   \   000218   B240........ MOV.W   #`?<Constant "White">`, &display_2
-    105              posL2 = LINE_POS_L3;
-   \   00021E   F2400300.... MOV.B   #0x3, &posL2
-    106              display_4 = "9";
-   \   000224   B240........ MOV.W   #`?<Constant "9">`, &display_4
-    107              posL4 = LINE_POS_L5;
-   \   00022A   F2400500.... MOV.B   #0x5, &posL4
-    108              ADC_Process();
-   \   000230   ........     CALLA   #ADC_Process
-    109              
-    110            default: break;
-    111            }
-    112          }
-   \                     ??getResistorMenu_10:
-   \   000234   3A41         POP.W   R10
-   \   000236   1001         RETA
+   \   000242   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+    109              posL1 = LINE_POS_L3;
+   \   000248   F2400300.... MOV.B   #0x3, &posL1
+    110              display_3 = "Value";
+   \   00024E   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+    111              posL3 = LINE_POS_L3;
+   \   000254   F2400300.... MOV.B   #0x3, &posL3
+    112              display_2 = "White";
+   \   00025A   B240........ MOV.W   #`?<Constant "White">`, &display_2
+    113              posL2 = LINE_POS_L3;
+   \   000260   F2400300.... MOV.B   #0x3, &posL2
+    114              display_4 = "9";
+   \   000266   B240........ MOV.W   #`?<Constant "9">`, &display_4
+    115              posL4 = LINE_POS_L5;
+   \   00026C   F2400500.... MOV.B   #0x5, &posL4
+    116              ADC_Process();
+   \   000272   ........     CALLA   #ADC_Process
+    117            }
+    118          }
+   \                     ??getResistorMenu_1:
+   \   000276   3A41         POP.W   R10
+   \   000278   1001         RETA
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "Color">`:
@@ -405,13 +431,13 @@
        7  ?<Constant "Violet">
        6  ?<Constant "White">
        7  ?<Constant "Yellow">
-     568  getResistorMenu
+     634  getResistorMenu
 
  
- 568 bytes in segment CODE
+ 634 bytes in segment CODE
   91 bytes in segment DATA16_C
  
- 568 bytes of CODE  memory
+ 634 bytes of CODE  memory
   91 bytes of CONST memory
 
 Errors: none

@@ -535,13 +535,13 @@
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 86 85</file>
+          <file> 86</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 81 74 39 51 79 47</file>
+          <file> 81 39 74 79 51 47</file>
         </tool>
         <tool>
           <name>ICC430</name>

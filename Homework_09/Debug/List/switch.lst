@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  15:53:31
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  16:01:44
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -73,9 +73,9 @@
      26              ADC_Process();
    \   000006   ........     CALLA   #ADC_Process
      27              while(ALWAYS){
-     28                if (!(P4IN & SW2)){break;}
+     28                if (!(P4IN & SW1)){break;}
    \                     ??Switches_Process_0:
-   \   00000A   E2B32102     BIT.B   #0x2, &0x221
+   \   00000A   D2B32102     BIT.B   #0x1, &0x221
    \   00000E   5C28         JNC     ??Switches_Process_3
      29                ADC_Process(); // read ADC value for thumbwheel
    \   000010   ........     CALLA   #ADC_Process

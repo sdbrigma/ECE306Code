@@ -25,7 +25,7 @@ void Switches_Process(void){
   if (!(P4IN & SW1)){ 
     ADC_Process();
     while(ALWAYS){
-      if (!(P4IN & SW2)){break;}
+      if (!(P4IN & SW1)){break;}
       ADC_Process(); // read ADC value for thumbwheel
       if(ADC_Thumb <= 340){// Divides range of ADC values into three for main menu
         display_1 = "Resistors";
