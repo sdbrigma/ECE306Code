@@ -121,7 +121,7 @@ void main(void){
         one_time = ZERO;
       }
       size_count++;
-      /*if(size_count > BIG_LETTERS){
+      if(size_count > BIG_LETTERS){
         size_count = ZERO;
         if(big){
           lcd_BIG_mid();
@@ -130,7 +130,7 @@ void main(void){
           lcd_4line();
           big = ONE;
         }
-      }*/
+      }
       Display_Process();
       break;                                // 
     default: break; 

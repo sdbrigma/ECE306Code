@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  15:48:20
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  17:31:04
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -313,7 +313,7 @@
    \   000088   3F803200     SUB.W   #0x32, R15
    \   00008C   0A24         JEQ     ??main_6
    \   00008E   3F803200     SUB.W   #0x32, R15
-   \   000092   1F20         JNE     ??main_1
+   \   000092   3120         JNE     ??main_1
      94              case FULL_SECOND:                               // 1000 msec  
      95                if(one_time){
    \   000094   C293....     CMP.B   #0x0, &one_time
@@ -367,32 +367,44 @@
     123                size_count++;
    \                     ??main_8:
    \   0000CA   D253....     ADD.B   #0x1, &size_count
-    124                /*if(size_count > BIG_LETTERS){
+    124                if(size_count > BIG_LETTERS){
+   \   0000CE   F2900600.... CMP.B   #0x6, &size_count
+   \   0000D4   0E28         JNC     ??main_9
     125                  size_count = ZERO;
+   \   0000D6   C243....     MOV.B   #0x0, &size_count
     126                  if(big){
+   \   0000DA   C293....     CMP.B   #0x0, &big
+   \   0000DE   0524         JEQ     ??main_10
     127                    lcd_BIG_mid();
+   \   0000E0   ........     CALLA   #lcd_BIG_mid
     128                    big = ZERO;
+   \   0000E4   C243....     MOV.B   #0x0, &big
+   \   0000E8   043C         JMP     ??main_9
     129                  }else{
     130                    lcd_4line();
+   \                     ??main_10:
+   \   0000EA   ........     CALLA   #lcd_4line
     131                    big = ONE;
+   \   0000EE   D243....     MOV.B   #0x1, &big
     132                  }
-    133                }*/
+    133                }
     134                Display_Process();
-   \   0000CE   ........     CALLA   #Display_Process
+   \                     ??main_9:
+   \   0000F2   ........     CALLA   #Display_Process
     135                break;                                // 
     136              default: break; 
     137            }
     138            Switches_Process();                       // Check for switch state change 
    \                     ??main_1:
-   \   0000D2   ........     CALLA   #Switches_Process
+   \   0000F6   ........     CALLA   #Switches_Process
     139            if(Time_Sequence > FULL_SECOND){ // 1000 msec
-   \   0000D6   B290FB00.... CMP.W   #0xfb, &Time_Sequence
-   \   0000DC   C82B         JNC     ??main_0
+   \   0000FA   B290FB00.... CMP.W   #0xfb, &Time_Sequence
+   \   000100   B62B         JNC     ??main_0
     140              Time_Sequence = ZERO;
-   \   0000DE   8243....     MOV.W   #0x0, &Time_Sequence
-   \   0000E2   C53F         JMP     ??main_0
-   \   0000E4   0343         NOP
-   \   0000E6                REQUIRE _A_PJOUT_L
+   \   000102   8243....     MOV.W   #0x0, &Time_Sequence
+   \   000106   B33F         JMP     ??main_0
+   \   000108   0343         NOP
+   \   00010A                REQUIRE _A_PJOUT_L
     141            }
     142           }
     143          //------------------------------------------------------------------------------
@@ -436,6 +448,8 @@
         4   -> Init_Timers
         4   -> Switches_Process
         4   -> five_msec_sleep
+        4   -> lcd_4line
+        4   -> lcd_BIG_mid
 
 
    Segment part sizes:
@@ -466,7 +480,7 @@
        2  cpu_tx_ring_rd
        2  cpu_tx_ring_wr
        1  led_smclk
-     230  main
+     266  main
        1  one_time
        1  posL1
        1  posL2
@@ -478,12 +492,12 @@
        2  tracking_value_low
 
  
- 230 bytes in segment CODE
+ 266 bytes in segment CODE
    2 bytes in segment DATA16_AN
   31 bytes in segment DATA16_C
   77 bytes in segment DATA16_Z
  
- 230 bytes of CODE  memory
+ 266 bytes of CODE  memory
   31 bytes of CONST memory
   77 bytes of DATA  memory (+ 2 bytes shared)
 

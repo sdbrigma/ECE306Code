@@ -70,6 +70,15 @@ void Switches_Process(void){
         display_4 = "          ";
         posL4 = LINE_POS_L0;
         ADC_Process();
+        
+        //SHAPES
+        if(!(P4IN & SW1)){
+         while(ALWAYS){
+            if (!(P4IN & SW2)){break;}
+            ADC_Process();
+            getShapesMenu(ADC_Thumb);
+          } 
+        }
       }
     }
     

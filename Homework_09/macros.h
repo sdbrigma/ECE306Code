@@ -12,7 +12,7 @@
 #define ALWAYS                  (1)
 #define ONE                     (1)
 #define DISPLAY_LENGTH          (11)
-#define LCD                     (50)
+#define LCD                     (100)
 #define BIG_LETTERS             (5)
 #define ZERO                    (0)
 #define QUARTER_SECOND          (50)
@@ -214,6 +214,16 @@
 #define MENU8 (0x08)
 #define MENU9 (0x09)
 
+// shift bits
+#define SHIFT1 (1)
+#define SHIFT2 (2)
+#define SHIFT3 (3)
+#define SHIFT4 (4)
+#define SHIFT5 (5)
+#define SHIFT6 (6)
+#define SHIFT7 (7)
+#define SHIFT8 (8)
+#define SHIFT9 (9)
 
 extern volatile unsigned int Time_Sequence;
 extern int ISR_COUNT;
@@ -244,5 +254,6 @@ extern char *display_3;
 extern char *display_4;
 extern char posL1;
 extern char posL2;
+extern char big;
 extern char posL3;
 extern char posL4;

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  15:26:46
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  17:31:00
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -120,7 +120,7 @@
      35           UPDATE_LCD++;
    \   00000A   9253....     ADD.W   #0x1, &UPDATE_LCD
      36           if(UPDATE_LCD == LCD) {Display_Process(); UPDATE_LCD = ZERO;} // reset UPDATE_LCD every 200ms
-   \   00000E   B2903200.... CMP.W   #0x32, &UPDATE_LCD
+   \   00000E   B2906400.... CMP.W   #0x64, &UPDATE_LCD
    \   000014   0420         JNE     ??Timer0_A0_ISR_0
    \   000016   ........     CALLA   #Display_Process
    \   00001A   8243....     MOV.W   #0x0, &UPDATE_LCD

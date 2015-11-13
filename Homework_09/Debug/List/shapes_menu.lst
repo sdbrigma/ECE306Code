@@ -1,0 +1,252 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  17:31:06
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\shapes_menu.c
+#    Command line  =  
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\shapes_menu.c" -lC
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\List\" -o
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\List\shapes_menu.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\Obj\shapes_menu.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_09\shapes_menu.c
+      1          #include  "macros.h"
+      2          #include  "msp430.h"
+      3          #include  "functions.h"
+      4          
+
+   \                                 In  segment CODE, align 2
+      5          void getShapesMenu(unsigned int adc_value){
+   \                     getShapesMenu:
+   \   000000   1B15         PUSHM.W #0x2, R11
+   \   000002   0B4C         MOV.W   R12, R11
+      6            char value = adc_value >> SHIFT6; // shift 10 bit value by 6 bits
+   \   000004   0F4B         MOV.W   R11, R15
+   \   000006                RPT     #0x6
+   \   000006   45190F10     RRUX.W  R15
+   \   00000A   0A12         PUSH.W  R10
+   \   00000C   C14F0000     MOV.B   R15, 0(SP)
+   \   000010   3A41         POP.W   R10
+      7            if(value <= MENU1){
+   \   000012   6A93         CMP.B   #0x2, R10
+   \   000014   192C         JC      ??getShapesMenu_0
+      8              display_1 = "No Shape";
+   \   000016   B240........ MOV.W   #`?<Constant "No Shape">`, &display_1
+      9              posL1 = LINE_POS_L0;
+   \   00001C   C243....     MOV.B   #0x0, &posL1
+     10              display_2 = "Circle";
+   \   000020   B240........ MOV.W   #`?<Constant "Circle">`, &display_2
+     11              posL2 = LINE_POS_L2;
+   \   000026   E243....     MOV.B   #0x2, &posL2
+     12              display_3 = "Square";
+   \   00002A   B240........ MOV.W   #`?<Constant "Square">`, &display_3
+     13              posL3 = LINE_POS_L0;
+   \   000030   C243....     MOV.B   #0x0, &posL3
+     14              display_4 = "TEST";
+   \   000034   B240........ MOV.W   #`?<Constant "TEST">`, &display_4
+     15              posL4 = LINE_POS_L2;
+   \   00003A   E243....     MOV.B   #0x2, &posL4
+     16              lcd_BIG_mid();
+   \   00003E   ........     CALLA   #lcd_BIG_mid
+     17              ADC_Process();
+   \   000042   ........     CALLA   #ADC_Process
+   \   000046   653C         JMP     ??getShapesMenu_1
+     18            }
+     19            else if(value == MENU2){
+   \                     ??getShapesMenu_0:
+   \   000048   6A93         CMP.B   #0x2, R10
+   \   00004A   0920         JNE     ??getShapesMenu_2
+     20              display_1 = "Color";
+   \   00004C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     21              posL1 = LINE_POS_L3;
+   \   000052   F2400300.... MOV.B   #0x3, &posL1
+     22          
+     23              ADC_Process();
+   \   000058   ........     CALLA   #ADC_Process
+   \   00005C   5A3C         JMP     ??getShapesMenu_1
+     24            }
+     25            else if(value == MENU3){
+   \                     ??getShapesMenu_2:
+   \   00005E   7A900300     CMP.B   #0x3, R10
+   \   000062   0920         JNE     ??getShapesMenu_3
+     26              display_1 = "Color";
+   \   000064   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     27              posL1 = LINE_POS_L3;
+   \   00006A   F2400300.... MOV.B   #0x3, &posL1
+     28          
+     29              ADC_Process();
+   \   000070   ........     CALLA   #ADC_Process
+   \   000074   4E3C         JMP     ??getShapesMenu_1
+     30            }
+     31            else if(value == MENU4){
+   \                     ??getShapesMenu_3:
+   \   000076   6A92         CMP.B   #0x4, R10
+   \   000078   0920         JNE     ??getShapesMenu_4
+     32              display_1 = "Color";
+   \   00007A   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     33              posL1 = LINE_POS_L3;
+   \   000080   F2400300.... MOV.B   #0x3, &posL1
+     34          
+     35              ADC_Process();
+   \   000086   ........     CALLA   #ADC_Process
+   \   00008A   433C         JMP     ??getShapesMenu_1
+     36            }
+     37            else if(value == MENU5){
+   \                     ??getShapesMenu_4:
+   \   00008C   7A900500     CMP.B   #0x5, R10
+   \   000090   0920         JNE     ??getShapesMenu_5
+     38              display_1 = "Color";
+   \   000092   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     39              posL1 = LINE_POS_L3;
+   \   000098   F2400300.... MOV.B   #0x3, &posL1
+     40          
+     41              ADC_Process();
+   \   00009E   ........     CALLA   #ADC_Process
+   \   0000A2   373C         JMP     ??getShapesMenu_1
+     42            }
+     43            else if(value == MENU6){
+   \                     ??getShapesMenu_5:
+   \   0000A4   7A900600     CMP.B   #0x6, R10
+   \   0000A8   0920         JNE     ??getShapesMenu_6
+     44              display_1 = "Color";
+   \   0000AA   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     45              posL1 = LINE_POS_L3;
+   \   0000B0   F2400300.... MOV.B   #0x3, &posL1
+     46          
+     47              ADC_Process();
+   \   0000B6   ........     CALLA   #ADC_Process
+   \   0000BA   2B3C         JMP     ??getShapesMenu_1
+     48            }
+     49            else if(value == MENU7){
+   \                     ??getShapesMenu_6:
+   \   0000BC   7A900700     CMP.B   #0x7, R10
+   \   0000C0   0920         JNE     ??getShapesMenu_7
+     50              display_1 = "Color";
+   \   0000C2   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     51              posL1 = LINE_POS_L3;
+   \   0000C8   F2400300.... MOV.B   #0x3, &posL1
+     52          
+     53              ADC_Process();
+   \   0000CE   ........     CALLA   #ADC_Process
+   \   0000D2   1F3C         JMP     ??getShapesMenu_1
+     54            }
+     55            else if(value == MENU8){
+   \                     ??getShapesMenu_7:
+   \   0000D4   7A92         CMP.B   #0x8, R10
+   \   0000D6   0920         JNE     ??getShapesMenu_8
+     56              display_1 = "Color";
+   \   0000D8   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     57              posL1 = LINE_POS_L3;
+   \   0000DE   F2400300.... MOV.B   #0x3, &posL1
+     58          
+     59              ADC_Process();
+   \   0000E4   ........     CALLA   #ADC_Process
+   \   0000E8   143C         JMP     ??getShapesMenu_1
+     60            }
+     61            else if(value == MENU9){
+   \                     ??getShapesMenu_8:
+   \   0000EA   7A900900     CMP.B   #0x9, R10
+   \   0000EE   0920         JNE     ??getShapesMenu_9
+     62              display_1 = "Color";
+   \   0000F0   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     63              posL1 = LINE_POS_L3;
+   \   0000F6   F2400300.... MOV.B   #0x3, &posL1
+     64          
+     65              ADC_Process();
+   \   0000FC   ........     CALLA   #ADC_Process
+   \   000100   083C         JMP     ??getShapesMenu_1
+     66            }
+     67            else{
+     68              display_1 = "Color";
+   \                     ??getShapesMenu_9:
+   \   000102   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     69              posL1 = LINE_POS_L3;
+   \   000108   F2400300.... MOV.B   #0x3, &posL1
+     70          
+     71              ADC_Process();
+   \   00010E   ........     CALLA   #ADC_Process
+     72            }
+     73          }
+   \                     ??getShapesMenu_1:
+   \   000112   1A17         POPM.W  #0x2, R11
+   \   000114   1001         RETA
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "No Shape">`:
+   \   000000   4E6F20536861 DC8 "No Shape"
+   \            706500      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Circle">`:
+   \   000000   436972636C65 DC8 "Circle"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Square">`:
+   \   000000   537175617265 DC8 "Square"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "TEST">`:
+   \   000000   5445535400   DC8 "TEST"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Color">`:
+   \   000000   436F6C6F7200 DC8 "Color"
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     10   getShapesMenu
+        8   -> ADC_Process
+        8   -> lcd_BIG_mid
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       7  ?<Constant "Circle">
+       6  ?<Constant "Color">
+       9  ?<Constant "No Shape">
+       7  ?<Constant "Square">
+       5  ?<Constant "TEST">
+     278  getShapesMenu
+
+ 
+ 278 bytes in segment CODE
+  34 bytes in segment DATA16_C
+ 
+ 278 bytes of CODE  memory
+  34 bytes of CONST memory
+
+Errors: none
+Warnings: none

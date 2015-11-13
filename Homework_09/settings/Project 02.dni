@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=-847946982
+Checksum=-535788486
 [Stack]
 FillEnabled=0
 OverflowWarningsEnabled=1
@@ -30,6 +30,9 @@ Fmt3={W}1:UCA1RXBUF	5	0
 Fmt4={W}1:UCA1TXBUF	5	0
 Fmt5={W}1:adc_value	4	0
 Fmt6={W}1:value	4	0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [Breakpoints]
 Bp0=_ "STD_CODE" "Memory:0xC9E0" 0 0 0 0 "" 0 ""
 Count=1
@@ -57,9 +60,6 @@ File name=
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [Aliases]
 A0=_ "D:\NCSU\Current\Software Tools\Code Master\Project 02\LCD.c" ""
 A1=_ "D:\NCSU\Current\Software Tools\Code Master\Project 02\ports.c" ""

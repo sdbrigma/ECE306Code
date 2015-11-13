@@ -2308,6 +2308,9 @@
     <name>$PROJ_DIR$\readme.txt</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\shapes_menu.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\switch.c</name>
   </file>
   <file>
