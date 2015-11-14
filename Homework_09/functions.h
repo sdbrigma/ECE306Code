@@ -96,4 +96,4 @@ void emitter_off(void);
 // Homework 9 functions
 void getResistorMenu(unsigned int adc_value);
 void getShapesMenu(unsigned int adc_value);
-
+void getSongMenu(unsigned int adc_value);

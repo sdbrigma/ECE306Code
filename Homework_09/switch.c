@@ -46,6 +46,15 @@ void Switches_Process(void){
         setLCD("Song",LINE_POS_L3," ",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0);
         ADC_Process();
         Five_msec_Delay(30);
+        
+        // SONG CODE
+        if(!(P4IN & SW1)){
+          while(ALWAYS){
+            ADC_Process();
+            getResistorMenu(ADC_Thumb);
+            if (!(P4IN & SW1)){break;}
+          }
+        }
       }
       
       else{ // If it's not in the lower or upper third it's in the middle
