@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  23:37:34
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  01:55:30
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -123,7 +123,7 @@
      46                else if(ADC_Thumb >= 681){ // this range the last third of the full range of values for the ADC
    \                     ??Switches_Process_6:
    \   000064   B290A902.... CMP.W   #0x2a9, &ADC_Thumb
-   \   00006A   2D28         JNC     ??Switches_Process_7
+   \   00006A   2F28         JNC     ??Switches_Process_7
      47                  setLCD("Song",LINE_POS_L3," ",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0);
    \   00006C   0312         PUSH.W  #0x0
    \   00006E   3012....     PUSH.W  #`?<Constant " ">`
@@ -154,57 +154,57 @@
    \   0000AE   ........     CALLA   #?DivMod16u
    \   0000B2   824C....     MOV.W   R12, &`inc`
      55                    while(ALWAYS){
-     56                      getSongMenu(ADC_Thumb);
+     56                      ADC_Process();
    \                     ??Switches_Process_2:
-   \   0000B6   1C42....     MOV.W   &ADC_Thumb, R12
-   \   0000BA   ........     CALLA   #getSongMenu
-     57                      if (!(P4IN & SW1)){break;}
-   \   0000BE   D2B32102     BIT.B   #0x1, &0x221
-   \   0000C2   F92F         JC      ??Switches_Process_2
-   \   0000C4   A43F         JMP     ??Switches_Process_0
-     58                    }
-     59                  }
-     60                }
-     61                
-     62                else{ // If it's not in the lower or upper third it's in the middle
-     63                  setLCD("Shapes",LINE_POS_L2," ",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0);
+   \   0000B6   ........     CALLA   #ADC_Process
+     57                      getSongMenu(ADC_Thumb);
+   \   0000BA   1C42....     MOV.W   &ADC_Thumb, R12
+   \   0000BE   ........     CALLA   #getSongMenu
+     58                      if (!(P4IN & SW1)){break;}
+   \   0000C2   D2B32102     BIT.B   #0x1, &0x221
+   \   0000C6   F72F         JC      ??Switches_Process_2
+   \   0000C8   A23F         JMP     ??Switches_Process_0
+     59                    }
+     60                  }
+     61                }
+     62                
+     63                else{ // If it's not in the lower or upper third it's in the middle
+     64                  setLCD("Shapes",LINE_POS_L2," ",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0);
    \                     ??Switches_Process_7:
-   \   0000C6   0312         PUSH.W  #0x0
-   \   0000C8   3012....     PUSH.W  #`?<Constant " ">`
-   \   0000CC   0312         PUSH.W  #0x0
-   \   0000CE   3012....     PUSH.W  #`?<Constant " ">`
-   \   0000D2   0F43         MOV.W   #0x0, R15
-   \   0000D4   3E40....     MOV.W   #`?<Constant " ">`, R14
-   \   0000D8   2D43         MOV.W   #0x2, R13
-   \   0000DA   3C40....     MOV.W   #`?<Constant "Shapes">`, R12
-   \   0000DE   ........     CALLA   #setLCD
-     64                  ADC_Process();
-   \   0000E2   ........     CALLA   #ADC_Process
-     65                  Five_msec_Delay(30);
-   \   0000E6   3C401E00     MOV.W   #0x1e, R12
-   \   0000EA   ........     CALLA   #Five_msec_Delay
-     66                  
-     67                  //SHAPES
-     68                  if(!(P4IN & SW1)){
-   \   0000EE   3152         ADD.W   #0x8, SP
-   \   0000F0   D2B32102     BIT.B   #0x1, &0x221
-   \   0000F4   8C2F         JC      ??Switches_Process_0
-     69                   while(ALWAYS){
-     70                      if (!(P4IN & SW2)){clearLCD();break;}
+   \   0000CA   0312         PUSH.W  #0x0
+   \   0000CC   3012....     PUSH.W  #`?<Constant " ">`
+   \   0000D0   0312         PUSH.W  #0x0
+   \   0000D2   3012....     PUSH.W  #`?<Constant " ">`
+   \   0000D6   0F43         MOV.W   #0x0, R15
+   \   0000D8   3E40....     MOV.W   #`?<Constant " ">`, R14
+   \   0000DC   2D43         MOV.W   #0x2, R13
+   \   0000DE   3C40....     MOV.W   #`?<Constant "Shapes">`, R12
+   \   0000E2   ........     CALLA   #setLCD
+     65                  ADC_Process();
+   \   0000E6   ........     CALLA   #ADC_Process
+     66                  Five_msec_Delay(30);
+   \   0000EA   3C401E00     MOV.W   #0x1e, R12
+   \   0000EE   ........     CALLA   #Five_msec_Delay
+     67                  
+     68                  //SHAPES
+     69                  if(!(P4IN & SW1)){
+   \   0000F2   3152         ADD.W   #0x8, SP
+   \   0000F4   D2B32102     BIT.B   #0x1, &0x221
+   \   0000F8   8A2F         JC      ??Switches_Process_0
+     70                   while(ALWAYS){
+     71                      if (!(P4IN & SW2)){clearLCD();break;}
    \                     ??Switches_Process_3:
-   \   0000F6   E2B32102     BIT.B   #0x2, &0x221
-   \   0000FA   032C         JC      ??Switches_Process_8
-   \   0000FC   ........     CALLA   #clearLCD
-   \   000100   863F         JMP     ??Switches_Process_0
-     71                      ADC_Process();
+   \   0000FA   E2B32102     BIT.B   #0x2, &0x221
+   \   0000FE   032C         JC      ??Switches_Process_8
+   \   000100   ........     CALLA   #clearLCD
+   \   000104   843F         JMP     ??Switches_Process_0
+     72                      ADC_Process();
    \                     ??Switches_Process_8:
-   \   000102   ........     CALLA   #ADC_Process
-     72                      getShapesMenu(ADC_Thumb);
-   \   000106   1C42....     MOV.W   &ADC_Thumb, R12
-   \   00010A   ........     CALLA   #getShapesMenu
-     73                      clearLCD();
-   \   00010E   ........     CALLA   #clearLCD
-   \   000112   F13F         JMP     ??Switches_Process_3
+   \   000106   ........     CALLA   #ADC_Process
+     73                      getShapesMenu(ADC_Thumb);
+   \   00010A   1C42....     MOV.W   &ADC_Thumb, R12
+   \   00010E   ........     CALLA   #getShapesMenu
+   \   000112   F33F         JMP     ??Switches_Process_3
      74                    } 
      75                  }
      76                }

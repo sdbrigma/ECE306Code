@@ -53,6 +53,7 @@ void Switches_Process(void){
           ADC_Process();
           inc = (1023 - ADC_Thumb) / 102;
           while(ALWAYS){
+            ADC_Process();
             getSongMenu(ADC_Thumb);
             if (!(P4IN & SW1)){break;}
           }
@@ -70,7 +71,6 @@ void Switches_Process(void){
             if (!(P4IN & SW2)){clearLCD();break;}
             ADC_Process();
             getShapesMenu(ADC_Thumb);
-            clearLCD();
           } 
         }
       }

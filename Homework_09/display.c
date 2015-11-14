@@ -34,7 +34,7 @@ void setLCD(char display1[], int pos1, char display2[], int pos2,
   display_4 = display4;
   posL4 = pos4;
   Display_Process();
-  Five_msec_Delay(15);
+  Five_msec_Delay(50);
 }
 
 void clearLCD(void){
