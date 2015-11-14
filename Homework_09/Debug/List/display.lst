@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  21:34:26
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  23:09:22
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -119,6 +119,29 @@
      38          }
    \   000046   7417         POPM.W  #0x8, R11
    \   000048   1001         RETA
+     39          
+
+   \                                 In  segment CODE, align 2
+     40          void clearLCD(void){
+   \                     clearLCD:
+     41            setLCD("          ",ZERO,"          ",ZERO,"          ",ZERO,"          ",ZERO);
+   \   000000   0312         PUSH.W  #0x0
+   \   000002   3012....     PUSH.W  #`?<Constant "          ">`
+   \   000006   0312         PUSH.W  #0x0
+   \   000008   3012....     PUSH.W  #`?<Constant "          ">`
+   \   00000C   0F43         MOV.W   #0x0, R15
+   \   00000E   3E40....     MOV.W   #`?<Constant "          ">`, R14
+   \   000012   0D43         MOV.W   #0x0, R13
+   \   000014   3C40....     MOV.W   #`?<Constant "          ">`, R12
+   \   000018   ........     CALLA   #setLCD
+     42          }
+   \   00001C   3152         ADD.W   #0x8, SP
+   \   00001E   1001         RETA
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
 
    Maximum stack usage in bytes:
 
@@ -128,6 +151,8 @@
         4   -> ClrDisplay
         0   -> lcd_out
         4   -> lcd_out
+     12   clearLCD
+       12   -> setLCD
      20   setLCD
        20   -> Display_Process
        20   -> Five_msec_Delay
@@ -137,13 +162,17 @@
 
    Bytes  Function/Label
    -----  --------------
+      11  ?<Constant "          ">
       68  Display_Process
+      32  clearLCD
       74  setLCD
 
  
- 142 bytes in segment CODE
+ 174 bytes in segment CODE
+  11 bytes in segment DATA16_C
  
- 142 bytes of CODE memory
+ 174 bytes of CODE  memory
+  11 bytes of CONST memory
 
 Errors: none
 Warnings: none

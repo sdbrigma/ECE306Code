@@ -23,6 +23,7 @@ void Switches_Process(void){
 //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
 //******************************************************************************
   if (!(P4IN & SW1)){ 
+    clearLCD();
     ADC_Process();
     while(ALWAYS){
       if (!(P4IN & SW2)){break;}
@@ -49,8 +50,9 @@ void Switches_Process(void){
         
         // SONG CODE
         if(!(P4IN & SW1)){
+          ADC_Process();
+          inc = (1023 - ADC_Thumb) / 102;
           while(ALWAYS){
-            ADC_Process();
             getSongMenu(ADC_Thumb);
             if (!(P4IN & SW1)){break;}
           }
@@ -65,9 +67,10 @@ void Switches_Process(void){
         //SHAPES
         if(!(P4IN & SW1)){
          while(ALWAYS){
-            if (!(P4IN & SW2)){break;}
+            if (!(P4IN & SW2)){clearLCD();break;}
             ADC_Process();
             getShapesMenu(ADC_Thumb);
+            clearLCD();
           } 
         }
       }

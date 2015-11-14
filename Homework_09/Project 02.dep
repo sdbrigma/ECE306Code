@@ -622,7 +622,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 74 39 81 79 51 47</file>
+          <file> 74 39 51 81 79 47</file>
         </tool>
         <tool>
           <name>ICC430</name>

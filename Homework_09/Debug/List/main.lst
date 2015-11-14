@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  21:34:34
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  22:37:32
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -276,8 +276,8 @@
    \   000030   ........     CALLA   #Init_Serial_UCA1
      74            
      75          //             1234567890
-     76            ClrDisplay();
-   \   000034   ........     CALLA   #ClrDisplay
+     76            clearLCD();
+   \   000034   ........     CALLA   #clearLCD
      77            setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
    \   000038   1312         PUSH.W  #0x1
    \   00003A   3012....     PUSH.W  #`?<Constant "S Brigman">`
@@ -410,7 +410,6 @@
    ------ --------
      12   main
         4   -> ADC_Process
-        4   -> ClrDisplay
         4   -> Display_Process
         4   -> Init_ADC
         4   -> Init_Clocks
@@ -422,6 +421,7 @@
         4   -> Init_Serial_UCA1
         4   -> Init_Timers
         4   -> Switches_Process
+        4   -> clearLCD
         4   -> five_msec_sleep
        12   -> setLCD
 

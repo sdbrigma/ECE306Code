@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=-1715146469
+Checksum=-767156036
 [Stack]
 FillEnabled=0
 OverflowWarningsEnabled=1
@@ -28,11 +28,13 @@ Fmt1={W}1:ADC_Right_Detector	3	0
 Fmt2={W}1:ADC_Thumb	3	0
 Fmt3={W}1:UCA1RXBUF	5	0
 Fmt4={W}1:UCA1TXBUF	5	0
-Fmt5={W}1:adc_value	4	0
+Fmt5={W}1:adc_value	3	0
 Fmt6={W}1:value	4	0
 [Breakpoints]
 Bp0=_ "STD_CODE" "Memory:0xC9E0" 0 0 0 0 "" 0 ""
-Count=1
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\song_menu.c}.39.7" 1 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\song_menu.c}.41.18" 1 0 0 0 "" 0 ""
+Count=3
 [FET]
 Clock mode=46
 Extended Clock mode=1039

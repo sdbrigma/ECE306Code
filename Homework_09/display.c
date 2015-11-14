@@ -36,3 +36,7 @@ void setLCD(char display1[], int pos1, char display2[], int pos2,
   Display_Process();
   Five_msec_Delay(15);
 }
+
+void clearLCD(void){
+  setLCD("          ",ZERO,"          ",ZERO,"          ",ZERO,"          ",ZERO);
+}
