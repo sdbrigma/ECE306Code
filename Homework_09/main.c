@@ -73,16 +73,8 @@ void main(void){
   
 //             1234567890
   ClrDisplay();
-  display_1 = "NCSU";
-  posL1 = SW1_posL1;
-  display_2 = "WOLFPACK";
-  posL2 = SW1_posL2;
-  display_3 = "ECE306";
-  posL3 = SW1_posL3;
-  display_4 = "S Brigman";
-  posL4 = SW1_posL4;
+  setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
   big = ZERO;
-  Display_Process();
   ADC_Channel = Thumbwheel;
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
@@ -120,7 +112,7 @@ void main(void){
         //P3OUT |= LED8;                      // Change State of LED 8
         one_time = ZERO;
       }
-      size_count++;
+      /*size_count++;
       if(size_count > BIG_LETTERS){
         size_count = ZERO;
         if(big){
@@ -130,7 +122,7 @@ void main(void){
           lcd_4line();
           big = ONE;
         }
-      }
+      }*/
       Display_Process();
       break;                                // 
     default: break; 

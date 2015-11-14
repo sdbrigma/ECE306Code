@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  17:30:56
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  19:28:43
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -80,6 +80,45 @@
    \   00003C   1C42....     MOV.W   &display_4, R12
    \   000040   ........     BRA     #lcd_out
      24          }
+     25          
+
+   \                                 In  segment CODE, align 2
+     26          void setLCD(char display1[], int pos1, char display2[], int pos2,
+   \                     setLCD:
+     27                      char display3[], int pos3, char display4[], int pos4){
+   \   000000   7B15         PUSHM.W #0x8, R11
+   \   000002   0A4C         MOV.W   R12, R10
+   \   000004   0B4D         MOV.W   R13, R11
+   \   000006   084E         MOV.W   R14, R8
+   \   000008   094F         MOV.W   R15, R9
+   \   00000A   16411400     MOV.W   0x14(SP), R6
+   \   00000E   17411600     MOV.W   0x16(SP), R7
+   \   000012   14411800     MOV.W   0x18(SP), R4
+   \   000016   15411A00     MOV.W   0x1a(SP), R5
+     28            display_1 = display1;
+   \   00001A   824A....     MOV.W   R10, &display_1
+     29            posL1 = pos1;
+   \   00001E   C24B....     MOV.B   R11, &posL1
+     30            display_2 = display2;
+   \   000022   8248....     MOV.W   R8, &display_2
+     31            posL2 = pos2;
+   \   000026   C249....     MOV.B   R9, &posL2
+     32            display_3 = display3;
+   \   00002A   8246....     MOV.W   R6, &display_3
+     33            posL3 = pos3;
+   \   00002E   C247....     MOV.B   R7, &posL3
+     34            display_4 = display4;
+   \   000032   8244....     MOV.W   R4, &display_4
+     35            posL4 = pos4;
+   \   000036   C245....     MOV.B   R5, &posL4
+     36            Display_Process();
+   \   00003A   ........     CALLA   #Display_Process
+     37            Five_msec_Delay(15);
+   \   00003E   3C400F00     MOV.W   #0xf, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+     38          }
+   \   000046   7417         POPM.W  #0x8, R11
+   \   000048   1001         RETA
 
    Maximum stack usage in bytes:
 
@@ -89,6 +128,9 @@
         4   -> ClrDisplay
         0   -> lcd_out
         4   -> lcd_out
+     20   setLCD
+       20   -> Display_Process
+       20   -> Five_msec_Delay
 
 
    Segment part sizes:
@@ -96,11 +138,12 @@
    Bytes  Function/Label
    -----  --------------
       68  Display_Process
+      74  setLCD
 
  
- 68 bytes in segment CODE
+ 142 bytes in segment CODE
  
- 68 bytes of CODE memory
+ 142 bytes of CODE memory
 
 Errors: none
 Warnings: none

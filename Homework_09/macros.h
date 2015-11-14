@@ -12,7 +12,7 @@
 #define ALWAYS                  (1)
 #define ONE                     (1)
 #define DISPLAY_LENGTH          (11)
-#define LCD                     (100)
+#define LCD                     (300)
 #define BIG_LETTERS             (5)
 #define ZERO                    (0)
 #define QUARTER_SECOND          (50)

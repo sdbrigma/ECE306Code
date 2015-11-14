@@ -1970,9 +1970,6 @@
     <name>$PROJ_DIR$\functions.h</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\hw9.c</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\init.c</name>
   </file>
   <file>
@@ -2010,6 +2007,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\readme.txt</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\resistor_menu.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\shapes_menu.c</name>

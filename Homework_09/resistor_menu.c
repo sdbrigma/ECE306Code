@@ -6,114 +6,45 @@
 void getResistorMenu(unsigned int adc_value){
   char value = adc_value >> SHIFT6; // shift 10 bit value by 6 bits
   lcd_4line();
+  big = ZERO;
     if(value <= MENU1){
-      display_1 = "Color";
-      posL1 = LINE_POS_L3;
-      display_3 = "Value";
-      posL3 = LINE_POS_L3;
-      display_2 = "Black";
-      posL2 = LINE_POS_L3;
-      display_4 = "0";
-      posL4 = LINE_POS_L5;
+      setLCD("Color",LINE_POS_L3,"Black",LINE_POS_L3,"Value",LINE_POS_L3,"0",LINE_POS_L5);
       ADC_Process();
     }
   else if(value == MENU2){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Brown";
-    posL2 = LINE_POS_L3;
-    display_4 = "1";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Brown",LINE_POS_L3,"Value",LINE_POS_L3,"1",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU3){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Red";
-    posL2 = LINE_POS_L4;
-    display_4 = "2";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Red",LINE_POS_L4,"Value",LINE_POS_L3,"3",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU4){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Orange";
-    posL2 = LINE_POS_L2;
-    display_4 = "3";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Orange",LINE_POS_L2,"Value",LINE_POS_L3,"3",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU5){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Yellow";
-    posL2 = LINE_POS_L2;
-    display_4 = "4";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Yellow",LINE_POS_L2,"Value",LINE_POS_L3,"4",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU6){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Green";
-    posL2 = LINE_POS_L3;
-    display_4 = "5";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Green",LINE_POS_L3,"Value",LINE_POS_L3,"5",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU7){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Blue";
-    posL2 = LINE_POS_L3;
-    display_4 = "6";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Blue",LINE_POS_L3,"Value",LINE_POS_L3,"6",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU8){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Violet";
-    posL2 = LINE_POS_L2;
-    display_4 = "7";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Violet",LINE_POS_L3,"Value",LINE_POS_L3,"7",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU9){
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "Gray";
-    posL2 = LINE_POS_L3;
-    display_4 = "8";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"Gray",LINE_POS_L3,"Value",LINE_POS_L3,"8",LINE_POS_L5);
     ADC_Process();
   }
   else{
-    display_1 = "Color";
-    posL1 = LINE_POS_L3;
-    display_3 = "Value";
-    posL3 = LINE_POS_L3;
-    display_2 = "White";
-    posL2 = LINE_POS_L3;
-    display_4 = "9";
-    posL4 = LINE_POS_L5;
+    setLCD("Color",LINE_POS_L3,"White",LINE_POS_L3,"Value",LINE_POS_L3,"9",LINE_POS_L5);
     ADC_Process();
   }
 }

@@ -28,7 +28,8 @@ void Five_msec_Delay(unsigned int delay);
 void Init_Serial_UCA1(void);
 __interrupt void USCI_A1_ISR(void);
 
-
+void setLCD(char display1[], int pos1, char display2[], int pos2, 
+            char display3[], int pos3, char display4[], int pos4);
 
 // Function prototypes ports
 void Init_Ports(void);

@@ -33,7 +33,9 @@ __interrupt void Timer0_A0_ISR(void){
  PJOUT ^= LED3; // Test signal
  ISR_COUNT++;
  UPDATE_LCD++;
- if(UPDATE_LCD == LCD) {Display_Process(); UPDATE_LCD = ZERO;} // reset UPDATE_LCD every 200ms
+ /*if((UPDATE_LCD == LCD) && (big == ZERO)){
+   Display_Process(); 
+   UPDATE_LCD = ZERO;} // reset UPDATE_LCD every 200ms*/
  TA0CCR0 += TA0CCR0_INTERVAL; // Add Offset to TACCR0
  if(ISR_COUNT>FIVE_SECONDS){
    ISR_COUNT = ZERO;

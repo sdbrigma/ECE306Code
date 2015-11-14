@@ -22,3 +22,17 @@ void Display_Process(void){
   lcd_out(display_3, LCD_HOME_L3, posL3);
   lcd_out(display_4, LCD_HOME_L4, posL4);
 }
+
+void setLCD(char display1[], int pos1, char display2[], int pos2,
+            char display3[], int pos3, char display4[], int pos4){
+  display_1 = display1;
+  posL1 = pos1;
+  display_2 = display2;
+  posL2 = pos2;
+  display_3 = display3;
+  posL3 = pos3;
+  display_4 = display4;
+  posL4 = pos4;
+  Display_Process();
+  Five_msec_Delay(15);
+}
