@@ -257,3 +257,4 @@ extern char posL2;
 extern char big;
 extern char posL3;
 extern char posL4;
+extern unsigned int inc;

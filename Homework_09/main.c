@@ -50,6 +50,7 @@ unsigned int cpu_tx_ring_rd;
 char big;
 volatile char CPU_Char_Rx[16];
 volatile char CPU_Char_Tx[16];
+unsigned int inc = ZERO;
 
 void main(void){
 //------------------------------------------------------------------------------
@@ -112,17 +113,6 @@ void main(void){
         //P3OUT |= LED8;                      // Change State of LED 8
         one_time = ZERO;
       }
-      /*size_count++;
-      if(size_count > BIG_LETTERS){
-        size_count = ZERO;
-        if(big){
-          lcd_BIG_mid();
-          big = ZERO;
-        }else{
-          lcd_4line();
-          big = ONE;
-        }
-      }*/
       Display_Process();
       break;                                // 
     default: break; 

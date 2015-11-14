@@ -51,7 +51,7 @@ void Switches_Process(void){
         if(!(P4IN & SW1)){
           while(ALWAYS){
             ADC_Process();
-            getResistorMenu(ADC_Thumb);
+            getSongMenu(ADC_Thumb);
             if (!(P4IN & SW1)){break;}
           }
         }

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  20:05:47
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  21:34:41
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -147,9 +147,9 @@
      53                      ADC_Process();
    \                     ??Switches_Process_2:
    \   00009A   ........     CALLA   #ADC_Process
-     54                      getResistorMenu(ADC_Thumb);
+     54                      getSongMenu(ADC_Thumb);
    \   00009E   1C42....     MOV.W   &ADC_Thumb, R12
-   \   0000A2   ........     CALLA   #getResistorMenu
+   \   0000A2   ........     CALLA   #getSongMenu
      55                      if (!(P4IN & SW1)){break;}
    \   0000A6   D2B32102     BIT.B   #0x1, &0x221
    \   0000AA   F72F         JC      ??Switches_Process_2
@@ -292,6 +292,7 @@
        12   -> Five_msec_Delay
         4   -> getResistorMenu
         4   -> getShapesMenu
+        4   -> getSongMenu
        12   -> setLCD
 
 
