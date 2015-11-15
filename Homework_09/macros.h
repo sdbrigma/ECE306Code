@@ -256,5 +256,6 @@ extern char posL1;
 extern char posL2;
 extern char big;
 extern char posL3;
+extern unsigned int color;
 extern char posL4;
 extern unsigned int inc;

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  23:51:09
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           15/Nov/2015  01:29:30
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -141,8 +141,8 @@
      41            Display_Process();
    \                     ??setLCD_1:
    \   00006E   ........     CALLA   #Display_Process
-     42            Five_msec_Delay(50);
-   \   000072   3C403200     MOV.W   #0x32, R12
+     42            Five_msec_Delay(30);
+   \   000072   3C401E00     MOV.W   #0x1e, R12
    \   000076   ........     CALLA   #Five_msec_Delay
      43          }
    \   00007A   2153         ADD.W   #0x2, SP
@@ -191,12 +191,152 @@
      58            Display_Process();
    \                     ??clearLCD_1:
    \   000046   ........     CALLA   #Display_Process
-     59            Five_msec_Delay(40);
-   \   00004A   3C402800     MOV.W   #0x28, R12
+     59            Five_msec_Delay(30);
+   \   00004A   3C401E00     MOV.W   #0x1e, R12
    \   00004E   ........     CALLA   #Five_msec_Delay
      60          }
    \   000052   3A41         POP.W   R10
    \   000054   1001         RETA
+     61          
+
+   \                                 In  segment CODE, align 2
+     62          void displayLine1(const char display1[], int pos1){
+   \                     displayLine1:
+   \   000000   3B15         PUSHM.W #0x4, R11
+   \   000002   0B4C         MOV.W   R12, R11
+   \   000004   0A4D         MOV.W   R13, R10
+     63            int i = ZERO;
+   \   000006   0843         MOV.W   #0x0, R8
+     64            posL1 = pos1;
+   \   000008   C24A....     MOV.B   R10, &posL1
+     65            while(i<10){
+   \                     ??displayLine1_0:
+   \   00000C   38900A00     CMP.W   #0xa, R8
+   \   000010   0934         JGE     ??displayLine1_1
+     66              display_1[i] = display1[i];
+   \   000012   0F4B         MOV.W   R11, R15
+   \   000014   0F58         ADD.W   R8, R15
+   \   000016   1E42....     MOV.W   &display_1, R14
+   \   00001A   0E58         ADD.W   R8, R14
+   \   00001C   EE4F0000     MOV.B   @R15, 0(R14)
+     67              i++;
+   \   000020   1853         ADD.W   #0x1, R8
+   \   000022   F43F         JMP     ??displayLine1_0
+     68            }
+     69            Display_Process();
+   \                     ??displayLine1_1:
+   \   000024   ........     CALLA   #Display_Process
+     70            Five_msec_Delay(30);
+   \   000028   3C401E00     MOV.W   #0x1e, R12
+   \   00002C   ........     CALLA   #Five_msec_Delay
+     71          }
+   \   000030   3817         POPM.W  #0x4, R11
+   \   000032   1001         RETA
+     72          
+
+   \                                 In  segment CODE, align 2
+     73          void displayLine2(const char display2[], int pos2){
+   \                     displayLine2:
+   \   000000   3B15         PUSHM.W #0x4, R11
+   \   000002   0B4C         MOV.W   R12, R11
+   \   000004   0A4D         MOV.W   R13, R10
+     74            int i = ZERO;
+   \   000006   0843         MOV.W   #0x0, R8
+     75            posL2 = pos2;
+   \   000008   C24A....     MOV.B   R10, &posL2
+     76            while(i<10){
+   \                     ??displayLine2_0:
+   \   00000C   38900A00     CMP.W   #0xa, R8
+   \   000010   0934         JGE     ??displayLine2_1
+     77              display_2[i] = display2[i];
+   \   000012   0F4B         MOV.W   R11, R15
+   \   000014   0F58         ADD.W   R8, R15
+   \   000016   1E42....     MOV.W   &display_2, R14
+   \   00001A   0E58         ADD.W   R8, R14
+   \   00001C   EE4F0000     MOV.B   @R15, 0(R14)
+     78              i++;
+   \   000020   1853         ADD.W   #0x1, R8
+   \   000022   F43F         JMP     ??displayLine2_0
+     79            }
+     80            Display_Process();
+   \                     ??displayLine2_1:
+   \   000024   ........     CALLA   #Display_Process
+     81            Five_msec_Delay(30);
+   \   000028   3C401E00     MOV.W   #0x1e, R12
+   \   00002C   ........     CALLA   #Five_msec_Delay
+     82          }
+   \   000030   3817         POPM.W  #0x4, R11
+   \   000032   1001         RETA
+     83          
+
+   \                                 In  segment CODE, align 2
+     84          void displayLine3(const char display3[], int pos3){
+   \                     displayLine3:
+   \   000000   3B15         PUSHM.W #0x4, R11
+   \   000002   0B4C         MOV.W   R12, R11
+   \   000004   0A4D         MOV.W   R13, R10
+     85            int i = ZERO;
+   \   000006   0843         MOV.W   #0x0, R8
+     86            posL3 = pos3;
+   \   000008   C24A....     MOV.B   R10, &posL3
+     87            while(i<10){
+   \                     ??displayLine3_0:
+   \   00000C   38900A00     CMP.W   #0xa, R8
+   \   000010   0934         JGE     ??displayLine3_1
+     88              display_3[i] = display3[i];
+   \   000012   0F4B         MOV.W   R11, R15
+   \   000014   0F58         ADD.W   R8, R15
+   \   000016   1E42....     MOV.W   &display_3, R14
+   \   00001A   0E58         ADD.W   R8, R14
+   \   00001C   EE4F0000     MOV.B   @R15, 0(R14)
+     89              i++;
+   \   000020   1853         ADD.W   #0x1, R8
+   \   000022   F43F         JMP     ??displayLine3_0
+     90            }
+     91            Display_Process();
+   \                     ??displayLine3_1:
+   \   000024   ........     CALLA   #Display_Process
+     92            Five_msec_Delay(30);
+   \   000028   3C401E00     MOV.W   #0x1e, R12
+   \   00002C   ........     CALLA   #Five_msec_Delay
+     93          }
+   \   000030   3817         POPM.W  #0x4, R11
+   \   000032   1001         RETA
+     94          
+
+   \                                 In  segment CODE, align 2
+     95          void displayLine4(const char display4[], int pos4){
+   \                     displayLine4:
+   \   000000   3B15         PUSHM.W #0x4, R11
+   \   000002   0B4C         MOV.W   R12, R11
+   \   000004   0A4D         MOV.W   R13, R10
+     96            int i = ZERO;
+   \   000006   0843         MOV.W   #0x0, R8
+     97            posL4 = pos4;
+   \   000008   C24A....     MOV.B   R10, &posL4
+     98            while(i<10){
+   \                     ??displayLine4_0:
+   \   00000C   38900A00     CMP.W   #0xa, R8
+   \   000010   0934         JGE     ??displayLine4_1
+     99              display_4[i] = display4[i];
+   \   000012   0F4B         MOV.W   R11, R15
+   \   000014   0F58         ADD.W   R8, R15
+   \   000016   1E42....     MOV.W   &display_4, R14
+   \   00001A   0E58         ADD.W   R8, R14
+   \   00001C   EE4F0000     MOV.B   @R15, 0(R14)
+    100              i++;
+   \   000020   1853         ADD.W   #0x1, R8
+   \   000022   F43F         JMP     ??displayLine4_0
+    101            }
+    102            Display_Process();
+   \                     ??displayLine4_1:
+   \   000024   ........     CALLA   #Display_Process
+    103            Five_msec_Delay(30);
+   \   000028   3C401E00     MOV.W   #0x1e, R12
+   \   00002C   ........     CALLA   #Five_msec_Delay
+    104          }
+   \   000030   3817         POPM.W  #0x4, R11
+   \   000032   1001         RETA
 
    Maximum stack usage in bytes:
 
@@ -209,6 +349,18 @@
       6   clearLCD
         6   -> Display_Process
         6   -> Five_msec_Delay
+     12   displayLine1
+       12   -> Display_Process
+       12   -> Five_msec_Delay
+     12   displayLine2
+       12   -> Display_Process
+       12   -> Five_msec_Delay
+     12   displayLine3
+       12   -> Display_Process
+       12   -> Five_msec_Delay
+     12   displayLine4
+       12   -> Display_Process
+       12   -> Five_msec_Delay
      22   setLCD
        22   -> Display_Process
        22   -> Five_msec_Delay
@@ -220,12 +372,16 @@
    -----  --------------
       68  Display_Process
       86  clearLCD
+      52  displayLine1
+      52  displayLine2
+      52  displayLine3
+      52  displayLine4
      128  setLCD
 
  
- 282 bytes in segment CODE
+ 490 bytes in segment CODE
  
- 282 bytes of CODE memory
+ 490 bytes of CODE memory
 
 Errors: none
 Warnings: none

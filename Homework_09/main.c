@@ -51,6 +51,7 @@ char big;
 volatile char CPU_Char_Rx[16];
 volatile char CPU_Char_Tx[16];
 unsigned int inc = ZERO;
+unsigned int color = ALWAYS;
 
 void main(void){
 //------------------------------------------------------------------------------

@@ -35,22 +35,20 @@ void Switches_Process(void){
           while(ALWAYS){
             ADC_Process();
             getResistorMenu(ADC_Thumb);
-            if (!(P4IN & SW2)){Five_msec_Delay(30);break;}
+            if (!(P4IN & SW2)){Five_msec_Delay(15);break;}
           }
         }
       } 
       
       else if(ADC_Thumb >= 681){ // this range the last third of the full range of values for the ADC
-        ClrDisplay();
         setLCD("Song",LINE_POS_L3,"",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0);
         // SONG CODE
         if(!(P4IN & SW1)){
           ADC_Process();
-          inc = (1023 - ADC_Thumb) / 102;
+          inc = (1023 - ADC_Thumb) / 210;
           while(ALWAYS){
-            ADC_Process();
             getSongMenu(ADC_Thumb);
-            if (!(P4IN & SW2)){Five_msec_Delay(30);break;}
+            if (!(P4IN & SW2)){Five_msec_Delay(15);break;}
           }
           clearLCD();
         }

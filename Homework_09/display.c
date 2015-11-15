@@ -39,7 +39,7 @@ void setLCD(const char display1[], int pos1, const char display2[], int pos2,// 
     i++;
   }
   Display_Process();
-  Five_msec_Delay(50);
+  Five_msec_Delay(30);
 }
 
 void clearLCD(void){
@@ -56,5 +56,49 @@ void clearLCD(void){
     i++;
   }
   Display_Process();
-  Five_msec_Delay(40);
+  Five_msec_Delay(30);
+}
+
+void displayLine1(const char display1[], int pos1){
+  int i = ZERO;
+  posL1 = pos1;
+  while(i<10){
+    display_1[i] = display1[i];
+    i++;
+  }
+  Display_Process();
+  Five_msec_Delay(30);
+}
+
+void displayLine2(const char display2[], int pos2){
+  int i = ZERO;
+  posL2 = pos2;
+  while(i<10){
+    display_2[i] = display2[i];
+    i++;
+  }
+  Display_Process();
+  Five_msec_Delay(30);
+}
+
+void displayLine3(const char display3[], int pos3){
+  int i = ZERO;
+  posL3 = pos3;
+  while(i<10){
+    display_3[i] = display3[i];
+    i++;
+  }
+  Display_Process();
+  Five_msec_Delay(30);
+}
+
+void displayLine4(const char display4[], int pos4){
+  int i = ZERO;
+  posL4 = pos4;
+  while(i<10){
+    display_4[i] = display4[i];
+    i++;
+  }
+  Display_Process();
+  Five_msec_Delay(30);
 }

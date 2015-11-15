@@ -31,6 +31,10 @@ __interrupt void USCI_A1_ISR(void);
 void setLCD(const char display1[], int pos1, const char display2[], int pos2, 
             const char display3[], int pos3, const char display4[], int pos4);
 void clearLCD(void);
+void displayLine1(const char display1[], int pos1);
+void displayLine2(const char display2[], int pos2);
+void displayLine3(const char display3[], int pos3);
+void displayLine4(const char display4[], int pos4);
 
 // Function prototypes ports
 void Init_Ports(void);
