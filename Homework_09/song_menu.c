@@ -18,13 +18,10 @@ void getSongMenu(unsigned int adc_value){
     display_2[LINE_POS_L7] = HW9_String[inc + LINE_POS_L7];
     display_2[LINE_POS_L8] = HW9_String[inc + LINE_POS_L8];
     display_2[LINE_POS_L9] = HW9_String[inc + LINE_POS_L9];
-    display_1 = "Red";
-    display_3 = "White";
-    posL3 = 3;
-    posL1 = 4;
     Display_Process();
+    Five_msec_Delay(30);
   if(adc_value>ADC_Thumb){
-    clearLCD();
+    //clearLCD();
     display_2[LINE_POS_L0] = HW9_String[inc];
     display_2[LINE_POS_L1] = HW9_String[inc + LINE_POS_L1];
     display_2[LINE_POS_L2] = HW9_String[inc + LINE_POS_L2];
@@ -42,7 +39,7 @@ void getSongMenu(unsigned int adc_value){
       posL1 = 4;
       color = ALWAYS;
       Display_Process();
-      Five_msec_Delay(90);
+      Five_msec_Delay(30);
     }
     else {
       display_3 = "Red";
@@ -51,7 +48,7 @@ void getSongMenu(unsigned int adc_value){
       posL1 = 4;
       color = ZERO;
       Display_Process();
-      Five_msec_Delay(90);
+      Five_msec_Delay(30);
     }
     unsigned int tmp = adc_value-ADC_Thumb;
     if(tmp>10){

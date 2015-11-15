@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  01:55:05
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  23:51:09
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -83,65 +83,120 @@
      25          
 
    \                                 In  segment CODE, align 2
-     26          void setLCD(char display1[], int pos1, char display2[], int pos2,
+     26          void setLCD(const char display1[], int pos1, const char display2[], int pos2,// ONLY TAKES STRINGS
    \                     setLCD:
-     27                      char display3[], int pos3, char display4[], int pos4){
+     27                      const char display3[], int pos3, const char display4[], int pos4){
    \   000000   7B15         PUSHM.W #0x8, R11
-   \   000002   0A4C         MOV.W   R12, R10
-   \   000004   0B4D         MOV.W   R13, R11
-   \   000006   084E         MOV.W   R14, R8
-   \   000008   094F         MOV.W   R15, R9
-   \   00000A   16411400     MOV.W   0x14(SP), R6
-   \   00000E   17411600     MOV.W   0x16(SP), R7
-   \   000012   14411800     MOV.W   0x18(SP), R4
-   \   000016   15411A00     MOV.W   0x1a(SP), R5
-     28            display_1 = display1;
-   \   00001A   824A....     MOV.W   R10, &display_1
-     29            posL1 = pos1;
-   \   00001E   C24B....     MOV.B   R11, &posL1
-     30            display_2 = display2;
-   \   000022   8248....     MOV.W   R8, &display_2
+   \   000002   0D12         PUSH.W  R13
+   \   000004   0A4C         MOV.W   R12, R10
+   \   000006   0B4E         MOV.W   R14, R11
+   \   000008   084F         MOV.W   R15, R8
+   \   00000A   19411600     MOV.W   0x16(SP), R9
+   \   00000E   16411800     MOV.W   0x18(SP), R6
+   \   000012   17411A00     MOV.W   0x1a(SP), R7
+   \   000016   15411C00     MOV.W   0x1c(SP), R5
+     28                        
+     29            int i = ZERO;
+   \   00001A   0443         MOV.W   #0x0, R4
+     30            posL1 = pos1;
+   \   00001C   E241....     MOV.B   @SP, &posL1
      31            posL2 = pos2;
-   \   000026   C249....     MOV.B   R9, &posL2
-     32            display_3 = display3;
-   \   00002A   8246....     MOV.W   R6, &display_3
-     33            posL3 = pos3;
-   \   00002E   C247....     MOV.B   R7, &posL3
-     34            display_4 = display4;
-   \   000032   8244....     MOV.W   R4, &display_4
-     35            posL4 = pos4;
-   \   000036   C245....     MOV.B   R5, &posL4
-     36            Display_Process();
-   \   00003A   ........     CALLA   #Display_Process
-     37            Five_msec_Delay(50);
-   \   00003E   3C403200     MOV.W   #0x32, R12
-   \   000042   ........     CALLA   #Five_msec_Delay
-     38          }
-   \   000046   7417         POPM.W  #0x8, R11
-   \   000048   1001         RETA
-     39          
+   \   000020   C248....     MOV.B   R8, &posL2
+     32            posL3 = pos3;
+   \   000024   C246....     MOV.B   R6, &posL3
+     33            posL4 = pos4;
+   \   000028   C245....     MOV.B   R5, &posL4
+     34            while(i<10){
+   \                     ??setLCD_0:
+   \   00002C   34900A00     CMP.W   #0xa, R4
+   \   000030   1E34         JGE     ??setLCD_1
+     35              display_1[i] = display1[i];
+   \   000032   0F4A         MOV.W   R10, R15
+   \   000034   0F54         ADD.W   R4, R15
+   \   000036   1E42....     MOV.W   &display_1, R14
+   \   00003A   0E54         ADD.W   R4, R14
+   \   00003C   EE4F0000     MOV.B   @R15, 0(R14)
+     36              display_2[i] = display2[i];
+   \   000040   0F4B         MOV.W   R11, R15
+   \   000042   0F54         ADD.W   R4, R15
+   \   000044   1E42....     MOV.W   &display_2, R14
+   \   000048   0E54         ADD.W   R4, R14
+   \   00004A   EE4F0000     MOV.B   @R15, 0(R14)
+     37              display_3[i] = display3[i];
+   \   00004E   0F49         MOV.W   R9, R15
+   \   000050   0F54         ADD.W   R4, R15
+   \   000052   1E42....     MOV.W   &display_3, R14
+   \   000056   0E54         ADD.W   R4, R14
+   \   000058   EE4F0000     MOV.B   @R15, 0(R14)
+     38              display_4[i] = display4[i];
+   \   00005C   0F47         MOV.W   R7, R15
+   \   00005E   0F54         ADD.W   R4, R15
+   \   000060   1E42....     MOV.W   &display_4, R14
+   \   000064   0E54         ADD.W   R4, R14
+   \   000066   EE4F0000     MOV.B   @R15, 0(R14)
+     39              i++;
+   \   00006A   1453         ADD.W   #0x1, R4
+   \   00006C   DF3F         JMP     ??setLCD_0
+     40            }
+     41            Display_Process();
+   \                     ??setLCD_1:
+   \   00006E   ........     CALLA   #Display_Process
+     42            Five_msec_Delay(50);
+   \   000072   3C403200     MOV.W   #0x32, R12
+   \   000076   ........     CALLA   #Five_msec_Delay
+     43          }
+   \   00007A   2153         ADD.W   #0x2, SP
+   \   00007C   7417         POPM.W  #0x8, R11
+   \   00007E   1001         RETA
+     44          
 
    \                                 In  segment CODE, align 2
-     40          void clearLCD(void){
+     45          void clearLCD(void){
    \                     clearLCD:
-     41            setLCD("          ",ZERO,"          ",ZERO,"          ",ZERO,"          ",ZERO);
-   \   000000   0312         PUSH.W  #0x0
-   \   000002   3012....     PUSH.W  #`?<Constant "          ">`
-   \   000006   0312         PUSH.W  #0x0
-   \   000008   3012....     PUSH.W  #`?<Constant "          ">`
-   \   00000C   0F43         MOV.W   #0x0, R15
-   \   00000E   3E40....     MOV.W   #`?<Constant "          ">`, R14
-   \   000012   0D43         MOV.W   #0x0, R13
-   \   000014   3C40....     MOV.W   #`?<Constant "          ">`, R12
-   \   000018   ........     CALLA   #setLCD
-     42          }
-   \   00001C   3152         ADD.W   #0x8, SP
-   \   00001E   1001         RETA
-
-   \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "          ">`:
-   \   000000   202020202020 DC8 "          "
-   \            2020202000  
+   \   000000   0A12         PUSH.W  R10
+     46            int i = ZERO;
+   \   000002   0A43         MOV.W   #0x0, R10
+     47            posL1 = ZERO;
+   \   000004   C243....     MOV.B   #0x0, &posL1
+     48            posL2 = ZERO;
+   \   000008   C243....     MOV.B   #0x0, &posL2
+     49            posL3 = ZERO;
+   \   00000C   C243....     MOV.B   #0x0, &posL3
+     50            posL4 = ZERO;
+   \   000010   C243....     MOV.B   #0x0, &posL4
+     51            while(i<10){
+   \                     ??clearLCD_0:
+   \   000014   3A900A00     CMP.W   #0xa, R10
+   \   000018   1634         JGE     ??clearLCD_1
+     52              display_1[i] = ORIGINAL;
+   \   00001A   1F42....     MOV.W   &display_1, R15
+   \   00001E   0F5A         ADD.W   R10, R15
+   \   000020   CF430000     MOV.B   #0x0, 0(R15)
+     53              display_2[i] = ORIGINAL;
+   \   000024   1F42....     MOV.W   &display_2, R15
+   \   000028   0F5A         ADD.W   R10, R15
+   \   00002A   CF430000     MOV.B   #0x0, 0(R15)
+     54              display_3[i] = ORIGINAL;
+   \   00002E   1F42....     MOV.W   &display_3, R15
+   \   000032   0F5A         ADD.W   R10, R15
+   \   000034   CF430000     MOV.B   #0x0, 0(R15)
+     55              display_4[i] = ORIGINAL;
+   \   000038   1F42....     MOV.W   &display_4, R15
+   \   00003C   0F5A         ADD.W   R10, R15
+   \   00003E   CF430000     MOV.B   #0x0, 0(R15)
+     56              i++;
+   \   000042   1A53         ADD.W   #0x1, R10
+   \   000044   E73F         JMP     ??clearLCD_0
+     57            }
+     58            Display_Process();
+   \                     ??clearLCD_1:
+   \   000046   ........     CALLA   #Display_Process
+     59            Five_msec_Delay(40);
+   \   00004A   3C402800     MOV.W   #0x28, R12
+   \   00004E   ........     CALLA   #Five_msec_Delay
+     60          }
+   \   000052   3A41         POP.W   R10
+   \   000054   1001         RETA
 
    Maximum stack usage in bytes:
 
@@ -151,28 +206,26 @@
         4   -> ClrDisplay
         0   -> lcd_out
         4   -> lcd_out
-     12   clearLCD
-       12   -> setLCD
-     20   setLCD
-       20   -> Display_Process
-       20   -> Five_msec_Delay
+      6   clearLCD
+        6   -> Display_Process
+        6   -> Five_msec_Delay
+     22   setLCD
+       22   -> Display_Process
+       22   -> Five_msec_Delay
 
 
    Segment part sizes:
 
    Bytes  Function/Label
    -----  --------------
-      11  ?<Constant "          ">
       68  Display_Process
-      32  clearLCD
-      74  setLCD
+      86  clearLCD
+     128  setLCD
 
  
- 174 bytes in segment CODE
-  11 bytes in segment DATA16_C
+ 282 bytes in segment CODE
  
- 174 bytes of CODE  memory
-  11 bytes of CONST memory
+ 282 bytes of CODE memory
 
 Errors: none
 Warnings: none

@@ -22,17 +22,14 @@ void Switches_Process(void){
 //  Sept 2015
 //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
 //******************************************************************************
-  if (!(P4IN & SW1)){ 
-    //clearLCD();
-    //ADC_Process();
+  if (!(P4IN & SW1)){
+    Five_msec_Delay(15);
     while(ALWAYS){
       if (!(P4IN & SW2)){break;}
       ADC_Process(); // read ADC value for thumbwheel
       if(ADC_Thumb <= 340){// Divides range of ADC values into three for main menu
-        setLCD("Resistors",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0);
-        //ADC_Process();
-        Five_msec_Delay(30);
-        
+        setLCD("Resistor",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0);
+        //ADC_Process();        
         // RESISTOR CODES
         if(!(P4IN & SW1)){
           while(ALWAYS){
@@ -44,10 +41,8 @@ void Switches_Process(void){
       } 
       
       else if(ADC_Thumb >= 681){ // this range the last third of the full range of values for the ADC
-        setLCD("Song",LINE_POS_L3,"          ",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0);
-        //ADC_Process();
-        Five_msec_Delay(30);
-        
+        ClrDisplay();
+        setLCD("Song",LINE_POS_L3,"",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0);
         // SONG CODE
         if(!(P4IN & SW1)){
           ADC_Process();
@@ -55,24 +50,23 @@ void Switches_Process(void){
           while(ALWAYS){
             ADC_Process();
             getSongMenu(ADC_Thumb);
-            if (!(P4IN & SW2)){clearLCD();Five_msec_Delay(30);break;}
+            if (!(P4IN & SW2)){Five_msec_Delay(30);break;}
           }
+          clearLCD();
         }
       }
       
       else{ // If it's not in the lower or upper third it's in the middle
-        setLCD("Shapes",LINE_POS_L2,"          ",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0);
-        //ADC_Process();
-        Five_msec_Delay(30);
+        setLCD("Shapes",LINE_POS_L2,"",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0);
+        Five_msec_Delay(15);
         
         //SHAPES
         if(!(P4IN & SW1)){
          while(ALWAYS){
-            if (!(P4IN & SW2)){break;}
+            if (!(P4IN & SW2)){clearLCD();break;}
             ADC_Process();
             getShapesMenu(ADC_Thumb);
           }
-         clearLCD();
         }
       }
     }
