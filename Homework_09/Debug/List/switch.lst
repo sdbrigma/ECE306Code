@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  01:55:30
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  20:25:48
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -70,118 +70,118 @@
      25            if (!(P4IN & SW1)){ 
    \   000000   D2B32102     BIT.B   #0x1, &0x221
    \   000004   872C         JC      ??Switches_Process_5
-     26              clearLCD();
-   \   000006   ........     CALLA   #clearLCD
-     27              ADC_Process();
-   \   00000A   ........     CALLA   #ADC_Process
+     26              //clearLCD();
+     27              //ADC_Process();
      28              while(ALWAYS){
      29                if (!(P4IN & SW2)){break;}
    \                     ??Switches_Process_0:
-   \   00000E   E2B32102     BIT.B   #0x2, &0x221
-   \   000012   8028         JNC     ??Switches_Process_5
+   \   000006   E2B32102     BIT.B   #0x2, &0x221
+   \   00000A   8428         JNC     ??Switches_Process_5
      30                ADC_Process(); // read ADC value for thumbwheel
-   \   000014   ........     CALLA   #ADC_Process
+   \   00000C   ........     CALLA   #ADC_Process
      31                if(ADC_Thumb <= 340){// Divides range of ADC values into three for main menu
-   \   000018   B2905501.... CMP.W   #0x155, &ADC_Thumb
-   \   00001E   222C         JC      ??Switches_Process_6
-     32                  setLCD("Resistors",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0);
-   \   000020   0312         PUSH.W  #0x0
-   \   000022   3012....     PUSH.W  #`?<Constant " ">`
-   \   000026   0312         PUSH.W  #0x0
-   \   000028   3012....     PUSH.W  #`?<Constant " ">`
-   \   00002C   0F43         MOV.W   #0x0, R15
-   \   00002E   3E40....     MOV.W   #`?<Constant " ">`, R14
-   \   000032   0D43         MOV.W   #0x0, R13
-   \   000034   3C40....     MOV.W   #`?<Constant "Resistors">`, R12
-   \   000038   ........     CALLA   #setLCD
-     33                  ADC_Process();
-   \   00003C   ........     CALLA   #ADC_Process
+   \   000010   B2905501.... CMP.W   #0x155, &ADC_Thumb
+   \   000016   242C         JC      ??Switches_Process_6
+     32                  setLCD("Resistors",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0);
+   \   000018   0312         PUSH.W  #0x0
+   \   00001A   3012....     PUSH.W  #`?<Constant "          ">`
+   \   00001E   0312         PUSH.W  #0x0
+   \   000020   3012....     PUSH.W  #`?<Constant "          ">`
+   \   000024   0F43         MOV.W   #0x0, R15
+   \   000026   3E40....     MOV.W   #`?<Constant "          ">`, R14
+   \   00002A   0D43         MOV.W   #0x0, R13
+   \   00002C   3C40....     MOV.W   #`?<Constant "Resistors">`, R12
+   \   000030   ........     CALLA   #setLCD
+     33                  //ADC_Process();
      34                  Five_msec_Delay(30);
-   \   000040   3C401E00     MOV.W   #0x1e, R12
-   \   000044   ........     CALLA   #Five_msec_Delay
+   \   000034   3C401E00     MOV.W   #0x1e, R12
+   \   000038   ........     CALLA   #Five_msec_Delay
      35                  
      36                  // RESISTOR CODES
      37                  if(!(P4IN & SW1)){
-   \   000048   3152         ADD.W   #0x8, SP
-   \   00004A   D2B32102     BIT.B   #0x1, &0x221
-   \   00004E   DF2F         JC      ??Switches_Process_0
+   \   00003C   3152         ADD.W   #0x8, SP
+   \   00003E   D2B32102     BIT.B   #0x1, &0x221
+   \   000042   E12F         JC      ??Switches_Process_0
      38                    while(ALWAYS){
      39                      ADC_Process();
    \                     ??Switches_Process_1:
-   \   000050   ........     CALLA   #ADC_Process
+   \   000044   ........     CALLA   #ADC_Process
      40                      getResistorMenu(ADC_Thumb);
-   \   000054   1C42....     MOV.W   &ADC_Thumb, R12
-   \   000058   ........     CALLA   #getResistorMenu
-     41                      if (!(P4IN & SW1)){break;}
-   \   00005C   D2B32102     BIT.B   #0x1, &0x221
-   \   000060   F72F         JC      ??Switches_Process_1
-   \   000062   D53F         JMP     ??Switches_Process_0
+   \   000048   1C42....     MOV.W   &ADC_Thumb, R12
+   \   00004C   ........     CALLA   #getResistorMenu
+     41                      if (!(P4IN & SW2)){Five_msec_Delay(30);break;}
+   \   000050   E2B32102     BIT.B   #0x2, &0x221
+   \   000054   F72F         JC      ??Switches_Process_1
+   \   000056   3C401E00     MOV.W   #0x1e, R12
+   \   00005A   ........     CALLA   #Five_msec_Delay
+   \   00005E   D33F         JMP     ??Switches_Process_0
      42                    }
      43                  }
      44                } 
      45                
      46                else if(ADC_Thumb >= 681){ // this range the last third of the full range of values for the ADC
    \                     ??Switches_Process_6:
-   \   000064   B290A902.... CMP.W   #0x2a9, &ADC_Thumb
-   \   00006A   2F28         JNC     ??Switches_Process_7
-     47                  setLCD("Song",LINE_POS_L3," ",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0);
-   \   00006C   0312         PUSH.W  #0x0
-   \   00006E   3012....     PUSH.W  #`?<Constant " ">`
-   \   000072   0312         PUSH.W  #0x0
-   \   000074   3012....     PUSH.W  #`?<Constant " ">`
-   \   000078   0F43         MOV.W   #0x0, R15
-   \   00007A   3E40....     MOV.W   #`?<Constant " ">`, R14
-   \   00007E   3D400300     MOV.W   #0x3, R13
-   \   000082   3C40....     MOV.W   #`?<Constant "Song">`, R12
-   \   000086   ........     CALLA   #setLCD
-     48                  ADC_Process();
-   \   00008A   ........     CALLA   #ADC_Process
+   \   000060   B290A902.... CMP.W   #0x2a9, &ADC_Thumb
+   \   000066   3328         JNC     ??Switches_Process_7
+     47                  setLCD("Song",LINE_POS_L3,"          ",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0);
+   \   000068   0312         PUSH.W  #0x0
+   \   00006A   3012....     PUSH.W  #`?<Constant "          ">`
+   \   00006E   0312         PUSH.W  #0x0
+   \   000070   3012....     PUSH.W  #`?<Constant "          ">`
+   \   000074   0F43         MOV.W   #0x0, R15
+   \   000076   3E40....     MOV.W   #`?<Constant "          ">`, R14
+   \   00007A   3D400300     MOV.W   #0x3, R13
+   \   00007E   3C40....     MOV.W   #`?<Constant "Song">`, R12
+   \   000082   ........     CALLA   #setLCD
+     48                  //ADC_Process();
      49                  Five_msec_Delay(30);
-   \   00008E   3C401E00     MOV.W   #0x1e, R12
-   \   000092   ........     CALLA   #Five_msec_Delay
+   \   000086   3C401E00     MOV.W   #0x1e, R12
+   \   00008A   ........     CALLA   #Five_msec_Delay
      50                  
      51                  // SONG CODE
      52                  if(!(P4IN & SW1)){
-   \   000096   3152         ADD.W   #0x8, SP
-   \   000098   D2B32102     BIT.B   #0x1, &0x221
-   \   00009C   B82F         JC      ??Switches_Process_0
+   \   00008E   3152         ADD.W   #0x8, SP
+   \   000090   D2B32102     BIT.B   #0x1, &0x221
+   \   000094   B82F         JC      ??Switches_Process_0
      53                    ADC_Process();
-   \   00009E   ........     CALLA   #ADC_Process
+   \   000096   ........     CALLA   #ADC_Process
      54                    inc = (1023 - ADC_Thumb) / 102;
-   \   0000A2   3C40FF03     MOV.W   #0x3ff, R12
-   \   0000A6   1C82....     SUB.W   &ADC_Thumb, R12
-   \   0000AA   3E406600     MOV.W   #0x66, R14
-   \   0000AE   ........     CALLA   #?DivMod16u
-   \   0000B2   824C....     MOV.W   R12, &`inc`
+   \   00009A   3C40FF03     MOV.W   #0x3ff, R12
+   \   00009E   1C82....     SUB.W   &ADC_Thumb, R12
+   \   0000A2   3E406600     MOV.W   #0x66, R14
+   \   0000A6   ........     CALLA   #?DivMod16u
+   \   0000AA   824C....     MOV.W   R12, &`inc`
      55                    while(ALWAYS){
      56                      ADC_Process();
    \                     ??Switches_Process_2:
-   \   0000B6   ........     CALLA   #ADC_Process
+   \   0000AE   ........     CALLA   #ADC_Process
      57                      getSongMenu(ADC_Thumb);
-   \   0000BA   1C42....     MOV.W   &ADC_Thumb, R12
-   \   0000BE   ........     CALLA   #getSongMenu
-     58                      if (!(P4IN & SW1)){break;}
-   \   0000C2   D2B32102     BIT.B   #0x1, &0x221
-   \   0000C6   F72F         JC      ??Switches_Process_2
-   \   0000C8   A23F         JMP     ??Switches_Process_0
+   \   0000B2   1C42....     MOV.W   &ADC_Thumb, R12
+   \   0000B6   ........     CALLA   #getSongMenu
+     58                      if (!(P4IN & SW2)){clearLCD();Five_msec_Delay(30);break;}
+   \   0000BA   E2B32102     BIT.B   #0x2, &0x221
+   \   0000BE   F72F         JC      ??Switches_Process_2
+   \   0000C0   ........     CALLA   #clearLCD
+   \   0000C4   3C401E00     MOV.W   #0x1e, R12
+   \   0000C8   ........     CALLA   #Five_msec_Delay
+   \   0000CC   9C3F         JMP     ??Switches_Process_0
      59                    }
      60                  }
      61                }
      62                
      63                else{ // If it's not in the lower or upper third it's in the middle
-     64                  setLCD("Shapes",LINE_POS_L2," ",LINE_POS_L0," ",LINE_POS_L0," ",LINE_POS_L0);
+     64                  setLCD("Shapes",LINE_POS_L2,"          ",LINE_POS_L0,"          ",LINE_POS_L0,"          ",LINE_POS_L0);
    \                     ??Switches_Process_7:
-   \   0000CA   0312         PUSH.W  #0x0
-   \   0000CC   3012....     PUSH.W  #`?<Constant " ">`
-   \   0000D0   0312         PUSH.W  #0x0
-   \   0000D2   3012....     PUSH.W  #`?<Constant " ">`
-   \   0000D6   0F43         MOV.W   #0x0, R15
-   \   0000D8   3E40....     MOV.W   #`?<Constant " ">`, R14
-   \   0000DC   2D43         MOV.W   #0x2, R13
-   \   0000DE   3C40....     MOV.W   #`?<Constant "Shapes">`, R12
-   \   0000E2   ........     CALLA   #setLCD
-     65                  ADC_Process();
-   \   0000E6   ........     CALLA   #ADC_Process
+   \   0000CE   0312         PUSH.W  #0x0
+   \   0000D0   3012....     PUSH.W  #`?<Constant "          ">`
+   \   0000D4   0312         PUSH.W  #0x0
+   \   0000D6   3012....     PUSH.W  #`?<Constant "          ">`
+   \   0000DA   0F43         MOV.W   #0x0, R15
+   \   0000DC   3E40....     MOV.W   #`?<Constant "          ">`, R14
+   \   0000E0   2D43         MOV.W   #0x2, R13
+   \   0000E2   3C40....     MOV.W   #`?<Constant "Shapes">`, R12
+   \   0000E6   ........     CALLA   #setLCD
+     65                  //ADC_Process();
      66                  Five_msec_Delay(30);
    \   0000EA   3C401E00     MOV.W   #0x1e, R12
    \   0000EE   ........     CALLA   #Five_msec_Delay
@@ -190,56 +190,57 @@
      69                  if(!(P4IN & SW1)){
    \   0000F2   3152         ADD.W   #0x8, SP
    \   0000F4   D2B32102     BIT.B   #0x1, &0x221
-   \   0000F8   8A2F         JC      ??Switches_Process_0
+   \   0000F8   862F         JC      ??Switches_Process_0
      70                   while(ALWAYS){
-     71                      if (!(P4IN & SW2)){clearLCD();break;}
+     71                      if (!(P4IN & SW2)){break;}
    \                     ??Switches_Process_3:
    \   0000FA   E2B32102     BIT.B   #0x2, &0x221
    \   0000FE   032C         JC      ??Switches_Process_8
-   \   000100   ........     CALLA   #clearLCD
-   \   000104   843F         JMP     ??Switches_Process_0
      72                      ADC_Process();
+     73                      getShapesMenu(ADC_Thumb);
+     74                    }
+     75                   clearLCD();
+   \   000100   ........     CALLA   #clearLCD
+   \   000104   803F         JMP     ??Switches_Process_0
    \                     ??Switches_Process_8:
    \   000106   ........     CALLA   #ADC_Process
-     73                      getShapesMenu(ADC_Thumb);
    \   00010A   1C42....     MOV.W   &ADC_Thumb, R12
    \   00010E   ........     CALLA   #getShapesMenu
    \   000112   F33F         JMP     ??Switches_Process_3
-     74                    } 
-     75                  }
-     76                }
-     77              }
-     78              
+     76                  }
+     77                }
+     78              }
      79              
-     80                /*while(ALWAYS){
-     81                  if (!(P4IN & SW2)) { break; }
-     82                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
-     83                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
-     84                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
-     85                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
-     86                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
-     87                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
-     88                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
-     89                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
-     90                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
-     91                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
-     92                  display_1[LINE_POS_L0] = UCA1RXBUF;
-     93                  posL1 = ZERO;
-     94                  display_2 = "          ";
-     95                  posL2 = ZERO;
-     96                  display_3 = " Baud Rate";
-     97                  posL3 = ZERO;
-     98                  display_4 = "  9600  ";
-     99                  posL4 = ZERO;
-    100                  Display_Process();
-    101                  Five_msec_Delay(transmit_delay);
-    102                }*/
-    103            }
-    104            if (!(P4IN & SW2)) {
+     80              
+     81                /*while(ALWAYS){
+     82                  if (!(P4IN & SW2)) { break; }
+     83                  UCA1TXBUF = HW8_String[cpu_rx_ring_wr];
+     84                  display_1[LINE_POS_L9] = display_1[LINE_POS_L8];
+     85                  display_1[LINE_POS_L8] = display_1[LINE_POS_L7];
+     86                  display_1[LINE_POS_L7] = display_1[LINE_POS_L6];
+     87                  display_1[LINE_POS_L6] = display_1[LINE_POS_L5];
+     88                  display_1[LINE_POS_L5] = display_1[LINE_POS_L4];
+     89                  display_1[LINE_POS_L4] = display_1[LINE_POS_L3];
+     90                  display_1[LINE_POS_L3] = display_1[LINE_POS_L2];
+     91                  display_1[LINE_POS_L2] = display_1[LINE_POS_L1];
+     92                  display_1[LINE_POS_L1] = display_1[LINE_POS_L0];
+     93                  display_1[LINE_POS_L0] = UCA1RXBUF;
+     94                  posL1 = ZERO;
+     95                  display_2 = "          ";
+     96                  posL2 = ZERO;
+     97                  display_3 = " Baud Rate";
+     98                  posL3 = ZERO;
+     99                  display_4 = "  9600  ";
+    100                  posL4 = ZERO;
+    101                  Display_Process();
+    102                  Five_msec_Delay(transmit_delay);
+    103                }*/
+    104            }
+    105            if (!(P4IN & SW2)) {
    \                     ??Switches_Process_5:
    \   000114   E2B32102     BIT.B   #0x2, &0x221
    \   000118   102C         JC      ??Switches_Process_9
-    105             setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
+    106             setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
    \   00011A   1312         PUSH.W  #0x1
    \   00011C   3012....     PUSH.W  #`?<Constant "S Brigman">`
    \   000120   2312         PUSH.W  #0x2
@@ -250,10 +251,10 @@
    \   000130   3C40....     MOV.W   #`?<Constant "NCSU">`, R12
    \   000134   ........     CALLA   #setLCD
    \   000138   3152         ADD.W   #0x8, SP
-    106          
-    107          }
-    108          //------------------------------------------------------------------------------
-    109          }
+    107          
+    108          }
+    109          //------------------------------------------------------------------------------
+    110          }
    \                     ??Switches_Process_9:
    \   00013A   1001         RETA
    \   00013C                REQUIRE _A_PBIN_L
@@ -264,8 +265,9 @@
    \            6F727300    
 
    \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant " ">`:
-   \   000000   2000         DC8 " "
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "Song">`:
@@ -300,9 +302,9 @@
    CSTACK Function
    ------ --------
      12   Switches_Process
-       12   -> ADC_Process
         4   -> ADC_Process
        12   -> Five_msec_Delay
+        4   -> Five_msec_Delay
         4   -> clearLCD
         4   -> getResistorMenu
         4   -> getShapesMenu
@@ -315,7 +317,7 @@
 
    Bytes  Function/Label
    -----  --------------
-       2  ?<Constant " ">
+      11  ?<Constant "          ">
        7  ?<Constant "ECE306">
        5  ?<Constant "NCSU">
       10  ?<Constant "Resistors">
@@ -329,10 +331,10 @@
  
  316 bytes in segment CODE
    2 bytes in segment DATA16_AN
-  55 bytes in segment DATA16_C
+  64 bytes in segment DATA16_C
  
  316 bytes of CODE  memory
-  55 bytes of CONST memory
+  64 bytes of CONST memory
    0 bytes of DATA  memory (+ 2 bytes shared)
 
 Errors: none

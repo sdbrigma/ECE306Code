@@ -16,7 +16,7 @@ void getResistorMenu(unsigned int adc_value){
     ADC_Process();
   }
   else if(value == MENU3){
-    setLCD("Color",LINE_POS_L3,"Red",LINE_POS_L4,"Value",LINE_POS_L3,"3",LINE_POS_L5);
+    setLCD("Color",LINE_POS_L3,"Red",LINE_POS_L4,"Value",LINE_POS_L3,"2",LINE_POS_L5);
     ADC_Process();
   }
   else if(value == MENU4){

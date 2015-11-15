@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  01:55:24
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           14/Nov/2015  19:48:50
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -100,9 +100,9 @@
    \                     ??getResistorMenu_2:
    \   00007A   7A900300     CMP.B   #0x3, R10
    \   00007E   1520         JNE     ??getResistorMenu_3
-     19              setLCD("Color",LINE_POS_L3,"Red",LINE_POS_L4,"Value",LINE_POS_L3,"3",LINE_POS_L5);
+     19              setLCD("Color",LINE_POS_L3,"Red",LINE_POS_L4,"Value",LINE_POS_L3,"2",LINE_POS_L5);
    \   000080   30120500     PUSH.W  #0x5
-   \   000084   3012....     PUSH.W  #`?<Constant "3">`
+   \   000084   3012....     PUSH.W  #`?<Constant "2">`
    \   000088   30120300     PUSH.W  #0x3
    \   00008C   3012....     PUSH.W  #`?<Constant "Value">`
    \   000090   2F42         MOV.W   #0x4, R15
@@ -279,13 +279,17 @@
    \   000000   52656400     DC8 "Red"
 
    \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "3">`:
-   \   000000   3300         DC8 "3"
+   \                     `?<Constant "2">`:
+   \   000000   3200         DC8 "2"
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "Orange">`:
    \   000000   4F72616E6765 DC8 "Orange"
    \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "3">`:
+   \   000000   3300         DC8 "3"
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "Yellow">`:
@@ -353,6 +357,7 @@
    -----  --------------
        2  ?<Constant "0">
        2  ?<Constant "1">
+       2  ?<Constant "2">
        2  ?<Constant "3">
        2  ?<Constant "4">
        2  ?<Constant "5">
@@ -376,10 +381,10 @@
 
  
  508 bytes in segment CODE
-  89 bytes in segment DATA16_C
+  91 bytes in segment DATA16_C
  
  508 bytes of CODE  memory
-  89 bytes of CONST memory
+  91 bytes of CONST memory
 
 Errors: none
 Warnings: none
