@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           15/Nov/2015  01:29:39
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           15/Nov/2015  16:22:52
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -55,112 +55,107 @@
    \   00000E   3E40....     MOV.W   #`?<Constant "We\\'re the Red and Whi...">`, R14
    \   000012   3D40E900     MOV.W   #0xe9, R13
    \   000016   ........     CALLA   #?CopyMemoryBytes
-      8            lcd_BIG_mid();
-   \   00001A   ........     CALLA   #lcd_BIG_mid
-      9            if(adc_value>(ADC_Thumb + LINE_POS_L2)){
-   \   00001E   1F42....     MOV.W   &ADC_Thumb, R15
-   \   000022   2F53         ADD.W   #0x2, R15
-   \   000024   0F9A         CMP.W   R10, R15
-   \   000026   7C2C         JC      ??getSongMenu_0
-     10              if(color == ALWAYS){
-   \   000028   9293....     CMP.W   #0x1, &color
-   \   00002C   0E20         JNE     ??getSongMenu_1
-     11                display_1 = "Red";
-   \   00002E   B240........ MOV.W   #`?<Constant "Red">`, &display_1
-     12                posL1 = LINE_POS_L4;
-   \   000034   E242....     MOV.B   #0x4, &posL1
-     13                display_3 = "White";
-   \   000038   B240........ MOV.W   #`?<Constant "White">`, &display_3
-     14                posL3 = LINE_POS_L3;
-   \   00003E   F2400300.... MOV.B   #0x3, &posL3
-     15                color++;
-   \   000044   9253....     ADD.W   #0x1, &color
-   \   000048   0D3C         JMP     ??getSongMenu_2
-     16              }
-     17              else {
-     18                display_1 = "White";
+      8            if(adc_value > (ADC_Thumb + LINE_POS_L3)){
+   \   00001A   1F42....     MOV.W   &ADC_Thumb, R15
+   \   00001E   3F500300     ADD.W   #0x3, R15
+   \   000022   0F9A         CMP.W   R10, R15
+   \   000024   762C         JC      ??getSongMenu_0
+      9              if(color == ALWAYS){
+   \   000026   9293....     CMP.W   #0x1, &color
+   \   00002A   0E20         JNE     ??getSongMenu_1
+     10                display_1 = "Red";
+   \   00002C   B240........ MOV.W   #`?<Constant "Red">`, &display_1
+     11                posL1 = LINE_POS_L4;
+   \   000032   E242....     MOV.B   #0x4, &posL1
+     12                display_3 = "White";
+   \   000036   B240........ MOV.W   #`?<Constant "White">`, &display_3
+     13                posL3 = LINE_POS_L3;
+   \   00003C   F2400300.... MOV.B   #0x3, &posL3
+     14                color++;
+   \   000042   9253....     ADD.W   #0x1, &color
+   \   000046   0D3C         JMP     ??getSongMenu_2
+     15              }
+     16              else {
+     17                display_1 = "White";
    \                     ??getSongMenu_1:
-   \   00004A   B240........ MOV.W   #`?<Constant "White">`, &display_1
-     19                posL1 = LINE_POS_L3;
-   \   000050   F2400300.... MOV.B   #0x3, &posL1
-     20                display_3 = "Red";
-   \   000056   B240........ MOV.W   #`?<Constant "Red">`, &display_3
-     21                posL3 = LINE_POS_L4;
-   \   00005C   E242....     MOV.B   #0x4, &posL3
-     22                color--;
-   \   000060   B253....     ADD.W   #0xffff, &color
-     23              }
-     24              display_2[LINE_POS_L0] = HW9_String[inc];
+   \   000048   B240........ MOV.W   #`?<Constant "White">`, &display_1
+     18                posL1 = LINE_POS_L3;
+   \   00004E   F2400300.... MOV.B   #0x3, &posL1
+     19                display_3 = "Red";
+   \   000054   B240........ MOV.W   #`?<Constant "Red">`, &display_3
+     20                posL3 = LINE_POS_L4;
+   \   00005A   E242....     MOV.B   #0x4, &posL3
+     21                color--;
+   \   00005E   B253....     ADD.W   #0xffff, &color
+     22              }
+     23              display_2[LINE_POS_L0] = HW9_String[inc];
    \                     ??getSongMenu_2:
-   \   000064   1F42....     MOV.W   &`inc`, R15
-   \   000068   0F51         ADD.W   SP, R15
-   \   00006A   1E42....     MOV.W   &display_2, R14
-   \   00006E   EE4F0000     MOV.B   @R15, 0(R14)
-     25              display_2[LINE_POS_L1] = HW9_String[inc + LINE_POS_L1];
-   \   000072   0F41         MOV.W   SP, R15
-   \   000074   1F52....     ADD.W   &`inc`, R15
-   \   000078   1E42....     MOV.W   &display_2, R14
-   \   00007C   DE4F01000100 MOV.B   0x1(R15), 0x1(R14)
-     26              display_2[LINE_POS_L2] = HW9_String[inc + LINE_POS_L2];
-   \   000082   0F41         MOV.W   SP, R15
-   \   000084   1F52....     ADD.W   &`inc`, R15
-   \   000088   1E42....     MOV.W   &display_2, R14
-   \   00008C   DE4F02000200 MOV.B   0x2(R15), 0x2(R14)
-     27              display_2[LINE_POS_L3] = HW9_String[inc + LINE_POS_L3];
-   \   000092   0F41         MOV.W   SP, R15
-   \   000094   1F52....     ADD.W   &`inc`, R15
-   \   000098   1E42....     MOV.W   &display_2, R14
-   \   00009C   DE4F03000300 MOV.B   0x3(R15), 0x3(R14)
-     28              display_2[LINE_POS_L4] = HW9_String[inc + LINE_POS_L4];
-   \   0000A2   0F41         MOV.W   SP, R15
-   \   0000A4   1F52....     ADD.W   &`inc`, R15
-   \   0000A8   1E42....     MOV.W   &display_2, R14
-   \   0000AC   DE4F04000400 MOV.B   0x4(R15), 0x4(R14)
-     29              display_2[LINE_POS_L5] = HW9_String[inc + LINE_POS_L5];
-   \   0000B2   0F41         MOV.W   SP, R15
-   \   0000B4   1F52....     ADD.W   &`inc`, R15
-   \   0000B8   1E42....     MOV.W   &display_2, R14
-   \   0000BC   DE4F05000500 MOV.B   0x5(R15), 0x5(R14)
-     30              display_2[LINE_POS_L6] = HW9_String[inc + LINE_POS_L6];
-   \   0000C2   0F41         MOV.W   SP, R15
-   \   0000C4   1F52....     ADD.W   &`inc`, R15
-   \   0000C8   1E42....     MOV.W   &display_2, R14
-   \   0000CC   DE4F06000600 MOV.B   0x6(R15), 0x6(R14)
-     31              display_2[LINE_POS_L7] = HW9_String[inc + LINE_POS_L7];
-   \   0000D2   0F41         MOV.W   SP, R15
-   \   0000D4   1F52....     ADD.W   &`inc`, R15
-   \   0000D8   1E42....     MOV.W   &display_2, R14
-   \   0000DC   DE4F07000700 MOV.B   0x7(R15), 0x7(R14)
-     32              display_2[LINE_POS_L8] = HW9_String[inc + LINE_POS_L8];
-   \   0000E2   0F41         MOV.W   SP, R15
-   \   0000E4   1F52....     ADD.W   &`inc`, R15
-   \   0000E8   1E42....     MOV.W   &display_2, R14
-   \   0000EC   DE4F08000800 MOV.B   0x8(R15), 0x8(R14)
-     33              display_2[LINE_POS_L9] = HW9_String[inc + LINE_POS_L9];
-   \   0000F2   0F41         MOV.W   SP, R15
-   \   0000F4   1F52....     ADD.W   &`inc`, R15
-   \   0000F8   1E42....     MOV.W   &display_2, R14
-   \   0000FC   DE4F09000900 MOV.B   0x9(R15), 0x9(R14)
-     34              Display_Process();
-   \   000102   ........     CALLA   #Display_Process
-     35              Five_msec_Delay(20);
-   \   000106   3C401400     MOV.W   #0x14, R12
-   \   00010A   ........     CALLA   #Five_msec_Delay
-     36              unsigned int tmp = adc_value-ADC_Thumb;
-   \   00010E   0F4A         MOV.W   R10, R15
-   \   000110   1F82....     SUB.W   &ADC_Thumb, R15
-     37              if(tmp>10){
-   \   000114   3F900B00     CMP.W   #0xb, R15
-   \   000118   0328         JNC     ??getSongMenu_0
+   \   000062   1F42....     MOV.W   &`inc`, R15
+   \   000066   0F51         ADD.W   SP, R15
+   \   000068   1E42....     MOV.W   &display_2, R14
+   \   00006C   EE4F0000     MOV.B   @R15, 0(R14)
+     24              display_2[LINE_POS_L1] = HW9_String[inc + LINE_POS_L1];
+   \   000070   0F41         MOV.W   SP, R15
+   \   000072   1F52....     ADD.W   &`inc`, R15
+   \   000076   1E42....     MOV.W   &display_2, R14
+   \   00007A   DE4F01000100 MOV.B   0x1(R15), 0x1(R14)
+     25              display_2[LINE_POS_L2] = HW9_String[inc + LINE_POS_L2];
+   \   000080   0F41         MOV.W   SP, R15
+   \   000082   1F52....     ADD.W   &`inc`, R15
+   \   000086   1E42....     MOV.W   &display_2, R14
+   \   00008A   DE4F02000200 MOV.B   0x2(R15), 0x2(R14)
+     26              display_2[LINE_POS_L3] = HW9_String[inc + LINE_POS_L3];
+   \   000090   0F41         MOV.W   SP, R15
+   \   000092   1F52....     ADD.W   &`inc`, R15
+   \   000096   1E42....     MOV.W   &display_2, R14
+   \   00009A   DE4F03000300 MOV.B   0x3(R15), 0x3(R14)
+     27              display_2[LINE_POS_L4] = HW9_String[inc + LINE_POS_L4];
+   \   0000A0   0F41         MOV.W   SP, R15
+   \   0000A2   1F52....     ADD.W   &`inc`, R15
+   \   0000A6   1E42....     MOV.W   &display_2, R14
+   \   0000AA   DE4F04000400 MOV.B   0x4(R15), 0x4(R14)
+     28              display_2[LINE_POS_L5] = HW9_String[inc + LINE_POS_L5];
+   \   0000B0   0F41         MOV.W   SP, R15
+   \   0000B2   1F52....     ADD.W   &`inc`, R15
+   \   0000B6   1E42....     MOV.W   &display_2, R14
+   \   0000BA   DE4F05000500 MOV.B   0x5(R15), 0x5(R14)
+     29              display_2[LINE_POS_L6] = HW9_String[inc + LINE_POS_L6];
+   \   0000C0   0F41         MOV.W   SP, R15
+   \   0000C2   1F52....     ADD.W   &`inc`, R15
+   \   0000C6   1E42....     MOV.W   &display_2, R14
+   \   0000CA   DE4F06000600 MOV.B   0x6(R15), 0x6(R14)
+     30              display_2[LINE_POS_L7] = HW9_String[inc + LINE_POS_L7];
+   \   0000D0   0F41         MOV.W   SP, R15
+   \   0000D2   1F52....     ADD.W   &`inc`, R15
+   \   0000D6   1E42....     MOV.W   &display_2, R14
+   \   0000DA   DE4F07000700 MOV.B   0x7(R15), 0x7(R14)
+     31              display_2[LINE_POS_L8] = HW9_String[inc + LINE_POS_L8];
+   \   0000E0   0F41         MOV.W   SP, R15
+   \   0000E2   1F52....     ADD.W   &`inc`, R15
+   \   0000E6   1E42....     MOV.W   &display_2, R14
+   \   0000EA   DE4F08000800 MOV.B   0x8(R15), 0x8(R14)
+     32              display_2[LINE_POS_L9] = HW9_String[inc + LINE_POS_L9];
+   \   0000F0   0F41         MOV.W   SP, R15
+   \   0000F2   1F52....     ADD.W   &`inc`, R15
+   \   0000F6   1E42....     MOV.W   &display_2, R14
+   \   0000FA   DE4F09000900 MOV.B   0x9(R15), 0x9(R14)
+     33              Display_Process();
+   \   000100   ........     CALLA   #Display_Process
+     34              Five_msec_Delay(15);
+   \   000104   3C400F00     MOV.W   #0xf, R12
+   \   000108   ........     CALLA   #Five_msec_Delay
+     35              inc = inc + 10;
+   \   00010C   B2500A00.... ADD.W   #0xa, &`inc`
+     36              /*unsigned int tmp = adc_value-ADC_Thumb;
+     37              if(tmp>3){
      38                inc = inc + 10;
-   \   00011A   B2500A00.... ADD.W   #0xa, &`inc`
-     39              }
+     39              }*/
      40            }
      41          }
    \                     ??getSongMenu_0:
-   \   000120   3150EA00     ADD.W   #0xea, SP
-   \   000124   3A41         POP.W   R10
-   \   000126   1001         RETA
+   \   000112   3150EA00     ADD.W   #0xea, SP
+   \   000116   3A41         POP.W   R10
+   \   000118   1001         RETA
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "We\\'re the Red and Whi...">`:
@@ -239,7 +234,6 @@
       240   -> ADC_Process
       240   -> Display_Process
       240   -> Five_msec_Delay
-      240   -> lcd_BIG_mid
       240 ?CopyMemoryBytes
 
 
@@ -250,13 +244,13 @@
        4  ?<Constant "Red">
      233  ?<Constant "We\'re the Red and Whi...">
        6  ?<Constant "White">
-     296  getSongMenu
+     282  getSongMenu
 
  
- 296 bytes in segment CODE
+ 282 bytes in segment CODE
  243 bytes in segment DATA16_C
  
- 296 bytes of CODE  memory
+ 282 bytes of CODE  memory
  243 bytes of CONST memory
 
 Errors: none

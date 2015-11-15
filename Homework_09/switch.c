@@ -42,6 +42,7 @@ void Switches_Process(void){
       
       else if(ADC_Thumb >= 681){ // this range the last third of the full range of values for the ADC
         setLCD("Song",LINE_POS_L3,"",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0);
+        lcd_BIG_mid();
         // SONG CODE
         if(!(P4IN & SW1)){
           ADC_Process();
