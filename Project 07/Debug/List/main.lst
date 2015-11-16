@@ -1,0 +1,536 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  01:01:58
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project 07\main.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 07\main.c"
+#        -lC "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\List\" -o "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 07\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR5739__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.2\430\lib\dlib\dl430xlsfn.h" --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\List\main.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\Obj\main.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 07\main.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains the Main Routine - "While" Operating System
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          #include  "macros.h"
+     13          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+     14          #include  "functions.h"
+     15          
+     16          // Global Variables
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     17          volatile unsigned char control_state[CNTL_STATE_INDEX];
+   \                     control_state:
+   \   000000                DS8 3
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          volatile unsigned int Time_Sequence;
+   \                     Time_Sequence:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          char led_smclk;
+   \                     led_smclk:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     20          int ISR_COUNT = ZERO;
+   \                     ISR_COUNT:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     21          int UPDATE_LCD = ZERO;
+   \                     UPDATE_LCD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     22          unsigned int ADC_Thumb;
+   \                     ADC_Thumb:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     23          unsigned int ADC_Right_Detector;
+   \                     ADC_Right_Detector:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     24          unsigned int ADC_Left_Detector;
+   \                     ADC_Left_Detector:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          unsigned int ADC_Temp;
+   \                     ADC_Temp:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     26          unsigned int ADC_Bat;
+   \                     ADC_Bat:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     27          unsigned int tracking_value_high;
+   \                     tracking_value_high:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     28          unsigned int tracking_value_low;
+   \                     tracking_value_low:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     29          unsigned int tracking_value;
+   \                     tracking_value:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     30          unsigned int ambience;
+   \                     ambience:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     31          int ADC_Channel = ZERO;
+   \                     ADC_Channel:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     32          volatile char one_time;
+   \                     one_time:
+   \   000000                DS8 1
+     33          extern char display_line_1[DISPLAY_LENGTH];
+     34          extern char display_line_2[DISPLAY_LENGTH];
+     35          extern char display_line_3[DISPLAY_LENGTH];
+     36          extern char display_line_4[DISPLAY_LENGTH];
+     37          extern char *display_1;
+     38          extern char *display_2;
+     39          extern char *display_3;
+     40          extern char *display_4;
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     41          char posL1;
+   \                     posL1:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     42          char posL2;
+   \                     posL2:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     43          char posL3;
+   \                     posL3:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     44          char posL4;
+   \                     posL4:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     45          char size_count;
+   \                     size_count:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     46          unsigned int cpu_rx_ring_wr;
+   \                     cpu_rx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     47          unsigned int cpu_rx_ring_rd;
+   \                     cpu_rx_ring_rd:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     48          unsigned int cpu_tx_ring_wr;
+   \                     cpu_tx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     49          unsigned int cpu_tx_ring_rd;
+   \                     cpu_tx_ring_rd:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     50          char big;
+   \                     big:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     51          volatile char CPU_Char_Rx[40];
+   \                     CPU_Char_Rx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     52          volatile char CPU_Char_Tx[40];
+   \                     CPU_Char_Tx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     53          unsigned int inc = ZERO;
+   \                     `inc`:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     54          unsigned int color = ALWAYS;
+   \                     color:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for color>`
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     55          volatile char USB_Char_Rx[40];
+   \                     USB_Char_Rx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     56          volatile char USB_Char_Tx[40];
+   \                     USB_Char_Tx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     57          unsigned int usb_rx_ring_wr;
+   \                     usb_rx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     58          unsigned int usb_rx_ring_rd;
+   \                     usb_rx_ring_rd:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     59          unsigned int usb_tx_ring_wr;
+   \                     usb_tx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     60          unsigned int usb_tx_ring_rd;
+   \                     usb_tx_ring_rd:
+   \   000000                DS8 2
+     61          
+
+   \                                 In  segment CODE, align 2
+     62          void main(void){
+   \                     main:
+     63          //------------------------------------------------------------------------------
+     64          // Main Program
+     65          // This is the main routine for the program. Execution of code starts here.
+     66          // The operating system is Back Ground Fore Ground.
+     67          // 
+     68          //------------------------------------------------------------------------------
+     69            Init_Ports();
+   \   000000   ........     CALLA   #Init_Ports
+     70            Init_Clocks();                            // Initialize Clock System 
+   \   000004   ........     CALLA   #Init_Clocks
+     71            Init_Conditions();
+   \   000008   ........     CALLA   #Init_Conditions
+     72            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
+   \   00000C   92D32203     BIS.W   #0x1, &0x322
+     73            Time_Sequence = ZERO;                        // 
+   \   000010   8243....     MOV.W   #0x0, &Time_Sequence
+     74            Init_Timers();                            // Initialize Timers
+   \   000014   ........     CALLA   #Init_Timers
+     75            five_msec_sleep(QUARTER_SECOND);          // 250 msec delay for the clock to settle
+   \   000018   3C403200     MOV.W   #0x32, R12
+   \   00001C   ........     CALLA   #five_msec_sleep
+     76            Init_LEDs();                              // Initialize LEDs
+   \   000020   ........     CALLA   #Init_LEDs
+     77            Init_LCD();                               // Initialize LCD
+   \   000024   ........     CALLA   #Init_LCD
+     78            Init_Motors();                            // Turns off both motors
+   \   000028   ........     CALLA   #Init_Motors
+     79            Init_ADC();
+   \   00002C   ........     CALLA   #Init_ADC
+     80            Init_Serial_UCA1();
+   \   000030   ........     CALLA   #Init_Serial_UCA1
+     81            
+     82          //             1234567890
+     83            clearLCD();
+   \   000034   ........     CALLA   #clearLCD
+     84            setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
+   \   000038   1312         PUSH.W  #0x1
+   \   00003A   3012....     PUSH.W  #`?<Constant "S Brigman">`
+   \   00003E   2312         PUSH.W  #0x2
+   \   000040   3012....     PUSH.W  #`?<Constant "ECE306">`
+   \   000044   1F43         MOV.W   #0x1, R15
+   \   000046   3E40....     MOV.W   #`?<Constant "WOLFPACK">`, R14
+   \   00004A   3D400300     MOV.W   #0x3, R13
+   \   00004E   3C40....     MOV.W   #`?<Constant "NCSU">`, R12
+   \   000052   ........     CALLA   #setLCD
+     85            big = ZERO;
+   \   000056   C243....     MOV.B   #0x0, &big
+     86            ADC_Channel = Thumbwheel;
+   \   00005A   A243....     MOV.W   #0x2, &ADC_Channel
+   \   00005E   3152         ADD.W   #0x8, SP
+     87          //------------------------------------------------------------------------------
+     88          // Begining of the "While" Operating System
+     89          //------------------------------------------------------------------------------
+     90           while(ALWAYS) {  
+     91             ADC_Process();
+   \                     ??main_0:
+   \   000060   ........     CALLA   #ADC_Process
+     92             // Can the Operating system run
+     93            switch(Time_Sequence){
+   \   000064   1F42....     MOV.W   &Time_Sequence, R15
+   \   000068   3F803200     SUB.W   #0x32, R15
+   \   00006C   2224         JEQ     ??main_3
+   \   00006E   3F803200     SUB.W   #0x32, R15
+   \   000072   1A24         JEQ     ??main_4
+   \   000074   3F803200     SUB.W   #0x32, R15
+   \   000078   1224         JEQ     ??main_5
+   \   00007A   3F803200     SUB.W   #0x32, R15
+   \   00007E   0A24         JEQ     ??main_6
+   \   000080   3F803200     SUB.W   #0x32, R15
+   \   000084   1D20         JNE     ??main_1
+     94              case FULL_SECOND:                               // 1000 msec  
+     95                if(one_time){
+   \   000086   C293....     CMP.B   #0x0, &one_time
+   \   00008A   0224         JEQ     ??main_7
+     96                  //Init_LEDs();                        // Initialize LEDs
+     97                  one_time = ZERO;
+   \   00008C   C243....     MOV.B   #0x0, &one_time
+     98                }
+     99                Time_Sequence = ZERO;                    // 
+   \                     ??main_7:
+   \   000090   8243....     MOV.W   #0x0, &Time_Sequence
+    100              case THOU_MS:                               // 1000 msec  
+    101                if(one_time){
+   \                     ??main_6:
+   \   000094   C293....     CMP.B   #0x0, &one_time
+   \   000098   0224         JEQ     ??main_5
+    102                  //P3OUT |= LED5;                      // Change State of LED 5
+    103                  one_time = ZERO;
+   \   00009A   C243....     MOV.B   #0x0, &one_time
+    104                }
+    105              case THIRD_SECOND:                               // 750 msec  
+    106                if(one_time){
+   \                     ??main_5:
+   \   00009E   C293....     CMP.B   #0x0, &one_time
+   \   0000A2   0224         JEQ     ??main_4
+    107                  //PJOUT |= LED3;                      // Change State of LED 3
+    108                  //P3OUT |= LED6;                      // Change State of LED 6
+    109                  one_time = ZERO;
+   \   0000A4   C243....     MOV.B   #0x0, &one_time
+    110                }
+    111              case HALF_SECOND:                               // 500 msec  
+    112                if(one_time){
+   \                     ??main_4:
+   \   0000A8   C293....     CMP.B   #0x0, &one_time
+   \   0000AC   0224         JEQ     ??main_3
+    113                  //PJOUT |= LED2;                      // Change State of LED 2
+    114                  //P3OUT |= LED7;                      // Change State of LED 7
+    115                  one_time = ZERO;
+   \   0000AE   C243....     MOV.B   #0x0, &one_time
+    116                }
+    117              case  QUARTER_SECOND:                               // 250 msec  
+    118                if(one_time){
+   \                     ??main_3:
+   \   0000B2   C293....     CMP.B   #0x0, &one_time
+   \   0000B6   0224         JEQ     ??main_8
+    119                  //PJOUT |= LED1;                      // Change State of LED 1
+    120                  //P3OUT |= LED8;                      // Change State of LED 8
+    121                  one_time = ZERO;
+   \   0000B8   C243....     MOV.B   #0x0, &one_time
+    122                }
+    123                Display_Process();
+   \                     ??main_8:
+   \   0000BC   ........     CALLA   #Display_Process
+    124                break;                                // 
+    125              default: break; 
+    126            }
+    127            Switches_Process();                       // Check for switch state change 
+   \                     ??main_1:
+   \   0000C0   ........     CALLA   #Switches_Process
+    128            if(Time_Sequence > FULL_SECOND){ // 1000 msec
+   \   0000C4   B290FB00.... CMP.W   #0xfb, &Time_Sequence
+   \   0000CA   CA2B         JNC     ??main_0
+    129              Time_Sequence = ZERO;
+   \   0000CC   8243....     MOV.W   #0x0, &Time_Sequence
+   \   0000D0   C73F         JMP     ??main_0
+   \   0000D2   0343         NOP
+   \   0000D4                REQUIRE _A_PJOUT_L
+    130            }
+    131           }
+    132          //------------------------------------------------------------------------------
+    133          }
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for color>`:
+   \   000000   0100         DC16 1
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "NCSU">`:
+   \   000000   4E43535500   DC8 "NCSU"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "WOLFPACK">`:
+   \   000000   574F4C465041 DC8 "WOLFPACK"
+   \            434B00      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "ECE306">`:
+   \   000000   454345333036 DC8 "ECE306"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "S Brigman">`:
+   \   000000   532042726967 DC8 "S Brigman"
+   \            6D616E00    
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     12   main
+        4   -> ADC_Process
+        4   -> Display_Process
+        4   -> Init_ADC
+        4   -> Init_Clocks
+        4   -> Init_Conditions
+        4   -> Init_LCD
+        4   -> Init_LEDs
+        4   -> Init_Motors
+        4   -> Init_Ports
+        4   -> Init_Serial_UCA1
+        4   -> Init_Timers
+        4   -> Switches_Process
+        4   -> clearLCD
+        4   -> five_msec_sleep
+       12   -> setLCD
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       7  ?<Constant "ECE306">
+       5  ?<Constant "NCSU">
+      10  ?<Constant "S Brigman">
+       9  ?<Constant "WOLFPACK">
+       2  ?<Initializer for color>
+       2  ADC_Bat
+       2  ADC_Channel
+       2  ADC_Left_Detector
+       2  ADC_Right_Detector
+       2  ADC_Temp
+       2  ADC_Thumb
+      40  CPU_Char_Rx
+      40  CPU_Char_Tx
+       2  ISR_COUNT
+       2  Time_Sequence
+       2  UPDATE_LCD
+      40  USB_Char_Rx
+      40  USB_Char_Tx
+       2  _A_PJOUT_L
+       2  ambience
+       1  big
+       2  color
+       3  control_state
+       2  cpu_rx_ring_rd
+       2  cpu_rx_ring_wr
+       2  cpu_tx_ring_rd
+       2  cpu_tx_ring_wr
+       2  inc
+       1  led_smclk
+     212  main
+       1  one_time
+       1  posL1
+       1  posL2
+       1  posL3
+       1  posL4
+       1  size_count
+       2  tracking_value
+       2  tracking_value_high
+       2  tracking_value_low
+       2  usb_rx_ring_rd
+       2  usb_rx_ring_wr
+       2  usb_tx_ring_rd
+       2  usb_tx_ring_wr
+
+ 
+ 212 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  31 bytes in segment DATA16_C
+   2 bytes in segment DATA16_I
+   2 bytes in segment DATA16_ID
+ 215 bytes in segment DATA16_Z
+ 
+ 212 bytes of CODE  memory
+  33 bytes of CONST memory
+ 217 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

@@ -1,0 +1,432 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           13/Nov/2015  17:30:57
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_09\hw9.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_09\hw9.c"
+#        -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\List\" -o
+#        "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\Obj\" --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\List\hw9.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Homework_09\Debug\Obj\hw9.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Homework_09\hw9.c
+      1          // Includes
+      2          #include  "macros.h"
+      3          #include  "msp430.h"
+      4          #include  "functions.h"
+      5          
+
+   \                                 In  segment CODE, align 2
+      6          void getResistorMenu(unsigned int adc_value){
+   \                     getResistorMenu:
+   \   000000   1B15         PUSHM.W #0x2, R11
+   \   000002   0B4C         MOV.W   R12, R11
+      7            char value = adc_value >> 6; // shift 10 bit value by 6 bits
+   \   000004   0F4B         MOV.W   R11, R15
+   \   000006                RPT     #0x6
+   \   000006   45190F10     RRUX.W  R15
+   \   00000A   0A12         PUSH.W  R10
+   \   00000C   C14F0000     MOV.B   R15, 0(SP)
+   \   000010   3A41         POP.W   R10
+      8              if(value <= MENU1){
+   \   000012   6A93         CMP.B   #0x2, R10
+   \   000014   1B2C         JC      ??getResistorMenu_0
+      9                display_1 = "Color";
+   \   000016   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     10                posL1 = LINE_POS_L3;
+   \   00001C   F2400300.... MOV.B   #0x3, &posL1
+     11                display_3 = "Value";
+   \   000022   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     12                posL3 = LINE_POS_L3;
+   \   000028   F2400300.... MOV.B   #0x3, &posL3
+     13                display_2 = "Black";
+   \   00002E   B240........ MOV.W   #`?<Constant "Black">`, &display_2
+     14                posL2 = LINE_POS_L3;
+   \   000034   F2400300.... MOV.B   #0x3, &posL2
+     15                display_4 = "0";
+   \   00003A   B240........ MOV.W   #`?<Constant "0">`, &display_4
+     16                posL4 = LINE_POS_L5;
+   \   000040   F2400500.... MOV.B   #0x5, &posL4
+     17                ADC_Process();
+   \   000046   ........     CALLA   #ADC_Process
+   \   00004A   033D         JMP     ??getResistorMenu_1
+     18              }
+     19            else if(value == MENU2){
+   \                     ??getResistorMenu_0:
+   \   00004C   6A93         CMP.B   #0x2, R10
+   \   00004E   1B20         JNE     ??getResistorMenu_2
+     20              display_1 = "Color";
+   \   000050   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     21              posL1 = LINE_POS_L3;
+   \   000056   F2400300.... MOV.B   #0x3, &posL1
+     22              display_3 = "Value";
+   \   00005C   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     23              posL3 = LINE_POS_L3;
+   \   000062   F2400300.... MOV.B   #0x3, &posL3
+     24              display_2 = "Brown";
+   \   000068   B240........ MOV.W   #`?<Constant "Brown">`, &display_2
+     25              posL2 = LINE_POS_L3;
+   \   00006E   F2400300.... MOV.B   #0x3, &posL2
+     26              display_4 = "1";
+   \   000074   B240........ MOV.W   #`?<Constant "1">`, &display_4
+     27              posL4 = LINE_POS_L5;
+   \   00007A   F2400500.... MOV.B   #0x5, &posL4
+     28              ADC_Process();
+   \   000080   ........     CALLA   #ADC_Process
+   \   000084   E63C         JMP     ??getResistorMenu_1
+     29            }
+     30            else if(value == MENU3){
+   \                     ??getResistorMenu_2:
+   \   000086   7A900300     CMP.B   #0x3, R10
+   \   00008A   1A20         JNE     ??getResistorMenu_3
+     31              display_1 = "Color";
+   \   00008C   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     32              posL1 = LINE_POS_L3;
+   \   000092   F2400300.... MOV.B   #0x3, &posL1
+     33              display_3 = "Value";
+   \   000098   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     34              posL3 = LINE_POS_L3;
+   \   00009E   F2400300.... MOV.B   #0x3, &posL3
+     35              display_2 = "Red";
+   \   0000A4   B240........ MOV.W   #`?<Constant "Red">`, &display_2
+     36              posL2 = LINE_POS_L4;
+   \   0000AA   E242....     MOV.B   #0x4, &posL2
+     37              display_4 = "2";
+   \   0000AE   B240........ MOV.W   #`?<Constant "2">`, &display_4
+     38              posL4 = LINE_POS_L5;
+   \   0000B4   F2400500.... MOV.B   #0x5, &posL4
+     39              ADC_Process();
+   \   0000BA   ........     CALLA   #ADC_Process
+   \   0000BE   C93C         JMP     ??getResistorMenu_1
+     40            }
+     41            else if(value == MENU4){
+   \                     ??getResistorMenu_3:
+   \   0000C0   6A92         CMP.B   #0x4, R10
+   \   0000C2   1A20         JNE     ??getResistorMenu_4
+     42              display_1 = "Color";
+   \   0000C4   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     43              posL1 = LINE_POS_L3;
+   \   0000CA   F2400300.... MOV.B   #0x3, &posL1
+     44              display_3 = "Value";
+   \   0000D0   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     45              posL3 = LINE_POS_L3;
+   \   0000D6   F2400300.... MOV.B   #0x3, &posL3
+     46              display_2 = "Orange";
+   \   0000DC   B240........ MOV.W   #`?<Constant "Orange">`, &display_2
+     47              posL2 = LINE_POS_L2;
+   \   0000E2   E243....     MOV.B   #0x2, &posL2
+     48              display_4 = "3";
+   \   0000E6   B240........ MOV.W   #`?<Constant "3">`, &display_4
+     49              posL4 = LINE_POS_L5;
+   \   0000EC   F2400500.... MOV.B   #0x5, &posL4
+     50              ADC_Process();
+   \   0000F2   ........     CALLA   #ADC_Process
+   \   0000F6   AD3C         JMP     ??getResistorMenu_1
+     51            }
+     52            else if(value == MENU5){
+   \                     ??getResistorMenu_4:
+   \   0000F8   7A900500     CMP.B   #0x5, R10
+   \   0000FC   1A20         JNE     ??getResistorMenu_5
+     53              display_1 = "Color";
+   \   0000FE   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     54              posL1 = LINE_POS_L3;
+   \   000104   F2400300.... MOV.B   #0x3, &posL1
+     55              display_3 = "Value";
+   \   00010A   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     56              posL3 = LINE_POS_L3;
+   \   000110   F2400300.... MOV.B   #0x3, &posL3
+     57              display_2 = "Yellow";
+   \   000116   B240........ MOV.W   #`?<Constant "Yellow">`, &display_2
+     58              posL2 = LINE_POS_L2;
+   \   00011C   E243....     MOV.B   #0x2, &posL2
+     59              display_4 = "4";
+   \   000120   B240........ MOV.W   #`?<Constant "4">`, &display_4
+     60              posL4 = LINE_POS_L5;
+   \   000126   F2400500.... MOV.B   #0x5, &posL4
+     61              ADC_Process();
+   \   00012C   ........     CALLA   #ADC_Process
+   \   000130   903C         JMP     ??getResistorMenu_1
+     62            }
+     63            else if(value == MENU6){
+   \                     ??getResistorMenu_5:
+   \   000132   7A900600     CMP.B   #0x6, R10
+   \   000136   1B20         JNE     ??getResistorMenu_6
+     64              display_1 = "Color";
+   \   000138   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     65              posL1 = LINE_POS_L3;
+   \   00013E   F2400300.... MOV.B   #0x3, &posL1
+     66              display_3 = "Value";
+   \   000144   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     67              posL3 = LINE_POS_L3;
+   \   00014A   F2400300.... MOV.B   #0x3, &posL3
+     68              display_2 = "Green";
+   \   000150   B240........ MOV.W   #`?<Constant "Green">`, &display_2
+     69              posL2 = LINE_POS_L3;
+   \   000156   F2400300.... MOV.B   #0x3, &posL2
+     70              display_4 = "5";
+   \   00015C   B240........ MOV.W   #`?<Constant "5">`, &display_4
+     71              posL4 = LINE_POS_L5;
+   \   000162   F2400500.... MOV.B   #0x5, &posL4
+     72              ADC_Process();
+   \   000168   ........     CALLA   #ADC_Process
+   \   00016C   723C         JMP     ??getResistorMenu_1
+     73            }
+     74            else if(value == MENU7){
+   \                     ??getResistorMenu_6:
+   \   00016E   7A900700     CMP.B   #0x7, R10
+   \   000172   1B20         JNE     ??getResistorMenu_7
+     75              display_1 = "Color";
+   \   000174   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     76              posL1 = LINE_POS_L3;
+   \   00017A   F2400300.... MOV.B   #0x3, &posL1
+     77              display_3 = "Value";
+   \   000180   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     78              posL3 = LINE_POS_L3;
+   \   000186   F2400300.... MOV.B   #0x3, &posL3
+     79              display_2 = "Blue";
+   \   00018C   B240........ MOV.W   #`?<Constant "Blue">`, &display_2
+     80              posL2 = LINE_POS_L3;
+   \   000192   F2400300.... MOV.B   #0x3, &posL2
+     81              display_4 = "6";
+   \   000198   B240........ MOV.W   #`?<Constant "6">`, &display_4
+     82              posL4 = LINE_POS_L5;
+   \   00019E   F2400500.... MOV.B   #0x5, &posL4
+     83              ADC_Process();
+   \   0001A4   ........     CALLA   #ADC_Process
+   \   0001A8   543C         JMP     ??getResistorMenu_1
+     84            }
+     85            else if(value == MENU8){
+   \                     ??getResistorMenu_7:
+   \   0001AA   7A92         CMP.B   #0x8, R10
+   \   0001AC   1A20         JNE     ??getResistorMenu_8
+     86              display_1 = "Color";
+   \   0001AE   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     87              posL1 = LINE_POS_L3;
+   \   0001B4   F2400300.... MOV.B   #0x3, &posL1
+     88              display_3 = "Value";
+   \   0001BA   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+     89              posL3 = LINE_POS_L3;
+   \   0001C0   F2400300.... MOV.B   #0x3, &posL3
+     90              display_2 = "Violet";
+   \   0001C6   B240........ MOV.W   #`?<Constant "Violet">`, &display_2
+     91              posL2 = LINE_POS_L2;
+   \   0001CC   E243....     MOV.B   #0x2, &posL2
+     92              display_4 = "7";
+   \   0001D0   B240........ MOV.W   #`?<Constant "7">`, &display_4
+     93              posL4 = LINE_POS_L5;
+   \   0001D6   F2400500.... MOV.B   #0x5, &posL4
+     94              ADC_Process();
+   \   0001DC   ........     CALLA   #ADC_Process
+   \   0001E0   383C         JMP     ??getResistorMenu_1
+     95            }
+     96            else if(value == MENU9){
+   \                     ??getResistorMenu_8:
+   \   0001E2   7A900900     CMP.B   #0x9, R10
+   \   0001E6   1B20         JNE     ??getResistorMenu_9
+     97              display_1 = "Color";
+   \   0001E8   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+     98              posL1 = LINE_POS_L3;
+   \   0001EE   F2400300.... MOV.B   #0x3, &posL1
+     99              display_3 = "Value";
+   \   0001F4   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+    100              posL3 = LINE_POS_L3;
+   \   0001FA   F2400300.... MOV.B   #0x3, &posL3
+    101              display_2 = "Gray";
+   \   000200   B240........ MOV.W   #`?<Constant "Gray">`, &display_2
+    102              posL2 = LINE_POS_L3;
+   \   000206   F2400300.... MOV.B   #0x3, &posL2
+    103              display_4 = "8";
+   \   00020C   B240........ MOV.W   #`?<Constant "8">`, &display_4
+    104              posL4 = LINE_POS_L5;
+   \   000212   F2400500.... MOV.B   #0x5, &posL4
+    105              ADC_Process();
+   \   000218   ........     CALLA   #ADC_Process
+   \   00021C   1A3C         JMP     ??getResistorMenu_1
+    106            }
+    107            else{
+    108              display_1 = "Color";
+   \                     ??getResistorMenu_9:
+   \   00021E   B240........ MOV.W   #`?<Constant "Color">`, &display_1
+    109              posL1 = LINE_POS_L3;
+   \   000224   F2400300.... MOV.B   #0x3, &posL1
+    110              display_3 = "Value";
+   \   00022A   B240........ MOV.W   #`?<Constant "Value">`, &display_3
+    111              posL3 = LINE_POS_L3;
+   \   000230   F2400300.... MOV.B   #0x3, &posL3
+    112              display_2 = "White";
+   \   000236   B240........ MOV.W   #`?<Constant "White">`, &display_2
+    113              posL2 = LINE_POS_L3;
+   \   00023C   F2400300.... MOV.B   #0x3, &posL2
+    114              display_4 = "9";
+   \   000242   B240........ MOV.W   #`?<Constant "9">`, &display_4
+    115              posL4 = LINE_POS_L5;
+   \   000248   F2400500.... MOV.B   #0x5, &posL4
+    116              ADC_Process();
+   \   00024E   ........     CALLA   #ADC_Process
+    117            }
+    118          }
+   \                     ??getResistorMenu_1:
+   \   000252   1A17         POPM.W  #0x2, R11
+   \   000254   1001         RETA
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Color">`:
+   \   000000   436F6C6F7200 DC8 "Color"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Value">`:
+   \   000000   56616C756500 DC8 "Value"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Black">`:
+   \   000000   426C61636B00 DC8 "Black"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "0">`:
+   \   000000   3000         DC8 "0"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Brown">`:
+   \   000000   42726F776E00 DC8 "Brown"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "1">`:
+   \   000000   3100         DC8 "1"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Red">`:
+   \   000000   52656400     DC8 "Red"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "2">`:
+   \   000000   3200         DC8 "2"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Orange">`:
+   \   000000   4F72616E6765 DC8 "Orange"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "3">`:
+   \   000000   3300         DC8 "3"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Yellow">`:
+   \   000000   59656C6C6F77 DC8 "Yellow"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "4">`:
+   \   000000   3400         DC8 "4"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Green">`:
+   \   000000   477265656E00 DC8 "Green"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "5">`:
+   \   000000   3500         DC8 "5"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Blue">`:
+   \   000000   426C756500   DC8 "Blue"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "6">`:
+   \   000000   3600         DC8 "6"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Violet">`:
+   \   000000   56696F6C6574 DC8 "Violet"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "7">`:
+   \   000000   3700         DC8 "7"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Gray">`:
+   \   000000   4772617900   DC8 "Gray"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "8">`:
+   \   000000   3800         DC8 "8"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "White">`:
+   \   000000   576869746500 DC8 "White"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "9">`:
+   \   000000   3900         DC8 "9"
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     10   getResistorMenu
+        8   -> ADC_Process
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ?<Constant "0">
+       2  ?<Constant "1">
+       2  ?<Constant "2">
+       2  ?<Constant "3">
+       2  ?<Constant "4">
+       2  ?<Constant "5">
+       2  ?<Constant "6">
+       2  ?<Constant "7">
+       2  ?<Constant "8">
+       2  ?<Constant "9">
+       6  ?<Constant "Black">
+       5  ?<Constant "Blue">
+       6  ?<Constant "Brown">
+       6  ?<Constant "Color">
+       5  ?<Constant "Gray">
+       6  ?<Constant "Green">
+       7  ?<Constant "Orange">
+       4  ?<Constant "Red">
+       6  ?<Constant "Value">
+       7  ?<Constant "Violet">
+       6  ?<Constant "White">
+       7  ?<Constant "Yellow">
+     598  getResistorMenu
+
+ 
+ 598 bytes in segment CODE
+  91 bytes in segment DATA16_C
+ 
+ 598 bytes of CODE  memory
+  91 bytes of CONST memory
+
+Errors: none
+Warnings: none

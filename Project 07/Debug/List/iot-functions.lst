@@ -1,0 +1,632 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  01:05:38
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\iot-functions.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\iot-functions.c" -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 07\Debug\List\" -o
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\Obj\" --no_cse --no_unroll --no_inline --no_code_motion
+#        --no_tbaa --debug -D__MSP430FR5739__ -e --double=32 --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.2\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -On
+#        --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\List\iot-functions.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\Obj\iot-functions.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 07\iot-functions.c
+      1          #include  "macros.h"
+      2          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+      3          #include  "functions.h"
+      4          /*******************************************************************************
+      5          *        Author: Steffon Brigman
+      6          *        Date:   October 2015
+      7          *        Description: This file contains code to initialize UART serial communication.
+      8          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+      9          *
+     10          *        File name: init_cereal.c
+     11          *        Passed : No variables passed 
+     12          *        Returned: no values returned 
+     13          *        Globlas: None used
+     14          *******************************************************************************/
+     15          /*
+     16          
+     17          
+     18          ALL FUNCTIONS ONLY SET IOT TO OPERATE ON NCSU WIFI
+     19          TO DO - MAKE FUNCTIONS CUSTOMIZABLE
+     20          
+     21          
+     22          */
+
+   \                                 In  segment CODE, align 2
+     23          void Init_IOT(void){
+   \                     Init_IOT:
+     24            setSSID();
+   \   000000   ........     CALLA   #setSSID
+     25            setHostName();
+   \   000004   ........     CALLA   #setHostName
+     26            setPrivacyMode();
+   \   000008   ........     CALLA   #setPrivacyMode
+     27            setNetworkMode();
+   \   00000C   ........     CALLA   #setNetworkMode
+     28            iotSave();
+   \   000010   ........     CALLA   #iotSave
+     29            iotReset();
+   \   000014   ........     BRA     #iotReset
+     30          }
+     31          // Use UCA1
+
+   \                                 In  segment CODE, align 2
+     32          void setSSID(void){
+   \                     setSSID:
+   \   000000   31801200     SUB.W   #0x12, SP
+     33            const char transmitA1[] = "AT+S.SSIDTXT=ncsu";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.SSIDTXT=ncsu">`, R14
+   \   00000A   3D401200     MOV.W   #0x12, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+     34            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+     35            while(ALWAYS){
+     36              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??setSSID_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??setSSID_1
+     37              UCA1TXBUF = transmitA1[i];
+     38              i++;
+     39            }
+     40            UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+     41          }
+   \   000024   083C         JMP     ??setSSID_2
+   \                     ??setSSID_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??setSSID_0
+   \                     ??setSSID_2:
+   \   000036   31501200     ADD.W   #0x12, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+     42          
+
+   \                                 In  segment CODE, align 2
+     43          void getSSID(void){
+   \                     getSSID:
+   \   000000   31800E00     SUB.W   #0xe, SP
+     44            const char transmitA1[] = "AT+S.SSIDTXT";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.SSIDTXT">`, R14
+   \   00000A   3D400D00     MOV.W   #0xd, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+     45            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+     46            while(ALWAYS){
+     47              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??getSSID_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??getSSID_1
+     48              UCA1TXBUF = transmitA1[i];
+     49              i++;
+     50            }
+     51             UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+     52          }
+   \   000024   083C         JMP     ??getSSID_2
+   \                     ??getSSID_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??getSSID_0
+   \                     ??getSSID_2:
+   \   000036   31500E00     ADD.W   #0xe, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+     53          
+
+   \                                 In  segment CODE, align 2
+     54          void setHostName(void){
+   \                     setHostName:
+   \   000000   31802400     SUB.W   #0x24, SP
+     55            const char transmitA1[] = "AT+S.SCFG=ip_hostname,ECE-306-02-Q";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=ip_hostname...">`, R14
+   \   00000A   3D402300     MOV.W   #0x23, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+     56            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+     57            while(ALWAYS){
+     58              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??setHostName_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??setHostName_1
+     59              UCA1TXBUF = transmitA1[i];
+     60              i++;
+     61            }
+     62             UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+     63          }
+   \   000024   083C         JMP     ??setHostName_2
+   \                     ??setHostName_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??setHostName_0
+   \                     ??setHostName_2:
+   \   000036   31502400     ADD.W   #0x24, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+     64          
+
+   \                                 In  segment CODE, align 2
+     65          void getHostName(void){
+   \                     getHostName:
+   \   000000   31801600     SUB.W   #0x16, SP
+     66            const char transmitA1[] = "AT+S.GCFG=ip_hostname";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.GCFG=ip_hostname">`, R14
+   \   00000A   3D401600     MOV.W   #0x16, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+     67            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+     68            while(ALWAYS){
+     69              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??getHostName_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??getHostName_1
+     70              UCA1TXBUF = transmitA1[i];
+     71              i++;
+     72            }
+     73            UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+     74          }
+   \   000024   083C         JMP     ??getHostName_2
+   \                     ??getHostName_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??getHostName_0
+   \                     ??getHostName_2:
+   \   000036   31501600     ADD.W   #0x16, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+     75          
+
+   \                                 In  segment CODE, align 2
+     76          void setPrivacyMode(void){
+   \                     setPrivacyMode:
+   \   000000   31801C00     SUB.W   #0x1c, SP
+     77            const char transmitA1[] = "AT+S.SCFG=wifi_priv_mode,0";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=wifi_priv_m...">`, R14
+   \   00000A   3D401B00     MOV.W   #0x1b, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+     78            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+     79            while(ALWAYS){
+     80              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??setPrivacyMode_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??setPrivacyMode_1
+     81              UCA1TXBUF = transmitA1[i];
+     82              i++;
+     83            }
+     84            UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+     85          }
+   \   000024   083C         JMP     ??setPrivacyMode_2
+   \                     ??setPrivacyMode_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??setPrivacyMode_0
+   \                     ??setPrivacyMode_2:
+   \   000036   31501C00     ADD.W   #0x1c, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+     86          
+
+   \                                 In  segment CODE, align 2
+     87          void getPrivacyMode(void){
+   \                     getPrivacyMode:
+   \   000000   31801A00     SUB.W   #0x1a, SP
+     88            const char transmitA1[] = "AT+S.GCFG=wifi_priv_mode";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.GCFG=wifi_priv_mode">`, R14
+   \   00000A   3D401900     MOV.W   #0x19, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+     89            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+     90            while(ALWAYS){
+     91              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??getPrivacyMode_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??getPrivacyMode_1
+     92              UCA1TXBUF = transmitA1[i];
+     93              i++;
+     94            }
+     95            UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+     96          }
+   \   000024   083C         JMP     ??getPrivacyMode_2
+   \                     ??getPrivacyMode_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??getPrivacyMode_0
+   \                     ??getPrivacyMode_2:
+   \   000036   31501A00     ADD.W   #0x1a, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+     97          
+
+   \                                 In  segment CODE, align 2
+     98          void setNetworkMode(void){
+   \                     setNetworkMode:
+   \   000000   31801600     SUB.W   #0x16, SP
+     99            const char transmitA1[] = "AT+S.SCFG=wifi_mode,1";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=wifi_mode,1">`, R14
+   \   00000A   3D401600     MOV.W   #0x16, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+    100            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+    101            while(ALWAYS){
+    102              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??setNetworkMode_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??setNetworkMode_1
+    103              UCA1TXBUF = transmitA1[i];
+    104              i++;
+    105            }
+    106            UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+    107          }
+   \   000024   083C         JMP     ??setNetworkMode_2
+   \                     ??setNetworkMode_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??setNetworkMode_0
+   \                     ??setNetworkMode_2:
+   \   000036   31501600     ADD.W   #0x16, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+    108          
+
+   \                                 In  segment CODE, align 2
+    109          void getNetworkMode(void){
+   \                     getNetworkMode:
+   \   000000   31801400     SUB.W   #0x14, SP
+    110            const char transmitA1[] = "AT+S.GCFG=wifi_mode";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT+S.GCFG=wifi_mode">`, R14
+   \   00000A   3D401400     MOV.W   #0x14, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+    111            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+    112            while(ALWAYS){
+    113              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??getNetworkMode_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??getNetworkMode_1
+    114              UCA1TXBUF = transmitA1[i];
+    115              i++;
+    116            }
+    117            UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+    118          }
+   \   000024   083C         JMP     ??getNetworkMode_2
+   \                     ??getNetworkMode_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??getNetworkMode_0
+   \                     ??getNetworkMode_2:
+   \   000036   31501400     ADD.W   #0x14, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+    119          
+
+   \                                 In  segment CODE, align 2
+    120          void iotSave(void){
+   \                     iotSave:
+   \   000000   31800600     SUB.W   #0x6, SP
+    121            const char transmitA1[] = "AT&W";
+   \   000004   0C41         MOV.W   SP, R12
+   \   000006   3E40....     MOV.W   #`?<Constant "AT&W">`, R14
+   \   00000A   3D400500     MOV.W   #0x5, R13
+   \   00000E   ........     CALLA   #?CopyMemoryBytes
+    122            short unsigned int i = ZERO;
+   \   000012   0E43         MOV.W   #0x0, R14
+    123            while(ALWAYS){
+    124              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??iotSave_0:
+   \   000014   0F4E         MOV.W   R14, R15
+   \   000016   0F51         ADD.W   SP, R15
+   \   000018   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001C   0420         JNE     ??iotSave_1
+    125              UCA1TXBUF = transmitA1[i];
+    126              i++;
+    127            }
+    128            UCA1TXBUF = END_COMMAND;
+   \   00001E   B2400D00EE05 MOV.W   #0xd, &0x5ee
+    129          }
+   \   000024   083C         JMP     ??iotSave_2
+   \                     ??iotSave_1:
+   \   000026   0F4E         MOV.W   R14, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FEE05     MOV.W   R15, &0x5ee
+   \   000032   1E53         ADD.W   #0x1, R14
+   \   000034   EF3F         JMP     ??iotSave_0
+   \                     ??iotSave_2:
+   \   000036   31500600     ADD.W   #0x6, SP
+   \   00003A   1001         RETA
+   \   00003C                REQUIRE _A_UCA1TXBUF_L
+    130          
+
+   \                                 In  segment CODE, align 2
+    131          void iotReset(void){
+   \                     iotReset:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31800A00     SUB.W   #0xa, SP
+    132            short unsigned int i = ZERO;
+   \   000006   0A43         MOV.W   #0x0, R10
+    133            const char transmitA1[] = "AT+CFUN=1";
+   \   000008   0C41         MOV.W   SP, R12
+   \   00000A   3E40....     MOV.W   #`?<Constant "AT+CFUN=1">`, R14
+   \   00000E   3D400A00     MOV.W   #0xa, R13
+   \   000012   ........     CALLA   #?CopyMemoryBytes
+    134            while(ALWAYS){
+    135              if(transmitA1[i] == ORIGINAL) {break;}
+   \                     ??iotReset_0:
+   \   000016   0F4A         MOV.W   R10, R15
+   \   000018   0F51         ADD.W   SP, R15
+   \   00001A   CF930000     CMP.B   #0x0, 0(R15)
+   \   00001E   0620         JNE     ??iotReset_2
+    136              UCA1TXBUF = transmitA1[i];
+    137              i++;
+    138            }
+    139            UCA1TXBUF = END_COMMAND;
+   \   000020   B2400D00EE05 MOV.W   #0xd, &0x5ee
+    140            
+    141            PJOUT |= RESET;
+   \   000026   B2D22203     BIS.W   #0x8, &0x322
+   \   00002A   083C         JMP     ??iotReset_1
+   \                     ??iotReset_2:
+   \   00002C   0F4A         MOV.W   R10, R15
+   \   00002E   0F51         ADD.W   SP, R15
+   \   000030   6F4F         MOV.B   @R15, R15
+   \   000032   4F4F         MOV.B   R15, R15
+   \   000034   824FEE05     MOV.W   R15, &0x5ee
+   \   000038   1A53         ADD.W   #0x1, R10
+   \   00003A   ED3F         JMP     ??iotReset_0
+    142            while(ISR_COUNT<Second_1){}
+   \                     ??iotReset_1:
+   \   00003C   B2906400.... CMP.W   #0x64, &ISR_COUNT
+   \   000042   FC3B         JL      ??iotReset_1
+    143            ISR_COUNT = ZERO;
+   \   000044   8243....     MOV.W   #0x0, &ISR_COUNT
+    144            PJOUT &= ~RESET;
+   \   000048   B2C22203     BIC.W   #0x8, &0x322
+    145            Init_LCD();
+   \   00004C   ........     CALLA   #Init_LCD
+    146          }
+   \   000050   31500A00     ADD.W   #0xa, SP
+   \   000054   3A41         POP.W   R10
+   \   000056   1001         RETA
+   \   000058                REQUIRE _A_UCA1TXBUF_L
+   \   000058                REQUIRE _A_PJOUT_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SSIDTXT=ncsu">`:
+   \   000000   41542B532E53 DC8 "AT+S.SSIDTXT=ncsu"
+   \            534944545854
+   \            3D6E63737500
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SSIDTXT">`:
+   \   000000   41542B532E53 DC8 "AT+S.SSIDTXT"
+   \            534944545854
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SCFG=ip_hostname...">`:
+   \   000000   41542B532E53 DC8 "AT+S.SCFG=ip_hostname,ECE-306-02-Q"
+   \            4346473D6970
+   \            5F686F73746E
+   \            616D652C4543
+   \            452D3330362D
+   \            30322D5100  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.GCFG=ip_hostname">`:
+   \   000000   41542B532E47 DC8 "AT+S.GCFG=ip_hostname"
+   \            4346473D6970
+   \            5F686F73746E
+   \            616D6500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SCFG=wifi_priv_m...">`:
+   \   000000   41542B532E53 DC8 "AT+S.SCFG=wifi_priv_mode,0"
+   \            4346473D7769
+   \            66695F707269
+   \            765F6D6F6465
+   \            2C3000      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.GCFG=wifi_priv_mode">`:
+   \   000000   41542B532E47 DC8 "AT+S.GCFG=wifi_priv_mode"
+   \            4346473D7769
+   \            66695F707269
+   \            765F6D6F6465
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SCFG=wifi_mode,1">`:
+   \   000000   41542B532E53 DC8 "AT+S.SCFG=wifi_mode,1"
+   \            4346473D7769
+   \            66695F6D6F64
+   \            652C3100    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.GCFG=wifi_mode">`:
+   \   000000   41542B532E47 DC8 "AT+S.GCFG=wifi_mode"
+   \            4346473D7769
+   \            66695F6D6F64
+   \            6500        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT&W">`:
+   \   000000   4154265700   DC8 "AT&W"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+CFUN=1">`:
+   \   000000   41542B434655 DC8 "AT+CFUN=1"
+   \            4E3D3100    
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_IOT
+        0   -> iotReset
+        4   -> iotSave
+        4   -> setHostName
+        4   -> setNetworkMode
+        4   -> setPrivacyMode
+        4   -> setSSID
+     26   getHostName
+       26 ?CopyMemoryBytes
+     24   getNetworkMode
+       24 ?CopyMemoryBytes
+     30   getPrivacyMode
+       30 ?CopyMemoryBytes
+     18   getSSID
+       18 ?CopyMemoryBytes
+     16   iotReset
+       16   -> Init_LCD
+       16 ?CopyMemoryBytes
+     10   iotSave
+       10 ?CopyMemoryBytes
+     40   setHostName
+       40 ?CopyMemoryBytes
+     26   setNetworkMode
+       26 ?CopyMemoryBytes
+     32   setPrivacyMode
+       32 ?CopyMemoryBytes
+     22   setSSID
+       22 ?CopyMemoryBytes
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       5  ?<Constant "AT&W">
+      10  ?<Constant "AT+CFUN=1">
+      22  ?<Constant "AT+S.GCFG=ip_hostname">
+      20  ?<Constant "AT+S.GCFG=wifi_mode">
+      25  ?<Constant "AT+S.GCFG=wifi_priv_mode">
+      35  ?<Constant "AT+S.SCFG=ip_hostname...">
+      22  ?<Constant "AT+S.SCFG=wifi_mode,1">
+      27  ?<Constant "AT+S.SCFG=wifi_priv_m...">
+      13  ?<Constant "AT+S.SSIDTXT">
+      18  ?<Constant "AT+S.SSIDTXT=ncsu">
+      24  Init_IOT
+       2  _A_PJOUT_L
+       2  _A_UCA1TXBUF_L
+      60  getHostName
+      60  getNetworkMode
+      60  getPrivacyMode
+      60  getSSID
+      88  iotReset
+      60  iotSave
+      60  setHostName
+      60  setNetworkMode
+      60  setPrivacyMode
+      60  setSSID
+
+ 
+ 652 bytes in segment CODE
+   4 bytes in segment DATA16_AN
+ 197 bytes in segment DATA16_C
+ 
+ 652 bytes of CODE  memory
+ 197 bytes of CONST memory
+   0 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none

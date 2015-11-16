@@ -1,0 +1,256 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  01:02:01
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\thumbwheel.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\thumbwheel.c" -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 07\Debug\List\" -o
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\Obj\" --no_cse --no_unroll --no_inline --no_code_motion
+#        --no_tbaa --debug -D__MSP430FR5739__ -e --double=32 --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.2\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -On
+#        --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\List\thumbwheel.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\Obj\thumbwheel.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 07\thumbwheel.c
+      1          /*******************************************************************************
+      2          *        Author: Steffon Brigman
+      3          *        Date:   October 2015
+      4          *        Description: This file contains code to read data from the thumb wheel.
+      5          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+      6          *
+      7          *        File name: thumbwheel.c
+      8          *        Passed : No variables passed 
+      9          *        Locals: No locals variables
+     10          *        Returned: no values returned 
+     11          *        Globlas: Listed in the globals section
+     12          *******************************************************************************/
+     13          
+     14          // Includes
+     15          #include  "macros.h"
+     16          #include  "msp430.h"
+     17          #include  "functions.h"
+     18          
+     19          // GLobal Variables
+     20          extern char *display_1;
+     21          extern char *display_2;
+     22          extern char *display_3;
+     23          extern char *display_4;
+     24          extern char posL1;
+     25          extern char posL2;
+     26          extern char posL3;
+     27          extern char posL4;
+     28          extern unsigned int ADC_Right_Detector;
+     29          extern unsigned int ADC_thumb;
+     30          extern unsigned int ADC_Left_Detector;
+     31          
+
+   \                                 In  segment CODE, align 2
+     32          void ADC_read(int detect_mode){
+   \                     ADC_read:
+   \   000000   3B15         PUSHM.W #0x4, R11
+   \   000002   0B4C         MOV.W   R12, R11
+     33          /*******************************************************************************
+     34          *        Author: Steffon Brigman
+     35          *        Date:   October 2015
+     36          *        Description: This function converts ADC values to display to the LCD
+     37          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     38          *
+     39          *        Function name: ADC_read
+     40          *        Passed : detect_mode
+     41          *        Locals: value, tmp
+     42          *        Returned: no values returned 
+     43          *        Globlas: All listed in the globals section
+     44          *******************************************************************************/
+     45            // For detect mode 0 - right detector, 1 - left, 2 - thumbwheel
+     46            unsigned int value;
+     47            ADC_Channel = detect_mode;
+   \   000004   824B....     MOV.W   R11, &ADC_Channel
+     48            if(ADC_Channel == Right_Detector){value = ADC_Right_Detector;}
+   \   000008   8293....     CMP.W   #0x0, &ADC_Channel
+   \   00000C   0220         JNE     ??ADC_read_0
+   \   00000E   1842....     MOV.W   &ADC_Right_Detector, R8
+     49            if(ADC_Channel == Left_Detector){value = ADC_Left_Detector;}
+   \                     ??ADC_read_0:
+   \   000012   9293....     CMP.W   #0x1, &ADC_Channel
+   \   000016   0220         JNE     ??ADC_read_1
+   \   000018   1842....     MOV.W   &ADC_Left_Detector, R8
+     50            if(ADC_Channel == Thumbwheel){value = ADC_Thumb;}
+   \                     ??ADC_read_1:
+   \   00001C   A293....     CMP.W   #0x2, &ADC_Channel
+   \   000020   0220         JNE     ??ADC_read_2
+   \   000022   1842....     MOV.W   &ADC_Thumb, R8
+     51            ADC_Process();
+   \                     ??ADC_read_2:
+   \   000026   ........     CALLA   #ADC_Process
+     52            // Hex conversion code
+     53              unsigned int tmp = value & NIBBLE1; // Preserver first nibble of thumbwheel register
+   \   00002A   0A48         MOV.W   R8, R10
+   \   00002C   3AF00F00     AND.W   #0xf, R10
+     54              if(tmp > HEX_A){
+   \   000030   3A900A00     CMP.W   #0xa, R10
+   \   000034   0328         JNC     ??ADC_read_3
+     55                tmp = tmp + ADC_conv1;
+   \   000036   3A503700     ADD.W   #0x37, R10
+   \   00003A   023C         JMP     ??ADC_read_4
+     56              }
+     57              else{
+     58                tmp = tmp | ADC_conv2;
+   \                     ??ADC_read_3:
+   \   00003C   3AD03000     BIS.W   #0x30, R10
+     59              }
+     60              if(detect_mode == Thumbwheel)
+   \                     ??ADC_read_4:
+   \   000040   2B93         CMP.W   #0x2, R11
+   \   000042   0420         JNE     ??ADC_read_5
+     61                {display_1[line1] = tmp;} // thumbwheel
+   \   000044   1F42....     MOV.W   &display_1, R15
+   \   000048   CF4A0600     MOV.B   R10, 0x6(R15)
+     62              if(detect_mode == Left_Detector)
+   \                     ??ADC_read_5:
+   \   00004C   1B93         CMP.W   #0x1, R11
+   \   00004E   0420         JNE     ??ADC_read_6
+     63                {display_2[line1] = tmp;} // left detect
+   \   000050   1F42....     MOV.W   &display_2, R15
+   \   000054   CF4A0600     MOV.B   R10, 0x6(R15)
+     64              if(detect_mode == Right_Detector)
+   \                     ??ADC_read_6:
+   \   000058   0B93         CMP.W   #0x0, R11
+   \   00005A   0420         JNE     ??ADC_read_7
+     65                {display_3[line1] = tmp;} // right detect
+   \   00005C   1F42....     MOV.W   &display_3, R15
+   \   000060   CF4A0600     MOV.B   R10, 0x6(R15)
+     66              
+     67              tmp = value & NIBBLE2; // Preserver second nibble of thumbwheel register
+   \                     ??ADC_read_7:
+   \   000064   0F48         MOV.W   R8, R15
+   \   000066   3FF0F000     AND.W   #0xf0, R15
+   \   00006A   0A4F         MOV.W   R15, R10
+     68              tmp >>= shift1; 
+   \   00006C   5A0F         RRUM.W  #0x4, R10
+     69              if(tmp > HEX_A){
+   \   00006E   3A900A00     CMP.W   #0xa, R10
+   \   000072   0328         JNC     ??ADC_read_8
+     70                tmp = tmp + ADC_conv1;
+   \   000074   3A503700     ADD.W   #0x37, R10
+   \   000078   023C         JMP     ??ADC_read_9
+     71              }
+     72              else{
+     73                tmp = tmp | ADC_conv2;
+   \                     ??ADC_read_8:
+   \   00007A   3AD03000     BIS.W   #0x30, R10
+     74              }
+     75              if(detect_mode == Thumbwheel)
+   \                     ??ADC_read_9:
+   \   00007E   2B93         CMP.W   #0x2, R11
+   \   000080   0420         JNE     ??ADC_read_10
+     76                {display_1[line2] = tmp;}
+   \   000082   1F42....     MOV.W   &display_1, R15
+   \   000086   CF4A0500     MOV.B   R10, 0x5(R15)
+     77              if(detect_mode == Left_Detector)
+   \                     ??ADC_read_10:
+   \   00008A   1B93         CMP.W   #0x1, R11
+   \   00008C   0420         JNE     ??ADC_read_11
+     78                {display_2[line2] = tmp;} // left detect
+   \   00008E   1F42....     MOV.W   &display_2, R15
+   \   000092   CF4A0500     MOV.B   R10, 0x5(R15)
+     79              if(detect_mode == Right_Detector)
+   \                     ??ADC_read_11:
+   \   000096   0B93         CMP.W   #0x0, R11
+   \   000098   0420         JNE     ??ADC_read_12
+     80                {display_3[line2] = tmp;} // right detect
+   \   00009A   1F42....     MOV.W   &display_3, R15
+   \   00009E   CF4A0500     MOV.B   R10, 0x5(R15)
+     81              
+     82                tmp = value & NIBBLE3; // Preserver last nibble of thumbwheel register
+   \                     ??ADC_read_12:
+   \   0000A2   0F48         MOV.W   R8, R15
+   \   0000A4   3FF0000F     AND.W   #0xf00, R15
+   \   0000A8   0A4F         MOV.W   R15, R10
+     83                tmp >>= shift2;
+   \   0000AA   8A10         SWPB    R10
+   \   0000AC   3AF0FF00     AND.W   #0xff, R10
+     84              if(tmp > HEX_A){
+   \   0000B0   3A900A00     CMP.W   #0xa, R10
+   \   0000B4   0328         JNC     ??ADC_read_13
+     85                tmp = tmp + ADC_conv1;
+   \   0000B6   3A503700     ADD.W   #0x37, R10
+   \   0000BA   023C         JMP     ??ADC_read_14
+     86              }
+     87              else{
+     88                tmp = tmp | ADC_conv2;
+   \                     ??ADC_read_13:
+   \   0000BC   3AD03000     BIS.W   #0x30, R10
+     89              }
+     90              if(detect_mode == Thumbwheel)
+   \                     ??ADC_read_14:
+   \   0000C0   2B93         CMP.W   #0x2, R11
+   \   0000C2   0420         JNE     ??ADC_read_15
+     91                {display_1[line3] = tmp;}
+   \   0000C4   1F42....     MOV.W   &display_1, R15
+   \   0000C8   CF4A0400     MOV.B   R10, 0x4(R15)
+     92              if(detect_mode == Left_Detector)
+   \                     ??ADC_read_15:
+   \   0000CC   1B93         CMP.W   #0x1, R11
+   \   0000CE   0420         JNE     ??ADC_read_16
+     93                {display_2[line3] = tmp;} // left detect
+   \   0000D0   1F42....     MOV.W   &display_2, R15
+   \   0000D4   CF4A0400     MOV.B   R10, 0x4(R15)
+     94              if(detect_mode == Right_Detector)
+   \                     ??ADC_read_16:
+   \   0000D8   0B93         CMP.W   #0x0, R11
+   \   0000DA   0420         JNE     ??ADC_read_17
+     95                {display_3[line3] = tmp;} // right detect
+   \   0000DC   1F42....     MOV.W   &display_3, R15
+   \   0000E0   CF4A0400     MOV.B   R10, 0x4(R15)
+     96              Display_Process();
+   \                     ??ADC_read_17:
+   \   0000E4   ........     CALLA   #Display_Process
+     97          }
+   \   0000E8   3817         POPM.W  #0x4, R11
+   \   0000EA   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     12   ADC_read
+       12   -> ADC_Process
+       12   -> Display_Process
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     236  ADC_read
+
+ 
+ 236 bytes in segment CODE
+ 
+ 236 bytes of CODE memory
+
+Errors: none
+Warnings: none
