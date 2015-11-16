@@ -78,6 +78,8 @@ void main(void){
   Init_Motors();                            // Turns off both motors
   Init_ADC();
   Init_Serial_UCA1();
+  Init_Serial_UCA0();
+  Init_IOT();
   
 //             1234567890
   clearLCD();

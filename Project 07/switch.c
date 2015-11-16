@@ -64,7 +64,11 @@ void Switches_Process(void){
       }*/
   }
   if (!(P4IN & SW2)) {
-  setSSID();
+  getHostName();
+  displayIOT();
+  Five_msec_Delay(10);
+  getIpAddress();
+  displayIOT();
 }
 //------------------------------------------------------------------------------
 }

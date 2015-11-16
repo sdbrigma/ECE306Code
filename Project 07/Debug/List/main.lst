@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  01:01:58
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  02:39:11
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -316,116 +316,120 @@
    \   00002C   ........     CALLA   #Init_ADC
      80            Init_Serial_UCA1();
    \   000030   ........     CALLA   #Init_Serial_UCA1
-     81            
-     82          //             1234567890
-     83            clearLCD();
-   \   000034   ........     CALLA   #clearLCD
-     84            setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
-   \   000038   1312         PUSH.W  #0x1
-   \   00003A   3012....     PUSH.W  #`?<Constant "S Brigman">`
-   \   00003E   2312         PUSH.W  #0x2
-   \   000040   3012....     PUSH.W  #`?<Constant "ECE306">`
-   \   000044   1F43         MOV.W   #0x1, R15
-   \   000046   3E40....     MOV.W   #`?<Constant "WOLFPACK">`, R14
-   \   00004A   3D400300     MOV.W   #0x3, R13
-   \   00004E   3C40....     MOV.W   #`?<Constant "NCSU">`, R12
-   \   000052   ........     CALLA   #setLCD
-     85            big = ZERO;
-   \   000056   C243....     MOV.B   #0x0, &big
-     86            ADC_Channel = Thumbwheel;
-   \   00005A   A243....     MOV.W   #0x2, &ADC_Channel
-   \   00005E   3152         ADD.W   #0x8, SP
-     87          //------------------------------------------------------------------------------
-     88          // Begining of the "While" Operating System
+     81            Init_Serial_UCA0();
+   \   000034   ........     CALLA   #Init_Serial_UCA0
+     82            Init_IOT();
+   \   000038   ........     CALLA   #Init_IOT
+     83            
+     84          //             1234567890
+     85            clearLCD();
+   \   00003C   ........     CALLA   #clearLCD
+     86            setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
+   \   000040   1312         PUSH.W  #0x1
+   \   000042   3012....     PUSH.W  #`?<Constant "S Brigman">`
+   \   000046   2312         PUSH.W  #0x2
+   \   000048   3012....     PUSH.W  #`?<Constant "ECE306">`
+   \   00004C   1F43         MOV.W   #0x1, R15
+   \   00004E   3E40....     MOV.W   #`?<Constant "WOLFPACK">`, R14
+   \   000052   3D400300     MOV.W   #0x3, R13
+   \   000056   3C40....     MOV.W   #`?<Constant "NCSU">`, R12
+   \   00005A   ........     CALLA   #setLCD
+     87            big = ZERO;
+   \   00005E   C243....     MOV.B   #0x0, &big
+     88            ADC_Channel = Thumbwheel;
+   \   000062   A243....     MOV.W   #0x2, &ADC_Channel
+   \   000066   3152         ADD.W   #0x8, SP
      89          //------------------------------------------------------------------------------
-     90           while(ALWAYS) {  
-     91             ADC_Process();
+     90          // Begining of the "While" Operating System
+     91          //------------------------------------------------------------------------------
+     92           while(ALWAYS) {  
+     93             ADC_Process();
    \                     ??main_0:
-   \   000060   ........     CALLA   #ADC_Process
-     92             // Can the Operating system run
-     93            switch(Time_Sequence){
-   \   000064   1F42....     MOV.W   &Time_Sequence, R15
-   \   000068   3F803200     SUB.W   #0x32, R15
-   \   00006C   2224         JEQ     ??main_3
-   \   00006E   3F803200     SUB.W   #0x32, R15
-   \   000072   1A24         JEQ     ??main_4
-   \   000074   3F803200     SUB.W   #0x32, R15
-   \   000078   1224         JEQ     ??main_5
-   \   00007A   3F803200     SUB.W   #0x32, R15
-   \   00007E   0A24         JEQ     ??main_6
-   \   000080   3F803200     SUB.W   #0x32, R15
-   \   000084   1D20         JNE     ??main_1
-     94              case FULL_SECOND:                               // 1000 msec  
-     95                if(one_time){
-   \   000086   C293....     CMP.B   #0x0, &one_time
-   \   00008A   0224         JEQ     ??main_7
-     96                  //Init_LEDs();                        // Initialize LEDs
-     97                  one_time = ZERO;
-   \   00008C   C243....     MOV.B   #0x0, &one_time
-     98                }
-     99                Time_Sequence = ZERO;                    // 
+   \   000068   ........     CALLA   #ADC_Process
+     94             // Can the Operating system run
+     95            switch(Time_Sequence){
+   \   00006C   1F42....     MOV.W   &Time_Sequence, R15
+   \   000070   3F803200     SUB.W   #0x32, R15
+   \   000074   2224         JEQ     ??main_3
+   \   000076   3F803200     SUB.W   #0x32, R15
+   \   00007A   1A24         JEQ     ??main_4
+   \   00007C   3F803200     SUB.W   #0x32, R15
+   \   000080   1224         JEQ     ??main_5
+   \   000082   3F803200     SUB.W   #0x32, R15
+   \   000086   0A24         JEQ     ??main_6
+   \   000088   3F803200     SUB.W   #0x32, R15
+   \   00008C   1D20         JNE     ??main_1
+     96              case FULL_SECOND:                               // 1000 msec  
+     97                if(one_time){
+   \   00008E   C293....     CMP.B   #0x0, &one_time
+   \   000092   0224         JEQ     ??main_7
+     98                  //Init_LEDs();                        // Initialize LEDs
+     99                  one_time = ZERO;
+   \   000094   C243....     MOV.B   #0x0, &one_time
+    100                }
+    101                Time_Sequence = ZERO;                    // 
    \                     ??main_7:
-   \   000090   8243....     MOV.W   #0x0, &Time_Sequence
-    100              case THOU_MS:                               // 1000 msec  
-    101                if(one_time){
+   \   000098   8243....     MOV.W   #0x0, &Time_Sequence
+    102              case THOU_MS:                               // 1000 msec  
+    103                if(one_time){
    \                     ??main_6:
-   \   000094   C293....     CMP.B   #0x0, &one_time
-   \   000098   0224         JEQ     ??main_5
-    102                  //P3OUT |= LED5;                      // Change State of LED 5
-    103                  one_time = ZERO;
-   \   00009A   C243....     MOV.B   #0x0, &one_time
-    104                }
-    105              case THIRD_SECOND:                               // 750 msec  
-    106                if(one_time){
+   \   00009C   C293....     CMP.B   #0x0, &one_time
+   \   0000A0   0224         JEQ     ??main_5
+    104                  //P3OUT |= LED5;                      // Change State of LED 5
+    105                  one_time = ZERO;
+   \   0000A2   C243....     MOV.B   #0x0, &one_time
+    106                }
+    107              case THIRD_SECOND:                               // 750 msec  
+    108                if(one_time){
    \                     ??main_5:
-   \   00009E   C293....     CMP.B   #0x0, &one_time
-   \   0000A2   0224         JEQ     ??main_4
-    107                  //PJOUT |= LED3;                      // Change State of LED 3
-    108                  //P3OUT |= LED6;                      // Change State of LED 6
-    109                  one_time = ZERO;
-   \   0000A4   C243....     MOV.B   #0x0, &one_time
-    110                }
-    111              case HALF_SECOND:                               // 500 msec  
-    112                if(one_time){
+   \   0000A6   C293....     CMP.B   #0x0, &one_time
+   \   0000AA   0224         JEQ     ??main_4
+    109                  //PJOUT |= LED3;                      // Change State of LED 3
+    110                  //P3OUT |= LED6;                      // Change State of LED 6
+    111                  one_time = ZERO;
+   \   0000AC   C243....     MOV.B   #0x0, &one_time
+    112                }
+    113              case HALF_SECOND:                               // 500 msec  
+    114                if(one_time){
    \                     ??main_4:
-   \   0000A8   C293....     CMP.B   #0x0, &one_time
-   \   0000AC   0224         JEQ     ??main_3
-    113                  //PJOUT |= LED2;                      // Change State of LED 2
-    114                  //P3OUT |= LED7;                      // Change State of LED 7
-    115                  one_time = ZERO;
-   \   0000AE   C243....     MOV.B   #0x0, &one_time
-    116                }
-    117              case  QUARTER_SECOND:                               // 250 msec  
-    118                if(one_time){
+   \   0000B0   C293....     CMP.B   #0x0, &one_time
+   \   0000B4   0224         JEQ     ??main_3
+    115                  //PJOUT |= LED2;                      // Change State of LED 2
+    116                  //P3OUT |= LED7;                      // Change State of LED 7
+    117                  one_time = ZERO;
+   \   0000B6   C243....     MOV.B   #0x0, &one_time
+    118                }
+    119              case  QUARTER_SECOND:                               // 250 msec  
+    120                if(one_time){
    \                     ??main_3:
-   \   0000B2   C293....     CMP.B   #0x0, &one_time
-   \   0000B6   0224         JEQ     ??main_8
-    119                  //PJOUT |= LED1;                      // Change State of LED 1
-    120                  //P3OUT |= LED8;                      // Change State of LED 8
-    121                  one_time = ZERO;
-   \   0000B8   C243....     MOV.B   #0x0, &one_time
-    122                }
-    123                Display_Process();
+   \   0000BA   C293....     CMP.B   #0x0, &one_time
+   \   0000BE   0224         JEQ     ??main_8
+    121                  //PJOUT |= LED1;                      // Change State of LED 1
+    122                  //P3OUT |= LED8;                      // Change State of LED 8
+    123                  one_time = ZERO;
+   \   0000C0   C243....     MOV.B   #0x0, &one_time
+    124                }
+    125                Display_Process();
    \                     ??main_8:
-   \   0000BC   ........     CALLA   #Display_Process
-    124                break;                                // 
-    125              default: break; 
-    126            }
-    127            Switches_Process();                       // Check for switch state change 
+   \   0000C4   ........     CALLA   #Display_Process
+    126                break;                                // 
+    127              default: break; 
+    128            }
+    129            Switches_Process();                       // Check for switch state change 
    \                     ??main_1:
-   \   0000C0   ........     CALLA   #Switches_Process
-    128            if(Time_Sequence > FULL_SECOND){ // 1000 msec
-   \   0000C4   B290FB00.... CMP.W   #0xfb, &Time_Sequence
-   \   0000CA   CA2B         JNC     ??main_0
-    129              Time_Sequence = ZERO;
-   \   0000CC   8243....     MOV.W   #0x0, &Time_Sequence
-   \   0000D0   C73F         JMP     ??main_0
-   \   0000D2   0343         NOP
-   \   0000D4                REQUIRE _A_PJOUT_L
-    130            }
-    131           }
-    132          //------------------------------------------------------------------------------
-    133          }
+   \   0000C8   ........     CALLA   #Switches_Process
+    130            if(Time_Sequence > FULL_SECOND){ // 1000 msec
+   \   0000CC   B290FB00.... CMP.W   #0xfb, &Time_Sequence
+   \   0000D2   CA2B         JNC     ??main_0
+    131              Time_Sequence = ZERO;
+   \   0000D4   8243....     MOV.W   #0x0, &Time_Sequence
+   \   0000D8   C73F         JMP     ??main_0
+   \   0000DA   0343         NOP
+   \   0000DC                REQUIRE _A_PJOUT_L
+    132            }
+    133           }
+    134          //------------------------------------------------------------------------------
+    135          }
 
    \                                 In  segment DATA16_ID, align 2, align-sorted
    \                     `?<Initializer for color>`:
@@ -460,10 +464,12 @@
         4   -> Init_ADC
         4   -> Init_Clocks
         4   -> Init_Conditions
+        4   -> Init_IOT
         4   -> Init_LCD
         4   -> Init_LEDs
         4   -> Init_Motors
         4   -> Init_Ports
+        4   -> Init_Serial_UCA0
         4   -> Init_Serial_UCA1
         4   -> Init_Timers
         4   -> Switches_Process
@@ -505,7 +511,7 @@
        2  cpu_tx_ring_wr
        2  inc
        1  led_smclk
-     212  main
+     220  main
        1  one_time
        1  posL1
        1  posL2
@@ -521,14 +527,14 @@
        2  usb_tx_ring_wr
 
  
- 212 bytes in segment CODE
+ 220 bytes in segment CODE
    2 bytes in segment DATA16_AN
   31 bytes in segment DATA16_C
    2 bytes in segment DATA16_I
    2 bytes in segment DATA16_ID
  215 bytes in segment DATA16_Z
  
- 212 bytes of CODE  memory
+ 220 bytes of CODE  memory
   33 bytes of CONST memory
  217 bytes of DATA  memory (+ 2 bytes shared)
 

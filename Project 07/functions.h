@@ -101,6 +101,7 @@ void emitter_on(void);
 void emitter_off(void);
 
 // IOT FUnctions
+void Init_IOT(void);
 void setSSID(void);
 void getSSID(void);
 void setHostName(void);
@@ -111,3 +112,5 @@ void setNetworkMode(void);
 void getNetworkMode(void);
 void iotSave(void);
 void iotReset(void);
+void getIpAddress(void);
+void displayIOT(void);

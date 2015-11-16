@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  01:08:34
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  03:34:33
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -158,15 +158,24 @@
      66            if (!(P4IN & SW2)) {
    \                     ??Switches_Process_2:
    \   00008E   E2B32102     BIT.B   #0x2, &0x221
-   \   000092   022C         JC      ??Switches_Process_5
-     67            setSSID();
-   \   000094   ........     CALLA   #setSSID
-     68          }
-     69          //------------------------------------------------------------------------------
-     70          }
+   \   000092   0C2C         JC      ??Switches_Process_5
+     67            getHostName();
+   \   000094   ........     CALLA   #getHostName
+     68            displayIOT();
+   \   000098   ........     CALLA   #displayIOT
+     69            Five_msec_Delay(10);
+   \   00009C   3C400A00     MOV.W   #0xa, R12
+   \   0000A0   ........     CALLA   #Five_msec_Delay
+     70            getIpAddress();
+   \   0000A4   ........     CALLA   #getIpAddress
+     71            displayIOT();
+   \   0000A8   ........     CALLA   #displayIOT
+     72          }
+     73          //------------------------------------------------------------------------------
+     74          }
    \                     ??Switches_Process_5:
-   \   000098   1001         RETA
-   \   00009A                REQUIRE _A_PBIN_L
+   \   0000AC   1001         RETA
+   \   0000AE                REQUIRE _A_PBIN_L
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "Resistor">`:
@@ -193,9 +202,11 @@
      12   Switches_Process
         4   -> ADC_Process
         4   -> Five_msec_Delay
+        4   -> displayIOT
+        4   -> getHostName
+        4   -> getIpAddress
        12   -> lcd_BIG_mid
        12   -> setLCD
-        4   -> setSSID
 
 
    Segment part sizes:
@@ -206,15 +217,15 @@
        9  ?<Constant "Resistor">
        7  ?<Constant "Shapes">
        5  ?<Constant "Song">
-     154  Switches_Process
+     174  Switches_Process
        2  _A_PBIN_L
 
  
- 154 bytes in segment CODE
+ 174 bytes in segment CODE
    2 bytes in segment DATA16_AN
   22 bytes in segment DATA16_C
  
- 154 bytes of CODE  memory
+ 174 bytes of CODE  memory
   22 bytes of CONST memory
    0 bytes of DATA  memory (+ 2 bytes shared)
 

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  01:01:53
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  02:39:06
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -268,10 +268,10 @@
    \   00003A   92D3C005     BIS.W   #0x1, &0x5c0
      98           UCA0BRW = BAUD_9600; // 9600 baud
    \   00003E   B2403400C605 MOV.W   #0x34, &0x5c6
-     99           UCA0MCTLW = MOD_CTRL1;
+     99           UCA0MCTLW = MOD_CTRL1; 
    \   000044   B2401149C805 MOV.W   #0x4911, &0x5c8
     100           
-    101           P2SEL1 |= USB_TXD;
+    101            P2SEL1 |= USB_TXD;
    \   00004A   D2D30D02     BIS.B   #0x1, &0x20d
     102           P2SEL0 &= ~USB_TXD;
    \   00004E   D2C30B02     BIC.B   #0x1, &0x20b

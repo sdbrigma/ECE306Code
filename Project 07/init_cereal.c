@@ -96,9 +96,9 @@ void Init_Serial_UCA0(){// COMPUTER SERIAL
  UCA0CTLW0 |= UCSSEL__SMCLK; // Set SMCLK as fBRCLK
  UCA0CTLW0 |= UCSWRST; // Set Software reset enable, logic held in reset state
  UCA0BRW = BAUD_9600; // 9600 baud
- UCA0MCTLW = MOD_CTRL1;
+ UCA0MCTLW = MOD_CTRL1; 
  
- P2SEL1 |= USB_TXD;
+  P2SEL1 |= USB_TXD;
  P2SEL0 &= ~USB_TXD;
  P2OUT  |= USB_TXD;
  P2DIR |= USB_TXD;
