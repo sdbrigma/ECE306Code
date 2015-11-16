@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           15/Nov/2015  01:29:39
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  15:15:39
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -40,28 +40,49 @@
       1          #include  "macros.h"
       2          #include  "msp430.h"
       3          #include  "functions.h"
-      4          
+      4          //******************************************************************************
+      5          //
+      6          //  Description: This file contains code for the second option, "Shapes" , in the top menu
+      7          //   
+      8          //
+      9          //  Steffon Brigman
+     10          //  Noember 2015
+     11          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+     12          //******************************************************************************
+     13          
 
    \                                 In  segment CODE, align 2
-      5          void getShapesMenu(unsigned int adc_value){
+     14          void getShapesMenu(unsigned int adc_value){
    \                     getShapesMenu:
    \   000000   1B15         PUSHM.W #0x2, R11
    \   000002   0B4C         MOV.W   R12, R11
-      6            char value = adc_value >> SHIFT6; // shift 10 bit value by 6 bits
+     15          /*******************************************************************************
+     16          *        Author: Steffon Brigman
+     17          *        Date:   November 2015
+     18          *        Description: This fucntion displays options under "Shapes" in the top menu
+     19          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     20          *
+     21          *        Funcction name: getShapesMenu
+     22          *        Passed : No variables passed 
+     23          *        Returned: no values returned 
+     24          *        Locals: adc_value
+     25          *        Globlas: big
+     26          *******************************************************************************/
+     27            char value = adc_value >> SHIFT6; // shift 10 bit value by 6 bits
    \   000004   0F4B         MOV.W   R11, R15
    \   000006                RPT     #0x6
    \   000006   45190F10     RRUX.W  R15
    \   00000A   0A12         PUSH.W  R10
    \   00000C   C14F0000     MOV.B   R15, 0(SP)
    \   000010   3A41         POP.W   R10
-      7            big = ALWAYS;
+     28            big = ALWAYS;
    \   000012   D243....     MOV.B   #0x1, &big
-      8            lcd_BIG_mid();
+     29            lcd_BIG_mid();
    \   000016   ........     CALLA   #lcd_BIG_mid
-      9            if(value <= MENU1){
+     30            if(value <= MENU1){
    \   00001A   6A93         CMP.B   #0x2, R10
    \   00001C   122C         JC      ??getShapesMenu_0
-     10              setLCD("----------",LINE_POS_L0,"Circle",LINE_POS_L2,"Square",LINE_POS_L1,"----------",LINE_POS_L0);
+     31              setLCD("----------",LINE_POS_L0,"Circle",LINE_POS_L2,"Square",LINE_POS_L1,"----------",LINE_POS_L0);
    \   00001E   0312         PUSH.W  #0x0
    \   000020   3012....     PUSH.W  #`?<Constant "----------">`
    \   000024   1312         PUSH.W  #0x1
@@ -71,16 +92,16 @@
    \   000030   0D43         MOV.W   #0x0, R13
    \   000032   3C40....     MOV.W   #`?<Constant "----------">`, R12
    \   000036   ........     CALLA   #setLCD
-     11              ADC_Process();
+     32              ADC_Process();
    \   00003A   ........     CALLA   #ADC_Process
    \   00003E   3152         ADD.W   #0x8, SP
    \   000040   B63C         JMP     ??getShapesMenu_1
-     12            }
-     13            else if(value == MENU2){
+     33            }
+     34            else if(value == MENU2){
    \                     ??getShapesMenu_0:
    \   000042   6A93         CMP.B   #0x2, R10
    \   000044   1220         JNE     ??getShapesMenu_2
-     14              setLCD("Circle",LINE_POS_L0,"Square",LINE_POS_L2,"Triangle",LINE_POS_L1,"----------",LINE_POS_L0);
+     35              setLCD("Circle",LINE_POS_L0,"Square",LINE_POS_L2,"Triangle",LINE_POS_L1,"----------",LINE_POS_L0);
    \   000046   0312         PUSH.W  #0x0
    \   000048   3012....     PUSH.W  #`?<Constant "----------">`
    \   00004C   1312         PUSH.W  #0x1
@@ -90,16 +111,16 @@
    \   000058   0D43         MOV.W   #0x0, R13
    \   00005A   3C40....     MOV.W   #`?<Constant "Circle">`, R12
    \   00005E   ........     CALLA   #setLCD
-     15              ADC_Process();
+     36              ADC_Process();
    \   000062   ........     CALLA   #ADC_Process
    \   000066   3152         ADD.W   #0x8, SP
    \   000068   A23C         JMP     ??getShapesMenu_1
-     16            }
-     17            else if(value == MENU3){
+     37            }
+     38            else if(value == MENU3){
    \                     ??getShapesMenu_2:
    \   00006A   7A900300     CMP.B   #0x3, R10
    \   00006E   1220         JNE     ??getShapesMenu_3
-     18              setLCD("Square",LINE_POS_L0,"Triangle",LINE_POS_L2,"Octagon",LINE_POS_L1,"----------",LINE_POS_L0);
+     39              setLCD("Square",LINE_POS_L0,"Triangle",LINE_POS_L2,"Octagon",LINE_POS_L1,"----------",LINE_POS_L0);
    \   000070   0312         PUSH.W  #0x0
    \   000072   3012....     PUSH.W  #`?<Constant "----------">`
    \   000076   1312         PUSH.W  #0x1
@@ -109,16 +130,16 @@
    \   000082   0D43         MOV.W   #0x0, R13
    \   000084   3C40....     MOV.W   #`?<Constant "Square">`, R12
    \   000088   ........     CALLA   #setLCD
-     19              ADC_Process();
+     40              ADC_Process();
    \   00008C   ........     CALLA   #ADC_Process
    \   000090   3152         ADD.W   #0x8, SP
    \   000092   8D3C         JMP     ??getShapesMenu_1
-     20            }
-     21            else if(value == MENU4){
+     41            }
+     42            else if(value == MENU4){
    \                     ??getShapesMenu_3:
    \   000094   6A92         CMP.B   #0x4, R10
    \   000096   1220         JNE     ??getShapesMenu_4
-     22              setLCD("Triangle",LINE_POS_L0,"Octagon",LINE_POS_L2,"Hexagon",LINE_POS_L1,"----------",LINE_POS_L0);
+     43              setLCD("Triangle",LINE_POS_L0,"Octagon",LINE_POS_L2,"Hexagon",LINE_POS_L1,"----------",LINE_POS_L0);
    \   000098   0312         PUSH.W  #0x0
    \   00009A   3012....     PUSH.W  #`?<Constant "----------">`
    \   00009E   1312         PUSH.W  #0x1
@@ -128,16 +149,16 @@
    \   0000AA   0D43         MOV.W   #0x0, R13
    \   0000AC   3C40....     MOV.W   #`?<Constant "Triangle">`, R12
    \   0000B0   ........     CALLA   #setLCD
-     23              ADC_Process();
+     44              ADC_Process();
    \   0000B4   ........     CALLA   #ADC_Process
    \   0000B8   3152         ADD.W   #0x8, SP
    \   0000BA   793C         JMP     ??getShapesMenu_1
-     24            }
-     25            else if(value == MENU5){
+     45            }
+     46            else if(value == MENU5){
    \                     ??getShapesMenu_4:
    \   0000BC   7A900500     CMP.B   #0x5, R10
    \   0000C0   1220         JNE     ??getShapesMenu_5
-     26              setLCD("Octagon",LINE_POS_L0,"Pentagon",LINE_POS_L2,"Hexagon",LINE_POS_L1,"----------",LINE_POS_L0);
+     47              setLCD("Octagon",LINE_POS_L0,"Pentagon",LINE_POS_L2,"Hexagon",LINE_POS_L1,"----------",LINE_POS_L0);
    \   0000C2   0312         PUSH.W  #0x0
    \   0000C4   3012....     PUSH.W  #`?<Constant "----------">`
    \   0000C8   1312         PUSH.W  #0x1
@@ -147,16 +168,16 @@
    \   0000D4   0D43         MOV.W   #0x0, R13
    \   0000D6   3C40....     MOV.W   #`?<Constant "Octagon">`, R12
    \   0000DA   ........     CALLA   #setLCD
-     27              ADC_Process();
+     48              ADC_Process();
    \   0000DE   ........     CALLA   #ADC_Process
    \   0000E2   3152         ADD.W   #0x8, SP
    \   0000E4   643C         JMP     ??getShapesMenu_1
-     28            }
-     29            else if(value == MENU6){
+     49            }
+     50            else if(value == MENU6){
    \                     ??getShapesMenu_5:
    \   0000E6   7A900600     CMP.B   #0x6, R10
    \   0000EA   1220         JNE     ??getShapesMenu_6
-     30              setLCD("Pentagon",LINE_POS_L0,"Hexagon",LINE_POS_L2,"Cube",LINE_POS_L1,"----------",LINE_POS_L0);
+     51              setLCD("Pentagon",LINE_POS_L0,"Hexagon",LINE_POS_L2,"Cube",LINE_POS_L1,"----------",LINE_POS_L0);
    \   0000EC   0312         PUSH.W  #0x0
    \   0000EE   3012....     PUSH.W  #`?<Constant "----------">`
    \   0000F2   1312         PUSH.W  #0x1
@@ -166,16 +187,16 @@
    \   0000FE   0D43         MOV.W   #0x0, R13
    \   000100   3C40....     MOV.W   #`?<Constant "Pentagon">`, R12
    \   000104   ........     CALLA   #setLCD
-     31              ADC_Process();
+     52              ADC_Process();
    \   000108   ........     CALLA   #ADC_Process
    \   00010C   3152         ADD.W   #0x8, SP
    \   00010E   4F3C         JMP     ??getShapesMenu_1
-     32            }
-     33            else if(value == MENU7){
+     53            }
+     54            else if(value == MENU7){
    \                     ??getShapesMenu_6:
    \   000110   7A900700     CMP.B   #0x7, R10
    \   000114   1220         JNE     ??getShapesMenu_7
-     34              setLCD("Hexagon",LINE_POS_L0,"Cube",LINE_POS_L2,"Oval",LINE_POS_L1,"----------",LINE_POS_L0);
+     55              setLCD("Hexagon",LINE_POS_L0,"Cube",LINE_POS_L2,"Oval",LINE_POS_L1,"----------",LINE_POS_L0);
    \   000116   0312         PUSH.W  #0x0
    \   000118   3012....     PUSH.W  #`?<Constant "----------">`
    \   00011C   1312         PUSH.W  #0x1
@@ -185,16 +206,16 @@
    \   000128   0D43         MOV.W   #0x0, R13
    \   00012A   3C40....     MOV.W   #`?<Constant "Hexagon">`, R12
    \   00012E   ........     CALLA   #setLCD
-     35              ADC_Process();
+     56              ADC_Process();
    \   000132   ........     CALLA   #ADC_Process
    \   000136   3152         ADD.W   #0x8, SP
    \   000138   3A3C         JMP     ??getShapesMenu_1
-     36            }
-     37            else if(value == MENU8){
+     57            }
+     58            else if(value == MENU8){
    \                     ??getShapesMenu_7:
    \   00013A   7A92         CMP.B   #0x8, R10
    \   00013C   1220         JNE     ??getShapesMenu_8
-     38              setLCD("Cube",LINE_POS_L0,"Oval",LINE_POS_L2,"Sphere",LINE_POS_L1,"----------",LINE_POS_L0);
+     59              setLCD("Cube",LINE_POS_L0,"Oval",LINE_POS_L2,"Sphere",LINE_POS_L1,"----------",LINE_POS_L0);
    \   00013E   0312         PUSH.W  #0x0
    \   000140   3012....     PUSH.W  #`?<Constant "----------">`
    \   000144   1312         PUSH.W  #0x1
@@ -204,16 +225,16 @@
    \   000150   0D43         MOV.W   #0x0, R13
    \   000152   3C40....     MOV.W   #`?<Constant "Cube">`, R12
    \   000156   ........     CALLA   #setLCD
-     39              ADC_Process();
+     60              ADC_Process();
    \   00015A   ........     CALLA   #ADC_Process
    \   00015E   3152         ADD.W   #0x8, SP
    \   000160   263C         JMP     ??getShapesMenu_1
-     40            }
-     41            else if(value == MENU9){
+     61            }
+     62            else if(value == MENU9){
    \                     ??getShapesMenu_8:
    \   000162   7A900900     CMP.B   #0x9, R10
    \   000166   1220         JNE     ??getShapesMenu_9
-     42              setLCD("Oval",LINE_POS_L0,"Sphere",LINE_POS_L2,"Cylinder",LINE_POS_L1,"----------",LINE_POS_L0);
+     63              setLCD("Oval",LINE_POS_L0,"Sphere",LINE_POS_L2,"Cylinder",LINE_POS_L1,"----------",LINE_POS_L0);
    \   000168   0312         PUSH.W  #0x0
    \   00016A   3012....     PUSH.W  #`?<Constant "----------">`
    \   00016E   1312         PUSH.W  #0x1
@@ -223,13 +244,13 @@
    \   00017A   0D43         MOV.W   #0x0, R13
    \   00017C   3C40....     MOV.W   #`?<Constant "Oval">`, R12
    \   000180   ........     CALLA   #setLCD
-     43              ADC_Process();
+     64              ADC_Process();
    \   000184   ........     CALLA   #ADC_Process
    \   000188   3152         ADD.W   #0x8, SP
    \   00018A   113C         JMP     ??getShapesMenu_1
-     44            }
-     45            else{
-     46              setLCD("Sphere",LINE_POS_L0,"Cylinder",LINE_POS_L2,"----------",LINE_POS_L1,"----------",LINE_POS_L0);
+     65            }
+     66            else{
+     67              setLCD("Sphere",LINE_POS_L0,"Cylinder",LINE_POS_L2,"----------",LINE_POS_L1,"----------",LINE_POS_L0);
    \                     ??getShapesMenu_9:
    \   00018C   0312         PUSH.W  #0x0
    \   00018E   3012....     PUSH.W  #`?<Constant "----------">`
@@ -240,11 +261,11 @@
    \   00019E   0D43         MOV.W   #0x0, R13
    \   0001A0   3C40....     MOV.W   #`?<Constant "Sphere">`, R12
    \   0001A4   ........     CALLA   #setLCD
-     47              ADC_Process();
+     68              ADC_Process();
    \   0001A8   ........     CALLA   #ADC_Process
    \   0001AC   3152         ADD.W   #0x8, SP
-     48            }
-     49          }
+     69            }
+     70          }
    \                     ??getShapesMenu_1:
    \   0001AE   1A17         POPM.W  #0x2, R11
    \   0001B0   1001         RETA

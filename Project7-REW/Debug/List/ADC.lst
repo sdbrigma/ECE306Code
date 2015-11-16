@@ -1,0 +1,276 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           06/Nov/2015  13:23:39
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Rachel\Documents\ECE306\HW\HW9\ADC.c
+#    Command line  =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\ADC.c -lC
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\ -o
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2_2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\ADC.lst
+#    Object file   =  C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\ADC.r43
+#
+###############################################################################
+
+C:\Users\Rachel\Documents\ECE306\HW\HW9\ADC.c
+      1          //***********************************************************************
+      2          //      Title: ADC.c 
+      3          //      Description: This file handles ADC conversion and sampling
+      4          //      Rachel Williams
+      5          //      October 2015
+      6          //      Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      7          //***********************************************************************
+      8          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x700
+   \   union <unnamed> _A_ADC10CTL0_L
+   \                     _A_ADC10CTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x702
+   \   union <unnamed> _A_ADC10CTL1_L
+   \                     _A_ADC10CTL1_L:
+   \   000000                DS8 2
+      9          #include  "functions.h"
+     10          #include "macros.h"
+     11          
+     12          //***********************************************************************
+     13          //      Function name: ADC_Process
+     14          //      Description: Configures system for ADC sampling and conversion 
+     15          //      Global variables: NONE
+     16          //      Local variables: NONE
+     17          //      Return: VOID
+     18          //***********************************************************************
+
+   \                                 In  segment CODE, align 2
+     19          void ADC_Process(void){
+   \                     ADC_Process:
+   \                     ??ADC_Process_0:
+     20           while (ADC10CTL1 & BUSY);              // Wait if ADC10 core is active
+   \   000000   92B30207     BIT.W   #0x1, &0x702
+   \   000004   FD2F         JC      ??ADC_Process_0
+     21           ADC10CTL0 |= ADC10ENC + ADC10SC;       // Sampling and conversion start
+   \   000006   B2D003000007 BIS.W   #0x3, &0x700
+     22          } 
+   \   00000C   1001         RETA
+   \   00000E                REQUIRE _A_ADC10CTL1_L
+   \   00000E                REQUIRE _A_ADC10CTL0_L
+     23          
+     24          //***********************************************************************
+     25          //      Function name: ADC_Convert 
+     26          //      Description: Converts 10-bit analog input to hex representation 
+     27          //      Global variables: enabled_LD, enabled_RD, temp_num, temp
+     28          //      Local variables: diff, temp
+     29          //      Return: NONE
+     30          //***********************************************************************
+
+   \                                 In  segment CODE, align 2
+     31          void ADC_Convert(void){
+   \                     ADC_Convert:
+   \   000000   1B15         PUSHM.W #0x2, R11
+     32            int diff = ORIGINAL;
+   \   000002   0B43         MOV.W   #0x0, R11
+     33            int temp = ORIGINAL;   
+   \   000004   0A43         MOV.W   #0x0, R10
+     34            
+     35            enabled_LD = ORIGINAL;
+   \   000006   C243....     MOV.B   #0x0, &enabled_LD
+     36            if(enabled_RD){
+   \   00000A   C293....     CMP.B   #0x0, &enabled_RD
+   \   00000E   0524         JEQ     ??ADC_Convert_0
+     37              temp_num = ADC_Right_Detector; // reading hexadecimal values fr: detector
+   \   000010   9242........ MOV.W   &ADC_Right_Detector, &temp_num
+     38              temp = ADC_Right_Detector;       
+   \   000016   1A42....     MOV.W   &ADC_Right_Detector, R10
+     39            }
+     40            if(enabled_LD){
+   \                     ??ADC_Convert_0:
+   \   00001A   C293....     CMP.B   #0x0, &enabled_LD
+   \   00001E   0524         JEQ     ??ADC_Convert_1
+     41              temp_num = ADC_Left_Detector; // reading hexadecimal values fr: detector
+   \   000020   9242........ MOV.W   &ADC_Left_Detector, &temp_num
+     42              temp = ADC_Left_Detector;
+   \   000026   1A42....     MOV.W   &ADC_Left_Detector, R10
+     43            }
+     44            
+     45            // LSB bit of 10bit signal
+     46            temp_num = temp_num & BIT_LSB; 
+   \                     ??ADC_Convert_1:
+   \   00002A   B2F00F00.... AND.W   #0xf, &temp_num
+     47            if(temp_num <= NUM_MIN){
+   \   000030   B2900A00.... CMP.W   #0xa, &temp_num
+   \   000036   042C         JC      ??ADC_Convert_2
+     48               temp_num += NUM_BASE; 
+   \   000038   B2503000.... ADD.W   #0x30, &temp_num
+   \   00003E   0C3C         JMP     ??ADC_Convert_3
+     49            }else {
+     50               diff = temp_num-NUM_MIN;
+   \                     ??ADC_Convert_2:
+   \   000040   1F42....     MOV.W   &temp_num, R15
+   \   000044   3F50F7FF     ADD.W   #0xfff7, R15
+   \   000048   0B4F         MOV.W   R15, R11
+     51               temp_num = ORIGINAL; 
+   \   00004A   8243....     MOV.W   #0x0, &temp_num
+     52               temp_num = LET_MIN + diff;
+   \   00004E   0F4B         MOV.W   R11, R15
+   \   000050   3F504000     ADD.W   #0x40, R15
+   \   000054   824F....     MOV.W   R15, &temp_num
+     53            }
+     54            if(enabled_RD){
+   \                     ??ADC_Convert_3:
+   \   000058   C293....     CMP.B   #0x0, &enabled_RD
+   \   00005C   0524         JEQ     ??ADC_Convert_4
+     55               display_3[POSIT_6]=temp_num;
+   \   00005E   1F42....     MOV.W   &display_3, R15
+   \   000062   DF42....0600 MOV.B   &temp_num, 0x6(R15)
+     56            }
+     57            if(enabled_LD){
+   \                     ??ADC_Convert_4:
+   \   000068   C293....     CMP.B   #0x0, &enabled_LD
+   \   00006C   0524         JEQ     ??ADC_Convert_5
+     58               display_4[POSIT_6]=temp_num;
+   \   00006E   1F42....     MOV.W   &display_4, R15
+   \   000072   DF42....0600 MOV.B   &temp_num, 0x6(R15)
+     59            }
+     60                
+     61            // Next bit of 10bit signal 
+     62            temp_num = temp; 
+   \                     ??ADC_Convert_5:
+   \   000078   824A....     MOV.W   R10, &temp_num
+     63            temp_num = temp_num & BIT_MID; 
+   \   00007C   B2F0F000.... AND.W   #0xf0, &temp_num
+     64            temp_num>>=POSIT_4; //right shifted to next bit 
+   \   000082   1F42....     MOV.W   &temp_num, R15
+   \   000086   5F0F         RRUM.W  #0x4, R15
+   \   000088   824F....     MOV.W   R15, &temp_num
+     65            if(temp_num <= NUM_MIN){
+   \   00008C   B2900A00.... CMP.W   #0xa, &temp_num
+   \   000092   042C         JC      ??ADC_Convert_6
+     66               temp_num += NUM_BASE; 
+   \   000094   B2503000.... ADD.W   #0x30, &temp_num
+   \   00009A   0C3C         JMP     ??ADC_Convert_7
+     67            }else {
+     68               diff = temp_num-NUM_MIN;
+   \                     ??ADC_Convert_6:
+   \   00009C   1F42....     MOV.W   &temp_num, R15
+   \   0000A0   3F50F7FF     ADD.W   #0xfff7, R15
+   \   0000A4   0B4F         MOV.W   R15, R11
+     69               temp_num = ORIGINAL; 
+   \   0000A6   8243....     MOV.W   #0x0, &temp_num
+     70               temp_num = LET_MIN + diff; 
+   \   0000AA   0F4B         MOV.W   R11, R15
+   \   0000AC   3F504000     ADD.W   #0x40, R15
+   \   0000B0   824F....     MOV.W   R15, &temp_num
+     71             }
+     72             if(enabled_RD){
+   \                     ??ADC_Convert_7:
+   \   0000B4   C293....     CMP.B   #0x0, &enabled_RD
+   \   0000B8   0524         JEQ     ??ADC_Convert_8
+     73               display_3[POSIT_5]=temp_num;
+   \   0000BA   1F42....     MOV.W   &display_3, R15
+   \   0000BE   DF42....0500 MOV.B   &temp_num, 0x5(R15)
+     74             }
+     75             if(enabled_LD){
+   \                     ??ADC_Convert_8:
+   \   0000C4   C293....     CMP.B   #0x0, &enabled_LD
+   \   0000C8   0524         JEQ     ??ADC_Convert_9
+     76               display_4[POSIT_5]=temp_num;
+   \   0000CA   1F42....     MOV.W   &display_4, R15
+   \   0000CE   DF42....0500 MOV.B   &temp_num, 0x5(R15)
+     77             }
+     78                
+     79             // MSB bit of 10bit signal 
+     80             temp_num = temp; 
+   \                     ??ADC_Convert_9:
+   \   0000D4   824A....     MOV.W   R10, &temp_num
+     81             temp_num = temp_num & BIT_MSB; 
+   \   0000D8   B2F0000F.... AND.W   #0xf00, &temp_num
+     82             temp_num>>=POSIT_8; 
+   \   0000DE   9210....     SWPB    &temp_num
+   \   0000E2   B2F0FF00.... AND.W   #0xff, &temp_num
+     83             if(temp_num <= NUM_MIN){
+   \   0000E8   B2900A00.... CMP.W   #0xa, &temp_num
+   \   0000EE   042C         JC      ??ADC_Convert_10
+     84               temp_num += NUM_BASE;
+   \   0000F0   B2503000.... ADD.W   #0x30, &temp_num
+   \   0000F6   0C3C         JMP     ??ADC_Convert_11
+     85             } else {
+     86               diff = temp_num-NUM_MIN;
+   \                     ??ADC_Convert_10:
+   \   0000F8   1F42....     MOV.W   &temp_num, R15
+   \   0000FC   3F50F7FF     ADD.W   #0xfff7, R15
+   \   000100   0B4F         MOV.W   R15, R11
+     87               temp_num = ORIGINAL; 
+   \   000102   8243....     MOV.W   #0x0, &temp_num
+     88               temp_num = LET_MIN + diff; 
+   \   000106   0F4B         MOV.W   R11, R15
+   \   000108   3F504000     ADD.W   #0x40, R15
+   \   00010C   824F....     MOV.W   R15, &temp_num
+     89             }
+     90             if(enabled_RD){
+   \                     ??ADC_Convert_11:
+   \   000110   C293....     CMP.B   #0x0, &enabled_RD
+   \   000114   0524         JEQ     ??ADC_Convert_12
+     91               display_3[POSIT_4]= temp_num;
+   \   000116   1F42....     MOV.W   &display_3, R15
+   \   00011A   DF42....0400 MOV.B   &temp_num, 0x4(R15)
+     92             }
+     93             if(enabled_LD){
+   \                     ??ADC_Convert_12:
+   \   000120   C293....     CMP.B   #0x0, &enabled_LD
+   \   000124   0524         JEQ     ??ADC_Convert_13
+     94               display_4[POSIT_4]=temp_num;
+   \   000126   1F42....     MOV.W   &display_4, R15
+   \   00012A   DF42....0400 MOV.B   &temp_num, 0x4(R15)
+     95             }
+     96             Display_Process(); 
+   \                     ??ADC_Convert_13:
+   \   000130   ........     CALLA   #Display_Process
+     97                
+     98          }
+   \   000134   1A17         POPM.W  #0x2, R11
+   \   000136   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      8   ADC_Convert
+        8   -> Display_Process
+      4   ADC_Process
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     312  ADC_Convert
+      14  ADC_Process
+       2  _A_ADC10CTL0_L
+       2  _A_ADC10CTL1_L
+
+ 
+ 326 bytes in segment CODE
+   4 bytes in segment DATA16_AN
+ 
+ 326 bytes of CODE memory
+   0 bytes of DATA memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none

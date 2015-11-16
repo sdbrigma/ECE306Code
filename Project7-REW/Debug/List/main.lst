@@ -1,0 +1,634 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  00:53:40
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Rachel\Documents\ECE306\Projects\Project7\main.c
+#    Command line  =  
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\main.c -lC
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\List\ -o
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2_2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\List\main.lst
+#    Object file   =  
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\Obj\main.r43
+#
+###############################################################################
+
+C:\Users\Rachel\Documents\ECE306\Projects\Project7\main.c
+      1          //******************************************************************************
+      2          //  Title: main.c 
+      3          //  Description: This file contains the Main Routine - "While" Operating System
+      4          //  Rachel Williams
+      5          //  October 2015
+      6          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      7          //******************************************************************************
+      8          
+      9          #include  "msp430.h"
+     10          #include  "functions.h"
+     11          #include "macros.h"
+     12          
+     13          // Global Variables
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     14          volatile unsigned char control_state[CNTL_STATE_INDEX];
+   \                     control_state:
+   \   000000                DS8 3
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     15          volatile unsigned int Time_Sequence;
+   \                     Time_Sequence:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     16          char led_smclk;
+   \                     led_smclk:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     17          volatile char one_time; 
+   \                     one_time:
+   \   000000                DS8 1
+     18          
+     19          // For display 
+     20          extern char display_line_1[ARRAY_LENGTH];
+     21          extern char display_line_2[ARRAY_LENGTH];
+     22          extern char display_line_3[ARRAY_LENGTH];
+     23          extern char display_line_4[ARRAY_LENGTH];
+     24          extern char *display_1;
+     25          extern char *display_2;
+     26          extern char *display_3;
+     27          extern char *display_4;
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     28          char posL1;
+   \                     posL1:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     29          char posL2;
+   \                     posL2:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     30          char posL3;
+   \                     posL3:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     31          char posL4;
+   \                     posL4:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     32          char size_count;
+   \                     size_count:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     33          char big;
+   \                     big:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     34          char switch_select; 
+   \                     switch_select:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          char cycle_count;
+   \                     cycle_count:
+   \   000000                DS8 1
+     36          
+     37          // For emitters, detectors, thumb wheel 
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     38          unsigned int thumb_num; 
+   \                     thumb_num:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     39          unsigned int temp_num; 
+   \                     temp_num:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     40          int calib_amtR;
+   \                     calib_amtR:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     41          int calib_amtL;
+   \                     calib_amtL:
+   \   000000                DS8 2
+     42          
+     43          // For timers 
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     44          volatile unsigned int milli_counter;
+   \                     milli_counter:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     45          volatile unsigned int milli_counter2; 
+   \                     milli_counter2:
+   \   000000                DS8 2
+     46          
+     47          // For ADC 
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     48          volatile unsigned int chng_channel; 
+   \                     chng_channel:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     49          volatile unsigned int ADC_Right_Detector; 
+   \                     ADC_Right_Detector:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     50          volatile unsigned int ADC_Left_Detector;
+   \                     ADC_Left_Detector:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     51          volatile unsigned int ADC_Thumb; 
+   \                     ADC_Thumb:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     52          char min_time;
+   \                     min_time:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     53          char timer_counter; 
+   \                     timer_counter:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     54          int temp;
+   \                     temp:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     55          volatile char packet;
+   \                     packet:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     56          _Bool enabled_RD; 
+   \                     enabled_RD:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     57          _Bool enabled_LD;
+   \                     enabled_LD:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     58          _Bool enabled_thumb; 
+   \                     enabled_thumb:
+   \   000000                DS8 1
+     59          
+     60          // For serial communication 
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     61          volatile unsigned int cpu_rx_ring_wr;
+   \                     cpu_rx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     62          volatile unsigned int cpu_rx_ring_rd;
+   \                     cpu_rx_ring_rd:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     63          volatile unsigned int cpu_tx_ring_wr;
+   \                     cpu_tx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     64          volatile unsigned int cpu_tx_ring_rd;
+   \                     cpu_tx_ring_rd:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     65          volatile char CPU_Char_Rx[SMALL_RING_SIZE];
+   \                     CPU_Char_Rx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     66          volatile char CPU_Char_Tx[SMALL_RING_SIZE];
+   \                     CPU_Char_Tx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     67          int baud_rate;
+   \                     baud_rate:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     68          int diff;
+   \                     diff:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     69          _Bool enabled_RX;
+   \                     enabled_RX:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     70          char temp1;
+   \                     temp1:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     71          _Bool ones; 
+   \                     ones:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     72          _Bool tens; 
+   \                     tens:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     73          _Bool hundreds; 
+   \                     hundreds:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     74          char tens_num;
+   \                     tens_num:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     75          char hundreds_num;
+   \                     hundreds_num:
+   \   000000                DS8 1
+     76          
+     77          // For IOT communication 
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     78          volatile unsigned int usb_rx_ring_wr;
+   \                     usb_rx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     79          volatile unsigned int usb_rx_ring_rd;
+   \                     usb_rx_ring_rd:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     80          volatile unsigned int usb_tx_ring_wr;
+   \                     usb_tx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     81          volatile unsigned int usb_tx_ring_rd;
+   \                     usb_tx_ring_rd:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     82          volatile char USB_Char_Rx[SMALL_RING_SIZE];
+   \                     USB_Char_Rx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     83          volatile char USB_Char_Tx[SMALL_RING_SIZE];
+   \                     USB_Char_Tx:
+   \   000000                DS8 40
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     84          volatile char IOT_Char_Rx[SMALL_RING_SIZE];
+   \                     IOT_Char_Rx:
+   \   000000                DS8 40
+     85          
+
+   \                                 In  segment CODE, align 2
+     86          void main(void){
+   \                     main:
+     87            Init_Ports();                        // Initialize Ports
+   \   000000   ........     CALLA   #Init_Ports
+     88            Init_Clocks();                       // Initialize Clock System 
+   \   000004   ........     CALLA   #Init_Clocks
+     89            Init_Conditions();
+   \   000008   ........     CALLA   #Init_Conditions
+     90            Time_Sequence = ORIGINAL;             
+   \   00000C   8243....     MOV.W   #0x0, &Time_Sequence
+     91            Init_Timers();                       // Initialize Timers
+   \   000010   ........     CALLA   #Init_Timers
+     92            Five_Msec_Delay(BOOT_DELAY);
+   \   000014   3C401900     MOV.W   #0x19, R12
+   \   000018   ........     CALLA   #Five_Msec_Delay
+     93            Init_LCD();                          // Initialize LCD
+   \   00001C   ........     CALLA   #Init_LCD
+     94            ADC_Process();                       // Configuring for ADC 
+   \   000020   ........     CALLA   #ADC_Process
+     95            Init_Serial_UCA0(); 
+   \   000024   ........     CALLA   #Init_Serial_UCA0
+     96            Init_Serial_UCA1();                  // Initialize ports for serial coms 
+   \   000028   ........     CALLA   #Init_Serial_UCA1
+     97            
+     98            switch_select = ORIGINAL; 
+   \   00002C   C243....     MOV.B   #0x0, &switch_select
+     99            cycle_count = ORIGINAL; 
+   \   000030   C243....     MOV.B   #0x0, &cycle_count
+    100            
+    101            // Turning off all motors at initialization 
+    102            Left_Reverse_Off(); 
+   \   000034   ........     CALLA   #Left_Reverse_Off
+    103            Right_Reverse_Off(); 
+   \   000038   ........     CALLA   #Right_Reverse_Off
+    104            
+    105            // Initializing counters for interrupt timers 
+    106            milli_counter = ORIGINAL;
+   \   00003C   8243....     MOV.W   #0x0, &milli_counter
+    107            milli_counter2 = ORIGINAL;
+   \   000040   8243....     MOV.W   #0x0, &milli_counter2
+    108            min_time = ORIGINAL; 
+   \   000044   C243....     MOV.B   #0x0, &min_time
+    109            timer_counter = ORIGINAL; 
+   \   000048   C243....     MOV.B   #0x0, &timer_counter
+    110            
+    111            // Initializing variables for thumb wheel 
+    112            enabled_thumb = POSIT_1; 
+   \   00004C   D243....     MOV.B   #0x1, &enabled_thumb
+    113            temp_num = ORIGINAL; 
+   \   000050   8243....     MOV.W   #0x0, &temp_num
+    114            chng_channel = ORIGINAL;
+   \   000054   8243....     MOV.W   #0x0, &chng_channel
+    115            temp = ORIGINAL;
+   \   000058   8243....     MOV.W   #0x0, &temp
+    116            diff = ORIGINAL;
+   \   00005C   8243....     MOV.W   #0x0, &diff
+    117            tens = ORIGINAL;
+   \   000060   C243....     MOV.B   #0x0, &tens
+    118            hundreds = ORIGINAL;
+   \   000064   C243....     MOV.B   #0x0, &hundreds
+    119            enabled_RX=POSIT_0;
+   \   000068   C243....     MOV.B   #0x0, &enabled_RX
+    120            temp1 = NUM_BASE;
+   \   00006C   F2403000.... MOV.B   #0x30, &temp1
+    121            tens_num = NUM_BASE;
+   \   000072   F2403000.... MOV.B   #0x30, &tens_num
+    122            hundreds_num = NUM_BASE;
+   \   000078   F2403000.... MOV.B   #0x30, &hundreds_num
+    123            //Init_Serial_UCA0(); 
+    124            //Init_Serial_UCA1();
+    125            
+    126             lcd_BIG_mid();
+   \   00007E   ........     CALLA   #lcd_BIG_mid
+    127            // Initial display 
+    128            display_1 = "Rachel";
+   \   000082   B240........ MOV.W   #`?<Constant "Rachel">`, &display_1
+    129            posL1 = POSIT_2;
+   \   000088   E243....     MOV.B   #0x2, &posL1
+    130            display_2 = "PROJECT 7";
+   \   00008C   B240........ MOV.W   #`?<Constant "PROJECT 7">`, &display_2
+    131            posL2 = POSIT_0;
+   \   000092   C243....     MOV.B   #0x0, &posL2
+    132            display_3 = "Williams";
+   \   000096   B240........ MOV.W   #`?<Constant "Williams">`, &display_3
+    133            posL3 = POSIT_1;
+   \   00009C   D243....     MOV.B   #0x1, &posL3
+    134            Display_Process(); 
+   \   0000A0   ........     CALLA   #Display_Process
+    135            
+    136          //------------------------------------------------------------------------------
+    137          // Begining of the "While" Operating System
+    138          //------------------------------------------------------------------------------
+    139          while(ALWAYS) {                            // Can the Operating system run
+    140            switch(Time_Sequence){
+   \                     ??main_0:
+   \   0000A4   1F42....     MOV.W   &Time_Sequence, R15
+   \   0000A8   3F803200     SUB.W   #0x32, R15
+   \   0000AC   0B24         JEQ     ??main_2
+   \   0000AE   3F803200     SUB.W   #0x32, R15
+   \   0000B2   0824         JEQ     ??main_2
+   \   0000B4   3F803200     SUB.W   #0x32, R15
+   \   0000B8   0524         JEQ     ??main_2
+   \   0000BA   3F803200     SUB.W   #0x32, R15
+   \   0000BE   0224         JEQ     ??main_2
+   \   0000C0   3F803200     SUB.W   #0x32, R15
+    141              case 250:                               // 1000 msec  
+    142                /*if(one_time){
+    143                  Init_LEDs();                        // Initialize LEDs
+    144                  one_time = 0;
+    145                }
+    146                Time_Sequence = 0;*/                    // 
+    147              case 200:                               // 1000 msec  
+    148                /*if(one_time){
+    149                  PJOUT |= LED4;                      // Change State of LED 4
+    150                  P3OUT |= LED5;                      // Change State of LED 5
+    151                  one_time = 0;
+    152                }*/
+    153              case 150:                               // 750 msec  
+    154                /*if(one_time){
+    155                  PJOUT |= LED3;                      // Change State of LED 3
+    156                  P3OUT |= LED6;                      // Change State of LED 6
+    157                  one_time = 0;
+    158                }*/
+    159              case 100:                               // 500 msec  
+    160                /*if(one_time){
+    161                  PJOUT |= LED2;                      // Change State of LED 2
+    162                  P3OUT |= LED7;                      // Change State of LED 7
+    163                  one_time = 0;
+    164                }*/
+    165              case  50:                               // 250 msec  
+    166                /*if(one_time){
+    167                  PJOUT |= LED1;                      // Change State of LED 1
+    168                  P3OUT |= LED8;                      // Change State of LED 8
+    169                  one_time = 0;
+    170                }*/
+    171                break;                                // 
+    172              default: break; 
+    173            }
+    174            Switches_Process();                       // Check for switch state change 
+   \                     ??main_2:
+   \   0000C4   ........     CALLA   #Switches_Process
+    175            if(Time_Sequence > 250){
+   \   0000C8   B290FB00.... CMP.W   #0xfb, &Time_Sequence
+   \   0000CE   EA2B         JNC     ??main_0
+    176              Time_Sequence = 0;
+   \   0000D0   8243....     MOV.W   #0x0, &Time_Sequence
+   \   0000D4   E73F         JMP     ??main_0
+   \   0000D6   0343         NOP
+    177            }
+    178           }
+    179          //------------------------------------------------------------------------------
+    180          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Rachel">`:
+   \   000000   52616368656C DC8 "Rachel"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "PROJECT 7">`:
+   \   000000   50524F4A4543 DC8 "PROJECT 7"
+   \            54203700    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Williams">`:
+   \   000000   57696C6C6961 DC8 "Williams"
+   \            6D7300      
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   main
+        4   -> ADC_Process
+        4   -> Display_Process
+        4   -> Five_Msec_Delay
+        4   -> Init_Clocks
+        4   -> Init_Conditions
+        4   -> Init_LCD
+        4   -> Init_Ports
+        4   -> Init_Serial_UCA0
+        4   -> Init_Serial_UCA1
+        4   -> Init_Timers
+        4   -> Left_Reverse_Off
+        4   -> Right_Reverse_Off
+        4   -> Switches_Process
+        4   -> lcd_BIG_mid
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      10  ?<Constant "PROJECT 7">
+       7  ?<Constant "Rachel">
+       9  ?<Constant "Williams">
+       2  ADC_Left_Detector
+       2  ADC_Right_Detector
+       2  ADC_Thumb
+      40  CPU_Char_Rx
+      40  CPU_Char_Tx
+      40  IOT_Char_Rx
+       2  Time_Sequence
+      40  USB_Char_Rx
+      40  USB_Char_Tx
+       2  baud_rate
+       1  big
+       2  calib_amtL
+       2  calib_amtR
+       2  chng_channel
+       3  control_state
+       2  cpu_rx_ring_rd
+       2  cpu_rx_ring_wr
+       2  cpu_tx_ring_rd
+       2  cpu_tx_ring_wr
+       1  cycle_count
+       2  diff
+       1  enabled_LD
+       1  enabled_RD
+       1  enabled_RX
+       1  enabled_thumb
+       1  hundreds
+       1  hundreds_num
+       1  led_smclk
+     216  main
+       2  milli_counter
+       2  milli_counter2
+       1  min_time
+       1  one_time
+       1  ones
+       1  packet
+       1  posL1
+       1  posL2
+       1  posL3
+       1  posL4
+       1  size_count
+       1  switch_select
+       2  temp
+       1  temp1
+       2  temp_num
+       1  tens
+       1  tens_num
+       2  thumb_num
+       1  timer_counter
+       2  usb_rx_ring_rd
+       2  usb_rx_ring_wr
+       2  usb_tx_ring_rd
+       2  usb_tx_ring_wr
+
+ 
+ 216 bytes in segment CODE
+  26 bytes in segment DATA16_C
+ 270 bytes in segment DATA16_Z
+ 
+ 216 bytes of CODE  memory
+  26 bytes of CONST memory
+ 270 bytes of DATA  memory
+
+Errors: none
+Warnings: none

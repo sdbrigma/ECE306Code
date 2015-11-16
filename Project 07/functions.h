@@ -114,3 +114,4 @@ void iotSave(void);
 void iotReset(void);
 void getIpAddress(void);
 void displayIOT(void);
+void getIotStatus(void);

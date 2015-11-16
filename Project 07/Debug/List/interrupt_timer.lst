@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  02:39:06
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  06:02:33
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -68,20 +68,22 @@
      28          *        Globlas: ISR_COUNT
      29          *******************************************************************************/
      30            int i = ZERO;
+                       ^
+Warning[Pe177]: variable "i" was declared but never referenced
    \   000000   0F43         MOV.W   #0x0, R15
      31            while(ISR_COUNT<delay){
    \                     ??Five_msec_Delay_0:
    \   000002   829C....     CMP.W   R12, &ISR_COUNT
-   \   000006   022C         JC      ??Five_msec_Delay_1
-     32              i++;
-   \   000008   1F53         ADD.W   #0x1, R15
-   \   00000A   FB3F         JMP     ??Five_msec_Delay_0
+   \   000006   032C         JC      ??Five_msec_Delay_1
+     32              ISR_COUNT++;
+   \   000008   9253....     ADD.W   #0x1, &ISR_COUNT
+   \   00000C   FA3F         JMP     ??Five_msec_Delay_0
      33            }
      34            ISR_COUNT = ZERO;
    \                     ??Five_msec_Delay_1:
-   \   00000C   8243....     MOV.W   #0x0, &ISR_COUNT
+   \   00000E   8243....     MOV.W   #0x0, &ISR_COUNT
      35          }
-   \   000010   1001         RETA
+   \   000012   1001         RETA
 
    Maximum stack usage in bytes:
 
@@ -94,12 +96,12 @@
 
    Bytes  Function/Label
    -----  --------------
-      18  Five_msec_Delay
+      20  Five_msec_Delay
 
  
- 18 bytes in segment CODE
+ 20 bytes in segment CODE
  
- 18 bytes of CODE memory
+ 20 bytes of CODE memory
 
 Errors: none
-Warnings: none
+Warnings: 1

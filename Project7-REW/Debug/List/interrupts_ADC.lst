@@ -1,0 +1,188 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           06/Nov/2015  13:23:40
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Rachel\Documents\ECE306\HW\HW9\interrupts_ADC.c
+#    Command line  =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\interrupts_ADC.c -lC
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\ -o
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2_2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\interrupts_ADC.lst
+#    Object file   =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\interrupts_ADC.r43
+#
+###############################################################################
+
+C:\Users\Rachel\Documents\ECE306\HW\HW9\interrupts_ADC.c
+      1          //***********************************************************************
+      2          //      Title: interrupts_ADC.c 
+      3          //      Description: This file initializes and configures ADC interrupt
+      4          //      Rachel Williams
+      5          //      October 2015
+      6          //      Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      7          //***********************************************************************
+      8          
+      9          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x700
+   \   union <unnamed> _A_ADC10CTL0_L
+   \                     _A_ADC10CTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x70a
+   \   union <unnamed> _A_ADC10MCTL0_L
+   \                     _A_ADC10MCTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x712
+   \   union <unnamed> _A_ADC10MEM0_L
+   \                     _A_ADC10MEM0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x71e
+   \   union <unnamed> _A_ADC10IV_L
+   \                     _A_ADC10IV_L:
+   \   000000                DS8 2
+     10          #include  "functions.h"
+     11          #include "macros.h"
+     12          
+     13          // ADC10 interrupt service routine
+     14          
+     15          //***********************************************************************
+     16          //      Function name: ADC10_ISR
+     17          //      Description: Sets up ADC for overall system 
+     18          //      Global variables: ADC_Left_Detector, ADC_Right_Detector, ADC_Thumb_Wheel
+     19          //      Local variables: NONE
+     20          //      Return: VOID
+     21          //***********************************************************************
+     22          #pragma vector=ADC10_VECTOR
+
+   \                                 In  segment ISR_CODE, align 2
+     23          __interrupt void ADC10_ISR(void){
+   \                     ADC10_ISR:
+   \   000000   1F15         PUSHM.W #0x2, R15
+     24             switch(__even_in_range(ADC10IV,POSIT_12)) {
+   \   000002   1F421E07     MOV.W   &0x71e, R15
+   \   000006   E00F         ADDA    R15, PC
+   \                     `?<Jumptable for ADC10_ISR>_0`:
+   \   000008   2A3C         JMP     ??ADC10_ISR_0
+   \   00000A   293C         JMP     ??ADC10_ISR_0
+   \   00000C   283C         JMP     ??ADC10_ISR_0
+   \   00000E   273C         JMP     ??ADC10_ISR_0
+   \   000010   263C         JMP     ??ADC10_ISR_0
+   \   000012   253C         JMP     ??ADC10_ISR_0
+   \   000014   003C         JMP     ??ADC10_ISR_5
+     25             case POSIT_0: break; // No interrupt
+     26             case POSIT_2: break; // conversion result overflow
+     27             case POSIT_4: break; // conversion time overflow
+     28             case POSIT_6: break; // ADC10HI
+     29             case POSIT_8: break; // ADC10LO
+     30             case POSIT_10: break;// ADC10IN
+     31             case POSIT_12:
+     32               ADC10CTL0 &= ~ADC10ENC;    // stops sampling and conversion
+   \                     ??ADC10_ISR_5:
+   \   000016   A2C30007     BIC.W   #0x2, &0x700
+     33               // preparing to change ADC channels
+     34               switch(chng_channel++){
+   \   00001A   1F42....     MOV.W   &chng_channel, R15
+   \   00001E   0E4F         MOV.W   R15, R14
+   \   000020   1E53         ADD.W   #0x1, R14
+   \   000022   824E....     MOV.W   R14, &chng_channel
+   \   000026   0F83         SUB.W   #0x0, R15
+   \   000028   0524         JEQ     ??ADC10_ISR_2
+   \   00002A   1F83         SUB.W   #0x1, R15
+   \   00002C   0924         JEQ     ??ADC10_ISR_3
+   \   00002E   1F83         SUB.W   #0x1, R15
+   \   000030   0E24         JEQ     ??ADC10_ISR_4
+   \   000032   153C         JMP     ??ADC10_ISR_0
+     35               case POSIT_0: // Left Detector 
+     36                 ADC10MCTL0 = ADC10INCH_1;       // upcoming: channel A1
+   \                     ??ADC10_ISR_2:
+   \   000034   92430A07     MOV.W   #0x1, &0x70a
+     37                 ADC_Left_Detector = ADC10MEM0; //  channel is read to detector 
+   \   000038   92421207.... MOV.W   &0x712, &ADC_Left_Detector
+     38                 break;
+   \   00003E   0F3C         JMP     ??ADC10_ISR_0
+     39               case POSIT_1: // Right Detector
+     40                 ADC10MCTL0 = ADC10INCH_3;       // upcoming: channel A3  
+   \                     ??ADC10_ISR_3:
+   \   000040   B24003000A07 MOV.W   #0x3, &0x70a
+     41                 ADC_Right_Detector = ADC10MEM0;  // channel is read to detector 
+   \   000046   92421207.... MOV.W   &0x712, &ADC_Right_Detector
+     42                 break;
+   \   00004C   083C         JMP     ??ADC10_ISR_0
+     43               case POSIT_2: // Thumb Wheel
+     44                 ADC10MCTL0 = ADC10INCH_11;      // upcoming: channel A11           
+   \                     ??ADC10_ISR_4:
+   \   00004E   B2400B000A07 MOV.W   #0xb, &0x70a
+     45                 ADC_Thumb = ADC10MEM0;         // channel is read to thumb wheel           
+   \   000054   92421207.... MOV.W   &0x712, &ADC_Thumb
+     46                 chng_channel=ORIGINAL;
+   \   00005A   8243....     MOV.W   #0x0, &chng_channel
+     47                 break; 
+     48               default: break;
+     49               }
+     50               break; 
+     51             default:break; 
+     52               
+     53           }
+     54          }
+   \                     ??ADC10_ISR_0:
+   \   00005E   1E17         POPM.W  #0x2, R15
+   \   000060   0013         RETI
+   \   000062                REQUIRE _A_ADC10CTL0_L
+   \   000062                REQUIRE _A_ADC10MCTL0_L
+   \   000062                REQUIRE _A_ADC10MEM0_L
+   \   000062                REQUIRE _A_ADC10IV_L
+
+   \                                 In  segment INTVEC, offset 0x5c, root
+   \                     `??ADC10_ISR::??INTVEC 92`:
+   \   00005C   ....         DC16    ADC10_ISR
+     55          // ADC_Temp; // A10 ADC10INCH_10 – Temperature REF module
+     56          // ADC_Bat; // A11 ADC10INCH_11 - Internal
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      8   ADC10_ISR
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      98  ADC10_ISR
+       2  ADC10_ISR::??INTVEC 92
+       2  _A_ADC10CTL0_L
+       2  _A_ADC10IV_L
+       2  _A_ADC10MCTL0_L
+       2  _A_ADC10MEM0_L
+
+ 
+  8 bytes in segment DATA16_AN
+  2 bytes in segment INTVEC
+ 98 bytes in segment ISR_CODE
+ 
+ 98 bytes of CODE  memory
+  0 bytes of CONST memory (+ 2 bytes shared)
+  0 bytes of DATA  memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none

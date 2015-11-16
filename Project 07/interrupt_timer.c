@@ -29,7 +29,7 @@ void Five_msec_Delay(unsigned int delay){
 *******************************************************************************/
   int i = ZERO;
   while(ISR_COUNT<delay){
-    i++;
+    ISR_COUNT++;
   }
   ISR_COUNT = ZERO;
 }

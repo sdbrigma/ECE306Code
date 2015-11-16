@@ -1,0 +1,83 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           06/Nov/2015  13:43:41
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Rachel\Documents\ECE306\HW\HW9\timers.c
+#    Command line  =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\timers.c -lC
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\ -o
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2_2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\timers.lst
+#    Object file   =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\timers.r43
+#
+###############################################################################
+
+C:\Users\Rachel\Documents\ECE306\HW\HW9\timers.c
+      1          //***********************************************************************
+      2          //   Description: This file contains the function for the timer 
+      3          //				  configurations 
+      4          //
+      5          //   Rachel Williams
+      6          //   September 9 2015
+      7          //***********************************************************************
+      8          
+      9          #include  "msp430.h"
+     10          #include  "functions.h"
+     11          #include "macros.h"
+     12          
+
+   \                                 In  segment CODE, align 2
+     13          void Init_Timers(void){
+   \                     Init_Timers:
+     14          //------------------------------------------------------------------------------
+     15          // Timer Configurations
+     16          //------------------------------------------------------------------------------
+     17            Init_Timer_A0(); //
+   \   000000   ........     CALLA   #Init_Timer_A0
+     18          //  Init_Timer_A1(); // 
+     19          //  Init_Timer_B0(); // 
+     20          //  Init_Timer_B1(); //  
+     21            Init_Timer_B2();   //  Required for provided compiled code to work
+   \   000004   ........     BRA     #Init_Timer_B2
+     22          //------------------------------------------------------------------------------
+     23          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Timers
+        4   -> Init_Timer_A0
+        0   -> Init_Timer_B2
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  Init_Timers
+
+ 
+ 8 bytes in segment CODE
+ 
+ 8 bytes of CODE memory
+
+Errors: none
+Warnings: none

@@ -225,6 +225,14 @@
 #define SHIFT8 (8)
 #define SHIFT9 (9)
 
+#define switch_delay (15)
+#define topMenu1 (340)
+#define topMenu3 (681)
+#define RESOLUTION10 (1023)
+#define division_increment (210)
+#define window_size (10)
+#define HW9_string (233)
+
 extern volatile unsigned int Time_Sequence;
 extern int ISR_COUNT;
 extern int UPDATE_LCD;

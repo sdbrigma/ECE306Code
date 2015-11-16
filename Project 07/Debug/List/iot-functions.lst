@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  03:50:47
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  06:25:39
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -41,6 +41,11 @@
    \                                 In  segment DATA16_AN, at 0x322
    \   union <unnamed> _A_PJOUT_L
    \                     _A_PJOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ce
+   \   union <unnamed> _A_UCA0TXBUF_L
+   \                     _A_UCA0TXBUF_L:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_AN, at 0x5ee
@@ -106,653 +111,856 @@
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-     37              if(transmitA1[i] == END_COMMAND) {break;}
+     37              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??setSSID_2
-     38              Five_msec_Delay(1);
-     39              i++;
-     40            }  
-     41            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??setSSID_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+     38              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0220         JNE     ??setSSID_2
+     39              Five_msec_Delay(5);
+     40              i++;
+     41            }  
+     42            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+   \   00003C   063C         JMP     ??setSSID_1
    \                     ??setSSID_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??setSSID_0
-     42            while(CPU_Char_Rx[i] != 'O'){
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??setSSID_0
+     43            while(CPU_Char_Rx[i] != 'O'){
    \                     ??setSSID_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??setSSID_3
-     43              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??setSSID_1
-     44            }
-     45            displayIOT();
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??setSSID_3
+     44              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+     45                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??setSSID_1
+     46              }
+     47            }
    \                     ??setSSID_3:
-   \   000048   ........     CALLA   #displayIOT
-     46          }
-   \   00004C   31501400     ADD.W   #0x14, SP
-   \   000050   3A41         POP.W   R10
-   \   000052   1001         RETA
-   \   000054                REQUIRE _A_UCA1TXBUF_L
-     47          
+   \   00005E   31501400     ADD.W   #0x14, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+     48          
 
    \                                 In  segment CODE, align 2
-     48          void getSSID(void){
+     49          void getSSID(void){
    \                     getSSID:
-   \   000000   0A12         PUSH.W  R10
+   \   000000   1B15         PUSHM.W #0x2, R11
    \   000002   31800E00     SUB.W   #0xe, SP
-     49            const char transmitA1[] = "AT+S.SSIDTXT\r";
+     50            const char transmitA1[] = "AT+S.SSIDTXT\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT+S.SSIDTXT\\r">`, R14
    \   00000C   3D400E00     MOV.W   #0xe, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-     50            short unsigned int i = ZERO;
+     51            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-     51            while(ALWAYS){
-     52              UCA1TXBUF = transmitA1[i];
+     52            while(ALWAYS){
+     53              UCA1TXBUF = transmitA1[i];
    \                     ??getSSID_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-     53              if(transmitA1[i] == END_COMMAND) {break;}
+     54              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??getSSID_2
-     54              Five_msec_Delay(1);
-     55              i++;
-     56            }
-     57            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??getSSID_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+     55              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0320         JNE     ??getSSID_2
+     56              Five_msec_Delay(5);
+     57              i++;
+     58            }
+     59            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+     60            int m = 0;
+   \   00003C   0B43         MOV.W   #0x0, R11
+   \   00003E   063C         JMP     ??getSSID_1
    \                     ??getSSID_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??getSSID_0
-     58            while(CPU_Char_Rx[i] != 'O'){
+   \   000040   3C400500     MOV.W   #0x5, R12
+   \   000044   ........     CALLA   #Five_msec_Delay
+   \   000048   1A53         ADD.W   #0x1, R10
+   \   00004A   E53F         JMP     ??getSSID_0
+     61            while(CPU_Char_Rx[i] != 'O'){
    \                     ??getSSID_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??getSSID_3
-     59              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??getSSID_1
-     60            }
-     61            displayIOT();
+   \   00004C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000052   0B24         JEQ     ??getSSID_3
+     62              Five_msec_Delay(5);
+   \   000054   3C400500     MOV.W   #0x5, R12
+   \   000058   ........     CALLA   #Five_msec_Delay
+     63              if(CPU_Char_Rx[i] == 'u'){
+   \   00005C   FA907500.... CMP.B   #0x75, CPU_Char_Rx(R10)
+   \   000062   0120         JNE     ??getSSID_4
+     64                m++;
+   \   000064   1B53         ADD.W   #0x1, R11
+     65              }
+     66                i++;
+   \                     ??getSSID_4:
+   \   000066   1A53         ADD.W   #0x1, R10
+   \   000068   F13F         JMP     ??getSSID_1
+     67              }
+     68          }
    \                     ??getSSID_3:
-   \   000048   ........     CALLA   #displayIOT
-     62          }
-   \   00004C   31500E00     ADD.W   #0xe, SP
-   \   000050   3A41         POP.W   R10
-   \   000052   1001         RETA
-   \   000054                REQUIRE _A_UCA1TXBUF_L
-     63          
+   \   00006A   31500E00     ADD.W   #0xe, SP
+   \   00006E   1A17         POPM.W  #0x2, R11
+   \   000070   1001         RETA
+   \   000072                REQUIRE _A_UCA1TXBUF_L
+   \   000072                REQUIRE _A_UCA0TXBUF_L
+     69          
 
    \                                 In  segment CODE, align 2
-     64          void setHostName(void){
+     70          void setHostName(void){
    \                     setHostName:
    \   000000   0A12         PUSH.W  R10
    \   000002   31802400     SUB.W   #0x24, SP
-     65            const char transmitA1[] = "AT+S.SCFG=ip_hostname,ECE-306-02-Q\r";
+     71            const char transmitA1[] = "AT+S.SCFG=ip_hostname,ECE-306-02-Q\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=ip_hostname...">`, R14
    \   00000C   3D402400     MOV.W   #0x24, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-     66            short unsigned int i = ZERO;
+     72            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-     67            while(ALWAYS){
-     68              UCA1TXBUF = transmitA1[i];
+     73            while(ALWAYS){
+     74              UCA1TXBUF = transmitA1[i];
    \                     ??setHostName_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-     69              if(transmitA1[i] == END_COMMAND) {break;}
+     75              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??setHostName_2
-     70              Five_msec_Delay(1);
-     71              i++;
-     72            }
-     73            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??setHostName_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+     76              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0220         JNE     ??setHostName_2
+     77              Five_msec_Delay(5);
+     78              i++;
+     79            }
+     80            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+   \   00003C   063C         JMP     ??setHostName_1
    \                     ??setHostName_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??setHostName_0
-     74            while(CPU_Char_Rx[i] != 'O'){
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??setHostName_0
+     81            while(CPU_Char_Rx[i] != 'O'){
    \                     ??setHostName_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??setHostName_3
-     75              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??setHostName_1
-     76            }
-     77            displayIOT();
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??setHostName_3
+     82              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+     83                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??setHostName_1
+     84              }
+     85          }
    \                     ??setHostName_3:
-   \   000048   ........     CALLA   #displayIOT
-     78          }
-   \   00004C   31502400     ADD.W   #0x24, SP
-   \   000050   3A41         POP.W   R10
-   \   000052   1001         RETA
-   \   000054                REQUIRE _A_UCA1TXBUF_L
-     79          
+   \   00005E   31502400     ADD.W   #0x24, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+     86          
 
    \                                 In  segment CODE, align 2
-     80          void getHostName(void){
+     87          void getHostName(void){
    \                     getHostName:
    \   000000   0A12         PUSH.W  R10
    \   000002   31801800     SUB.W   #0x18, SP
-     81            const char transmitA1[] = "AT+S.GCFG=ip_hostname\r";
+     88            const char transmitA1[] = "AT+S.GCFG=ip_hostname\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT+S.GCFG=ip_hostname\\r">`, R14
    \   00000C   3D401700     MOV.W   #0x17, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-     82            short unsigned int i = ZERO;
+     89            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-     83            while(ALWAYS){
-     84              UCA1TXBUF = transmitA1[i];
+     90            while(ALWAYS){
+     91              UCA1TXBUF = transmitA1[i];
    \                     ??getHostName_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-     85              if(transmitA1[i] == END_COMMAND) {
+     92              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0620         JNE     ??getHostName_2
-     86                break;
-     87              }
-     88              Five_msec_Delay(1);
-     89              i++;
-     90            }
-     91            Five_msec_Delay(30);
-   \   00002E   3C401E00     MOV.W   #0x1e, R12
-   \   000032   ........     CALLA   #Five_msec_Delay
-     92            i = ZERO;
-   \   000036   0A43         MOV.W   #0x0, R10
-   \   000038   053C         JMP     ??getHostName_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+     93              if(transmitA1[i] == END_COMMAND) {
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0620         JNE     ??getHostName_2
+     94                break;
+     95              }
+     96              Five_msec_Delay(5);
+     97              i++;
+     98            }
+     99            Five_msec_Delay(30);
+   \   00003A   3C401E00     MOV.W   #0x1e, R12
+   \   00003E   ........     CALLA   #Five_msec_Delay
+    100            i = ZERO;
+   \   000042   0A43         MOV.W   #0x0, R10
+   \   000044   063C         JMP     ??getHostName_1
    \                     ??getHostName_2:
-   \   00003A   1C43         MOV.W   #0x1, R12
-   \   00003C   ........     CALLA   #Five_msec_Delay
-   \   000040   1A53         ADD.W   #0x1, R10
-   \   000042   E93F         JMP     ??getHostName_0
-     93            while(CPU_Char_Rx[i] != 'O'){
+   \   000046   3C400500     MOV.W   #0x5, R12
+   \   00004A   ........     CALLA   #Five_msec_Delay
+   \   00004E   1A53         ADD.W   #0x1, R10
+   \   000050   E23F         JMP     ??getHostName_0
+    101            while(CPU_Char_Rx[i] != 'O'){
    \                     ??getHostName_1:
-   \   000044   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   00004A   0224         JEQ     ??getHostName_3
-     94              i++;
-   \   00004C   1A53         ADD.W   #0x1, R10
-   \   00004E   FA3F         JMP     ??getHostName_1
-     95            }
-     96            displayIOT();
+   \   000052   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000058   0624         JEQ     ??getHostName_3
+    102              Five_msec_Delay(5);
+   \   00005A   3C400500     MOV.W   #0x5, R12
+   \   00005E   ........     CALLA   #Five_msec_Delay
+    103                i++;
+   \   000062   1A53         ADD.W   #0x1, R10
+   \   000064   F63F         JMP     ??getHostName_1
+    104              }
+    105          }
    \                     ??getHostName_3:
-   \   000050   ........     CALLA   #displayIOT
-     97          }
-   \   000054   31501800     ADD.W   #0x18, SP
-   \   000058   3A41         POP.W   R10
-   \   00005A   1001         RETA
-   \   00005C                REQUIRE _A_UCA1TXBUF_L
-     98          
+   \   000066   31501800     ADD.W   #0x18, SP
+   \   00006A   3A41         POP.W   R10
+   \   00006C   1001         RETA
+   \   00006E                REQUIRE _A_UCA1TXBUF_L
+   \   00006E                REQUIRE _A_UCA0TXBUF_L
+    106          
 
    \                                 In  segment CODE, align 2
-     99          void setPrivacyMode(void){
+    107          void setPrivacyMode(void){
    \                     setPrivacyMode:
    \   000000   0A12         PUSH.W  R10
    \   000002   31801C00     SUB.W   #0x1c, SP
-    100            const char transmitA1[] = "AT+S.SCFG=wifi_priv_mode,0\r";
+    108            const char transmitA1[] = "AT+S.SCFG=wifi_priv_mode,0\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=wifi_priv_m...">`, R14
    \   00000C   3D401C00     MOV.W   #0x1c, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-    101            short unsigned int i = ZERO;
+    109            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-    102            while(ALWAYS){
-    103              UCA1TXBUF = transmitA1[i];
+    110            while(ALWAYS){
+    111              UCA1TXBUF = transmitA1[i];
    \                     ??setPrivacyMode_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-    104              if(transmitA1[i] == END_COMMAND) {break;}
+    112              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??setPrivacyMode_2
-    105              Five_msec_Delay(1);
-    106              i++;
-    107            }
-    108            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??setPrivacyMode_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+    113              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0220         JNE     ??setPrivacyMode_2
+    114              Five_msec_Delay(5);
+    115              i++;
+    116            }
+    117            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+   \   00003C   063C         JMP     ??setPrivacyMode_1
    \                     ??setPrivacyMode_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??setPrivacyMode_0
-    109            while(CPU_Char_Rx[i] != 'O'){
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??setPrivacyMode_0
+    118            while(CPU_Char_Rx[i] != 'O'){
    \                     ??setPrivacyMode_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??setPrivacyMode_3
-    110              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??setPrivacyMode_1
-    111            }
-    112          }
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??setPrivacyMode_3
+    119              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    120                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??setPrivacyMode_1
+    121              }
+    122          }
    \                     ??setPrivacyMode_3:
-   \   000048   31501C00     ADD.W   #0x1c, SP
-   \   00004C   3A41         POP.W   R10
-   \   00004E   1001         RETA
-   \   000050                REQUIRE _A_UCA1TXBUF_L
-    113          
+   \   00005E   31501C00     ADD.W   #0x1c, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+    123          
 
    \                                 In  segment CODE, align 2
-    114          void getPrivacyMode(void){
+    124          void getPrivacyMode(void){
    \                     getPrivacyMode:
    \   000000   0A12         PUSH.W  R10
    \   000002   31801A00     SUB.W   #0x1a, SP
-    115            const char transmitA1[] = "AT+S.GCFG=wifi_priv_mode\r";
+    125            const char transmitA1[] = "AT+S.GCFG=wifi_priv_mode\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT+S.GCFG=wifi_priv_m...">`, R14
    \   00000C   3D401A00     MOV.W   #0x1a, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-    116            short unsigned int i = ZERO;
+    126            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-    117            while(ALWAYS){
-    118              UCA1TXBUF = transmitA1[i];
+    127            while(ALWAYS){
+    128              UCA1TXBUF = transmitA1[i];
    \                     ??getPrivacyMode_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-    119              if(transmitA1[i] == END_COMMAND) {break;}
+    129              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??getPrivacyMode_2
-    120              Five_msec_Delay(1);
-    121              i++;
-    122            }
-    123            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??getPrivacyMode_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+    130              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0220         JNE     ??getPrivacyMode_2
+    131              Five_msec_Delay(5);
+    132              i++;
+    133            }
+    134            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+   \   00003C   063C         JMP     ??getPrivacyMode_1
    \                     ??getPrivacyMode_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??getPrivacyMode_0
-    124            while(CPU_Char_Rx[i] != 'O'){
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??getPrivacyMode_0
+    135            while(CPU_Char_Rx[i] != 'O'){
    \                     ??getPrivacyMode_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??getPrivacyMode_3
-    125              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??getPrivacyMode_1
-    126            }
-    127          }
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??getPrivacyMode_3
+    136              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    137                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??getPrivacyMode_1
+    138              }
+    139          }
    \                     ??getPrivacyMode_3:
-   \   000048   31501A00     ADD.W   #0x1a, SP
-   \   00004C   3A41         POP.W   R10
-   \   00004E   1001         RETA
-   \   000050                REQUIRE _A_UCA1TXBUF_L
-    128          
+   \   00005E   31501A00     ADD.W   #0x1a, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+    140          
 
    \                                 In  segment CODE, align 2
-    129          void setNetworkMode(void){
+    141          void setNetworkMode(void){
    \                     setNetworkMode:
    \   000000   0A12         PUSH.W  R10
    \   000002   31801800     SUB.W   #0x18, SP
-    130            const char transmitA1[] = "AT+S.SCFG=wifi_mode,1\r";
+    142            const char transmitA1[] = "AT+S.SCFG=wifi_mode,1\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=wifi_mode,1\\r">`, R14
    \   00000C   3D401700     MOV.W   #0x17, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-    131            short unsigned int i = ZERO;
+    143            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-    132            while(ALWAYS){
-    133              UCA1TXBUF = transmitA1[i];
+    144            while(ALWAYS){
+    145              UCA1TXBUF = transmitA1[i];
    \                     ??setNetworkMode_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-    134              if(transmitA1[i] == END_COMMAND) {break;}
+    146              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??setNetworkMode_2
-    135              Five_msec_Delay(1);
-    136              i++;
-    137            }
-    138            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??setNetworkMode_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+    147              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0220         JNE     ??setNetworkMode_2
+    148              Five_msec_Delay(5);
+    149              i++;
+    150            }
+    151            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+   \   00003C   063C         JMP     ??setNetworkMode_1
    \                     ??setNetworkMode_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??setNetworkMode_0
-    139            while(CPU_Char_Rx[i] != 'O'){
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??setNetworkMode_0
+    152            while(CPU_Char_Rx[i] != 'O'){
    \                     ??setNetworkMode_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??setNetworkMode_3
-    140              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??setNetworkMode_1
-    141            }
-    142          }
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??setNetworkMode_3
+    153              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    154                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??setNetworkMode_1
+    155              }
+    156          }
    \                     ??setNetworkMode_3:
-   \   000048   31501800     ADD.W   #0x18, SP
-   \   00004C   3A41         POP.W   R10
-   \   00004E   1001         RETA
-   \   000050                REQUIRE _A_UCA1TXBUF_L
-    143          
+   \   00005E   31501800     ADD.W   #0x18, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+    157          
 
    \                                 In  segment CODE, align 2
-    144          void getNetworkMode(void){
+    158          void getNetworkMode(void){
    \                     getNetworkMode:
    \   000000   0A12         PUSH.W  R10
    \   000002   31801600     SUB.W   #0x16, SP
-    145            const char transmitA1[] = "AT+S.GCFG=wifi_mode\r";
+    159            const char transmitA1[] = "AT+S.GCFG=wifi_mode\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT+S.GCFG=wifi_mode\\r">`, R14
    \   00000C   3D401500     MOV.W   #0x15, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-    146            short unsigned int i = ZERO;
+    160            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-    147            while(ALWAYS){
-    148              UCA1TXBUF = transmitA1[i];
+    161            while(ALWAYS){
+    162              UCA1TXBUF = transmitA1[i];
    \                     ??getNetworkMode_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-    149              if(transmitA1[i] == END_COMMAND) {break;}
+    163              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??getNetworkMode_2
-    150              Five_msec_Delay(1);
-    151              i++;
-    152            }
-    153            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??getNetworkMode_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+    164              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0220         JNE     ??getNetworkMode_2
+    165              Five_msec_Delay(5);
+    166              i++;
+    167            }
+    168            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+   \   00003C   063C         JMP     ??getNetworkMode_1
    \                     ??getNetworkMode_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??getNetworkMode_0
-    154            while(CPU_Char_Rx[i] != 'O'){
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??getNetworkMode_0
+    169            while(CPU_Char_Rx[i] != 'O'){
    \                     ??getNetworkMode_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??getNetworkMode_3
-    155              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??getNetworkMode_1
-    156            }
-    157          }
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??getNetworkMode_3
+    170              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    171                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??getNetworkMode_1
+    172              }
+    173          }
    \                     ??getNetworkMode_3:
-   \   000048   31501600     ADD.W   #0x16, SP
-   \   00004C   3A41         POP.W   R10
-   \   00004E   1001         RETA
-   \   000050                REQUIRE _A_UCA1TXBUF_L
-    158          
+   \   00005E   31501600     ADD.W   #0x16, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+    174          
 
    \                                 In  segment CODE, align 2
-    159          void iotSave(void){
+    175          void iotSave(void){
    \                     iotSave:
    \   000000   0A12         PUSH.W  R10
    \   000002   31800600     SUB.W   #0x6, SP
-    160            const char transmitA1[] = "AT&W\r";
+    176            const char transmitA1[] = "AT&W\r";
    \   000006   0C41         MOV.W   SP, R12
    \   000008   3E40....     MOV.W   #`?<Constant "AT&W\\r">`, R14
    \   00000C   3D400600     MOV.W   #0x6, R13
    \   000010   ........     CALLA   #?CopyMemoryBytes
-    161            short unsigned int i = ZERO;
+    177            short unsigned int i = ZERO;
    \   000014   0A43         MOV.W   #0x0, R10
-    162            while(ALWAYS){
-    163              UCA1TXBUF = transmitA1[i];
+    178            while(ALWAYS){
+    179              UCA1TXBUF = transmitA1[i];
    \                     ??iotSave_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-    164              if(transmitA1[i] == END_COMMAND) {break;}
+    180              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??iotSave_2
-    165              Five_msec_Delay(1);
-    166              i++;
-    167            }
-    168            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??iotSave_1
+   \   000026   6F4F         MOV.B   @R15, R15
+   \   000028   4F4F         MOV.B   R15, R15
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+    181              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0220         JNE     ??iotSave_2
+    182              Five_msec_Delay(5);
+    183              i++;
+    184            }
+    185            i = ZERO;
+   \   00003A   0A43         MOV.W   #0x0, R10
+   \   00003C   063C         JMP     ??iotSave_1
    \                     ??iotSave_2:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??iotSave_0
-    169            while(CPU_Char_Rx[i] != 'O'){
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??iotSave_0
+    186            while(CPU_Char_Rx[i] != 'O'){
    \                     ??iotSave_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??iotSave_3
-    170              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??iotSave_1
-    171            }
-    172          }
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??iotSave_3
+    187              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    188                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??iotSave_1
+    189              }
+    190          }
    \                     ??iotSave_3:
-   \   000048   31500600     ADD.W   #0x6, SP
-   \   00004C   3A41         POP.W   R10
-   \   00004E   1001         RETA
-   \   000050                REQUIRE _A_UCA1TXBUF_L
-    173          
+   \   00005E   31500600     ADD.W   #0x6, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+    191          
 
    \                                 In  segment CODE, align 2
-    174          void iotReset(void){
+    192          void iotReset(void){
    \                     iotReset:
    \   000000   0A12         PUSH.W  R10
    \   000002   31800C00     SUB.W   #0xc, SP
-    175            short unsigned int i = ZERO;
+    193            short unsigned int i = ZERO;
    \   000006   0A43         MOV.W   #0x0, R10
-    176            const char transmitA1[] = "AT+CFUN=1\r";
+    194            const char transmitA1[] = "AT+CFUN=1\r";
    \   000008   0C41         MOV.W   SP, R12
    \   00000A   3E40....     MOV.W   #`?<Constant "AT+CFUN=1\\r">`, R14
    \   00000E   3D400B00     MOV.W   #0xb, R13
    \   000012   ........     CALLA   #?CopyMemoryBytes
-    177            while(ALWAYS){
-    178              UCA1TXBUF = transmitA1[i];
+    195            while(ALWAYS){
+    196              UCA1TXBUF = transmitA1[i];
    \                     ??iotReset_0:
    \   000016   0F4A         MOV.W   R10, R15
    \   000018   0F51         ADD.W   SP, R15
    \   00001A   6F4F         MOV.B   @R15, R15
    \   00001C   4F4F         MOV.B   R15, R15
    \   00001E   824FEE05     MOV.W   R15, &0x5ee
-    179              if(transmitA1[i] == END_COMMAND) {break;}
-   \   000022   0F4A         MOV.W   R10, R15
-   \   000024   0F51         ADD.W   SP, R15
-   \   000026   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   00002C   0220         JNE     ??iotReset_3
-    180              Five_msec_Delay(1);
-    181              i++;
-    182            }
-    183            i = ZERO;
-   \   00002E   0A43         MOV.W   #0x0, R10
-   \   000030   053C         JMP     ??iotReset_1
-   \                     ??iotReset_3:
-   \   000032   1C43         MOV.W   #0x1, R12
-   \   000034   ........     CALLA   #Five_msec_Delay
-   \   000038   1A53         ADD.W   #0x1, R10
-   \   00003A   ED3F         JMP     ??iotReset_0
-    184            while(CPU_Char_Rx[i] != 'O'){
-   \                     ??iotReset_1:
-   \   00003C   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
-   \   000042   0224         JEQ     ??iotReset_4
-    185              i++;
-   \   000044   1A53         ADD.W   #0x1, R10
-   \   000046   FA3F         JMP     ??iotReset_1
-    186            }
-    187            
-    188            PJOUT |= RESET;
-   \                     ??iotReset_4:
-   \   000048   B2D22203     BIS.W   #0x8, &0x322
-    189            while(ISR_COUNT<Second_1){}
-   \                     ??iotReset_2:
-   \   00004C   B2906400.... CMP.W   #0x64, &ISR_COUNT
-   \   000052   FC3B         JL      ??iotReset_2
-    190            ISR_COUNT = ZERO;
-   \   000054   8243....     MOV.W   #0x0, &ISR_COUNT
-    191            PJOUT &= ~RESET;
-   \   000058   B2C22203     BIC.W   #0x8, &0x322
-    192            Init_LCD();
-   \   00005C   ........     CALLA   #Init_LCD
-    193          }
-   \   000060   31500C00     ADD.W   #0xc, SP
-   \   000064   3A41         POP.W   R10
-   \   000066   1001         RETA
-   \   000068                REQUIRE _A_UCA1TXBUF_L
-   \   000068                REQUIRE _A_PJOUT_L
-    194          
-
-   \                                 In  segment CODE, align 2
-    195          void getIpAddress(void){
-   \                     getIpAddress:
-   \   000000   0A12         PUSH.W  R10
-   \   000002   31801400     SUB.W   #0x14, SP
-    196            const char transmitA1[] = "AT+S.STS=ip_ipaddr\r";
-   \   000006   0C41         MOV.W   SP, R12
-   \   000008   3E40....     MOV.W   #`?<Constant "AT+S.STS=ip_ipaddr\\r">`, R14
-   \   00000C   3D401400     MOV.W   #0x14, R13
-   \   000010   ........     CALLA   #?CopyMemoryBytes
-    197            short unsigned int i = ZERO;
-   \   000014   0A43         MOV.W   #0x0, R10
-    198            while(ALWAYS){
-    199              if(transmitA1[i] == END_COMMAND) {break;}
-   \                     ??getIpAddress_0:
-   \   000016   0F4A         MOV.W   R10, R15
-   \   000018   0F51         ADD.W   SP, R15
-   \   00001A   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   000020   0B24         JEQ     ??getIpAddress_2
-    200              UCA1TXBUF = transmitA1[i];
-    201              Five_msec_Delay(1);
-    202              i++;
-    203            }
-    204          }
+    197              UCA0TXBUF = transmitA1[i];
    \   000022   0F4A         MOV.W   R10, R15
    \   000024   0F51         ADD.W   SP, R15
    \   000026   6F4F         MOV.B   @R15, R15
    \   000028   4F4F         MOV.B   R15, R15
-   \   00002A   824FEE05     MOV.W   R15, &0x5ee
-   \   00002E   1C43         MOV.W   #0x1, R12
-   \   000030   ........     CALLA   #Five_msec_Delay
-   \   000034   1A53         ADD.W   #0x1, R10
-   \   000036   EF3F         JMP     ??getIpAddress_0
-   \                     ??getIpAddress_2:
-   \   000038   31501400     ADD.W   #0x14, SP
-   \   00003C   3A41         POP.W   R10
-   \   00003E   1001         RETA
-   \   000040                REQUIRE _A_UCA1TXBUF_L
+   \   00002A   824FCE05     MOV.W   R15, &0x5ce
+    198              if(transmitA1[i] == END_COMMAND) {break;}
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F51         ADD.W   SP, R15
+   \   000032   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000038   0624         JEQ     ??iotReset_1
+    199              Five_msec_Delay(5);
+   \   00003A   3C400500     MOV.W   #0x5, R12
+   \   00003E   ........     CALLA   #Five_msec_Delay
+    200              i++;
+   \   000042   1A53         ADD.W   #0x1, R10
+   \   000044   E83F         JMP     ??iotReset_0
+    201            }
+    202            while(CPU_Char_Rx[i] != 'O'){
+   \                     ??iotReset_1:
+   \   000046   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   00004C   0624         JEQ     ??iotReset_4
+    203              Five_msec_Delay(5);
+   \   00004E   3C400500     MOV.W   #0x5, R12
+   \   000052   ........     CALLA   #Five_msec_Delay
+    204                i++;
+   \   000056   1A53         ADD.W   #0x1, R10
+   \   000058   F63F         JMP     ??iotReset_1
+    205              }  
+    206            PJOUT |= RESET;
+   \                     ??iotReset_4:
+   \   00005A   B2D22203     BIS.W   #0x8, &0x322
+    207            while(ISR_COUNT<Second_1){}
+   \                     ??iotReset_2:
+   \   00005E   B2906400.... CMP.W   #0x64, &ISR_COUNT
+   \   000064   FC3B         JL      ??iotReset_2
+    208            ISR_COUNT = ZERO;
+   \   000066   8243....     MOV.W   #0x0, &ISR_COUNT
+    209            PJOUT &= ~RESET;
+   \   00006A   B2C22203     BIC.W   #0x8, &0x322
+    210            Init_LCD();
+   \   00006E   ........     CALLA   #Init_LCD
+    211          }
+   \   000072   31500C00     ADD.W   #0xc, SP
+   \   000076   3A41         POP.W   R10
+   \   000078   1001         RETA
+   \   00007A                REQUIRE _A_UCA1TXBUF_L
+   \   00007A                REQUIRE _A_UCA0TXBUF_L
+   \   00007A                REQUIRE _A_PJOUT_L
+    212          
 
    \                                 In  segment CODE, align 2
-    205          void displayIOT(void){
+    213          void getIpAddress(void){
+   \                     getIpAddress:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31801400     SUB.W   #0x14, SP
+    214            const char transmitA1[] = "AT+S.STS=ip_ipaddr\r";
+   \   000006   0C41         MOV.W   SP, R12
+   \   000008   3E40....     MOV.W   #`?<Constant "AT+S.STS=ip_ipaddr\\r">`, R14
+   \   00000C   3D401400     MOV.W   #0x14, R13
+   \   000010   ........     CALLA   #?CopyMemoryBytes
+    215            short unsigned int i = ZERO;
+   \   000014   0A43         MOV.W   #0x0, R10
+    216            while(ALWAYS){
+    217              if(transmitA1[i] == END_COMMAND) {break;}
+   \                     ??getIpAddress_0:
+   \   000016   0F4A         MOV.W   R10, R15
+   \   000018   0F51         ADD.W   SP, R15
+   \   00001A   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000020   0220         JNE     ??getIpAddress_2
+    218              UCA0TXBUF = transmitA1[i];
+    219              UCA1TXBUF = transmitA1[i];
+    220              Five_msec_Delay(5);
+    221              i++;
+    222            }
+    223            i = ZERO;
+   \   000022   0A43         MOV.W   #0x0, R10
+   \   000024   123C         JMP     ??getIpAddress_1
+   \                     ??getIpAddress_2:
+   \   000026   0F4A         MOV.W   R10, R15
+   \   000028   0F51         ADD.W   SP, R15
+   \   00002A   6F4F         MOV.B   @R15, R15
+   \   00002C   4F4F         MOV.B   R15, R15
+   \   00002E   824FCE05     MOV.W   R15, &0x5ce
+   \   000032   0F4A         MOV.W   R10, R15
+   \   000034   0F51         ADD.W   SP, R15
+   \   000036   6F4F         MOV.B   @R15, R15
+   \   000038   4F4F         MOV.B   R15, R15
+   \   00003A   824FEE05     MOV.W   R15, &0x5ee
+   \   00003E   3C400500     MOV.W   #0x5, R12
+   \   000042   ........     CALLA   #Five_msec_Delay
+   \   000046   1A53         ADD.W   #0x1, R10
+   \   000048   E63F         JMP     ??getIpAddress_0
+    224            while(CPU_Char_Rx[i] != 'O'){
+   \                     ??getIpAddress_1:
+   \   00004A   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   000050   0624         JEQ     ??getIpAddress_3
+    225              Five_msec_Delay(5);
+   \   000052   3C400500     MOV.W   #0x5, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    226                i++;
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F63F         JMP     ??getIpAddress_1
+    227              }
+    228          }
+   \                     ??getIpAddress_3:
+   \   00005E   31501400     ADD.W   #0x14, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+    229          
+
+   \                                 In  segment CODE, align 2
+    230          void getIotStatus(void){
+   \                     getIotStatus:
+   \   000000   1B15         PUSHM.W #0x2, R11
+   \   000002   31800A00     SUB.W   #0xa, SP
+    231            const char transmitA1[] = "AT+S.STS\r";
+   \   000006   0C41         MOV.W   SP, R12
+   \   000008   3E40....     MOV.W   #`?<Constant "AT+S.STS\\r">`, R14
+   \   00000C   3D400A00     MOV.W   #0xa, R13
+   \   000010   ........     CALLA   #?CopyMemoryBytes
+    232            short unsigned int i = ZERO;
+   \   000014   0A43         MOV.W   #0x0, R10
+    233            while(ALWAYS){
+    234              if(transmitA1[i] == END_COMMAND) {break;}
+   \                     ??getIotStatus_0:
+   \   000016   0F4A         MOV.W   R10, R15
+   \   000018   0F51         ADD.W   SP, R15
+   \   00001A   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000020   0320         JNE     ??getIotStatus_4
+    235              UCA1TXBUF = transmitA1[i];
+    236              UCA0TXBUF = transmitA1[i];
+    237              Five_msec_Delay(5);
+    238              i++;
+    239            }  
+    240            i = ZERO;
+   \   000022   0A43         MOV.W   #0x0, R10
+    241            int m = ZERO;
+   \   000024   0B43         MOV.W   #0x0, R11
+   \   000026   123C         JMP     ??getIotStatus_1
+   \                     ??getIotStatus_4:
+   \   000028   0F4A         MOV.W   R10, R15
+   \   00002A   0F51         ADD.W   SP, R15
+   \   00002C   6F4F         MOV.B   @R15, R15
+   \   00002E   4F4F         MOV.B   R15, R15
+   \   000030   824FEE05     MOV.W   R15, &0x5ee
+   \   000034   0F4A         MOV.W   R10, R15
+   \   000036   0F51         ADD.W   SP, R15
+   \   000038   6F4F         MOV.B   @R15, R15
+   \   00003A   4F4F         MOV.B   R15, R15
+   \   00003C   824FCE05     MOV.W   R15, &0x5ce
+   \   000040   3C400500     MOV.W   #0x5, R12
+   \   000044   ........     CALLA   #Five_msec_Delay
+   \   000048   1A53         ADD.W   #0x1, R10
+   \   00004A   E53F         JMP     ??getIotStatus_0
+    242            while(ALWAYS){
+    243              if(CPU_Char_Rx[i] == '='){
+   \                     ??getIotStatus_1:
+   \   00004C   FA903D00.... CMP.B   #0x3d, CPU_Char_Rx(R10)
+   \   000052   0120         JNE     ??getIotStatus_5
+    244                m++;
+   \   000054   1B53         ADD.W   #0x1, R11
+    245              }
+    246              if(CPU_Char_Rx[i] == 'O'){
+   \                     ??getIotStatus_5:
+   \   000056   FA904F00.... CMP.B   #0x4f, CPU_Char_Rx(R10)
+   \   00005C   0B24         JEQ     ??getIotStatus_3
+    247                break;
+    248              }
+    249              Five_msec_Delay(5);
+    250              if(i==39){
+    251                i = ZERO;
+    252              }
+    253              else{
+    254                i++;
+    255              }
+    256            }
+    257          }
+   \   00005E   3C400500     MOV.W   #0x5, R12
+   \   000062   ........     CALLA   #Five_msec_Delay
+   \   000066   3A902700     CMP.W   #0x27, R10
+   \   00006A   0220         JNE     ??getIotStatus_6
+   \   00006C   0A43         MOV.W   #0x0, R10
+   \   00006E   EE3F         JMP     ??getIotStatus_1
+   \                     ??getIotStatus_6:
+   \   000070   1A53         ADD.W   #0x1, R10
+   \   000072   EC3F         JMP     ??getIotStatus_1
+   \                     ??getIotStatus_3:
+   \   000074   31500A00     ADD.W   #0xa, SP
+   \   000078   1A17         POPM.W  #0x2, R11
+   \   00007A   1001         RETA
+   \   00007C                REQUIRE _A_UCA1TXBUF_L
+   \   00007C                REQUIRE _A_UCA0TXBUF_L
+    258          
+
+   \                                 In  segment CODE, align 2
+    259          void displayIOT(void){
    \                     displayIOT:
    \   000000   0A12         PUSH.W  R10
-    206            int i = ZERO;
+    260            int i = ZERO;
    \   000002   0A43         MOV.W   #0x0, R10
-    207            while(i<10){
+    261            while(i<10){
    \                     ??displayIOT_0:
    \   000004   3A900A00     CMP.W   #0xa, R10
    \   000008   0834         JGE     ??displayIOT_4
-    208              display_1[i] = CPU_Char_Rx[i];
+    262              display_1[i] = CPU_Char_Rx[i];
    \   00000A   1F42....     MOV.W   &display_1, R15
    \   00000E   0F5A         ADD.W   R10, R15
    \   000010   DF4A....0000 MOV.B   CPU_Char_Rx(R10), 0(R15)
-    209              i++;
+    263              i++;
    \   000016   1A53         ADD.W   #0x1, R10
    \   000018   F53F         JMP     ??displayIOT_0
-    210            }
-    211            i = ZERO;
+    264            }
+    265            i = ZERO;
    \                     ??displayIOT_4:
    \   00001A   0A43         MOV.W   #0x0, R10
-    212            
-    213            while(i<10){
+    266            
+    267            while(i<10){
    \                     ??displayIOT_1:
    \   00001C   3A900A00     CMP.W   #0xa, R10
    \   000020   0834         JGE     ??displayIOT_5
-    214              display_2[i] = CPU_Char_Rx[i + 10];
+    268              display_2[i] = CPU_Char_Rx[i + 10];
    \   000022   1F42....     MOV.W   &display_2, R15
    \   000026   0F5A         ADD.W   R10, R15
    \   000028   DF4A....0000 MOV.B   CPU_Char_Rx + 10(R10), 0(R15)
-    215              i++;
+    269              i++;
    \   00002E   1A53         ADD.W   #0x1, R10
    \   000030   F53F         JMP     ??displayIOT_1
-    216            }
-    217            i = ZERO;
+    270            }
+    271            i = ZERO;
    \                     ??displayIOT_5:
    \   000032   0A43         MOV.W   #0x0, R10
-    218            while(i<10){
+    272            while(i<10){
    \                     ??displayIOT_2:
    \   000034   3A900A00     CMP.W   #0xa, R10
    \   000038   0834         JGE     ??displayIOT_6
-    219              display_3[i] = CPU_Char_Rx[i + 20];
+    273              display_3[i] = CPU_Char_Rx[i + 20];
    \   00003A   1F42....     MOV.W   &display_3, R15
    \   00003E   0F5A         ADD.W   R10, R15
    \   000040   DF4A....0000 MOV.B   CPU_Char_Rx + 20(R10), 0(R15)
-    220              i++;
+    274              i++;
    \   000046   1A53         ADD.W   #0x1, R10
    \   000048   F53F         JMP     ??displayIOT_2
-    221            }
-    222            i = ZERO;
+    275            }
+    276            i = ZERO;
    \                     ??displayIOT_6:
    \   00004A   0A43         MOV.W   #0x0, R10
-    223            while(i<10){
+    277            while(i<10){
    \                     ??displayIOT_3:
    \   00004C   3A900A00     CMP.W   #0xa, R10
    \   000050   0834         JGE     ??displayIOT_7
-    224              display_4[i] = CPU_Char_Rx[i + 30];
+    278              display_4[i] = CPU_Char_Rx[i + 30];
    \   000052   1F42....     MOV.W   &display_4, R15
    \   000056   0F5A         ADD.W   R10, R15
    \   000058   DF4A....0000 MOV.B   CPU_Char_Rx + 30(R10), 0(R15)
-    225              i++;
+    279              i++;
    \   00005E   1A53         ADD.W   #0x1, R10
    \   000060   F53F         JMP     ??displayIOT_3
-    226            }
-    227            i = ZERO;
+    280            }
+    281            i = ZERO;
    \                     ??displayIOT_7:
    \   000062   0A43         MOV.W   #0x0, R10
-    228            posL1 = ZERO;
+    282            posL1 = ZERO;
    \   000064   C243....     MOV.B   #0x0, &posL1
-    229            posL2 = ZERO;
+    283            posL2 = ZERO;
    \   000068   C243....     MOV.B   #0x0, &posL2
-    230            posL3 = ZERO;
+    284            posL3 = ZERO;
    \   00006C   C243....     MOV.B   #0x0, &posL3
-    231            posL4 = ZERO;
+    285            posL4 = ZERO;
    \   000070   C243....     MOV.B   #0x0, &posL4
-    232            Display_Process();
+    286            Display_Process();
    \   000074   ........     CALLA   #Display_Process
-    233            Five_msec_Delay(20);
+    287            Five_msec_Delay(20);
    \   000078   3C401400     MOV.W   #0x14, R12
    \   00007C   ........     CALLA   #Five_msec_Delay
-    234          }
+    288          }
    \   000080   3A41         POP.W   R10
    \   000082   1001         RETA
 
@@ -831,6 +1039,11 @@
    \            697061646472
    \            0D00        
 
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.STS\\r">`:
+   \   000000   41542B532E53 DC8 "AT+S.STS\015"
+   \            54530D00    
+
    Maximum stack usage in bytes:
 
    CSTACK Function
@@ -847,8 +1060,10 @@
         6   -> Five_msec_Delay
      30   getHostName
        30   -> Five_msec_Delay
-       30   -> displayIOT
        30 ?CopyMemoryBytes
+     18   getIotStatus
+       18   -> Five_msec_Delay
+       18 ?CopyMemoryBytes
      26   getIpAddress
        26   -> Five_msec_Delay
        26 ?CopyMemoryBytes
@@ -858,10 +1073,9 @@
      32   getPrivacyMode
        32   -> Five_msec_Delay
        32 ?CopyMemoryBytes
-     20   getSSID
-       20   -> Five_msec_Delay
-       20   -> displayIOT
-       20 ?CopyMemoryBytes
+     22   getSSID
+       22   -> Five_msec_Delay
+       22 ?CopyMemoryBytes
      18   iotReset
        18   -> Five_msec_Delay
        18   -> Init_LCD
@@ -871,7 +1085,6 @@
        12 ?CopyMemoryBytes
      42   setHostName
        42   -> Five_msec_Delay
-       42   -> displayIOT
        42 ?CopyMemoryBytes
      30   setNetworkMode
        30   -> Five_msec_Delay
@@ -881,7 +1094,6 @@
        34 ?CopyMemoryBytes
      26   setSSID
        26   -> Five_msec_Delay
-       26   -> displayIOT
        26 ?CopyMemoryBytes
 
 
@@ -900,30 +1112,33 @@
       19  ?<Constant "AT+S.SSIDTXT=ncsu\r">
       14  ?<Constant "AT+S.SSIDTXT\r">
       20  ?<Constant "AT+S.STS=ip_ipaddr\r">
+      10  ?<Constant "AT+S.STS\r">
       24  Init_IOT
        2  _A_PJOUT_L
+       2  _A_UCA0TXBUF_L
        2  _A_UCA1TXBUF_L
      132  displayIOT
-      92  getHostName
-      64  getIpAddress
-      80  getNetworkMode
-      80  getPrivacyMode
-      84  getSSID
-     104  iotReset
-      80  iotSave
-      84  setHostName
-      80  setNetworkMode
-      80  setPrivacyMode
-      84  setSSID
+     110  getHostName
+     124  getIotStatus
+     102  getIpAddress
+     102  getNetworkMode
+     102  getPrivacyMode
+     114  getSSID
+     122  iotReset
+     102  iotSave
+     102  setHostName
+     102  setNetworkMode
+     102  setPrivacyMode
+     102  setSSID
 
  
- 1 068 bytes in segment CODE
-     4 bytes in segment DATA16_AN
-   227 bytes in segment DATA16_C
+ 1 442 bytes in segment CODE
+     6 bytes in segment DATA16_AN
+   237 bytes in segment DATA16_C
  
- 1 068 bytes of CODE  memory
-   227 bytes of CONST memory
-     0 bytes of DATA  memory (+ 4 bytes shared)
+ 1 442 bytes of CODE  memory
+   237 bytes of CONST memory
+     0 bytes of DATA  memory (+ 6 bytes shared)
 
 Errors: none
 Warnings: none

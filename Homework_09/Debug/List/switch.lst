@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           15/Nov/2015  16:22:55
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  15:15:41
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -70,7 +70,7 @@
      25            if (!(P4IN & SW1)){
    \   000000   D2B32102     BIT.B   #0x1, &0x221
    \   000004   832C         JC      ??Switches_Process_5
-     26              Five_msec_Delay(15);
+     26              Five_msec_Delay(switch_delay);
    \   000006   3C400F00     MOV.W   #0xf, R12
    \   00000A   ........     CALLA   #Five_msec_Delay
      27              while(ALWAYS){
@@ -80,7 +80,7 @@
    \   000012   7C28         JNC     ??Switches_Process_5
      29                ADC_Process(); // read ADC value for thumbwheel
    \   000014   ........     CALLA   #ADC_Process
-     30                if(ADC_Thumb <= 340){// Divides range of ADC values into three for main menu
+     30                if(ADC_Thumb <= topMenu1){// Divides range of ADC values into three for main menu
    \   000018   B2905501.... CMP.W   #0x155, &ADC_Thumb
    \   00001E   202C         JC      ??Switches_Process_6
      31                  setLCD("Resistor",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0,"",LINE_POS_L0);
@@ -106,7 +106,7 @@
      37                      getResistorMenu(ADC_Thumb);
    \   000048   1C42....     MOV.W   &ADC_Thumb, R12
    \   00004C   ........     CALLA   #getResistorMenu
-     38                      if (!(P4IN & SW2)){Five_msec_Delay(15);break;}
+     38                      if (!(P4IN & SW2)){Five_msec_Delay(switch_delay);break;}
    \   000050   E2B32102     BIT.B   #0x2, &0x221
    \   000054   F72F         JC      ??Switches_Process_1
    \   000056   3C400F00     MOV.W   #0xf, R12
@@ -116,7 +116,7 @@
      40                  }
      41                } 
      42                
-     43                else if(ADC_Thumb >= 681){ // this range the last third of the full range of values for the ADC
+     43                else if(ADC_Thumb >= topMenu3){ // this range the last third of the full range of values for the ADC
    \                     ??Switches_Process_6:
    \   000060   B290A902.... CMP.W   #0x2a9, &ADC_Thumb
    \   000066   2F28         JNC     ??Switches_Process_7
@@ -139,7 +139,7 @@
    \   000090   BE2F         JC      ??Switches_Process_0
      48                    ADC_Process();
    \   000092   ........     CALLA   #ADC_Process
-     49                    inc = (1023 - ADC_Thumb) / 210;
+     49                    inc = (RESOLUTION10 - ADC_Thumb) / division_increment;
    \   000096   3C40FF03     MOV.W   #0x3ff, R12
    \   00009A   1C82....     SUB.W   &ADC_Thumb, R12
    \   00009E   3E40D200     MOV.W   #0xd2, R14
@@ -150,7 +150,7 @@
    \                     ??Switches_Process_2:
    \   0000AA   1C42....     MOV.W   &ADC_Thumb, R12
    \   0000AE   ........     CALLA   #getSongMenu
-     52                      if (!(P4IN & SW2)){Five_msec_Delay(15);break;}
+     52                      if (!(P4IN & SW2)){Five_msec_Delay(switch_delay);break;}
    \   0000B2   E2B32102     BIT.B   #0x2, &0x221
    \   0000B6   F92F         JC      ??Switches_Process_2
    \   0000B8   3C400F00     MOV.W   #0xf, R12
@@ -174,7 +174,7 @@
    \   0000D8   2D43         MOV.W   #0x2, R13
    \   0000DA   3C40....     MOV.W   #`?<Constant "Shapes">`, R12
    \   0000DE   ........     CALLA   #setLCD
-     60                  Five_msec_Delay(15);
+     60                  Five_msec_Delay(switch_delay);
    \   0000E2   3C400F00     MOV.W   #0xf, R12
    \   0000E6   ........     CALLA   #Five_msec_Delay
      61                  

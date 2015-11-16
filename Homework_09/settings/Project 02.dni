@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=-1525888678
+Checksum=-1549415349
 [Stack]
 FillEnabled=0
 OverflowWarningsEnabled=1
@@ -61,5 +61,5 @@ SR=0
 all registers=0
 File name=
 [Aliases]
-A0=_ "D:\NCSU\Current\Software Tools\Code Master\Project 02\LCD.c" ""
-A1=_ "D:\NCSU\Current\Software Tools\Code Master\Project 02\ports.c" ""
+Count=0
+SuppressDialog=0

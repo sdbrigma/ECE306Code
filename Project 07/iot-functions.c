@@ -34,31 +34,37 @@ void setSSID(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }  
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
+    Five_msec_Delay(5);
+      i++;
+    }
   }
-  displayIOT();
-}
 
 void getSSID(void){
   const char transmitA1[] = "AT+S.SSIDTXT\r";
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   i = ZERO;
+  int m = 0;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
-  displayIOT();
+    Five_msec_Delay(5);
+    if(CPU_Char_Rx[i] == 'u'){
+      m++;
+    }
+      i++;
+    }
 }
 
 void setHostName(void){
@@ -66,15 +72,16 @@ void setHostName(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
-  displayIOT();
+    Five_msec_Delay(5);
+      i++;
+    }
 }
 
 void getHostName(void){
@@ -82,18 +89,19 @@ void getHostName(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {
       break;
     }
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   Five_msec_Delay(30);
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
-  displayIOT();
+    Five_msec_Delay(5);
+      i++;
+    }
 }
 
 void setPrivacyMode(void){
@@ -101,14 +109,16 @@ void setPrivacyMode(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
+    Five_msec_Delay(5);
+      i++;
+    }
 }
 
 void getPrivacyMode(void){
@@ -116,14 +126,16 @@ void getPrivacyMode(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
+    Five_msec_Delay(5);
+      i++;
+    }
 }
 
 void setNetworkMode(void){
@@ -131,14 +143,16 @@ void setNetworkMode(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
+    Five_msec_Delay(5);
+      i++;
+    }
 }
 
 void getNetworkMode(void){
@@ -146,14 +160,16 @@ void getNetworkMode(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
+    Five_msec_Delay(5);
+      i++;
+    }
 }
 
 void iotSave(void){
@@ -161,14 +177,16 @@ void iotSave(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
   i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
+    Five_msec_Delay(5);
+      i++;
+    }
 }
 
 void iotReset(void){
@@ -176,15 +194,15 @@ void iotReset(void){
   const char transmitA1[] = "AT+CFUN=1\r";
   while(ALWAYS){
     UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
     if(transmitA1[i] == END_COMMAND) {break;}
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
-  i = ZERO;
   while(CPU_Char_Rx[i] != 'O'){
-    i++;
-  }
-  
+    Five_msec_Delay(5);
+      i++;
+    }  
   PJOUT |= RESET;
   while(ISR_COUNT<Second_1){}
   ISR_COUNT = ZERO;
@@ -197,11 +215,47 @@ void getIpAddress(void){
   short unsigned int i = ZERO;
   while(ALWAYS){
     if(transmitA1[i] == END_COMMAND) {break;}
+    UCA0TXBUF = transmitA1[i];
     UCA1TXBUF = transmitA1[i];
-    Five_msec_Delay(1);
+    Five_msec_Delay(5);
     i++;
   }
+  i = ZERO;
+  while(CPU_Char_Rx[i] != 'O'){
+    Five_msec_Delay(5);
+      i++;
+    }
 }
+
+void getIotStatus(void){
+  const char transmitA1[] = "AT+S.STS\r";
+  short unsigned int i = ZERO;
+  while(ALWAYS){
+    if(transmitA1[i] == END_COMMAND) {break;}
+    UCA1TXBUF = transmitA1[i];
+    UCA0TXBUF = transmitA1[i];
+    Five_msec_Delay(5);
+    i++;
+  }  
+  i = ZERO;
+  int m = ZERO;
+  while(ALWAYS){
+    if(CPU_Char_Rx[i] == '='){
+      m++;
+    }
+    if(CPU_Char_Rx[i] == 'O'){
+      break;
+    }
+    Five_msec_Delay(5);
+    if(i==39){
+      i = ZERO;
+    }
+    else{
+      i++;
+    }
+  }
+}
+
 void displayIOT(void){
   int i = ZERO;
   while(i<10){

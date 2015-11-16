@@ -1,0 +1,75 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           06/Nov/2015  13:36:44
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\left_reverse_off.c
+#    Command line  =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\left_reverse_off.c -lC
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\ -o
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2_2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\List\left_reverse_off.lst
+#    Object file   =  
+#        C:\Users\Rachel\Documents\ECE306\HW\HW9\Debug\Obj\left_reverse_off.r43
+#
+###############################################################################
+
+C:\Users\Rachel\Documents\ECE306\HW\HW9\left_reverse_off.c
+      1          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x222
+   \   union <unnamed> _A_PBOUT_L
+   \                     _A_PBOUT_L:
+   \   000000                DS8 2
+      2          #include  "functions.h"
+      3          #include "macros.h"
+      4          
+
+   \                                 In  segment CODE, align 2
+      5          void Left_Reverse_Off(void){
+   \                     Left_Reverse_Off:
+      6            P3OUT &= ~LED8;
+   \   000000   F2C080002202 BIC.B   #0x80, &0x222
+      7           }
+   \   000006   1001         RETA
+   \   000008                REQUIRE _A_PBOUT_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Left_Reverse_Off
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  Left_Reverse_Off
+       2  _A_PBOUT_L
+
+ 
+ 8 bytes in segment CODE
+ 2 bytes in segment DATA16_AN
+ 
+ 8 bytes of CODE memory
+ 0 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

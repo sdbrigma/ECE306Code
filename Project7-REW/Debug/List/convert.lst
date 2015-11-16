@@ -1,0 +1,576 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  00:49:23
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\convert.c
+#    Command line  =  
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\convert.c -lC
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\List\ -o
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2_2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\List\convert.lst
+#    Object file   =  
+#        C:\Users\Rachel\Documents\ECE306\Projects\Project7\Debug\Obj\convert.r43
+#
+###############################################################################
+
+C:\Users\Rachel\Documents\ECE306\Projects\Project7\convert.c
+      1          //***********************************************************************
+      2          //      Title: convert.c 
+      3          //      Description: This file handles type conversions 
+      4          //      Rachel Williams
+      5          //      November 2015
+      6          //      Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      7          //***********************************************************************
+      8          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ec
+   \   union <unnamed> _A_UCA1RXBUF_L
+   \                     _A_UCA1RXBUF_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+      9          #include  "functions.h"
+     10          #include  "macros.h"
+     11          
+     12          //***********************************************************************
+     13          //      Function name: ADC_Convert 
+     14          //      Description: Converts 10-bit analog input to hex representation 
+     15          //      Global variables: enabled_LD, enabled_RD, temp_num, temp
+     16          //      Local variables: diff, temp
+     17          //      Return: NONE
+     18          //***********************************************************************
+
+   \                                 In  segment CODE, align 2
+     19          void ADC_Convert(void){
+   \                     ADC_Convert:
+     20            int diff = ORIGINAL;
+   \   000000   0F43         MOV.W   #0x0, R15
+     21            int temp = ORIGINAL;   
+   \   000002   0E43         MOV.W   #0x0, R14
+     22            
+     23            if(enabled_RD){
+   \   000004   C293....     CMP.B   #0x0, &enabled_RD
+   \   000008   0524         JEQ     ??ADC_Convert_0
+     24              temp_num = ADC_Right_Detector; // reading hexadecimal values fr: detector
+   \   00000A   9242........ MOV.W   &ADC_Right_Detector, &temp_num
+     25              temp = ADC_Right_Detector;       
+   \   000010   1E42....     MOV.W   &ADC_Right_Detector, R14
+     26            }
+     27            if(enabled_LD){
+   \                     ??ADC_Convert_0:
+   \   000014   C293....     CMP.B   #0x0, &enabled_LD
+   \   000018   0524         JEQ     ??ADC_Convert_1
+     28              temp_num = ADC_Left_Detector; // reading hexadecimal values fr: detector
+   \   00001A   9242........ MOV.W   &ADC_Left_Detector, &temp_num
+     29              temp = ADC_Left_Detector;
+   \   000020   1E42....     MOV.W   &ADC_Left_Detector, R14
+     30            }
+     31            if(enabled_thumb){
+   \                     ??ADC_Convert_1:
+   \   000024   C293....     CMP.B   #0x0, &enabled_thumb
+   \   000028   0524         JEQ     ??ADC_Convert_2
+     32              temp_num =  ADC_Thumb;        // reading hexadecimal values fr: th. wheel
+   \   00002A   9242........ MOV.W   &ADC_Thumb, &temp_num
+     33              temp = ADC_Thumb; 
+   \   000030   1E42....     MOV.W   &ADC_Thumb, R14
+     34            }
+     35            
+     36            // LSB bit of 10bit signal
+     37            temp_num = temp_num & BIT_LSB; 
+   \                     ??ADC_Convert_2:
+   \   000034   B2F00F00.... AND.W   #0xf, &temp_num
+     38            if(temp_num <= NUM_MIN){
+   \   00003A   B2900A00.... CMP.W   #0xa, &temp_num
+   \   000040   042C         JC      ??ADC_Convert_3
+     39               temp_num += NUM_BASE; 
+   \   000042   B2503000.... ADD.W   #0x30, &temp_num
+   \   000048   0C3C         JMP     ??ADC_Convert_4
+     40            }else {
+     41               diff = temp_num-NUM_MIN;
+   \                     ??ADC_Convert_3:
+   \   00004A   1D42....     MOV.W   &temp_num, R13
+   \   00004E   3D50F7FF     ADD.W   #0xfff7, R13
+   \   000052   0F4D         MOV.W   R13, R15
+     42               temp_num = ORIGINAL; 
+   \   000054   8243....     MOV.W   #0x0, &temp_num
+     43               temp_num = LET_MIN + diff;
+   \   000058   0D4F         MOV.W   R15, R13
+   \   00005A   3D504000     ADD.W   #0x40, R13
+   \   00005E   824D....     MOV.W   R13, &temp_num
+     44            }
+     45            if(enabled_RD){
+   \                     ??ADC_Convert_4:
+   \   000062   C293....     CMP.B   #0x0, &enabled_RD
+   \   000066   0524         JEQ     ??ADC_Convert_5
+     46               display_1[POSIT_6]=temp_num;
+   \   000068   1D42....     MOV.W   &display_1, R13
+   \   00006C   DD42....0600 MOV.B   &temp_num, 0x6(R13)
+     47            }
+     48            if(enabled_LD){
+   \                     ??ADC_Convert_5:
+   \   000072   C293....     CMP.B   #0x0, &enabled_LD
+   \   000076   0524         JEQ     ??ADC_Convert_6
+     49               display_2[POSIT_6]=temp_num;
+   \   000078   1D42....     MOV.W   &display_2, R13
+   \   00007C   DD42....0600 MOV.B   &temp_num, 0x6(R13)
+     50            }
+     51            if(enabled_thumb){
+   \                     ??ADC_Convert_6:
+   \   000082   C293....     CMP.B   #0x0, &enabled_thumb
+   \   000086   0524         JEQ     ??ADC_Convert_7
+     52               display_3[POSIT_6]=temp_num;
+   \   000088   1D42....     MOV.W   &display_3, R13
+   \   00008C   DD42....0600 MOV.B   &temp_num, 0x6(R13)
+     53            }
+     54                
+     55            // Next bit of 10bit signal 
+     56            temp_num = temp; 
+   \                     ??ADC_Convert_7:
+   \   000092   824E....     MOV.W   R14, &temp_num
+     57            temp_num = temp_num & BIT_MID; 
+   \   000096   B2F0F000.... AND.W   #0xf0, &temp_num
+     58            temp_num>>=POSIT_4; //right shifted to next bit 
+   \   00009C   1D42....     MOV.W   &temp_num, R13
+   \   0000A0   5D0F         RRUM.W  #0x4, R13
+   \   0000A2   824D....     MOV.W   R13, &temp_num
+     59            if(temp_num <= NUM_MIN){
+   \   0000A6   B2900A00.... CMP.W   #0xa, &temp_num
+   \   0000AC   042C         JC      ??ADC_Convert_8
+     60               temp_num += NUM_BASE; 
+   \   0000AE   B2503000.... ADD.W   #0x30, &temp_num
+   \   0000B4   0C3C         JMP     ??ADC_Convert_9
+     61            }else {
+     62               diff = temp_num-NUM_MIN;
+   \                     ??ADC_Convert_8:
+   \   0000B6   1D42....     MOV.W   &temp_num, R13
+   \   0000BA   3D50F7FF     ADD.W   #0xfff7, R13
+   \   0000BE   0F4D         MOV.W   R13, R15
+     63               temp_num = ORIGINAL; 
+   \   0000C0   8243....     MOV.W   #0x0, &temp_num
+     64               temp_num = LET_MIN + diff; 
+   \   0000C4   0D4F         MOV.W   R15, R13
+   \   0000C6   3D504000     ADD.W   #0x40, R13
+   \   0000CA   824D....     MOV.W   R13, &temp_num
+     65             }
+     66             if(enabled_RD){
+   \                     ??ADC_Convert_9:
+   \   0000CE   C293....     CMP.B   #0x0, &enabled_RD
+   \   0000D2   0524         JEQ     ??ADC_Convert_10
+     67               display_1[POSIT_5]=temp_num;
+   \   0000D4   1D42....     MOV.W   &display_1, R13
+   \   0000D8   DD42....0500 MOV.B   &temp_num, 0x5(R13)
+     68             }
+     69             if(enabled_LD){
+   \                     ??ADC_Convert_10:
+   \   0000DE   C293....     CMP.B   #0x0, &enabled_LD
+   \   0000E2   0524         JEQ     ??ADC_Convert_11
+     70               display_2[POSIT_5]=temp_num;
+   \   0000E4   1D42....     MOV.W   &display_2, R13
+   \   0000E8   DD42....0500 MOV.B   &temp_num, 0x5(R13)
+     71             }
+     72            if(enabled_thumb){
+   \                     ??ADC_Convert_11:
+   \   0000EE   C293....     CMP.B   #0x0, &enabled_thumb
+   \   0000F2   0524         JEQ     ??ADC_Convert_12
+     73              display_3[POSIT_5]=temp_num;
+   \   0000F4   1D42....     MOV.W   &display_3, R13
+   \   0000F8   DD42....0500 MOV.B   &temp_num, 0x5(R13)
+     74            }
+     75                
+     76             // MSB bit of 10bit signal 
+     77             temp_num = temp; 
+   \                     ??ADC_Convert_12:
+   \   0000FE   824E....     MOV.W   R14, &temp_num
+     78             temp_num = temp_num & BIT_MSB; 
+   \   000102   B2F0000F.... AND.W   #0xf00, &temp_num
+     79             temp_num>>=POSIT_8; 
+   \   000108   9210....     SWPB    &temp_num
+   \   00010C   B2F0FF00.... AND.W   #0xff, &temp_num
+     80             if(temp_num <= NUM_MIN){
+   \   000112   B2900A00.... CMP.W   #0xa, &temp_num
+   \   000118   042C         JC      ??ADC_Convert_13
+     81               temp_num += NUM_BASE;
+   \   00011A   B2503000.... ADD.W   #0x30, &temp_num
+   \   000120   0C3C         JMP     ??ADC_Convert_14
+     82             } else {
+     83               diff = temp_num-NUM_MIN;
+   \                     ??ADC_Convert_13:
+   \   000122   1D42....     MOV.W   &temp_num, R13
+   \   000126   3D50F7FF     ADD.W   #0xfff7, R13
+   \   00012A   0F4D         MOV.W   R13, R15
+     84               temp_num = ORIGINAL; 
+   \   00012C   8243....     MOV.W   #0x0, &temp_num
+     85               temp_num = LET_MIN + diff; 
+   \   000130   0D4F         MOV.W   R15, R13
+   \   000132   3D504000     ADD.W   #0x40, R13
+   \   000136   824D....     MOV.W   R13, &temp_num
+     86             }
+     87             if(enabled_RD){
+   \                     ??ADC_Convert_14:
+   \   00013A   C293....     CMP.B   #0x0, &enabled_RD
+   \   00013E   0524         JEQ     ??ADC_Convert_15
+     88               display_1[POSIT_4]= temp_num;
+   \   000140   1D42....     MOV.W   &display_1, R13
+   \   000144   DD42....0400 MOV.B   &temp_num, 0x4(R13)
+     89             }
+     90             if(enabled_LD){
+   \                     ??ADC_Convert_15:
+   \   00014A   C293....     CMP.B   #0x0, &enabled_LD
+   \   00014E   0524         JEQ     ??ADC_Convert_16
+     91               display_2[POSIT_4]=temp_num;
+   \   000150   1D42....     MOV.W   &display_2, R13
+   \   000154   DD42....0400 MOV.B   &temp_num, 0x4(R13)
+     92             }
+     93             if(enabled_thumb){
+   \                     ??ADC_Convert_16:
+   \   00015A   C293....     CMP.B   #0x0, &enabled_thumb
+   \   00015E   0524         JEQ     ??ADC_Convert_17
+     94              display_3[POSIT_4]=temp_num;
+   \   000160   1D42....     MOV.W   &display_3, R13
+   \   000164   DD42....0400 MOV.B   &temp_num, 0x4(R13)
+     95            }  
+     96          }
+   \                     ??ADC_Convert_17:
+   \   00016A   1001         RETA
+     97          
+     98          //***********************************************************************
+     99          //      Function name: Convert_H2I
+    100          //      Description: This file handles hex to int/int to hex conversion
+    101          //      Global variables: diff, enabled_TX 
+    102          //      Local variables: temp
+    103          //      Return: VOID
+    104          //***********************************************************************
+
+   \                                 In  segment CODE, align 2
+    105          void Convert_H2I(void){ 
+   \                     Convert_H2I:
+    106            diff = ORIGINAL;
+   \   000000   8243....     MOV.W   #0x0, &diff
+    107            
+    108             // resetting after button press 
+    109              if (!(P4IN & SW1)){
+   \   000004   D2B32102     BIT.B   #0x1, &0x221
+   \   000008   0F2C         JC      ??Convert_H2I_1
+    110                UCA1TXBUF = TILDE;
+   \   00000A   B2407E00EE05 MOV.W   #0x7e, &0x5ee
+    111                Five_Msec_Delay(POSIT_5);
+   \   000010   3C400500     MOV.W   #0x5, R12
+   \   000014   ........     CALLA   #Five_Msec_Delay
+    112                UCA1TXBUF = NUM_BASE;
+   \   000018   B2403000EE05 MOV.W   #0x30, &0x5ee
+    113                temp1 = UCA1RXBUF;
+   \   00001E   1E42EC05     MOV.W   &0x5ec, R14
+   \   000022   C24E....     MOV.B   R14, &temp1
+   \   000026   043C         JMP     ??Convert_H2I_2
+    114              } else{
+    115                temp1 = UCA1RXBUF; 
+   \                     ??Convert_H2I_1:
+   \   000028   1E42EC05     MOV.W   &0x5ec, R14
+   \   00002C   C24E....     MOV.B   R14, &temp1
+    116              }
+    117              
+    118            // checks if tilde is sent: resets all  // sends tilde+number 
+    119             if(temp1 == TILDE){
+   \                     ??Convert_H2I_2:
+   \   000030   F2907E00.... CMP.B   #0x7e, &temp1
+   \   000036   6420         JNE     ??Convert_H2I_3
+    120               display_1[POSIT_0] = NUM_BASE;
+   \   000038   1F42....     MOV.W   &display_1, R15
+   \   00003C   FF4030000000 MOV.B   #0x30, 0(R15)
+    121               display_1[POSIT_1] = NUM_BASE;
+   \   000042   1F42....     MOV.W   &display_1, R15
+   \   000046   FF4030000100 MOV.B   #0x30, 0x1(R15)
+    122               display_1[POSIT_2] = NUM_BASE;
+   \   00004C   1F42....     MOV.W   &display_1, R15
+   \   000050   FF4030000200 MOV.B   #0x30, 0x2(R15)
+    123               display_1[POSIT_3] = NUM_BASE;
+   \   000056   1F42....     MOV.W   &display_1, R15
+   \   00005A   FF4030000300 MOV.B   #0x30, 0x3(R15)
+    124               display_1[POSIT_4] = NUM_BASE;
+   \   000060   1F42....     MOV.W   &display_1, R15
+   \   000064   FF4030000400 MOV.B   #0x30, 0x4(R15)
+    125               display_1[POSIT_5] = NUM_BASE;
+   \   00006A   1F42....     MOV.W   &display_1, R15
+   \   00006E   FF4030000500 MOV.B   #0x30, 0x5(R15)
+    126               display_1[POSIT_6] = NUM_BASE;
+   \   000074   1F42....     MOV.W   &display_1, R15
+   \   000078   FF4030000600 MOV.B   #0x30, 0x6(R15)
+    127               display_1[POSIT_7] = NUM_BASE;
+   \   00007E   1F42....     MOV.W   &display_1, R15
+   \   000082   FF4030000700 MOV.B   #0x30, 0x7(R15)
+    128               display_1[POSIT_8] = NUM_BASE;
+   \   000088   1F42....     MOV.W   &display_1, R15
+   \   00008C   FF4030000800 MOV.B   #0x30, 0x8(R15)
+    129               display_1[POSIT_9] = NUM_BASE;
+   \   000092   1F42....     MOV.W   &display_1, R15
+   \   000096   FF4030000900 MOV.B   #0x30, 0x9(R15)
+    130               Display_Process(); 
+   \   00009C   ........     CALLA   #Display_Process
+    131               Five_Msec_Delay(POSIT_5);
+   \   0000A0   3C400500     MOV.W   #0x5, R12
+   \   0000A4   ........     CALLA   #Five_Msec_Delay
+    132               temp1 = UCA1RXBUF; 
+   \   0000A8   1E42EC05     MOV.W   &0x5ec, R14
+   \   0000AC   C24E....     MOV.B   R14, &temp1
+    133               
+    134               if (temp1 == NUM_8) {
+   \   0000B0   F2903800.... CMP.B   #0x38, &temp1
+   \   0000B6   0E20         JNE     ??Convert_H2I_4
+    135                 diff++;
+   \   0000B8   9253....     ADD.W   #0x1, &diff
+    136                 temp1 = diff + NUM_BASE;
+   \   0000BC   5E42....     MOV.B   &diff, R14
+   \   0000C0   7E503000     ADD.B   #0x30, R14
+   \   0000C4   C24E....     MOV.B   R14, &temp1
+    137                 UCA1TXBUF = temp1;
+   \   0000C8   5F42....     MOV.B   &temp1, R15
+   \   0000CC   4F4F         MOV.B   R15, R15
+   \   0000CE   824FEE05     MOV.W   R15, &0x5ee
+   \   0000D2   0C3C         JMP     ??Convert_H2I_5
+    138               }
+    139               else {
+    140                 UCA1TXBUF = TILDE;
+   \                     ??Convert_H2I_4:
+   \   0000D4   B2407E00EE05 MOV.W   #0x7e, &0x5ee
+    141                 Five_Msec_Delay(POSIT_5);
+   \   0000DA   3C400500     MOV.W   #0x5, R12
+   \   0000DE   ........     CALLA   #Five_Msec_Delay
+    142                 UCA1TXBUF = temp1;
+   \   0000E2   5F42....     MOV.B   &temp1, R15
+   \   0000E6   4F4F         MOV.B   R15, R15
+   \   0000E8   824FEE05     MOV.W   R15, &0x5ee
+    143               }
+    144               
+    145               UCA1TXBUF = NUM_BASE;
+   \                     ??Convert_H2I_5:
+   \   0000EC   B2403000EE05 MOV.W   #0x30, &0x5ee
+    146               tens_num = NUM_BASE;
+   \   0000F2   F2403000.... MOV.B   #0x30, &tens_num
+    147               hundreds_num = NUM_BASE; 
+   \   0000F8   F2403000.... MOV.B   #0x30, &hundreds_num
+   \   0000FE   1001         RETA
+    148            }else if(temp1 > NUM_9){// if other characters are sent: ignored 
+   \                     ??Convert_H2I_3:
+   \   000100   F2903A00.... CMP.B   #0x3a, &temp1
+   \   000106   4028         JNC     ??Convert_H2I_6
+    149              temp1 = NUM_BASE;
+   \   000108   F2403000.... MOV.B   #0x30, &temp1
+    150              display_1[POSIT_0] = NUM_BASE;
+   \   00010E   1F42....     MOV.W   &display_1, R15
+   \   000112   FF4030000000 MOV.B   #0x30, 0(R15)
+    151              display_1[POSIT_1] = NUM_BASE;
+   \   000118   1F42....     MOV.W   &display_1, R15
+   \   00011C   FF4030000100 MOV.B   #0x30, 0x1(R15)
+    152              display_1[POSIT_2] = NUM_BASE;
+   \   000122   1F42....     MOV.W   &display_1, R15
+   \   000126   FF4030000200 MOV.B   #0x30, 0x2(R15)
+    153              display_1[POSIT_3] = NUM_BASE;
+   \   00012C   1F42....     MOV.W   &display_1, R15
+   \   000130   FF4030000300 MOV.B   #0x30, 0x3(R15)
+    154              display_1[POSIT_4] = NUM_BASE;
+   \   000136   1F42....     MOV.W   &display_1, R15
+   \   00013A   FF4030000400 MOV.B   #0x30, 0x4(R15)
+    155              display_1[POSIT_5] = NUM_BASE;
+   \   000140   1F42....     MOV.W   &display_1, R15
+   \   000144   FF4030000500 MOV.B   #0x30, 0x5(R15)
+    156              display_1[POSIT_6] = NUM_BASE;
+   \   00014A   1F42....     MOV.W   &display_1, R15
+   \   00014E   FF4030000600 MOV.B   #0x30, 0x6(R15)
+    157              display_1[POSIT_7] = hundreds_num;
+   \   000154   1F42....     MOV.W   &display_1, R15
+   \   000158   DF42....0700 MOV.B   &hundreds_num, 0x7(R15)
+    158              display_1[POSIT_8] = tens_num;
+   \   00015E   1F42....     MOV.W   &display_1, R15
+   \   000162   DF42....0800 MOV.B   &tens_num, 0x8(R15)
+    159              display_1[POSIT_9] = temp1;
+   \   000168   1F42....     MOV.W   &display_1, R15
+   \   00016C   DF42....0900 MOV.B   &temp1, 0x9(R15)
+    160              display_2 = "          ";
+   \   000172   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+    161              display_3 = "          ";
+   \   000178   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+    162              display_4 = "          ";
+   \   00017E   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+    163              Display_Process();  
+   \   000184   ........     BRA     #Display_Process
+    164              return; 
+    165            } else{ // handling conversion
+    166              // taking hex representation, subtracting 0x0030: now an integer 
+    167              diff = temp1 - NUM_BASE; 
+   \                     ??Convert_H2I_6:
+   \   000188   5F42....     MOV.B   &temp1, R15
+   \   00018C   4F4F         MOV.B   R15, R15
+   \   00018E   3F50D0FF     ADD.W   #0xffd0, R15
+   \   000192   824F....     MOV.W   R15, &diff
+    168          
+    169              if(!tens){
+   \   000196   C293....     CMP.B   #0x0, &tens
+   \   00019A   0A20         JNE     ??Convert_H2I_7
+    170                  tens = POSIT_1; 
+   \   00019C   D243....     MOV.B   #0x1, &tens
+    171                  diff = ORIGINAL;
+   \   0001A0   8243....     MOV.W   #0x0, &diff
+    172                  tens_num = NUM_BASE; 
+   \   0001A4   F2403000.... MOV.B   #0x30, &tens_num
+    173                  hundreds_num = NUM_BASE;
+   \   0001AA   F2403000.... MOV.B   #0x30, &hundreds_num
+    174              }
+    175              // add 1 to integer  
+    176              if(diff == POSIT_9){
+   \                     ??Convert_H2I_7:
+   \   0001B0   B2900900.... CMP.W   #0x9, &diff
+   \   0001B6   0520         JNE     ??Convert_H2I_8
+    177                diff = ORIGINAL;
+   \   0001B8   8243....     MOV.W   #0x0, &diff
+    178                tens_num++;
+   \   0001BC   D253....     ADD.B   #0x1, &tens_num
+   \   0001C0   103C         JMP     ??Convert_H2I_9
+    179              }else if(tens_num == NUM_9){
+   \                     ??Convert_H2I_8:
+   \   0001C2   F2903900.... CMP.B   #0x39, &tens_num
+   \   0001C8   0A20         JNE     ??Convert_H2I_10
+    180                tens_num = NUM_BASE;
+   \   0001CA   F2403000.... MOV.B   #0x30, &tens_num
+    181                hundreds = POSIT_1;
+   \   0001D0   D243....     MOV.B   #0x1, &hundreds
+    182                diff = ORIGINAL;
+   \   0001D4   8243....     MOV.W   #0x0, &diff
+    183                hundreds_num++;  
+   \   0001D8   D253....     ADD.B   #0x1, &hundreds_num
+   \   0001DC   023C         JMP     ??Convert_H2I_9
+    184              }else{
+    185                diff++; 
+   \                     ??Convert_H2I_10:
+   \   0001DE   9253....     ADD.W   #0x1, &diff
+    186              }
+    187             
+    188              // taking int representation, adding 0x0030: now a hex value 
+    189              temp1 = diff + NUM_BASE;
+   \                     ??Convert_H2I_9:
+   \   0001E2   5E42....     MOV.B   &diff, R14
+   \   0001E6   7E503000     ADD.B   #0x30, R14
+   \   0001EA   C24E....     MOV.B   R14, &temp1
+    190              
+    191             // displaying digits      
+    192              display_1[POSIT_0] = NUM_BASE;
+   \   0001EE   1F42....     MOV.W   &display_1, R15
+   \   0001F2   FF4030000000 MOV.B   #0x30, 0(R15)
+    193              display_1[POSIT_1] = NUM_BASE;
+   \   0001F8   1F42....     MOV.W   &display_1, R15
+   \   0001FC   FF4030000100 MOV.B   #0x30, 0x1(R15)
+    194              display_1[POSIT_2] = NUM_BASE;
+   \   000202   1F42....     MOV.W   &display_1, R15
+   \   000206   FF4030000200 MOV.B   #0x30, 0x2(R15)
+    195              display_1[POSIT_3] = NUM_BASE;
+   \   00020C   1F42....     MOV.W   &display_1, R15
+   \   000210   FF4030000300 MOV.B   #0x30, 0x3(R15)
+    196              display_1[POSIT_4] = NUM_BASE;
+   \   000216   1F42....     MOV.W   &display_1, R15
+   \   00021A   FF4030000400 MOV.B   #0x30, 0x4(R15)
+    197              display_1[POSIT_5] = NUM_BASE;
+   \   000220   1F42....     MOV.W   &display_1, R15
+   \   000224   FF4030000500 MOV.B   #0x30, 0x5(R15)
+    198              display_1[POSIT_6] = NUM_BASE;
+   \   00022A   1F42....     MOV.W   &display_1, R15
+   \   00022E   FF4030000600 MOV.B   #0x30, 0x6(R15)
+    199              display_1[POSIT_7] = hundreds_num;
+   \   000234   1F42....     MOV.W   &display_1, R15
+   \   000238   DF42....0700 MOV.B   &hundreds_num, 0x7(R15)
+    200              display_1[POSIT_8] = tens_num;
+   \   00023E   1F42....     MOV.W   &display_1, R15
+   \   000242   DF42....0800 MOV.B   &tens_num, 0x8(R15)
+    201              display_1[POSIT_9] = temp1;
+   \   000248   1F42....     MOV.W   &display_1, R15
+   \   00024C   DF42....0900 MOV.B   &temp1, 0x9(R15)
+    202              display_2 = "          ";
+   \   000252   B240........ MOV.W   #`?<Constant "          ">`, &display_2
+    203              display_3 = "          ";
+   \   000258   B240........ MOV.W   #`?<Constant "          ">`, &display_3
+    204              display_4 = "          ";
+   \   00025E   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+    205              Display_Process(); 
+   \   000264   ........     CALLA   #Display_Process
+    206              
+    207              // transmit/send the updated value 
+    208              UCA1TXBUF = temp1; 
+   \   000268   5F42....     MOV.B   &temp1, R15
+   \   00026C   4F4F         MOV.B   R15, R15
+   \   00026E   824FEE05     MOV.W   R15, &0x5ee
+    209              
+    210              // re-initialize to zero until next interrupt call 
+    211              enabled_RX = POSIT_0; 
+   \   000272   C243....     MOV.B   #0x0, &enabled_RX
+    212              hundreds = POSIT_0; 
+   \   000276   C243....     MOV.B   #0x0, &hundreds
+    213              Five_Msec_Delay(POSIT_10);
+   \   00027A   3C400A00     MOV.W   #0xa, R12
+   \   00027E   ........     BRA     #Five_Msec_Delay
+   \   000282                REQUIRE _A_PBIN_L
+   \   000282                REQUIRE _A_UCA1TXBUF_L
+   \   000282                REQUIRE _A_UCA1RXBUF_L
+    214            }
+    215          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   ADC_Convert
+      4   Convert_H2I
+        4   -> Display_Process
+        0   -> Five_Msec_Delay
+        4   -> Five_Msec_Delay
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+     364  ADC_Convert
+     642  Convert_H2I
+       2  _A_PBIN_L
+       2  _A_UCA1RXBUF_L
+       2  _A_UCA1TXBUF_L
+
+ 
+ 1 006 bytes in segment CODE
+     6 bytes in segment DATA16_AN
+    11 bytes in segment DATA16_C
+ 
+ 1 006 bytes of CODE  memory
+    11 bytes of CONST memory
+     0 bytes of DATA  memory (+ 6 bytes shared)
+
+Errors: none
+Warnings: none

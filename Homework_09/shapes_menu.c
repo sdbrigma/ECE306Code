@@ -1,8 +1,29 @@
 #include  "macros.h"
 #include  "msp430.h"
 #include  "functions.h"
+//******************************************************************************
+//
+//  Description: This file contains code for the second option, "Shapes" , in the top menu
+//   
+//
+//  Steffon Brigman
+//  Noember 2015
+//  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+//******************************************************************************
 
 void getShapesMenu(unsigned int adc_value){
+/*******************************************************************************
+*        Author: Steffon Brigman
+*        Date:   November 2015
+*        Description: This fucntion displays options under "Shapes" in the top menu
+*        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+*
+*        Funcction name: getShapesMenu
+*        Passed : No variables passed 
+*        Returned: no values returned 
+*        Locals: adc_value
+*        Globlas: big
+*******************************************************************************/
   char value = adc_value >> SHIFT6; // shift 10 bit value by 6 bits
   big = ALWAYS;
   lcd_BIG_mid();

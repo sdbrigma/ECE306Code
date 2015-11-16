@@ -25,19 +25,62 @@ void Display_Process(void){
 
 void setLCD(const char display1[], int pos1, const char display2[], int pos2,// ONLY TAKES STRINGS
             const char display3[], int pos3, const char display4[], int pos4){
-              
   int i = ZERO;
   posL1 = pos1;
   posL2 = pos2;
   posL3 = pos3;
   posL4 = pos4;
-  while(i<10){
+  while(display1[i] != ORIGINAL){
     display_1[i] = display1[i];
+    i++;
+  }
+  if(i != 9){
+      while(i < 9){
+        display_1[i] = ORIGINAL;
+        i++;
+      }
+    }
+  
+  i = ZERO;
+  while(display2[i] != ORIGINAL){
     display_2[i] = display2[i];
+    i++;
+  }
+  
+    if(i != 9){
+      while(i < 9){
+        display_2[i] = ORIGINAL;
+        i++;
+      }
+    }
+  
+  i = ZERO;
+  while(display3[i] != ORIGINAL){
     display_3[i] = display3[i];
+    i++;
+  }
+  
+    if(i != 9){
+      while(i < 9){
+        display_3[i] = ORIGINAL;
+        i++;
+      }
+    }
+  
+  i = ZERO;
+  while(display4[i] != ORIGINAL){
     display_4[i] = display4[i];
     i++;
   }
+  
+    if(i != 9){
+      while(i < 9){
+        display_4[i] = ORIGINAL;
+        i++;
+      }
+    }
+  
+  i = ZERO;
   Display_Process();
   Five_msec_Delay(30);
 }
