@@ -1,0 +1,576 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           17/Nov/2015  02:50:28
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\IOT.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\IOT.c" -lC
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\Debug\List\"
+#        -o "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\Debug\Obj\"
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\pj7zip\Debug\List\IOT.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\pj7zip\Debug\Obj\IOT.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\IOT.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file is used to implement the IOT functions
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Oct 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          
+     13          //Points to Header files for Preprocessing
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ce
+   \   union <unnamed> _A_UCA0TXBUF_L
+   \                     _A_UCA0TXBUF_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5fa
+   \   union <unnamed> _A_UCA1IE_L
+   \                     _A_UCA1IE_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include  "macros.h"
+     17          
+
+   \                                 In  segment CODE, align 2
+     18          void NCSU_Config(void){
+   \                     NCSU_Config:
+   \   000000   3B15         PUSHM.W #0x4, R11
+   \   000002   31801E00     SUB.W   #0x1e, SP
+     19          //******************************************************************************
+     20          //
+     21          //  Description: This function is used to configure the IOT device on NCSU
+     22          //  wireless network
+     23          //
+     24          //
+     25          //  Steffon Brigman
+     26          //  Sept 2015
+     27          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     28          //
+     29          // Globals: IOT_RX[SMALL_RING_SIZE], display_1, display_2, display_3,
+     30          // display_4
+     31          //
+     32          // Passed: 
+     33          //
+     34          // Local: i, firstDOT, secondDOT
+     35          //
+     36          // Return: VOID
+     37          //
+     38          //****************************************************************************** 
+     39            
+     40            int i = INITIAL;
+   \   000006   0B43         MOV.W   #0x0, R11
+     41            _Bool firstDOT = FALSE;
+   \   000008   4A43         MOV.B   #0x0, R10
+     42            Display_Format();
+   \   00000A   ........     CALLA   #Display_Format
+     43            
+     44            UCA1IE |= UCTXIE;                       // Enable TX interrupt
+   \   00000E   A2D3FA05     BIS.W   #0x2, &0x5fa
+     45            UCA1IE |= UCRXIE;	                  // Enable RX interrupt 
+   \   000012   92D3FA05     BIS.W   #0x1, &0x5fa
+     46            
+     47            // CONFIGURE SSID
+     48            SSID();
+   \   000016   ........     CALLA   #SSID
+     49            // CONFIGURE HOSTNAME
+     50            HOST();
+   \   00001A   ........     CALLA   #HOST
+     51            // CONFIGURE NETWORK PRIVACY MODE
+     52            NPM();
+   \   00001E   ........     CALLA   #NPM
+     53            // CONFIGURE NETWORK MODE
+     54            NET_MODE();
+   \   000022   ........     CALLA   #NET_MODE
+     55            // FLASH SETTING
+     56            FLASH();
+   \   000026   ........     CALLA   #FLASH
+     57            
+     58          //// RESET ////
+     59            display_2 = "  RESET   ";
+   \   00002A   B240........ MOV.W   #`?<Constant "  RESET   ">`, &display_2
+     60            Display_Process();
+   \   000030   ........     CALLA   #Display_Process
+     61            Five_msec_Delay(BIG_DELAY);
+   \   000034   3C403200     MOV.W   #0x32, R12
+   \   000038   ........     CALLA   #Five_msec_Delay
+     62            
+     63            PJOUT |= RESET;
+   \   00003C   B2D22203     BIS.W   #0x8, &0x322
+     64            Five_msec_Delay(ONE_SEC_COUNT);
+   \   000040   3C40E803     MOV.W   #0x3e8, R12
+   \   000044   ........     CALLA   #Five_msec_Delay
+     65            PJOUT &= ~RESET;
+   \   000048   B2C22203     BIC.W   #0x8, &0x322
+     66            Init_LCD();
+   \   00004C   ........     CALLA   #Init_LCD
+     67            
+     68            Five_msec_Delay(ONE_SEC_MULT);
+   \   000050   3C40C800     MOV.W   #0xc8, R12
+   \   000054   ........     CALLA   #Five_msec_Delay
+     69            
+     70            display_1 = "----------";
+   \   000058   B240........ MOV.W   #`?<Constant "----------">`, &display_1
+     71            display_2 = " COMPLETE ";
+   \   00005E   B240........ MOV.W   #`?<Constant " COMPLETE ">`, &display_2
+     72            display_3 = "----------";
+   \   000064   B240........ MOV.W   #`?<Constant "----------">`, &display_3
+     73            display_4 = "          ";
+   \   00006A   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     74            Display_Process();
+   \   000070   ........     CALLA   #Display_Process
+     75            posL1 = LINE_POS_L0;
+   \   000074   C243....     MOV.B   #0x0, &posL1
+     76            posL2 = LINE_POS_L0;
+   \   000078   C243....     MOV.B   #0x0, &posL2
+     77            posL3 = LINE_POS_L0;
+   \   00007C   C243....     MOV.B   #0x0, &posL3
+     78            posL4 = LINE_POS_L0;
+   \   000080   C243....     MOV.B   #0x0, &posL4
+     79            big = TRUE;
+   \   000084   D243....     MOV.B   #0x1, &big
+     80            lcd_BIG_mid();
+   \   000088   ........     CALLA   #lcd_BIG_mid
+     81            
+     82            Five_msec_Delay(ONE_SEC_MULT);
+   \   00008C   3C40C800     MOV.W   #0xc8, R12
+   \   000090   ........     CALLA   #Five_msec_Delay
+     83            
+     84            display_1 = "----------";
+   \   000094   B240........ MOV.W   #`?<Constant "----------">`, &display_1
+     85            display_2 = "CONNECTING";
+   \   00009A   B240........ MOV.W   #`?<Constant "CONNECTING">`, &display_2
+     86            display_3 = "----------";
+   \   0000A0   B240........ MOV.W   #`?<Constant "----------">`, &display_3
+     87            display_4 = "          ";
+   \   0000A6   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     88            Display_Process();
+   \   0000AC   ........     CALLA   #Display_Process
+     89            posL1 = LINE_POS_L0;
+   \   0000B0   C243....     MOV.B   #0x0, &posL1
+     90            posL2 = LINE_POS_L0;
+   \   0000B4   C243....     MOV.B   #0x0, &posL2
+     91            posL3 = LINE_POS_L0;
+   \   0000B8   C243....     MOV.B   #0x0, &posL3
+     92            posL4 = LINE_POS_L0;
+   \   0000BC   C243....     MOV.B   #0x0, &posL4
+     93            big = TRUE;
+   \   0000C0   D243....     MOV.B   #0x1, &big
+     94            lcd_BIG_mid();
+   \   0000C4   ........     CALLA   #lcd_BIG_mid
+     95            
+     96            Five_msec_Delay(FIVE_SEC_MULT);
+   \   0000C8   3C40E803     MOV.W   #0x3e8, R12
+   \   0000CC   ........     CALLA   #Five_msec_Delay
+     97          
+     98            // GET SSID to Display
+     99            char SSIDcmd[Pos12] = "AT+S.SSIDTXT";
+   \   0000D0   0C41         MOV.W   SP, R12
+   \   0000D2   3E40....     MOV.W   #`?<Constant "AT+S.SSIDTXT">`, R14
+   \   0000D6   3D400C00     MOV.W   #0xc, R13
+   \   0000DA   ........     CALLA   #?CopyMemoryBytes
+    100            // Initialize IOT_RX ring
+    101            for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+   \   0000DE   0B43         MOV.W   #0x0, R11
+   \                     ??NCSU_Config_0:
+   \   0000E0   3B902800     CMP.W   #0x28, R11
+   \   0000E4   0434         JGE     ??NCSU_Config_10
+   \   0000E6   CB43....     MOV.B   #0x0, IOT_RX(R11)
+   \   0000EA   1B53         ADD.W   #0x1, R11
+   \   0000EC   F93F         JMP     ??NCSU_Config_0
+    102            
+    103            IOTRead = INITIAL;
+   \                     ??NCSU_Config_10:
+   \   0000EE   8243....     MOV.W   #0x0, &IOTRead
+    104            for(i=INITIAL; i < Pos12; i++) {
+   \   0000F2   0B43         MOV.W   #0x0, R11
+   \                     ??NCSU_Config_1:
+   \   0000F4   3B900C00     CMP.W   #0xc, R11
+   \   0000F8   0C34         JGE     ??NCSU_Config_11
+    105              UCA1TXBUF = UCA0TXBUF = SSIDcmd[i];
+   \   0000FA   0F4B         MOV.W   R11, R15
+   \   0000FC   0F51         ADD.W   SP, R15
+   \   0000FE   6E4F         MOV.B   @R15, R14
+   \   000100   4E4E         MOV.B   R14, R14
+   \   000102   824ECE05     MOV.W   R14, &0x5ce
+   \   000106   824EEE05     MOV.W   R14, &0x5ee
+    106              One_msec_Delay();
+   \   00010A   ........     CALLA   #One_msec_Delay
+    107            }
+   \   00010E   1B53         ADD.W   #0x1, R11
+   \   000110   F13F         JMP     ??NCSU_Config_1
+    108            UCA1TXBUF = UCA0TXBUF = TX_FINISH;
+   \                     ??NCSU_Config_11:
+   \   000112   3F400D00     MOV.W   #0xd, R15
+   \   000116   824FCE05     MOV.W   R15, &0x5ce
+   \   00011A   824FEE05     MOV.W   R15, &0x5ee
+    109            One_msec_Delay();
+   \   00011E   ........     CALLA   #One_msec_Delay
+    110            
+    111            Five_msec_Delay(BIG_DELAY);
+   \   000122   3C403200     MOV.W   #0x32, R12
+   \   000126   ........     CALLA   #Five_msec_Delay
+    112            
+    113            display_1[Pos0] = ' ';
+   \   00012A   1F42....     MOV.W   &display_1, R15
+   \   00012E   FF4020000000 MOV.B   #0x20, 0(R15)
+    114            display_1[Pos1] = ' ';
+   \   000134   1F42....     MOV.W   &display_1, R15
+   \   000138   FF4020000100 MOV.B   #0x20, 0x1(R15)
+    115            display_1[Pos2] = ' ';
+   \   00013E   1F42....     MOV.W   &display_1, R15
+   \   000142   FF4020000200 MOV.B   #0x20, 0x2(R15)
+    116            display_1[Pos3] = IOT_RX[Pos8];
+   \   000148   1F42....     MOV.W   &display_1, R15
+   \   00014C   DF42....0300 MOV.B   &IOT_RX + 8, 0x3(R15)
+    117            display_1[Pos4] = IOT_RX[Pos9];
+   \   000152   1F42....     MOV.W   &display_1, R15
+   \   000156   DF42....0400 MOV.B   &IOT_RX + 9, 0x4(R15)
+    118            display_1[Pos5] = IOT_RX[Pos10];
+   \   00015C   1F42....     MOV.W   &display_1, R15
+   \   000160   DF42....0500 MOV.B   &IOT_RX + 10, 0x5(R15)
+    119            display_1[Pos6] = IOT_RX[Pos11];
+   \   000166   1F42....     MOV.W   &display_1, R15
+   \   00016A   DF42....0600 MOV.B   &IOT_RX + 11, 0x6(R15)
+    120            display_1[Pos7] = ' ';
+   \   000170   1F42....     MOV.W   &display_1, R15
+   \   000174   FF4020000700 MOV.B   #0x20, 0x7(R15)
+    121            display_1[Pos8] = ' ';
+   \   00017A   1F42....     MOV.W   &display_1, R15
+   \   00017E   FF4020000800 MOV.B   #0x20, 0x8(R15)
+    122            display_1[Pos9] = ' ';
+   \   000184   1F42....     MOV.W   &display_1, R15
+   \   000188   FF4020000900 MOV.B   #0x20, 0x9(R15)
+    123            display_2 = "  ipaddr  ";
+   \   00018E   B240........ MOV.W   #`?<Constant "  ipaddr  ">`, &display_2
+    124            display_3 = display_4 = "          ";
+   \   000194   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+   \   00019A   9242........ MOV.W   &display_4, &display_3
+    125            big = INITIAL;
+   \   0001A0   C243....     MOV.B   #0x0, &big
+    126            lcd_4line();
+   \   0001A4   ........     CALLA   #lcd_4line
+    127            Display_Process();
+   \   0001A8   ........     CALLA   #Display_Process
+    128            
+    129            Five_msec_Delay(ONE_SEC_MULT);
+   \   0001AC   3C40C800     MOV.W   #0xc8, R12
+   \   0001B0   ........     CALLA   #Five_msec_Delay
+    130            
+    131            // GET IP Address to display
+    132            char IPADDRcmd[Pos18] = "AT+S.STS=ip_ipaddr";
+   \   0001B4   0C41         MOV.W   SP, R12
+   \   0001B6   3C500C00     ADD.W   #0xc, R12
+   \   0001BA   3E40....     MOV.W   #`?<Constant "AT+S.STS=ip_ipaddr">`, R14
+   \   0001BE   3D401200     MOV.W   #0x12, R13
+   \   0001C2   ........     CALLA   #?CopyMemoryBytes
+    133            // Initialize IOT_RX ring
+    134            for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+   \   0001C6   0B43         MOV.W   #0x0, R11
+   \                     ??NCSU_Config_2:
+   \   0001C8   3B902800     CMP.W   #0x28, R11
+   \   0001CC   0434         JGE     ??NCSU_Config_12
+   \   0001CE   CB43....     MOV.B   #0x0, IOT_RX(R11)
+   \   0001D2   1B53         ADD.W   #0x1, R11
+   \   0001D4   F93F         JMP     ??NCSU_Config_2
+    135            
+    136            IOTRead = INITIAL;
+   \                     ??NCSU_Config_12:
+   \   0001D6   8243....     MOV.W   #0x0, &IOTRead
+    137            for(i=INITIAL; i < Pos18; i++) {
+   \   0001DA   0B43         MOV.W   #0x0, R11
+   \                     ??NCSU_Config_3:
+   \   0001DC   3B901200     CMP.W   #0x12, R11
+   \   0001E0   0D34         JGE     ??NCSU_Config_13
+    138              UCA1TXBUF = UCA0TXBUF = IPADDRcmd[i];
+   \   0001E2   0F4B         MOV.W   R11, R15
+   \   0001E4   0F51         ADD.W   SP, R15
+   \   0001E6   5E4F0C00     MOV.B   0xc(R15), R14
+   \   0001EA   4E4E         MOV.B   R14, R14
+   \   0001EC   824ECE05     MOV.W   R14, &0x5ce
+   \   0001F0   824EEE05     MOV.W   R14, &0x5ee
+    139              One_msec_Delay();
+   \   0001F4   ........     CALLA   #One_msec_Delay
+    140            }
+   \   0001F8   1B53         ADD.W   #0x1, R11
+   \   0001FA   F03F         JMP     ??NCSU_Config_3
+    141            UCA1TXBUF = UCA0TXBUF = TX_FINISH;
+   \                     ??NCSU_Config_13:
+   \   0001FC   3F400D00     MOV.W   #0xd, R15
+   \   000200   824FCE05     MOV.W   R15, &0x5ce
+   \   000204   824FEE05     MOV.W   R15, &0x5ee
+    142            One_msec_Delay();
+   \   000208   ........     CALLA   #One_msec_Delay
+    143            
+    144            Five_msec_Delay(BIG_DELAY);
+   \   00020C   3C403200     MOV.W   #0x32, R12
+   \   000210   ........     CALLA   #Five_msec_Delay
+    145            UCA1IE &= ~UCRXIE;
+   \   000214   92C3FA05     BIC.W   #0x1, &0x5fa
+    146            
+    147            int indexIP = INITIAL;
+   \   000218   0843         MOV.W   #0x0, R8
+    148            firstDOT = FALSE;
+   \   00021A   4A43         MOV.B   #0x0, R10
+    149            display_3[Pos0] = ' ';
+   \   00021C   1F42....     MOV.W   &display_3, R15
+   \   000220   FF4020000000 MOV.B   #0x20, 0(R15)
+    150            for(i=Pos1; i < Pos9; i++) {
+   \   000226   1B43         MOV.W   #0x1, R11
+   \                     ??NCSU_Config_4:
+   \   000228   3B900900     CMP.W   #0x9, R11
+   \   00022C   1834         JGE     ??NCSU_Config_14
+    151              display_3[i] = IOT_RX[i+Pos14];
+   \   00022E   1F42....     MOV.W   &display_3, R15
+   \   000232   0F5B         ADD.W   R11, R15
+   \   000234   DF4B....0000 MOV.B   IOT_RX + 14(R11), 0(R15)
+    152              if ((IOT_RX[i+Pos14] == '.') && (firstDOT == TRUE)) {
+   \   00023A   FB902E00.... CMP.B   #0x2e, IOT_RX + 14(R11)
+   \   000240   0720         JNE     ??NCSU_Config_15
+   \   000242   4A93         CMP.B   #0x0, R10
+   \   000244   0524         JEQ     ??NCSU_Config_15
+    153                indexIP = i+Pos13;
+   \   000246   0F4B         MOV.W   R11, R15
+   \   000248   3F500D00     ADD.W   #0xd, R15
+   \   00024C   084F         MOV.W   R15, R8
+    154                break;
+   \   00024E   073C         JMP     ??NCSU_Config_14
+    155              }
+    156              if (IOT_RX[i+Pos14] == '.') firstDOT = TRUE;
+   \                     ??NCSU_Config_15:
+   \   000250   FB902E00.... CMP.B   #0x2e, IOT_RX + 14(R11)
+   \   000256   0120         JNE     ??NCSU_Config_16
+   \   000258   5A43         MOV.B   #0x1, R10
+    157            }
+   \                     ??NCSU_Config_16:
+   \   00025A   1B53         ADD.W   #0x1, R11
+   \   00025C   E53F         JMP     ??NCSU_Config_4
+    158            display_3[Pos9] = ' ';
+   \                     ??NCSU_Config_14:
+   \   00025E   1F42....     MOV.W   &display_3, R15
+   \   000262   FF4020000900 MOV.B   #0x20, 0x9(R15)
+    159           
+    160            Display_Process();
+   \   000268   ........     CALLA   #Display_Process
+    161            Five_msec_Delay(BIG_DELAY);
+   \   00026C   3C403200     MOV.W   #0x32, R12
+   \   000270   ........     CALLA   #Five_msec_Delay
+    162            
+    163            display_4 = "         ";
+   \   000274   B240........ MOV.W   #`?<Constant "         ">`, &display_4
+    164            for(i=Pos2; i < Pos9; i++) {
+   \   00027A   2B43         MOV.W   #0x2, R11
+   \                     ??NCSU_Config_5:
+   \   00027C   3B900900     CMP.W   #0x9, R11
+   \   000280   1034         JGE     ??NCSU_Config_9
+    165              if (IOT_RX[i+indexIP] == '\r') break;
+   \   000282   0F4B         MOV.W   R11, R15
+   \   000284   0F58         ADD.W   R8, R15
+   \   000286   FF900D00.... CMP.B   #0xd, IOT_RX(R15)
+   \   00028C   0A24         JEQ     ??NCSU_Config_9
+    166              display_4[i] = IOT_RX[i+indexIP];
+   \   00028E   0F4B         MOV.W   R11, R15
+   \   000290   0F58         ADD.W   R8, R15
+   \   000292   1E42....     MOV.W   &display_4, R14
+   \   000296   0E5B         ADD.W   R11, R14
+   \   000298   DE4F....0000 MOV.B   IOT_RX(R15), 0(R14)
+    167            }
+   \   00029E   1B53         ADD.W   #0x1, R11
+   \   0002A0   ED3F         JMP     ??NCSU_Config_5
+    168            
+    169            // Display IP Address
+    170            Display_Process();
+   \                     ??NCSU_Config_9:
+   \   0002A2   ........     CALLA   #Display_Process
+    171            Five_msec_Delay(BIG_DELAY);
+   \   0002A6   3C403200     MOV.W   #0x32, R12
+   \   0002AA   ........     CALLA   #Five_msec_Delay
+    172            UCA1IE |= UCRXIE;
+   \   0002AE   92D3FA05     BIS.W   #0x1, &0x5fa
+    173            
+    174            // PING LAB COMPUTER
+    175            PING();
+   \   0002B2   ........     CALLA   #PING
+    176            
+    177            // Wait for IOT confirmation
+    178            while (IOT_RX[Pos31] != 'O') {
+   \                     ??NCSU_Config_6:
+   \   0002B6   F2904F00.... CMP.B   #0x4f, &IOT_RX + 31
+   \   0002BC   0724         JEQ     ??NCSU_Config_7
+    179              if (!(P4IN & SW2)) {
+   \   0002BE   E2B32102     BIT.B   #0x2, &0x221
+   \   0002C2   F92F         JC      ??NCSU_Config_6
+    180                Five_msec_Delay(LIL_SW_DELAY); 
+   \   0002C4   3C401F00     MOV.W   #0x1f, R12
+   \   0002C8   ........     CALLA   #Five_msec_Delay
+    181                break;
+    182              }
+    183            }
+    184            
+    185            while(ALWAYS) {
+    186              if (!(P4IN & SW2)) {
+   \                     ??NCSU_Config_7:
+   \   0002CC   E2B32102     BIT.B   #0x2, &0x221
+   \   0002D0   FD2F         JC      ??NCSU_Config_7
+    187                Five_msec_Delay(LIL_SW_DELAY); 
+   \   0002D2   3C401F00     MOV.W   #0x1f, R12
+   \   0002D6   ........     CALLA   #Five_msec_Delay
+    188                break;
+    189              }
+    190            }
+    191            
+    192          }
+   \   0002DA   31501E00     ADD.W   #0x1e, SP
+   \   0002DE   3817         POPM.W  #0x4, R11
+   \   0002E0   1001         RETA
+   \   0002E2                REQUIRE _A_UCA1IE_L
+   \   0002E2                REQUIRE _A_PJOUT_L
+   \   0002E2                REQUIRE _A_UCA1TXBUF_L
+   \   0002E2                REQUIRE _A_UCA0TXBUF_L
+   \   0002E2                REQUIRE _A_PBIN_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  RESET   ">`:
+   \   000000   202052455345 DC8 "  RESET   "
+   \            5420202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "----------">`:
+   \   000000   2D2D2D2D2D2D DC8 "----------"
+   \            2D2D2D2D00  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " COMPLETE ">`:
+   \   000000   20434F4D504C DC8 " COMPLETE "
+   \            4554452000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "CONNECTING">`:
+   \   000000   434F4E4E4543 DC8 "CONNECTING"
+   \            54494E4700  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SSIDTXT">`:
+   \   000000   41542B532E53 DC8 41H, 54H, 2BH, 53H, 2EH, 53H, 53H, 49H
+   \            5349        
+   \   000008   44545854     DC8 44H, 54H, 58H, 54H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  ipaddr  ">`:
+   \   000000   202069706164 DC8 "  ipaddr  "
+   \            6472202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.STS=ip_ipaddr">`:
+   \   000000   41542B532E53 DC8 41H, 54H, 2BH, 53H, 2EH, 53H, 54H, 53H
+   \            5453        
+   \   000008   3D69705F6970 DC8 3DH, 69H, 70H, 5FH, 69H, 70H, 61H, 64H
+   \            6164        
+   \   000010   6472         DC8 64H, 72H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "         ">`:
+   \   000000   202020202020 DC8 "         "
+   \            20202000    
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     42   NCSU_Config
+       42   -> Display_Format
+       42   -> Display_Process
+       42   -> FLASH
+       42   -> Five_msec_Delay
+       42   -> HOST
+       42   -> Init_LCD
+       42   -> NET_MODE
+       42   -> NPM
+       42   -> One_msec_Delay
+       42   -> PING
+       42   -> SSID
+       42   -> lcd_4line
+       42   -> lcd_BIG_mid
+       42 ?CopyMemoryBytes
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+      10  ?<Constant "         ">
+      11  ?<Constant "  RESET   ">
+      11  ?<Constant "  ipaddr  ">
+      11  ?<Constant " COMPLETE ">
+      11  ?<Constant "----------">
+      12  ?<Constant "AT+S.SSIDTXT">
+      18  ?<Constant "AT+S.STS=ip_ipaddr">
+      11  ?<Constant "CONNECTING">
+     738  NCSU_Config
+       2  _A_PBIN_L
+       2  _A_PJOUT_L
+       2  _A_UCA0TXBUF_L
+       2  _A_UCA1IE_L
+       2  _A_UCA1TXBUF_L
+
+ 
+ 738 bytes in segment CODE
+  10 bytes in segment DATA16_AN
+ 106 bytes in segment DATA16_C
+ 
+ 738 bytes of CODE  memory
+ 106 bytes of CONST memory
+   0 bytes of DATA  memory (+ 10 bytes shared)
+
+Errors: none
+Warnings: none

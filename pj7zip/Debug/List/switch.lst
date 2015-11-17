@@ -1,0 +1,176 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           17/Nov/2015  02:50:41
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\switch.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\switch.c" -lC
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\Debug\List\"
+#        -o "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\Debug\Obj\"
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\pj7zip\Debug\List\switch.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\pj7zip\Debug\Obj\switch.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\switch.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains the Switch Routine
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          
+     13          //Points to Header files for Preprocessing
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include  "macros.h"
+     17          
+
+   \                                 In  segment CODE, align 2
+     18          void Switches_Process(void){
+   \                     Switches_Process:
+     19          //******************************************************************************
+     20          //
+     21          //  Description: This file contains the Switch Routine
+     22          //
+     23          //
+     24          //  Steffon Brigman
+     25          //  Sept 2015
+     26          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     27          //
+     28          // Globals:
+     29          //
+     30          // Passed:
+     31          //
+     32          // Local:
+     33          //
+     34          // Return: VOID
+     35          //
+     36          //****************************************************************************** 
+     37            
+     38          if (!(P4IN & SW1)){
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   262C         JC      ??Switches_Process_0
+     39             Five_msec_Delay(LIL_SW_DELAY);                      // 'debounce' delay
+   \   000006   3C401F00     MOV.W   #0x1f, R12
+   \   00000A   ........     CALLA   #Five_msec_Delay
+     40             
+     41             if (switch_select == SW_SEL_1) {
+   \   00000E   D293....     CMP.B   #0x1, &switch_select
+   \   000012   0320         JNE     ??Switches_Process_1
+     42              NCSU_Config();
+   \   000014   ........     CALLA   #NCSU_Config
+   \   000018   1C3C         JMP     ??Switches_Process_0
+     43             }
+     44             else if (switch_select == SW_SEL_2) {
+   \                     ??Switches_Process_1:
+   \   00001A   E293....     CMP.B   #0x2, &switch_select
+   \   00001E   0320         JNE     ??Switches_Process_2
+     45              Command_IOT();
+   \   000020   ........     CALLA   #Command_IOT
+   \   000024   163C         JMP     ??Switches_Process_0
+     46             }
+     47             else if (switch_select == SW_SEL_3) {
+   \                     ??Switches_Process_2:
+   \   000026   F2900300.... CMP.B   #0x3, &switch_select
+   \   00002C   0320         JNE     ??Switches_Process_3
+     48              Display_Buffer();
+   \   00002E   ........     CALLA   #Display_Buffer
+   \   000032   0F3C         JMP     ??Switches_Process_0
+     49             }
+     50             else if (switch_select == SW_SEL_4) {
+   \                     ??Switches_Process_3:
+   \   000034   E292....     CMP.B   #0x4, &switch_select
+   \   000038   0320         JNE     ??Switches_Process_4
+     51              Detect();
+   \   00003A   ........     CALLA   #Detect
+   \   00003E   093C         JMP     ??Switches_Process_0
+     52             }
+     53             else if (switch_select == SW_SEL_5) {
+   \                     ??Switches_Process_4:
+   \   000040   F2900500.... CMP.B   #0x5, &switch_select
+   \   000046   0320         JNE     ??Switches_Process_5
+     54              Calibrate();
+   \   000048   ........     CALLA   #Calibrate
+   \   00004C   023C         JMP     ??Switches_Process_0
+     55             }
+     56             else {
+     57               switch_select = SW_SEL_1;
+   \                     ??Switches_Process_5:
+   \   00004E   D243....     MOV.B   #0x1, &switch_select
+     58             }
+     59          }
+     60            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_0:
+   \   000052   E2B32102     BIT.B   #0x2, &0x221
+   \   000056   042C         JC      ??Switches_Process_6
+     61              Five_msec_Delay(LIL_SW_DELAY);                      // 'debounce' delay
+   \   000058   3C401F00     MOV.W   #0x1f, R12
+   \   00005C   ........     CALLA   #Five_msec_Delay
+     62          
+     63            }
+     64            
+     65          }
+   \                     ??Switches_Process_6:
+   \   000060   1001         RETA
+   \   000062                REQUIRE _A_PBIN_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> Calibrate
+        4   -> Command_IOT
+        4   -> Detect
+        4   -> Display_Buffer
+        4   -> Five_msec_Delay
+        4   -> NCSU_Config
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      98  Switches_Process
+       2  _A_PBIN_L
+
+ 
+ 98 bytes in segment CODE
+  2 bytes in segment DATA16_AN
+ 
+ 98 bytes of CODE memory
+  0 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

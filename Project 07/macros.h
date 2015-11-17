@@ -229,6 +229,7 @@
 
 // IOT Commands
 #define END_COMMAND (0x0D)
+#define switch_delay (45)
 
 extern volatile unsigned int Time_Sequence;
 extern int ISR_COUNT;

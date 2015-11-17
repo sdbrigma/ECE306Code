@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  04:20:22
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  17:14:19
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -515,54 +515,63 @@
    \   000008   82432403     MOV.W   #0x0, &0x324
     236           PJOUT = CLEAR_REGISTER;
    \   00000C   82432203     MOV.W   #0x0, &0x322
-    237           PJSEL0 &= ~IOT_FACTORY;
-   \   000010   92C32A03     BIC.W   #0x1, &0x32a
-    238          PJSEL1 &= ~IOT_FACTORY;
-   \   000014   92C32C03     BIC.W   #0x1, &0x32c
-    239          PJOUT &= ~IOT_FACTORY;
-   \   000018   92C32203     BIC.W   #0x1, &0x322
-    240           PJDIR |= IOT_FACTORY; // Set PJ Pin 1 direction to output
-   \   00001C   92D32403     BIS.W   #0x1, &0x324
-    241           
-    242           PJSEL0 &= ~IOT_WAKEUP;
-   \   000020   A2C32A03     BIC.W   #0x2, &0x32a
-    243           PJSEL1 &= ~IOT_WAKEUP;
-   \   000024   A2C32C03     BIC.W   #0x2, &0x32c
-    244           PJOUT &= ~IOT_WAKEUP;
-   \   000028   A2C32203     BIC.W   #0x2, &0x322
-    245          PJDIR |= IOT_WAKEUP; // Set PJ Pin 2 direction to output
-   \   00002C   A2D32403     BIS.W   #0x2, &0x324
-    246          
-    247           PJSEL0 &= ~IOT_STA_MINIAP;
-   \   000030   A2C22A03     BIC.W   #0x4, &0x32a
-    248           PJSEL1 &= ~IOT_STA_MINIAP;
-   \   000034   A2C22C03     BIC.W   #0x4, &0x32c
-    249           PJOUT &= ~IOT_STA_MINIAP;
-   \   000038   A2C22203     BIC.W   #0x4, &0x322
-    250          PJDIR |= IOT_STA_MINIAP; // Set PJ Pin 3 direction to output
-   \   00003C   A2D22403     BIS.W   #0x4, &0x324
-    251          
-    252           PJSEL0 &= ~RESET;
-   \   000040   B2C22A03     BIC.W   #0x8, &0x32a
-    253           PJSEL1 &= ~RESET;
-   \   000044   B2C22C03     BIC.W   #0x8, &0x32c
-    254            PJOUT &= ~RESET;
-   \   000048   B2C22203     BIC.W   #0x8, &0x322
-    255            PJDIR |= RESET; // Set PJ Pin 4 direction to input
-   \   00004C   B2D22403     BIS.W   #0x8, &0x324
-    256          
-    257          // XT1 Setup
-    258           PJSEL0 |= XINR;
-   \   000050   B2D010002A03 BIS.W   #0x10, &0x32a
-    259           PJSEL0 |= XOUTR;
-   \   000056   B2D020002A03 BIS.W   #0x20, &0x32a
-    260          //------------------------------------------------------------------------------
-    261          }
-   \   00005C   1001         RETA
-   \   00005E                REQUIRE _A_PJSEL0_L
-   \   00005E                REQUIRE _A_PJSEL1_L
-   \   00005E                REQUIRE _A_PJDIR_L
-   \   00005E                REQUIRE _A_PJOUT_L
+    237           
+    238            PJSEL0 = CLEAR_REGISTER;
+   \   000010   82432A03     MOV.W   #0x0, &0x32a
+    239            PJSEL1 = CLEAR_REGISTER;
+   \   000014   82432C03     MOV.W   #0x0, &0x32c
+    240            PJOUT = CLEAR_REGISTER;
+   \   000018   82432203     MOV.W   #0x0, &0x322
+    241            PJDIR = CLEAR_REGISTER;
+   \   00001C   82432403     MOV.W   #0x0, &0x324
+    242              
+    243            PJSEL0 &= ~IOT_FACTORY;
+   \   000020   92C32A03     BIC.W   #0x1, &0x32a
+    244            PJSEL1 &= ~IOT_FACTORY;
+   \   000024   92C32C03     BIC.W   #0x1, &0x32c
+    245            PJOUT &= ~IOT_FACTORY;
+   \   000028   92C32203     BIC.W   #0x1, &0x322
+    246            PJDIR |= IOT_FACTORY;
+   \   00002C   92D32403     BIS.W   #0x1, &0x324
+    247          
+    248            PJSEL0 &= ~IOT_WAKEUP;
+   \   000030   A2C32A03     BIC.W   #0x2, &0x32a
+    249            PJSEL1 &= ~IOT_WAKEUP;
+   \   000034   A2C32C03     BIC.W   #0x2, &0x32c
+    250            PJOUT |= IOT_WAKEUP;
+   \   000038   A2D32203     BIS.W   #0x2, &0x322
+    251            PJDIR |= IOT_WAKEUP;
+   \   00003C   A2D32403     BIS.W   #0x2, &0x324
+    252            
+    253            PJSEL0 &= ~IOT_STA_MINIAP;
+   \   000040   A2C22A03     BIC.W   #0x4, &0x32a
+    254            PJSEL1 &= ~IOT_STA_MINIAP;
+   \   000044   A2C22C03     BIC.W   #0x4, &0x32c
+    255            PJOUT |= IOT_STA_MINIAP;
+   \   000048   A2D22203     BIS.W   #0x4, &0x322
+    256            PJDIR |= IOT_STA_MINIAP;
+   \   00004C   A2D22403     BIS.W   #0x4, &0x324
+    257            
+    258            PJSEL0 &= ~RESET;
+   \   000050   B2C22A03     BIC.W   #0x8, &0x32a
+    259            PJSEL1 &= ~RESET;
+   \   000054   B2C22C03     BIC.W   #0x8, &0x32c
+    260            PJOUT &= ~RESET;
+   \   000058   B2C22203     BIC.W   #0x8, &0x322
+    261            PJDIR |= RESET;
+   \   00005C   B2D22403     BIS.W   #0x8, &0x324
+    262            
+    263            PJSEL0 |= XINR;
+   \   000060   B2D010002A03 BIS.W   #0x10, &0x32a
+    264            PJSEL0 |= XOUTR;
+   \   000066   B2D020002A03 BIS.W   #0x20, &0x32a
+    265          //------------------------------------------------------------------------------
+    266          }
+   \   00006C   1001         RETA
+   \   00006E                REQUIRE _A_PJSEL0_L
+   \   00006E                REQUIRE _A_PJSEL1_L
+   \   00006E                REQUIRE _A_PJDIR_L
+   \   00006E                REQUIRE _A_PJOUT_L
 
    Maximum stack usage in bytes:
 
@@ -589,7 +598,7 @@
      170  Init_Port2
      178  Init_Port3
       58  Init_Port4
-      94  Init_PortJ
+     110  Init_PortJ
       20  Init_Ports
        2  _A_PADIR_L
        2  _A_PAIES_L
@@ -608,10 +617,10 @@
        2  _A_PJSEL1_L
 
  
- 692 bytes in segment CODE
+ 708 bytes in segment CODE
   30 bytes in segment DATA16_AN
  
- 692 bytes of CODE memory
+ 708 bytes of CODE memory
    0 bytes of DATA memory (+ 30 bytes shared)
 
 Errors: none

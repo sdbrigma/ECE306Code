@@ -234,28 +234,33 @@ void Init_PortJ(void){
  PJSEL1 = CLEAR_REGISTER; // PJ set as I/0
  PJDIR = CLEAR_REGISTER; // Set PJ direction to output
  PJOUT = CLEAR_REGISTER;
- PJSEL0 &= ~IOT_FACTORY;
-PJSEL1 &= ~IOT_FACTORY;
-PJOUT &= ~IOT_FACTORY;
- PJDIR |= IOT_FACTORY; // Set PJ Pin 1 direction to output
  
- PJSEL0 &= ~IOT_WAKEUP;
- PJSEL1 &= ~IOT_WAKEUP;
- PJOUT &= ~IOT_WAKEUP;
-PJDIR |= IOT_WAKEUP; // Set PJ Pin 2 direction to output
+  PJSEL0 = CLEAR_REGISTER;
+  PJSEL1 = CLEAR_REGISTER;
+  PJOUT = CLEAR_REGISTER;
+  PJDIR = CLEAR_REGISTER;
+    
+  PJSEL0 &= ~IOT_FACTORY;
+  PJSEL1 &= ~IOT_FACTORY;
+  PJOUT &= ~IOT_FACTORY;
+  PJDIR |= IOT_FACTORY;
 
- PJSEL0 &= ~IOT_STA_MINIAP;
- PJSEL1 &= ~IOT_STA_MINIAP;
- PJOUT &= ~IOT_STA_MINIAP;
-PJDIR |= IOT_STA_MINIAP; // Set PJ Pin 3 direction to output
-
- PJSEL0 &= ~RESET;
- PJSEL1 &= ~RESET;
+  PJSEL0 &= ~IOT_WAKEUP;
+  PJSEL1 &= ~IOT_WAKEUP;
+  PJOUT |= IOT_WAKEUP;
+  PJDIR |= IOT_WAKEUP;
+  
+  PJSEL0 &= ~IOT_STA_MINIAP;
+  PJSEL1 &= ~IOT_STA_MINIAP;
+  PJOUT |= IOT_STA_MINIAP;
+  PJDIR |= IOT_STA_MINIAP;
+  
+  PJSEL0 &= ~RESET;
+  PJSEL1 &= ~RESET;
   PJOUT &= ~RESET;
-  PJDIR |= RESET; // Set PJ Pin 4 direction to input
-
-// XT1 Setup
- PJSEL0 |= XINR;
- PJSEL0 |= XOUTR;
+  PJDIR |= RESET;
+  
+  PJSEL0 |= XINR;
+  PJSEL0 |= XOUTR;
 //------------------------------------------------------------------------------
 }

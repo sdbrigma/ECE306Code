@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  04:20:14
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  17:14:12
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -175,136 +175,180 @@
      51           UCA1MCTLW = MOD_CTRL1;
    \   000044   B2401149E805 MOV.W   #0x4911, &0x5e8
      52           
-     53           P2SEL1 |= CPU_TXD;
-   \   00004A   F2D020000D02 BIS.B   #0x20, &0x20d
-     54           P2SEL0 &= ~CPU_TXD;
-   \   000050   F2C020000B02 BIC.B   #0x20, &0x20b
-     55           P2OUT  |= CPU_TXD;
-   \   000056   F2D020000302 BIS.B   #0x20, &0x203
-     56           P2DIR |= CPU_TXD;
-   \   00005C   F2D020000502 BIS.B   #0x20, &0x205
-     57           
-     58           P2SEL1 |= CPU_RXD;
-   \   000062   F2D040000D02 BIS.B   #0x40, &0x20d
-     59           P2SEL0 &= ~CPU_RXD;
-   \   000068   F2C040000B02 BIC.B   #0x40, &0x20b
-     60           P2OUT &= ~CPU_RXD;
-   \   00006E   F2C040000302 BIC.B   #0x40, &0x203
-     61           P2DIR &= ~CPU_RXD;
-   \   000074   F2C040000502 BIC.B   #0x40, &0x205
-     62           
-     63           UCA1CTLW0 &= ~UCSWRST; // Release from reset
-   \   00007A   92C3E005     BIC.W   #0x1, &0x5e0
-     64           UCA1IE |= UCRXIE; // Enable RX (receive) interrupt
-   \   00007E   92D3FA05     BIS.W   #0x1, &0x5fa
-     65           UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt 
-   \   000082   A2D3FA05     BIS.W   #0x2, &0x5fa
-     66          }
-   \   000086   1001         RETA
-   \   000088                REQUIRE _A_UCA1CTLW0_L
-   \   000088                REQUIRE _A_UCA1BRW_L
-   \   000088                REQUIRE _A_UCA1MCTLW_L
-   \   000088                REQUIRE _A_PASEL1_L
-   \   000088                REQUIRE _A_PASEL0_L
-   \   000088                REQUIRE _A_PAOUT_L
-   \   000088                REQUIRE _A_PADIR_L
-   \   000088                REQUIRE _A_UCA1IE_L
-     67          
+     53            // USB_TXD Initialization
+     54            P2SEL0 &= ~USB_TXD;                   // P2SEL0 ->    0
+   \   00004A   D2C30B02     BIC.B   #0x1, &0x20b
+     55            P2SEL1 |= USB_TXD;                    // P2SEL1 ->    1
+   \   00004E   D2D30D02     BIS.B   #0x1, &0x20d
+     56            P2OUT|= USB_TXD;                      // P2OUT ->     1
+   \   000052   D2D30302     BIS.B   #0x1, &0x203
+     57            P2DIR |= USB_TXD;                     // P2DIR ->     1
+   \   000056   D2D30502     BIS.B   #0x1, &0x205
+     58          
+     59            // USB_RXD Initialization
+     60            P2SEL0 &= ~USB_RXD;                   // P2SEL0 ->    0
+   \   00005A   E2C30B02     BIC.B   #0x2, &0x20b
+     61            P2SEL1 |= USB_RXD;                    // P2SEL1 ->    1
+   \   00005E   E2D30D02     BIS.B   #0x2, &0x20d
+     62            P2OUT &= ~USB_RXD;                    // P2OUT ->     0
+   \   000062   E2C30302     BIC.B   #0x2, &0x203
+     63            P2DIR  &= ~USB_RXD;                   // P2DIR ->     0
+   \   000066   E2C30502     BIC.B   #0x2, &0x205
+     64          
+     65            // CPU_TXD Initialization
+     66            P2SEL0 &= ~CPU_TXD;                   // P2SEL0 ->    0
+   \   00006A   F2C020000B02 BIC.B   #0x20, &0x20b
+     67            P2SEL1 |= CPU_TXD;                    // P2SEL1 ->    1
+   \   000070   F2D020000D02 BIS.B   #0x20, &0x20d
+     68            P2OUT |= CPU_TXD;                     // P2OUT ->      1
+   \   000076   F2D020000302 BIS.B   #0x20, &0x203
+     69            P2DIR |= CPU_TXD;                     // P2DIR ->     1
+   \   00007C   F2D020000502 BIS.B   #0x20, &0x205
+     70            
+     71            // CPU_RXD Initialization
+     72            P2SEL0 &= ~CPU_RXD;                   // P2SEL0 ->    0
+   \   000082   F2C040000B02 BIC.B   #0x40, &0x20b
+     73            P2SEL1 |= CPU_RXD;                    // P2SEL1 ->    1
+   \   000088   F2D040000D02 BIS.B   #0x40, &0x20d
+     74            P2OUT &= ~CPU_RXD;                    // P2OUT ->     0
+   \   00008E   F2C040000302 BIC.B   #0x40, &0x203
+     75            P2DIR  &= ~CPU_RXD;                   // P2DIR ->     0
+   \   000094   F2C040000502 BIC.B   #0x40, &0x205
+     76           
+     77           UCA1CTLW0 &= ~UCSWRST; // Release from reset
+   \   00009A   92C3E005     BIC.W   #0x1, &0x5e0
+     78           UCA1IE |= UCRXIE; // Enable RX (receive) interrupt
+   \   00009E   92D3FA05     BIS.W   #0x1, &0x5fa
+     79           UCA1IE |= UCTXIE; // Enable TX (transmit) interrupt 
+   \   0000A2   A2D3FA05     BIS.W   #0x2, &0x5fa
+     80          }
+   \   0000A6   1001         RETA
+   \   0000A8                REQUIRE _A_UCA1CTLW0_L
+   \   0000A8                REQUIRE _A_UCA1BRW_L
+   \   0000A8                REQUIRE _A_UCA1MCTLW_L
+   \   0000A8                REQUIRE _A_PASEL0_L
+   \   0000A8                REQUIRE _A_PASEL1_L
+   \   0000A8                REQUIRE _A_PAOUT_L
+   \   0000A8                REQUIRE _A_PADIR_L
+   \   0000A8                REQUIRE _A_UCA1IE_L
+     81          
 
    \                                 In  segment CODE, align 2
-     68          void Init_Serial_UCA0(){// COMPUTER SERIAL
+     82          void Init_Serial_UCA0(){// COMPUTER SERIAL
    \                     Init_Serial_UCA0:
-     69            /*******************************************************************************
-     70          *        Author: Steffon Brigman
-     71          *        Date:   October 2015
-     72          *        Description: This fucntion initialize UART serial communication for A1 registers.
-     73          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
-     74          *
-     75          *        Funcction name: Init_Serial_UCA1
-     76          *        Passed : No variables passed 
-     77          *        Returned: no values returned 
-     78          *        Locals: i
-     79          *        Globlas: cpu_rx_ring_wr, cpu_rx_ring_rd, cpu_rx_ring_wr,cpu_rt_ring_rd
-     80          *******************************************************************************/
-     81           int i;
-     82           
-     83           for(i=ZERO; i<IOT_RING_SIZE; i++){
+     83            /*******************************************************************************
+     84          *        Author: Steffon Brigman
+     85          *        Date:   October 2015
+     86          *        Description: This fucntion initialize UART serial communication for A1 registers.
+     87          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+     88          *
+     89          *        Funcction name: Init_Serial_UCA1
+     90          *        Passed : No variables passed 
+     91          *        Returned: no values returned 
+     92          *        Locals: i
+     93          *        Globlas: cpu_rx_ring_wr, cpu_rx_ring_rd, cpu_rx_ring_wr,cpu_rt_ring_rd
+     94          *******************************************************************************/
+     95           int i;
+     96           
+     97           for(i=ZERO; i<IOT_RING_SIZE; i++){
    \   000000   0F43         MOV.W   #0x0, R15
    \                     ??Init_Serial_UCA0_0:
    \   000002   3F902800     CMP.W   #0x28, R15
    \   000006   0434         JGE     ??Init_Serial_UCA0_2
-     84           USB_Char_Rx[i] = ORIGINAL; // USB Rx Buffer
+     98           USB_Char_Rx[i] = ORIGINAL; // USB Rx Buffer
    \   000008   CF43....     MOV.B   #0x0, USB_Char_Rx(R15)
-     85           }
+     99           }
    \   00000C   1F53         ADD.W   #0x1, R15
    \   00000E   F93F         JMP     ??Init_Serial_UCA0_0
-     86           usb_rx_ring_wr = BEGINNING;
+    100           usb_rx_ring_wr = BEGINNING;
    \                     ??Init_Serial_UCA0_2:
    \   000010   8243....     MOV.W   #0x0, &usb_rx_ring_wr
-     87           usb_rx_ring_rd = BEGINNING;
+    101           usb_rx_ring_rd = BEGINNING;
    \   000014   8243....     MOV.W   #0x0, &usb_rx_ring_rd
-     88          
-     89           for(i=ZERO; i<IOT_RING_SIZE; i++){ // May not use this
+    102          
+    103           for(i=ZERO; i<IOT_RING_SIZE; i++){ // May not use this
    \   000018   0F43         MOV.W   #0x0, R15
    \                     ??Init_Serial_UCA0_1:
    \   00001A   3F902800     CMP.W   #0x28, R15
    \   00001E   0434         JGE     ??Init_Serial_UCA0_3
-     90           USB_Char_Tx[i] = ORIGINAL; // USB Tx Buffer
+    104           USB_Char_Tx[i] = ORIGINAL; // USB Tx Buffer
    \   000020   CF43....     MOV.B   #0x0, USB_Char_Tx(R15)
-     91           }
+    105           }
    \   000024   1F53         ADD.W   #0x1, R15
    \   000026   F93F         JMP     ??Init_Serial_UCA0_1
-     92           usb_tx_ring_wr = BEGINNING;
+    106           usb_tx_ring_wr = BEGINNING;
    \                     ??Init_Serial_UCA0_3:
    \   000028   8243....     MOV.W   #0x0, &usb_tx_ring_wr
-     93           usb_tx_ring_rd = BEGINNING;
+    107           usb_tx_ring_rd = BEGINNING;
    \   00002C   8243....     MOV.W   #0x0, &usb_tx_ring_rd
-     94           // Configure UART 0
-     95           UCA0CTLW0 = ZERO; // Use word register
+    108           // Configure UART 0
+    109           UCA0CTLW0 = ZERO; // Use word register
    \   000030   8243C005     MOV.W   #0x0, &0x5c0
-     96           UCA0CTLW0 |= UCSSEL__SMCLK; // Set SMCLK as fBRCLK
+    110           UCA0CTLW0 |= UCSSEL__SMCLK; // Set SMCLK as fBRCLK
    \   000034   B2D08000C005 BIS.W   #0x80, &0x5c0
-     97           UCA0CTLW0 |= UCSWRST; // Set Software reset enable, logic held in reset state
+    111           UCA0CTLW0 |= UCSWRST; // Set Software reset enable, logic held in reset state
    \   00003A   92D3C005     BIS.W   #0x1, &0x5c0
-     98           UCA0BRW = BAUD_9600; // 9600 baud
+    112           UCA0BRW = BAUD_9600; // 9600 baud
    \   00003E   B2403400C605 MOV.W   #0x34, &0x5c6
-     99           UCA0MCTLW = MOD_CTRL1; 
+    113           UCA0MCTLW = MOD_CTRL1; 
    \   000044   B2401149C805 MOV.W   #0x4911, &0x5c8
-    100           
-    101            P2SEL1 |= USB_TXD;
-   \   00004A   D2D30D02     BIS.B   #0x1, &0x20d
-    102           P2SEL0 &= ~USB_TXD;
-   \   00004E   D2C30B02     BIC.B   #0x1, &0x20b
-    103           P2OUT  |= USB_TXD;
+    114           
+    115            // USB_TXD Initialization
+    116            P2SEL0 &= ~USB_TXD;                   // P2SEL0 ->    0
+   \   00004A   D2C30B02     BIC.B   #0x1, &0x20b
+    117            P2SEL1 |= USB_TXD;                    // P2SEL1 ->    1
+   \   00004E   D2D30D02     BIS.B   #0x1, &0x20d
+    118            P2OUT|= USB_TXD;                      // P2OUT ->     1
    \   000052   D2D30302     BIS.B   #0x1, &0x203
-    104           P2DIR |= USB_TXD;
+    119            P2DIR |= USB_TXD;                     // P2DIR ->     1
    \   000056   D2D30502     BIS.B   #0x1, &0x205
-    105           
-    106           P2SEL1 |= USB_RXD;
-   \   00005A   E2D30D02     BIS.B   #0x2, &0x20d
-    107           P2SEL0 &= ~USB_RXD;
-   \   00005E   E2C30B02     BIC.B   #0x2, &0x20b
-    108           P2OUT &= ~USB_RXD;
+    120          
+    121            // USB_RXD Initialization
+    122            P2SEL0 &= ~USB_RXD;                   // P2SEL0 ->    0
+   \   00005A   E2C30B02     BIC.B   #0x2, &0x20b
+    123            P2SEL1 |= USB_RXD;                    // P2SEL1 ->    1
+   \   00005E   E2D30D02     BIS.B   #0x2, &0x20d
+    124            P2OUT &= ~USB_RXD;                    // P2OUT ->     0
    \   000062   E2C30302     BIC.B   #0x2, &0x203
-    109           P2DIR &= ~USB_RXD;
+    125            P2DIR  &= ~USB_RXD;                   // P2DIR ->     0
    \   000066   E2C30502     BIC.B   #0x2, &0x205
-    110           
-    111           UCA0CTLW0 &= ~UCSWRST; // Release from reset
-   \   00006A   92C3C005     BIC.W   #0x1, &0x5c0
-    112           UCA0IE |= UCRXIE; // Enable RX (receive) interrupt
-   \   00006E   92D3DA05     BIS.W   #0x1, &0x5da
-    113           UCA0IE |= UCTXIE; // Enable TX (transmit) interrupt 
-   \   000072   A2D3DA05     BIS.W   #0x2, &0x5da
-    114          }
-   \   000076   1001         RETA
-   \   000078                REQUIRE _A_UCA0CTLW0_L
-   \   000078                REQUIRE _A_UCA0BRW_L
-   \   000078                REQUIRE _A_UCA0MCTLW_L
-   \   000078                REQUIRE _A_PASEL1_L
-   \   000078                REQUIRE _A_PASEL0_L
-   \   000078                REQUIRE _A_PAOUT_L
-   \   000078                REQUIRE _A_PADIR_L
-   \   000078                REQUIRE _A_UCA0IE_L
+    126          
+    127            // CPU_TXD Initialization
+    128            P2SEL0 &= ~CPU_TXD;                   // P2SEL0 ->    0
+   \   00006A   F2C020000B02 BIC.B   #0x20, &0x20b
+    129            P2SEL1 |= CPU_TXD;                    // P2SEL1 ->    1
+   \   000070   F2D020000D02 BIS.B   #0x20, &0x20d
+    130            P2OUT |= CPU_TXD;                     // P2OUT ->      1
+   \   000076   F2D020000302 BIS.B   #0x20, &0x203
+    131            P2DIR |= CPU_TXD;                     // P2DIR ->     1
+   \   00007C   F2D020000502 BIS.B   #0x20, &0x205
+    132            
+    133            // CPU_RXD Initialization
+    134            P2SEL0 &= ~CPU_RXD;                   // P2SEL0 ->    0
+   \   000082   F2C040000B02 BIC.B   #0x40, &0x20b
+    135            P2SEL1 |= CPU_RXD;                    // P2SEL1 ->    1
+   \   000088   F2D040000D02 BIS.B   #0x40, &0x20d
+    136            P2OUT &= ~CPU_RXD;                    // P2OUT ->     0
+   \   00008E   F2C040000302 BIC.B   #0x40, &0x203
+    137            P2DIR  &= ~CPU_RXD;                   // P2DIR ->     0
+   \   000094   F2C040000502 BIC.B   #0x40, &0x205
+    138           
+    139           UCA0CTLW0 &= ~UCSWRST; // Release from reset
+   \   00009A   92C3C005     BIC.W   #0x1, &0x5c0
+    140           UCA0IE |= UCRXIE; // Enable RX (receive) interrupt
+   \   00009E   92D3DA05     BIS.W   #0x1, &0x5da
+    141           UCA0IE |= UCTXIE; // Enable TX (transmit) interrupt 
+   \   0000A2   A2D3DA05     BIS.W   #0x2, &0x5da
+    142          }
+   \   0000A6   1001         RETA
+   \   0000A8                REQUIRE _A_UCA0CTLW0_L
+   \   0000A8                REQUIRE _A_UCA0BRW_L
+   \   0000A8                REQUIRE _A_UCA0MCTLW_L
+   \   0000A8                REQUIRE _A_PASEL0_L
+   \   0000A8                REQUIRE _A_PASEL1_L
+   \   0000A8                REQUIRE _A_PAOUT_L
+   \   0000A8                REQUIRE _A_PADIR_L
+   \   0000A8                REQUIRE _A_UCA0IE_L
 
    Maximum stack usage in bytes:
 
@@ -318,8 +362,8 @@
 
    Bytes  Function/Label
    -----  --------------
-     120  Init_Serial_UCA0
-     136  Init_Serial_UCA1
+     168  Init_Serial_UCA0
+     168  Init_Serial_UCA1
        2  _A_PADIR_L
        2  _A_PAOUT_L
        2  _A_PASEL0_L
@@ -334,10 +378,10 @@
        2  _A_UCA1MCTLW_L
 
  
- 256 bytes in segment CODE
+ 336 bytes in segment CODE
   24 bytes in segment DATA16_AN
  
- 256 bytes of CODE memory
+ 336 bytes of CODE memory
    0 bytes of DATA memory (+ 24 bytes shared)
 
 Errors: none

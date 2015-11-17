@@ -50,15 +50,29 @@ void Init_Serial_UCA1(void){// IOT SERIAL
  UCA1BRW = BAUD_9600; // 9600 baud
  UCA1MCTLW = MOD_CTRL1;
  
- P2SEL1 |= CPU_TXD;
- P2SEL0 &= ~CPU_TXD;
- P2OUT  |= CPU_TXD;
- P2DIR |= CPU_TXD;
- 
- P2SEL1 |= CPU_RXD;
- P2SEL0 &= ~CPU_RXD;
- P2OUT &= ~CPU_RXD;
- P2DIR &= ~CPU_RXD;
+  // USB_TXD Initialization
+  P2SEL0 &= ~USB_TXD;                   // P2SEL0 ->    0
+  P2SEL1 |= USB_TXD;                    // P2SEL1 ->    1
+  P2OUT|= USB_TXD;                      // P2OUT ->     1
+  P2DIR |= USB_TXD;                     // P2DIR ->     1
+
+  // USB_RXD Initialization
+  P2SEL0 &= ~USB_RXD;                   // P2SEL0 ->    0
+  P2SEL1 |= USB_RXD;                    // P2SEL1 ->    1
+  P2OUT &= ~USB_RXD;                    // P2OUT ->     0
+  P2DIR  &= ~USB_RXD;                   // P2DIR ->     0
+
+  // CPU_TXD Initialization
+  P2SEL0 &= ~CPU_TXD;                   // P2SEL0 ->    0
+  P2SEL1 |= CPU_TXD;                    // P2SEL1 ->    1
+  P2OUT |= CPU_TXD;                     // P2OUT ->      1
+  P2DIR |= CPU_TXD;                     // P2DIR ->     1
+  
+  // CPU_RXD Initialization
+  P2SEL0 &= ~CPU_RXD;                   // P2SEL0 ->    0
+  P2SEL1 |= CPU_RXD;                    // P2SEL1 ->    1
+  P2OUT &= ~CPU_RXD;                    // P2OUT ->     0
+  P2DIR  &= ~CPU_RXD;                   // P2DIR ->     0
  
  UCA1CTLW0 &= ~UCSWRST; // Release from reset
  UCA1IE |= UCRXIE; // Enable RX (receive) interrupt
@@ -98,15 +112,29 @@ void Init_Serial_UCA0(){// COMPUTER SERIAL
  UCA0BRW = BAUD_9600; // 9600 baud
  UCA0MCTLW = MOD_CTRL1; 
  
-  P2SEL1 |= USB_TXD;
- P2SEL0 &= ~USB_TXD;
- P2OUT  |= USB_TXD;
- P2DIR |= USB_TXD;
- 
- P2SEL1 |= USB_RXD;
- P2SEL0 &= ~USB_RXD;
- P2OUT &= ~USB_RXD;
- P2DIR &= ~USB_RXD;
+  // USB_TXD Initialization
+  P2SEL0 &= ~USB_TXD;                   // P2SEL0 ->    0
+  P2SEL1 |= USB_TXD;                    // P2SEL1 ->    1
+  P2OUT|= USB_TXD;                      // P2OUT ->     1
+  P2DIR |= USB_TXD;                     // P2DIR ->     1
+
+  // USB_RXD Initialization
+  P2SEL0 &= ~USB_RXD;                   // P2SEL0 ->    0
+  P2SEL1 |= USB_RXD;                    // P2SEL1 ->    1
+  P2OUT &= ~USB_RXD;                    // P2OUT ->     0
+  P2DIR  &= ~USB_RXD;                   // P2DIR ->     0
+
+  // CPU_TXD Initialization
+  P2SEL0 &= ~CPU_TXD;                   // P2SEL0 ->    0
+  P2SEL1 |= CPU_TXD;                    // P2SEL1 ->    1
+  P2OUT |= CPU_TXD;                     // P2OUT ->      1
+  P2DIR |= CPU_TXD;                     // P2DIR ->     1
+  
+  // CPU_RXD Initialization
+  P2SEL0 &= ~CPU_RXD;                   // P2SEL0 ->    0
+  P2SEL1 |= CPU_RXD;                    // P2SEL1 ->    1
+  P2OUT &= ~CPU_RXD;                    // P2OUT ->     0
+  P2DIR  &= ~CPU_RXD;                   // P2DIR ->     0
  
  UCA0CTLW0 &= ~UCSWRST; // Release from reset
  UCA0IE |= UCRXIE; // Enable RX (receive) interrupt

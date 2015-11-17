@@ -23,12 +23,26 @@ void Switches_Process(void){
 //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
 //******************************************************************************
   if (!(P4IN & SW1)){
-    getIotStatus();
-    displayIOT();
+    //getIotStatus();
+    const char transmitA1[] = "AT+S.STS\r";
+    int i = ZERO;
+    while(ALWAYS){
+      if(transmitA1[i] == END_COMMAND){break;}
+      UCA1TXBUF = transmitA1[i];
+      i++;
+      Five_msec_Delay(30);
+    }
   }
   if (!(P4IN & SW2)) {
-  getSSID();
-  displayIOT();
+    int i = ZERO;
+  UCA0TXBUF = 0x40;
+  while(ALWAYS){
+    i++;
+    if(USB_Char_Rx[i] == 0x40){
+      i++;
+      break;
+    }
+  }
 }
 //------------------------------------------------------------------------------
 }

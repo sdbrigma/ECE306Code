@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  06:05:17
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  18:11:13
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -53,11 +53,23 @@
    \   union <unnamed> _A_PBIN_L
    \                     _A_PBIN_L:
    \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ce
+   \   union <unnamed> _A_UCA0TXBUF_L
+   \                     _A_UCA0TXBUF_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
      15          #include  "functions.h"
 
    \                                 In  segment CODE, align 2
      16          void Switches_Process(void){
    \                     Switches_Process:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31800A00     SUB.W   #0xa, SP
      17          //******************************************************************************
      18          //
      19          //  Description: This functions sets code for switch 1 and 2 upon being pressed
@@ -67,51 +79,100 @@
      23          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
      24          //******************************************************************************
      25            if (!(P4IN & SW1)){
-   \   000000   D2B32102     BIT.B   #0x1, &0x221
-   \   000004   042C         JC      ??Switches_Process_0
-     26              getIotStatus();
-   \   000006   ........     CALLA   #getIotStatus
-     27              displayIOT();
-   \   00000A   ........     CALLA   #displayIOT
-     28            }
-     29            if (!(P4IN & SW2)) {
+   \   000006   D2B32102     BIT.B   #0x1, &0x221
+   \   00000A   1A2C         JC      ??Switches_Process_3
+     26              //getIotStatus();
+     27              const char transmitA1[] = "AT+S.STS\r";
+   \   00000C   0C41         MOV.W   SP, R12
+   \   00000E   3E40....     MOV.W   #`?<Constant "AT+S.STS\\r">`, R14
+   \   000012   3D400A00     MOV.W   #0xa, R13
+   \   000016   ........     CALLA   #?CopyMemoryBytes
+     28              int i = ZERO;
+   \   00001A   0A43         MOV.W   #0x0, R10
+     29              while(ALWAYS){
+     30                if(transmitA1[i] == END_COMMAND){break;}
    \                     ??Switches_Process_0:
-   \   00000E   E2B32102     BIT.B   #0x2, &0x221
-   \   000012   042C         JC      ??Switches_Process_1
-     30            getSSID();
-   \   000014   ........     CALLA   #getSSID
-     31            displayIOT();
-   \   000018   ........     CALLA   #displayIOT
-     32          }
-     33          //------------------------------------------------------------------------------
-     34          }
+   \   00001C   0F4A         MOV.W   R10, R15
+   \   00001E   0F51         ADD.W   SP, R15
+   \   000020   FF900D000000 CMP.B   #0xd, 0(R15)
+   \   000026   0C24         JEQ     ??Switches_Process_3
+     31                UCA1TXBUF = transmitA1[i];
+   \   000028   0F4A         MOV.W   R10, R15
+   \   00002A   0F51         ADD.W   SP, R15
+   \   00002C   6F4F         MOV.B   @R15, R15
+   \   00002E   4F4F         MOV.B   R15, R15
+   \   000030   824FEE05     MOV.W   R15, &0x5ee
+     32                i++;
+   \   000034   1A53         ADD.W   #0x1, R10
+     33                Five_msec_Delay(30);
+   \   000036   3C401E00     MOV.W   #0x1e, R12
+   \   00003A   ........     CALLA   #Five_msec_Delay
+   \   00003E   EE3F         JMP     ??Switches_Process_0
+     34              }
+     35            }
+     36            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_3:
+   \   000040   E2B32102     BIT.B   #0x2, &0x221
+   \   000044   0A2C         JC      ??Switches_Process_4
+     37              int i = ZERO;
+   \   000046   0F43         MOV.W   #0x0, R15
+     38            UCA0TXBUF = 0x40;
+   \   000048   B2404000CE05 MOV.W   #0x40, &0x5ce
+     39            while(ALWAYS){
+     40              i++;
    \                     ??Switches_Process_1:
-   \   00001C   1001         RETA
-   \   00001E                REQUIRE _A_PBIN_L
+   \   00004E   1F53         ADD.W   #0x1, R15
+     41              if(USB_Char_Rx[i] == 0x40){
+   \   000050   FF904000.... CMP.B   #0x40, USB_Char_Rx(R15)
+   \   000056   FB23         JNE     ??Switches_Process_1
+     42                i++;
+   \   000058   1F53         ADD.W   #0x1, R15
+     43                break;
+     44              }
+     45            }
+     46          }
+     47          //------------------------------------------------------------------------------
+     48          }
+   \                     ??Switches_Process_4:
+   \   00005A   31500A00     ADD.W   #0xa, SP
+   \   00005E   3A41         POP.W   R10
+   \   000060   1001         RETA
+   \   000062                REQUIRE _A_PBIN_L
+   \   000062                REQUIRE _A_UCA1TXBUF_L
+   \   000062                REQUIRE _A_UCA0TXBUF_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.STS\\r">`:
+   \   000000   41542B532E53 DC8 "AT+S.STS\015"
+   \            54530D00    
 
    Maximum stack usage in bytes:
 
    CSTACK Function
    ------ --------
-      4   Switches_Process
-        4   -> displayIOT
-        4   -> getIotStatus
-        4   -> getSSID
+     16   Switches_Process
+       16   -> Five_msec_Delay
+       16 ?CopyMemoryBytes
 
 
    Segment part sizes:
 
    Bytes  Function/Label
    -----  --------------
-      30  Switches_Process
+      10  ?<Constant "AT+S.STS\r">
+      98  Switches_Process
        2  _A_PBIN_L
+       2  _A_UCA0TXBUF_L
+       2  _A_UCA1TXBUF_L
 
  
- 30 bytes in segment CODE
-  2 bytes in segment DATA16_AN
+ 98 bytes in segment CODE
+  6 bytes in segment DATA16_AN
+ 10 bytes in segment DATA16_C
  
- 30 bytes of CODE memory
-  0 bytes of DATA memory (+ 2 bytes shared)
+ 98 bytes of CODE  memory
+ 10 bytes of CONST memory
+  0 bytes of DATA  memory (+ 6 bytes shared)
 
 Errors: none
 Warnings: none

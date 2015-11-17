@@ -1,0 +1,7 @@
+  while(ALWAYS) {                            // Can the Operating system run
+      Left_Forward_On(1);
+      Left_Forward_Off();
+      Right_Forward_On(1);
+      Right_Forward_Off();
+    }
+    

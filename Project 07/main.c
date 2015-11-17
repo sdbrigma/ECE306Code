@@ -86,6 +86,18 @@ void main(void){
   setLCD("NCSU",SW1_posL1,"WOLFPACK",SW1_posL2,"ECE306",SW1_posL3,"S Brigman",SW1_posL4);
   big = ZERO;
   ADC_Channel = Thumbwheel;
+  
+  while (ALWAYS) {
+    if (!(P4IN & SW1)) {
+      Five_msec_Delay(switch_delay);
+      break;
+    }
+    if (!(P4IN & SW2)) {
+      Five_msec_Delay(switch_delay);
+      break;
+    }
+  }
+  
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
 //------------------------------------------------------------------------------

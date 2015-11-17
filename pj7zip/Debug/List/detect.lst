@@ -1,0 +1,230 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           17/Nov/2015  02:50:21
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\detect.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\detect.c" -lC
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\Debug\List\"
+#        -o "\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\Debug\Obj\"
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.2\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -On --multiplier=32
+#        --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\pj7zip\Debug\List\detect.lst
+#    Object file   =  
+#        \\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\pj7zip\Debug\Obj\detect.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\pj7zip\detect.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains the ADC detection routine module
+      4          //
+      5          //
+      6          //  Steffon Brigman
+      7          //  Sept 2015
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+      9          //******************************************************************************
+     10          
+     11          //Points to Header files for Preprocessing
+     12          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x202
+   \   union <unnamed> _A_PAOUT_L
+   \                     _A_PAOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+     13          #include  "functions.h"
+     14          #include  "macros.h"
+     15          
+
+   \                                 In  segment CODE, align 2
+     16          void Detect(void){
+   \                     Detect:
+     17          //******************************************************************************
+     18          //
+     19          //  Description: This file contains the ADC detection routine module
+     20          //
+     21          //
+     22          //  Steffon Brigman
+     23          //  Sept 2015
+     24          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     25          //
+     26          // Globals: adc_RD_Enable, adc_LD_Enable, thumbEnable, tempEnable
+     27          // batEnable
+     28          //
+     29          // Passed:
+     30          //
+     31          // Local: 
+     32          //
+     33          // Return: VOID
+     34          //
+     35          //****************************************************************************** 
+     36            display_1 = "  Detect  ";
+   \   000000   B240........ MOV.W   #`?<Constant "  Detect  ">`, &display_1
+     37            posL1 = LINE_POS_L0;
+   \   000006   C243....     MOV.B   #0x0, &posL1
+     38            display_2 = "LEFT:     ";
+   \   00000A   B240........ MOV.W   #`?<Constant "LEFT:     ">`, &display_2
+     39            posL2 = LINE_POS_L0;
+   \   000010   C243....     MOV.B   #0x0, &posL2
+     40            display_3 = "RIGHT:    ";
+   \   000014   B240........ MOV.W   #`?<Constant "RIGHT:    ">`, &display_3
+     41            posL3 = LINE_POS_L0;
+   \   00001A   C243....     MOV.B   #0x0, &posL3
+     42            display_4 = "          ";
+   \   00001E   B240........ MOV.W   #`?<Constant "          ">`, &display_4
+     43            big = INITIAL;
+   \   000024   C243....     MOV.B   #0x0, &big
+     44            lcd_4line();
+   \   000028   ........     CALLA   #lcd_4line
+     45            Display_Process();
+   \   00002C   ........     CALLA   #Display_Process
+     46            
+     47            adc_RD_Enable = FALSE;
+   \   000030   C243....     MOV.B   #0x0, &adc_RD_Enable
+     48            adc_LD_Enable = FALSE; 
+   \   000034   C243....     MOV.B   #0x0, &adc_LD_Enable
+     49            tempEnable = FALSE;
+   \   000038   C243....     MOV.B   #0x0, &tempEnable
+     50            batEnable  = FALSE;  
+   \   00003C   C243....     MOV.B   #0x0, &batEnable
+     51            
+     52            // Enable Infrared Emitter
+     53            P1OUT |= IR_LED;                    // P1OUT ->    1
+   \   000040   E2D20202     BIS.B   #0x4, &0x202
+     54          
+     55            while(ALWAYS) {
+     56                
+     57              if (!(P4IN & SW2)) {
+   \                     ??Detect_0:
+   \   000044   E2B32102     BIT.B   #0x2, &0x221
+   \   000048   042C         JC      ??Detect_1
+     58               Five_msec_Delay(LIL_SW_DELAY); 
+   \   00004A   3C401F00     MOV.W   #0x1f, R12
+   \   00004E   ........     BRA     #Five_msec_Delay
+     59               break;
+     60              }
+     61              if (thumbEnable) {
+   \                     ??Detect_1:
+   \   000052   C293....     CMP.B   #0x0, &thumbEnable
+   \   000056   0524         JEQ     ??Detect_2
+     62              ADC10_Process();
+   \   000058   ........     CALLA   #ADC10_Process
+     63              Display_Thumb();
+   \   00005C   ........     CALLA   #Display_Thumb
+   \   000060   143C         JMP     ??Detect_3
+     64              }
+     65              else {
+     66              // Left Detector
+     67              adc_RD_Enable = FALSE;
+   \                     ??Detect_2:
+   \   000062   C243....     MOV.B   #0x0, &adc_RD_Enable
+     68              adc_LD_Enable = TRUE; 
+   \   000066   D243....     MOV.B   #0x1, &adc_LD_Enable
+     69              ADC10_Process();
+   \   00006A   ........     CALLA   #ADC10_Process
+     70              Display_ADC();
+   \   00006E   ........     CALLA   #Display_ADC
+     71              Five_msec_Delay(FIVE_CYCLES);
+   \   000072   3C400500     MOV.W   #0x5, R12
+   \   000076   ........     CALLA   #Five_msec_Delay
+     72              // Right Detector
+     73              adc_RD_Enable = TRUE;
+   \   00007A   D243....     MOV.B   #0x1, &adc_RD_Enable
+     74              adc_LD_Enable = FALSE; 
+   \   00007E   C243....     MOV.B   #0x0, &adc_LD_Enable
+     75              ADC10_Process();
+   \   000082   ........     CALLA   #ADC10_Process
+     76              Display_ADC();
+   \   000086   ........     CALLA   #Display_ADC
+     77              }
+     78              Five_msec_Delay(TEN_ITERATIONS);
+   \                     ??Detect_3:
+   \   00008A   3C400A00     MOV.W   #0xa, R12
+   \   00008E   ........     CALLA   #Five_msec_Delay
+   \   000092   D83F         JMP     ??Detect_0
+   \   000094   0343         NOP
+   \   000096                REQUIRE _A_PAOUT_L
+   \   000096                REQUIRE _A_PBIN_L
+     79            }
+     80            
+     81          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  Detect  ">`:
+   \   000000   202044657465 DC8 "  Detect  "
+   \            6374202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "LEFT:     ">`:
+   \   000000   4C4546543A20 DC8 "LEFT:     "
+   \            2020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "RIGHT:    ">`:
+   \   000000   52494748543A DC8 "RIGHT:    "
+   \            2020202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "          ">`:
+   \   000000   202020202020 DC8 "          "
+   \            2020202000  
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Detect
+        4   -> ADC10_Process
+        4   -> Display_ADC
+        4   -> Display_Process
+        4   -> Display_Thumb
+        4   -> Five_msec_Delay
+        4   -> lcd_4line
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      11  ?<Constant "          ">
+      11  ?<Constant "  Detect  ">
+      11  ?<Constant "LEFT:     ">
+      11  ?<Constant "RIGHT:    ">
+     150  Detect
+       2  _A_PAOUT_L
+       2  _A_PBIN_L
+
+ 
+ 150 bytes in segment CODE
+   4 bytes in segment DATA16_AN
+  44 bytes in segment DATA16_C
+ 
+ 150 bytes of CODE  memory
+  44 bytes of CONST memory
+   0 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none
