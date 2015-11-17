@@ -128,22 +128,27 @@ __interrupt void USCI_A1_ISR(void){
 *        Globlas: temp, cpu_rx_ring_wr
 *******************************************************************************/
   // CPU and IOT interrupts are the same (This is the back door)
- unsigned int temp;
- switch(__even_in_range(UCA1IV,UART_MAX)){
- case ZERO: // Vector 0 - no interrupt
- break;
- case RECEIVE: // Vector 2 – RXIFG
-   temp = cpu_rx_ring_wr;
-   CPU_Char_Rx[temp] = UCA1RXBUF; // RX -> CPU_Char_Rx character
-   if (++cpu_rx_ring_wr >= (IOT_RING_SIZE)){
-   cpu_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
-   }
- break;
- case TRANSMIT: // Vector 4 – TXIFG
-// Code for Transmit
- break;
- default: break;
- }
+unsigned int temp = INITIAL;
+  switch(__even_in_range(UCA1IV, USCI_val8)) {
+  case SW_SEL_0:		//Vector 0 - No Interrupt
+    break;
+  case SW_SEL_2:		// Vector 2 - RXIFG
+    // Code for Receive
+    temp = IOTRead;
+    IOT_RX[temp] =  UCA1RXBUF;   // Store Transmission 
+    if (IOT_RX[temp] == '*') {
+      IOTRead = INITIAL;
+      IOT_RX[Pos0] = IOT_RX[temp];
+    }
+    if (++IOTRead >= (SMALL_RING_SIZE)) {
+      IOTRead = INITIAL;         // Reset Index
+    }
+    break;
+  case SW_SEL_4:		// Vector 4 - TXIFG
+    // Code for Transmit
+    break;
+  default: break;
+  }
 }
 //------------------------------------------------------------------------------
 
@@ -161,21 +166,23 @@ __interrupt void USCI_A0_ISR(void){
 *        Globlas: temp, cpu_rx_ring_wr
 *******************************************************************************/
   // CPU and IOT interrupts are the same (This is the back door)
- unsigned int temp;
- switch(__even_in_range(UCA0IV,UART_MAX)){
- case ZERO: // Vector 0 - no interrupt
- break;
- case RECEIVE: // Vector 2 – RXIFG
-   temp = usb_rx_ring_wr;
-   USB_Char_Rx[temp] = UCA0RXBUF; // RX -> CPU_Char_Rx character
-   if (++usb_rx_ring_wr >= (IOT_RING_SIZE)){
-   usb_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
-   }
- break;
- case TRANSMIT: // Vector 4 – TXIFG
-// Code for Transmit
- break;
- default: break;
- }
+   unsigned int temp = INITIAL;
+  switch(__even_in_range(UCA0IV, USCI_val8)) {
+  case SW_SEL_0:		//Vector 0 - No Interrupt
+    break;
+  case SW_SEL_2:		// Vector 2 - RXIFG
+    // Code for Receive
+    temp = rxRead;
+    receiveEnable = TRUE;           // Tranmission received
+    RX_Char[temp] =  UCA0RXBUF;   // Store Transmission                    
+    if (++rxRead >= (SMALL_RING_SIZE)) {
+      rxRead = INITIAL;             // Reset Index
+    }
+    break;
+  case SW_SEL_4:		// Vector 4 - TXIFG
+    // Code for Transmit
+    break;
+  default: break;
+  }
 }
 //------------------------------------------------------------------------------

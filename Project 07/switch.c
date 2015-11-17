@@ -22,27 +22,31 @@ void Switches_Process(void){
 //  Sept 2015
 //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
 //******************************************************************************
-  if (!(P4IN & SW1)){
-    //getIotStatus();
-    const char transmitA1[] = "AT+S.STS\r";
-    int i = ZERO;
-    while(ALWAYS){
-      if(transmitA1[i] == END_COMMAND){break;}
-      UCA1TXBUF = transmitA1[i];
-      i++;
-      Five_msec_Delay(30);
-    }
-  }
-  if (!(P4IN & SW2)) {
-    int i = ZERO;
-  UCA0TXBUF = 0x40;
-  while(ALWAYS){
-    i++;
-    if(USB_Char_Rx[i] == 0x40){
-      i++;
-      break;
-    }
-  }
+ if (!(P4IN & SW1)){
+   Five_msec_Delay(LIL_SW_DELAY);                   
+   
+   if (switch_select == SW_SEL_1) {
+    NCSU_Config();
+   }
+   else if (switch_select == SW_SEL_2) {
+    Command_IOT();
+   }
+   else if (switch_select == SW_SEL_3) {
+    Display_Buffer();
+   }
+   else if (switch_select == SW_SEL_4) {
+    Detect();
+   }
+   else if (switch_select == SW_SEL_5) {
+    Calibrate();
+   }
+   else {
+     switch_select = SW_SEL_1;
+   }
 }
+  if (!(P4IN & SW2)) {
+    Five_msec_Delay(LIL_SW_DELAY);               
+
+  }
 //------------------------------------------------------------------------------
 }

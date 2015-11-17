@@ -48,12 +48,12 @@ unsigned int cpu_rx_ring_rd;
 unsigned int cpu_tx_ring_wr;
 unsigned int cpu_tx_ring_rd;
 char big;
-volatile char CPU_Char_Rx[40];
-volatile char CPU_Char_Tx[40];
+volatile char CPU_Char_Rx[IOT_RING_SIZE];
+volatile char CPU_Char_Tx[IOT_RING_SIZE];
 unsigned int inc = ZERO;
 unsigned int color = ALWAYS;
-volatile char USB_Char_Rx[40];
-volatile char USB_Char_Tx[40];
+volatile char USB_Char_Rx[IOT_RING_SIZE];
+volatile char USB_Char_Tx[IOT_RING_SIZE];
 unsigned int usb_rx_ring_wr;
 unsigned int usb_rx_ring_rd;
 unsigned int usb_tx_ring_wr;
@@ -69,17 +69,16 @@ void main(void){
   Init_Ports();
   Init_Clocks();                            // Initialize Clock System 
   Init_Conditions();
-  PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
   Time_Sequence = ZERO;                        // 
   Init_Timers();                            // Initialize Timers
-  five_msec_sleep(QUARTER_SECOND);          // 250 msec delay for the clock to settle
+  Five_msec_Delay(QUARTER_SECOND);          // 250 msec delay for the clock to settle
   Init_LEDs();                              // Initialize LEDs
   Init_LCD();                               // Initialize LCD
   Init_Motors();                            // Turns off both motors
   Init_ADC();
   Init_Serial_UCA1();
   Init_Serial_UCA0();
-  Init_IOT();
+  //Init_IOT();
   
 //             1234567890
   clearLCD();
@@ -138,6 +137,61 @@ void main(void){
       break;                                // 
     default: break; 
   }
+  
+  // Update all ADC channels
+  for(i = SW_SEL_5; i > ZERO; i--) {
+  ADC_Process();
+  }
+  
+  // START MAIN MENU//
+  
+  // ITEM ONE
+  if ((ADC_Thumb > ZERO) && (ADC_Thumb <= MENU1)) {
+    Display_Config();
+  }
+  // ITEM TWO
+  else if ((ADC_Thumb > MENU1) && (ADC_Thumb <= MENU2)) {
+    Display_IOTCMD();
+  }
+  // ITEM THREE
+  else if ((ADC_Thumb > MENU2) && (ADC_Thumb <= MENU3)) {
+    Display_Backdoor();
+  }
+  // ITEM FOUR
+  else if ((ADC_Thumb > MENU3) && (ADC_Thumb <= MENU4)) {
+    Display_Detect();
+  }
+  // ITEM FIVE
+  else if ((ADC_Thumb > MENU4) && (ADC_Thumb <= MENU5)) {
+    Display_Calibrate();
+  }
+  // ITEM SIX
+  else if ((ADC_Thumb > MENU5) && (ADC_Thumb <= MENU6)) {
+    Display_Config();
+  }
+  // ITEM SEVEN
+  else if ((ADC_Thumb > MENU6) && (ADC_Thumb <= MENU7)) {
+    Display_IOTCMD();
+  }
+  // ITEM EIGHT
+  else if ((ADC_Thumb > MENU7) && (ADC_Thumb <= MENU8)) {
+    Display_Backdoor();
+  }
+  // ITEM NINE
+  else if ((ADC_Thumb > MENU8) && (ADC_Thumb <= MENU9)) {
+    Display_Detect();
+  }
+  // ITEM TEN
+  else if ((ADC_Thumb > MENU9) && (ADC_Thumb <= MENU10)) {
+    Display_Calibrate();
+  }
+  else {
+
+  }
+  
+  Display_Process();        		        // Update LCD Display
+  Five_msec_Delay(LIL_DELAY);
+  
   Switches_Process();                       // Check for switch state change 
   if(Time_Sequence > FULL_SECOND){ // 1000 msec
     Time_Sequence = ZERO;
