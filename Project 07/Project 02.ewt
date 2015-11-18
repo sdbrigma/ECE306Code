@@ -1982,6 +1982,9 @@
     <name>$PROJ_DIR$\interrupts.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\iot-commands.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\iot-functions.c</name>
   </file>
   <file>
@@ -1998,6 +2001,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\menu-items.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\motors.c</name>

@@ -1,0 +1,798 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           18/Nov/2015  13:48:05
+# Copyright 1996-2015 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\iot-commands.c
+#    Command line  =  
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\iot-commands.c" -lC "\\vmware-host\Shared
+#        Folders\Desktop\ECE306Code\Project 07\Debug\List\" -o
+#        "\\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\Obj\" --no_cse --no_unroll --no_inline --no_code_motion
+#        --no_tbaa --debug -D__MSP430FR5739__ -e --double=32 --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.2\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -On
+#        --multiplier=32 --hw_workaround=CPU40 --code_model=large
+#    List file     =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\List\iot-commands.lst
+#    Object file   =  
+#        \\vmware-host\Shared Folders\Desktop\ECE306Code\Project
+#        07\Debug\Obj\iot-commands.r43
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Desktop\ECE306Code\Project 07\iot-commands.c
+      1          #include  "macros.h"
+      2          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x5ce
+   \   union <unnamed> _A_UCA0TXBUF_L
+   \                     _A_UCA0TXBUF_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+      3          #include  "functions.h"
+      4          
+      5          // Use UCA1
+
+   \                                 In  segment CODE, align 2
+      6          void setSSID(void){
+   \                     setSSID:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31801200     SUB.W   #0x12, SP
+      7          //******************************************************************************
+      8          //
+      9          //  Description: This function is used to configure the IOT device on NCSU
+     10          //  wireless network
+     11          //
+     12          //
+     13          //  Steffon Brigman
+     14          //  Sept 2015
+     15          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     16          //
+     17          // Globals: IOT_RX[SMALL_RING_SIZE], display_1, display_2, display_3,
+     18          // display_4
+     19          //
+     20          // Passed: 
+     21          //
+     22          // Local: i, SSIDcmd
+     23          //
+     24          // Return: VOID
+     25          //
+     26          //****************************************************************************** 
+     27            
+     28            int i = ZERO;
+   \   000006   0A43         MOV.W   #0x0, R10
+     29            
+     30           //// SET SSID ////
+     31            displayLine2("  SET SSID  ",ZERO);
+   \   000008   0D43         MOV.W   #0x0, R13
+   \   00000A   3C40....     MOV.W   #`?<Constant "  SET SSID  ">`, R12
+   \   00000E   ........     CALLA   #displayLine2
+     32            Five_msec_Delay(switch_delay);
+   \   000012   3C403200     MOV.W   #0x32, R12
+   \   000016   ........     CALLA   #Five_msec_Delay
+     33            char SSIDcmd[Index17] = "AT+S.SSIDTXT=ncsu";
+   \   00001A   0C41         MOV.W   SP, R12
+   \   00001C   3E40....     MOV.W   #`?<Constant "AT+S.SSIDTXT=ncsu">`, R14
+   \   000020   3D401100     MOV.W   #0x11, R13
+   \   000024   ........     CALLA   #?CopyMemoryBytes
+     34            
+     35            // Initialize IOT_RX ring
+     36            for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
+   \   000028   0A43         MOV.W   #0x0, R10
+   \                     ??setSSID_0:
+   \   00002A   3A901000     CMP.W   #0x10, R10
+   \   00002E   0434         JGE     ??setSSID_3
+   \   000030   CA43....     MOV.B   #0x0, IOT_RX(R10)
+   \   000034   1A53         ADD.W   #0x1, R10
+   \   000036   F93F         JMP     ??setSSID_0
+     37            
+     38            IOTRead = ZERO;
+   \                     ??setSSID_3:
+   \   000038   8243....     MOV.W   #0x0, &IOTRead
+     39            for(i=ZERO; i < Index17; i++) {
+   \   00003C   0A43         MOV.W   #0x0, R10
+   \                     ??setSSID_1:
+   \   00003E   3A901100     CMP.W   #0x11, R10
+   \   000042   0D34         JGE     ??setSSID_4
+     40              UCA1TXBUF = UCA0TXBUF = SSIDcmd[i];
+   \   000044   0F4A         MOV.W   R10, R15
+   \   000046   0F51         ADD.W   SP, R15
+   \   000048   6E4F         MOV.B   @R15, R14
+   \   00004A   4E4E         MOV.B   R14, R14
+   \   00004C   824ECE05     MOV.W   R14, &0x5ce
+   \   000050   824EEE05     MOV.W   R14, &0x5ee
+     41              Five_msec_Delay(Index1);
+   \   000054   1C43         MOV.W   #0x1, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+     42            }
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F03F         JMP     ??setSSID_1
+     43            UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+   \                     ??setSSID_4:
+   \   00005E   3F400D00     MOV.W   #0xd, R15
+   \   000062   824FCE05     MOV.W   R15, &0x5ce
+   \   000066   824FEE05     MOV.W   R15, &0x5ee
+     44            Five_msec_Delay(Index1);
+   \   00006A   1C43         MOV.W   #0x1, R12
+   \   00006C   ........     CALLA   #Five_msec_Delay
+     45            
+     46            // Wait for IOT confirmation
+     47            while (IOT_RX[Index2] != 'O');
+   \                     ??setSSID_2:
+   \   000070   F2904F00.... CMP.B   #0x4f, &IOT_RX + 2
+   \   000076   FC23         JNE     ??setSSID_2
+     48            }
+   \   000078   31501200     ADD.W   #0x12, SP
+   \   00007C   3A41         POP.W   R10
+   \   00007E   1001         RETA
+   \   000080                REQUIRE _A_UCA1TXBUF_L
+   \   000080                REQUIRE _A_UCA0TXBUF_L
+
+   \                                 In  segment CODE, align 2
+     49          void setHostName(void){
+   \                     setHostName:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31802200     SUB.W   #0x22, SP
+     50            //******************************************************************************
+     51          //
+     52          //  Description: This function is used to configure the IOT device on NCSU
+     53          //  wireless network
+     54          //
+     55          //
+     56          //  Steffon Brigman
+     57          //  Sept 2015
+     58          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+     59          //
+     60          // Globals: IOT_RX[SMALL_RING_SIZE], display_1, display_2, display_3,
+     61          // display_4
+     62          //
+     63          // Passed: 
+     64          //
+     65          // Local: i, HOSTcmd
+     66          //
+     67          // Return: VOID
+     68          //
+     69          //****************************************************************************** 
+     70            
+     71            int i = ZERO;
+   \   000006   0A43         MOV.W   #0x0, R10
+     72            
+     73          //// SET HOSTNAME ////
+     74            display_2 = " SET HOST ";
+   \   000008   B240........ MOV.W   #`?<Constant " SET HOST ">`, &display_2
+     75            Display_Process();
+   \   00000E   ........     CALLA   #Display_Process
+     76            Five_msec_Delay(switch_delay);
+   \   000012   3C403200     MOV.W   #0x32, R12
+   \   000016   ........     CALLA   #Five_msec_Delay
+     77           char HOSTcmd[Index34] = "AT+S.SCFG=ip_hostname,ECE-306_02_Q";
+   \   00001A   0C41         MOV.W   SP, R12
+   \   00001C   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=ip_hostname...">`, R14
+   \   000020   3D402200     MOV.W   #0x22, R13
+   \   000024   ........     CALLA   #?CopyMemoryBytes
+     78            
+     79            // Initialize IOT_RX ring
+     80            for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
+   \   000028   0A43         MOV.W   #0x0, R10
+   \                     ??setHostName_0:
+   \   00002A   3A901000     CMP.W   #0x10, R10
+   \   00002E   0434         JGE     ??setHostName_3
+   \   000030   CA43....     MOV.B   #0x0, IOT_RX(R10)
+   \   000034   1A53         ADD.W   #0x1, R10
+   \   000036   F93F         JMP     ??setHostName_0
+     81            
+     82            IOTRead = ZERO;
+   \                     ??setHostName_3:
+   \   000038   8243....     MOV.W   #0x0, &IOTRead
+     83            for(i=ZERO; i < Index34; i++) {
+   \   00003C   0A43         MOV.W   #0x0, R10
+   \                     ??setHostName_1:
+   \   00003E   3A902200     CMP.W   #0x22, R10
+   \   000042   0D34         JGE     ??setHostName_4
+     84              UCA1TXBUF = UCA0TXBUF = HOSTcmd[i];
+   \   000044   0F4A         MOV.W   R10, R15
+   \   000046   0F51         ADD.W   SP, R15
+   \   000048   6E4F         MOV.B   @R15, R14
+   \   00004A   4E4E         MOV.B   R14, R14
+   \   00004C   824ECE05     MOV.W   R14, &0x5ce
+   \   000050   824EEE05     MOV.W   R14, &0x5ee
+     85              Five_msec_Delay(Index1);
+   \   000054   1C43         MOV.W   #0x1, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+     86            }
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F03F         JMP     ??setHostName_1
+     87            UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+   \                     ??setHostName_4:
+   \   00005E   3F400D00     MOV.W   #0xd, R15
+   \   000062   824FCE05     MOV.W   R15, &0x5ce
+   \   000066   824FEE05     MOV.W   R15, &0x5ee
+     88            Five_msec_Delay(Index1);
+   \   00006A   1C43         MOV.W   #0x1, R12
+   \   00006C   ........     CALLA   #Five_msec_Delay
+     89            
+     90            // Wait for IOT confirmation
+     91            while (IOT_RX[Index2] != 'O');
+   \                     ??setHostName_2:
+   \   000070   F2904F00.... CMP.B   #0x4f, &IOT_RX + 2
+   \   000076   FC23         JNE     ??setHostName_2
+     92          }
+   \   000078   31502200     ADD.W   #0x22, SP
+   \   00007C   3A41         POP.W   R10
+   \   00007E   1001         RETA
+   \   000080                REQUIRE _A_UCA1TXBUF_L
+   \   000080                REQUIRE _A_UCA0TXBUF_L
+     93          
+
+   \                                 In  segment CODE, align 2
+     94          void setPrivacyMode(void){
+   \                     setPrivacyMode:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31801A00     SUB.W   #0x1a, SP
+     95            //******************************************************************************
+     96          //
+     97          //  Description: This function is used to configure the IOT device on NCSU
+     98          //  wireless network
+     99          //
+    100          //
+    101          //  Steffon Brigman
+    102          //  Sept 2015
+    103          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+    104          //
+    105          // Globals: IOT_RX[SMALL_RING_SIZE], display_1, display_2, display_3,
+    106          // display_4
+    107          //
+    108          // Passed: 
+    109          //
+    110          // Local: i, NPMcmd
+    111          //
+    112          // Return: VOID
+    113          //
+    114          //****************************************************************************** 
+    115            
+    116            int i = ZERO;
+   \   000006   0A43         MOV.W   #0x0, R10
+    117            
+    118          //// SET NETWORK PRIVACY MODE////
+    119            display_2 = " SET NPM  ";
+   \   000008   B240........ MOV.W   #`?<Constant " SET NPM  ">`, &display_2
+    120            Display_Process();
+   \   00000E   ........     CALLA   #Display_Process
+    121            Five_msec_Delay(switch_delay);
+   \   000012   3C403200     MOV.W   #0x32, R12
+   \   000016   ........     CALLA   #Five_msec_Delay
+    122           char NPMcmd[Index26] = "AT+S.SCFG=wifi_priv_mode,0";
+   \   00001A   0C41         MOV.W   SP, R12
+   \   00001C   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=wifi_priv_m...">`, R14
+   \   000020   3D401A00     MOV.W   #0x1a, R13
+   \   000024   ........     CALLA   #?CopyMemoryBytes
+    123            
+    124            // Initialize IOT_RX ring
+    125            for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
+   \   000028   0A43         MOV.W   #0x0, R10
+   \                     ??setPrivacyMode_0:
+   \   00002A   3A901000     CMP.W   #0x10, R10
+   \   00002E   0434         JGE     ??setPrivacyMode_3
+   \   000030   CA43....     MOV.B   #0x0, IOT_RX(R10)
+   \   000034   1A53         ADD.W   #0x1, R10
+   \   000036   F93F         JMP     ??setPrivacyMode_0
+    126            
+    127            IOTRead = ZERO;
+   \                     ??setPrivacyMode_3:
+   \   000038   8243....     MOV.W   #0x0, &IOTRead
+    128            for(i=ZERO; i < Index26; i++) {
+   \   00003C   0A43         MOV.W   #0x0, R10
+   \                     ??setPrivacyMode_1:
+   \   00003E   3A901A00     CMP.W   #0x1a, R10
+   \   000042   0D34         JGE     ??setPrivacyMode_4
+    129              UCA1TXBUF = UCA0TXBUF = NPMcmd[i];
+   \   000044   0F4A         MOV.W   R10, R15
+   \   000046   0F51         ADD.W   SP, R15
+   \   000048   6E4F         MOV.B   @R15, R14
+   \   00004A   4E4E         MOV.B   R14, R14
+   \   00004C   824ECE05     MOV.W   R14, &0x5ce
+   \   000050   824EEE05     MOV.W   R14, &0x5ee
+    130              Five_msec_Delay(Index1);
+   \   000054   1C43         MOV.W   #0x1, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    131            }
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F03F         JMP     ??setPrivacyMode_1
+    132            UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+   \                     ??setPrivacyMode_4:
+   \   00005E   3F400D00     MOV.W   #0xd, R15
+   \   000062   824FCE05     MOV.W   R15, &0x5ce
+   \   000066   824FEE05     MOV.W   R15, &0x5ee
+    133            Five_msec_Delay(Index1);
+   \   00006A   1C43         MOV.W   #0x1, R12
+   \   00006C   ........     CALLA   #Five_msec_Delay
+    134            
+    135            // Wait for IOT confirmation
+    136            while (IOT_RX[Index2] != 'O');
+   \                     ??setPrivacyMode_2:
+   \   000070   F2904F00.... CMP.B   #0x4f, &IOT_RX + 2
+   \   000076   FC23         JNE     ??setPrivacyMode_2
+    137          }
+   \   000078   31501A00     ADD.W   #0x1a, SP
+   \   00007C   3A41         POP.W   R10
+   \   00007E   1001         RETA
+   \   000080                REQUIRE _A_UCA1TXBUF_L
+   \   000080                REQUIRE _A_UCA0TXBUF_L
+    138          
+
+   \                                 In  segment CODE, align 2
+    139          void setNetworkMode(void){
+   \                     setNetworkMode:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31801600     SUB.W   #0x16, SP
+    140            //******************************************************************************
+    141          //
+    142          //  Description: This function is used to configure the IOT device on NCSU
+    143          //  wireless network
+    144          //
+    145          //
+    146          //  Steffon Brigman
+    147          //  Sept 2015
+    148          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+    149          //
+    150          // Globals: IOT_RX[SMALL_RING_SIZE], display_1, display_2, display_3,
+    151          // display_4
+    152          //
+    153          // Passed: 
+    154          //
+    155          // Local: i, NPMcmd
+    156          //
+    157          // Return: VOID
+    158          //
+    159          //****************************************************************************** 
+    160            
+    161            int i = ZERO;
+   \   000006   0A43         MOV.W   #0x0, R10
+    162            
+    163          //// SET NETWORK MODE ////
+    164            display_2 = " SET MODE ";
+   \   000008   B240........ MOV.W   #`?<Constant " SET MODE ">`, &display_2
+    165            Display_Process();
+   \   00000E   ........     CALLA   #Display_Process
+    166            Five_msec_Delay(switch_delay);
+   \   000012   3C403200     MOV.W   #0x32, R12
+   \   000016   ........     CALLA   #Five_msec_Delay
+    167           char NETcmd[Index21] = "AT+S.SCFG=wifi_mode,1";
+   \   00001A   0C41         MOV.W   SP, R12
+   \   00001C   3E40....     MOV.W   #`?<Constant "AT+S.SCFG=wifi_mode,1">`, R14
+   \   000020   3D401500     MOV.W   #0x15, R13
+   \   000024   ........     CALLA   #?CopyMemoryBytes
+    168            
+    169            // Initialize IOT_RX ring
+    170            for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
+   \   000028   0A43         MOV.W   #0x0, R10
+   \                     ??setNetworkMode_0:
+   \   00002A   3A901000     CMP.W   #0x10, R10
+   \   00002E   0434         JGE     ??setNetworkMode_3
+   \   000030   CA43....     MOV.B   #0x0, IOT_RX(R10)
+   \   000034   1A53         ADD.W   #0x1, R10
+   \   000036   F93F         JMP     ??setNetworkMode_0
+    171            
+    172            IOTRead = ZERO;
+   \                     ??setNetworkMode_3:
+   \   000038   8243....     MOV.W   #0x0, &IOTRead
+    173            for(i=ZERO; i < Index21; i++) {
+   \   00003C   0A43         MOV.W   #0x0, R10
+   \                     ??setNetworkMode_1:
+   \   00003E   3A901500     CMP.W   #0x15, R10
+   \   000042   0D34         JGE     ??setNetworkMode_4
+    174              UCA1TXBUF = UCA0TXBUF = NETcmd[i];
+   \   000044   0F4A         MOV.W   R10, R15
+   \   000046   0F51         ADD.W   SP, R15
+   \   000048   6E4F         MOV.B   @R15, R14
+   \   00004A   4E4E         MOV.B   R14, R14
+   \   00004C   824ECE05     MOV.W   R14, &0x5ce
+   \   000050   824EEE05     MOV.W   R14, &0x5ee
+    175              Five_msec_Delay(Index1);
+   \   000054   1C43         MOV.W   #0x1, R12
+   \   000056   ........     CALLA   #Five_msec_Delay
+    176            }
+   \   00005A   1A53         ADD.W   #0x1, R10
+   \   00005C   F03F         JMP     ??setNetworkMode_1
+    177            UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+   \                     ??setNetworkMode_4:
+   \   00005E   3F400D00     MOV.W   #0xd, R15
+   \   000062   824FCE05     MOV.W   R15, &0x5ce
+   \   000066   824FEE05     MOV.W   R15, &0x5ee
+    178            Five_msec_Delay(Index1);  
+   \   00006A   1C43         MOV.W   #0x1, R12
+   \   00006C   ........     CALLA   #Five_msec_Delay
+    179            // Wait for IOT confirmation
+    180            while (IOT_RX[Index2] != 'O');
+   \                     ??setNetworkMode_2:
+   \   000070   F2904F00.... CMP.B   #0x4f, &IOT_RX + 2
+   \   000076   FC23         JNE     ??setNetworkMode_2
+    181          }
+   \   000078   31501600     ADD.W   #0x16, SP
+   \   00007C   3A41         POP.W   R10
+   \   00007E   1001         RETA
+   \   000080                REQUIRE _A_UCA1TXBUF_L
+   \   000080                REQUIRE _A_UCA0TXBUF_L
+    182          
+
+   \                                 In  segment CODE, align 2
+    183          void iotSave(void){
+   \                     iotSave:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31800E00     SUB.W   #0xe, SP
+    184            int i = ZERO;
+   \   000006   0A43         MOV.W   #0x0, R10
+    185            
+    186          //// Begin Flash ////
+    187            display_2 = " SET MODE ";
+   \   000008   B240........ MOV.W   #`?<Constant " SET MODE ">`, &display_2
+    188            Display_Process();
+   \   00000E   ........     CALLA   #Display_Process
+    189            Five_msec_Delay(switch_delay);
+   \   000012   3C403200     MOV.W   #0x32, R12
+   \   000016   ........     CALLA   #Five_msec_Delay
+    190            char F1cmd[Index4] = "AT&W";
+   \   00001A   3F40....     MOV.W   #`?<Constant "AT&W">`, R15
+   \   00001E   F14F0000     MOV.B   @R15+, 0(SP)
+   \   000022   F14F0100     MOV.B   @R15+, 0x1(SP)
+   \   000026   F14F0200     MOV.B   @R15+, 0x2(SP)
+   \   00002A   F14F0300     MOV.B   @R15+, 0x3(SP)
+    191            char F2cmd[Index9] = "AT+CFUN=0";
+   \   00002E   0C41         MOV.W   SP, R12
+   \   000030   2C52         ADD.W   #0x4, R12
+   \   000032   3E40....     MOV.W   #`?<Constant "AT+CFUN=0">`, R14
+   \   000036   3D400900     MOV.W   #0x9, R13
+   \   00003A   ........     CALLA   #?CopyMemoryBytes
+    192            
+    193            // Initialize IOT_RX ring
+    194            for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
+   \   00003E   0A43         MOV.W   #0x0, R10
+   \                     ??iotSave_0:
+   \   000040   3A901000     CMP.W   #0x10, R10
+   \   000044   0434         JGE     ??iotSave_5
+   \   000046   CA43....     MOV.B   #0x0, IOT_RX(R10)
+   \   00004A   1A53         ADD.W   #0x1, R10
+   \   00004C   F93F         JMP     ??iotSave_0
+    195            
+    196            IOTRead = ZERO;
+   \                     ??iotSave_5:
+   \   00004E   8243....     MOV.W   #0x0, &IOTRead
+    197            for(i=ZERO; i < Index4; i++) {
+   \   000052   0A43         MOV.W   #0x0, R10
+   \                     ??iotSave_1:
+   \   000054   2A92         CMP.W   #0x4, R10
+   \   000056   0D34         JGE     ??iotSave_6
+    198              UCA1TXBUF = UCA0TXBUF = F1cmd[i];
+   \   000058   0F4A         MOV.W   R10, R15
+   \   00005A   0F51         ADD.W   SP, R15
+   \   00005C   6E4F         MOV.B   @R15, R14
+   \   00005E   4E4E         MOV.B   R14, R14
+   \   000060   824ECE05     MOV.W   R14, &0x5ce
+   \   000064   824EEE05     MOV.W   R14, &0x5ee
+    199              Five_msec_Delay(Index1);
+   \   000068   1C43         MOV.W   #0x1, R12
+   \   00006A   ........     CALLA   #Five_msec_Delay
+    200            }
+   \   00006E   1A53         ADD.W   #0x1, R10
+   \   000070   F13F         JMP     ??iotSave_1
+    201            UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+   \                     ??iotSave_6:
+   \   000072   3F400D00     MOV.W   #0xd, R15
+   \   000076   824FCE05     MOV.W   R15, &0x5ce
+   \   00007A   824FEE05     MOV.W   R15, &0x5ee
+    202            Five_msec_Delay(Index1);
+   \   00007E   1C43         MOV.W   #0x1, R12
+   \   000080   ........     CALLA   #Five_msec_Delay
+    203            
+    204            // Wait for IOT confirmation
+    205            while (IOT_RX[Index2] != 'O');
+   \                     ??iotSave_2:
+   \   000084   F2904F00.... CMP.B   #0x4f, &IOT_RX + 2
+   \   00008A   FC23         JNE     ??iotSave_2
+    206            
+    207          //// Finalize Flash ////
+    208            display_2 = " GET MODE ";
+   \   00008C   B240........ MOV.W   #`?<Constant " GET MODE ">`, &display_2
+    209            Display_Process();
+   \   000092   ........     CALLA   #Display_Process
+    210            Five_msec_Delay(switch_delay);
+   \   000096   3C403200     MOV.W   #0x32, R12
+   \   00009A   ........     CALLA   #Five_msec_Delay
+    211            
+    212           // Initialize IOT_RX ring
+    213            for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
+   \   00009E   0A43         MOV.W   #0x0, R10
+   \                     ??iotSave_3:
+   \   0000A0   3A901000     CMP.W   #0x10, R10
+   \   0000A4   0434         JGE     ??iotSave_7
+   \   0000A6   CA43....     MOV.B   #0x0, IOT_RX(R10)
+   \   0000AA   1A53         ADD.W   #0x1, R10
+   \   0000AC   F93F         JMP     ??iotSave_3
+    214            
+    215            IOTRead = ZERO;
+   \                     ??iotSave_7:
+   \   0000AE   8243....     MOV.W   #0x0, &IOTRead
+    216            for(i=ZERO; i < Index9; i++) {
+   \   0000B2   0A43         MOV.W   #0x0, R10
+   \                     ??iotSave_4:
+   \   0000B4   3A900900     CMP.W   #0x9, R10
+   \   0000B8   0E34         JGE     ??iotSave_8
+    217              UCA1TXBUF = UCA0TXBUF = F2cmd[i];
+   \   0000BA   0F4A         MOV.W   R10, R15
+   \   0000BC   0F51         ADD.W   SP, R15
+   \   0000BE   5E4F0400     MOV.B   0x4(R15), R14
+   \   0000C2   4E4E         MOV.B   R14, R14
+   \   0000C4   824ECE05     MOV.W   R14, &0x5ce
+   \   0000C8   824EEE05     MOV.W   R14, &0x5ee
+    218              Five_msec_Delay(Index1);
+   \   0000CC   1C43         MOV.W   #0x1, R12
+   \   0000CE   ........     CALLA   #Five_msec_Delay
+    219            }
+   \   0000D2   1A53         ADD.W   #0x1, R10
+   \   0000D4   EF3F         JMP     ??iotSave_4
+    220            UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+   \                     ??iotSave_8:
+   \   0000D6   3F400D00     MOV.W   #0xd, R15
+   \   0000DA   824FCE05     MOV.W   R15, &0x5ce
+   \   0000DE   824FEE05     MOV.W   R15, &0x5ee
+    221            Five_msec_Delay(Index1);
+   \   0000E2   1C43         MOV.W   #0x1, R12
+   \   0000E4   ........     CALLA   #Five_msec_Delay
+    222            
+    223            Five_msec_Delay(switch_delay);
+   \   0000E8   3C403200     MOV.W   #0x32, R12
+   \   0000EC   ........     CALLA   #Five_msec_Delay
+    224          }
+   \   0000F0   31500E00     ADD.W   #0xe, SP
+   \   0000F4   3A41         POP.W   R10
+   \   0000F6   1001         RETA
+   \   0000F8                REQUIRE _A_UCA1TXBUF_L
+   \   0000F8                REQUIRE _A_UCA0TXBUF_L
+    225          
+
+   \                                 In  segment CODE, align 2
+    226          void pingIOT(void){
+   \                     pingIOT:
+   \   000000   0A12         PUSH.W  R10
+   \   000002   31801800     SUB.W   #0x18, SP
+    227          //******************************************************************************
+    228          //
+    229          //  Description: This function is used to configure the IOT device on NCSU
+    230          //  wireless network
+    231          //
+    232          //
+    233          //  Steffon Brigman
+    234          //  Sept 2015
+    235          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (6.30.3)
+    236          //
+    237          // Globals: IOT_RX[SMALL_RING_SIZE], display_1, display_2, display_3,
+    238          // display_4
+    239          //
+    240          // Passed: 
+    241          //
+    242          // Local: i, NPMcmd
+    243          //
+    244          // Return: VOID
+    245          //
+    246          //****************************************************************************** 
+    247            
+    248            int i = ZERO;
+   \   000006   0A43         MOV.W   #0x0, R10
+    249            
+    250            // Initialize IOT_RX ring
+    251            char PINGcmd[Index23] = "AT+S.PING=152.14.99.126";
+   \   000008   0C41         MOV.W   SP, R12
+   \   00000A   3E40....     MOV.W   #`?<Constant "AT+S.PING=152.14.99.126">`, R14
+   \   00000E   3D401700     MOV.W   #0x17, R13
+   \   000012   ........     CALLA   #?CopyMemoryBytes
+    252            for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
+   \   000016   0A43         MOV.W   #0x0, R10
+   \                     ??pingIOT_0:
+   \   000018   3A901000     CMP.W   #0x10, R10
+   \   00001C   0434         JGE     ??pingIOT_2
+   \   00001E   CA43....     MOV.B   #0x0, IOT_RX(R10)
+   \   000022   1A53         ADD.W   #0x1, R10
+   \   000024   F93F         JMP     ??pingIOT_0
+    253            
+    254            IOTRead = ZERO;
+   \                     ??pingIOT_2:
+   \   000026   8243....     MOV.W   #0x0, &IOTRead
+    255            for(i=ZERO; i < Index23; i++) {
+   \   00002A   0A43         MOV.W   #0x0, R10
+   \                     ??pingIOT_1:
+   \   00002C   3A901700     CMP.W   #0x17, R10
+   \   000030   0D34         JGE     ??pingIOT_3
+    256              UCA1TXBUF = UCA0TXBUF = PINGcmd[i];
+   \   000032   0F4A         MOV.W   R10, R15
+   \   000034   0F51         ADD.W   SP, R15
+   \   000036   6E4F         MOV.B   @R15, R14
+   \   000038   4E4E         MOV.B   R14, R14
+   \   00003A   824ECE05     MOV.W   R14, &0x5ce
+   \   00003E   824EEE05     MOV.W   R14, &0x5ee
+    257              Five_msec_Delay(Index1);
+   \   000042   1C43         MOV.W   #0x1, R12
+   \   000044   ........     CALLA   #Five_msec_Delay
+    258            }
+   \   000048   1A53         ADD.W   #0x1, R10
+   \   00004A   F03F         JMP     ??pingIOT_1
+    259            UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+   \                     ??pingIOT_3:
+   \   00004C   3F400D00     MOV.W   #0xd, R15
+   \   000050   824FCE05     MOV.W   R15, &0x5ce
+   \   000054   824FEE05     MOV.W   R15, &0x5ee
+    260            Five_msec_Delay(Index1); 
+   \   000058   1C43         MOV.W   #0x1, R12
+   \   00005A   ........     CALLA   #Five_msec_Delay
+    261          }
+   \   00005E   31501800     ADD.W   #0x18, SP
+   \   000062   3A41         POP.W   R10
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_UCA1TXBUF_L
+   \   000066                REQUIRE _A_UCA0TXBUF_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  SET SSID  ">`:
+   \   000000   202053455420 DC8 "  SET SSID  "
+   \            535349442020
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SSIDTXT=ncsu">`:
+   \   000000   41542B532E53 DC8 41H, 54H, 2BH, 53H, 2EH, 53H, 53H, 49H
+   \            5349        
+   \   000008   445458543D6E DC8 44H, 54H, 58H, 54H, 3DH, 6EH, 63H, 73H
+   \            6373        
+   \   000010   75           DC8 75H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " SET HOST ">`:
+   \   000000   205345542048 DC8 " SET HOST "
+   \            4F53542000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SCFG=ip_hostname...">`:
+   \   000000   41542B532E53 DC8 41H, 54H, 2BH, 53H, 2EH, 53H, 43H, 46H
+   \            4346        
+   \   000008   473D69705F68 DC8 47H, 3DH, 69H, 70H, 5FH, 68H, 6FH, 73H
+   \            6F73        
+   \   000010   746E616D652C DC8 74H, 6EH, 61H, 6DH, 65H, 2CH, 45H, 43H
+   \            4543        
+   \   000018   452D3330365F DC8 45H, 2DH, 33H, 30H, 36H, 5FH, 30H, 32H
+   \            3032        
+   \   000020   5F51         DC8 5FH, 51H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " SET NPM  ">`:
+   \   000000   20534554204E DC8 " SET NPM  "
+   \            504D202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SCFG=wifi_priv_m...">`:
+   \   000000   41542B532E53 DC8 41H, 54H, 2BH, 53H, 2EH, 53H, 43H, 46H
+   \            4346        
+   \   000008   473D77696669 DC8 47H, 3DH, 77H, 69H, 66H, 69H, 5FH, 70H
+   \            5F70        
+   \   000010   7269765F6D6F DC8 72H, 69H, 76H, 5FH, 6DH, 6FH, 64H, 65H
+   \            6465        
+   \   000018   2C30         DC8 2CH, 30H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " SET MODE ">`:
+   \   000000   20534554204D DC8 " SET MODE "
+   \            4F44452000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.SCFG=wifi_mode,1">`:
+   \   000000   41542B532E53 DC8 41H, 54H, 2BH, 53H, 2EH, 53H, 43H, 46H
+   \            4346        
+   \   000008   473D77696669 DC8 47H, 3DH, 77H, 69H, 66H, 69H, 5FH, 6DH
+   \            5F6D        
+   \   000010   6F64652C31   DC8 6FH, 64H, 65H, 2CH, 31H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT&W">`:
+   \   000000   41542657     DC8 41H, 54H, 26H, 57H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+CFUN=0">`:
+   \   000000   41542B434655 DC8 41H, 54H, 2BH, 43H, 46H, 55H, 4EH, 3DH
+   \            4E3D        
+   \   000008   30           DC8 30H
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant " GET MODE ">`:
+   \   000000   20474554204D DC8 " GET MODE "
+   \            4F44452000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "AT+S.PING=152.14.99.126">`:
+   \   000000   41542B532E50 DC8 41H, 54H, 2BH, 53H, 2EH, 50H, 49H, 4EH
+   \            494E        
+   \   000008   473D3135322E DC8 47H, 3DH, 31H, 35H, 32H, 2EH, 31H, 34H
+   \            3134        
+   \   000010   2E39392E3132 DC8 2EH, 39H, 39H, 2EH, 31H, 32H, 36H
+   \            36          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     20   iotSave
+       20   -> Display_Process
+       20   -> Five_msec_Delay
+       20 ?CopyMemoryBytes
+     30   pingIOT
+       30   -> Five_msec_Delay
+       30 ?CopyMemoryBytes
+     40   setHostName
+       40   -> Display_Process
+       40   -> Five_msec_Delay
+       40 ?CopyMemoryBytes
+     28   setNetworkMode
+       28   -> Display_Process
+       28   -> Five_msec_Delay
+       28 ?CopyMemoryBytes
+     32   setPrivacyMode
+       32   -> Display_Process
+       32   -> Five_msec_Delay
+       32 ?CopyMemoryBytes
+     24   setSSID
+       24   -> Five_msec_Delay
+       24   -> displayLine2
+       24 ?CopyMemoryBytes
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      13  ?<Constant "  SET SSID  ">
+      11  ?<Constant " GET MODE ">
+      11  ?<Constant " SET HOST ">
+      11  ?<Constant " SET MODE ">
+      11  ?<Constant " SET NPM  ">
+       4  ?<Constant "AT&W">
+       9  ?<Constant "AT+CFUN=0">
+      23  ?<Constant "AT+S.PING=152.14.99.126">
+      34  ?<Constant "AT+S.SCFG=ip_hostname...">
+      21  ?<Constant "AT+S.SCFG=wifi_mode,1">
+      26  ?<Constant "AT+S.SCFG=wifi_priv_m...">
+      17  ?<Constant "AT+S.SSIDTXT=ncsu">
+       2  _A_UCA0TXBUF_L
+       2  _A_UCA1TXBUF_L
+     248  iotSave
+     102  pingIOT
+     128  setHostName
+     128  setNetworkMode
+     128  setPrivacyMode
+     128  setSSID
+
+ 
+ 862 bytes in segment CODE
+   4 bytes in segment DATA16_AN
+ 191 bytes in segment DATA16_C
+ 
+ 862 bytes of CODE  memory
+ 191 bytes of CONST memory
+   0 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none

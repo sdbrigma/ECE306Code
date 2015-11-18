@@ -128,23 +128,23 @@ __interrupt void USCI_A1_ISR(void){
 *        Globlas: temp, cpu_rx_ring_wr
 *******************************************************************************/
   // CPU and IOT interrupts are the same (This is the back door)
-unsigned int temp = INITIAL;
-  switch(__even_in_range(UCA1IV, USCI_val8)) {
-  case SW_SEL_0:		//Vector 0 - No Interrupt
+unsigned int temp = ZERO;
+  switch(__even_in_range(UCA1IV, UCAx)) {
+  case LINE_POS_L0:		//Vector 0 - No Interrupt
     break;
-  case SW_SEL_2:		// Vector 2 - RXIFG
+  case LINE_POS_L2:		// Vector 2 - RXIFG
     // Code for Receive
     temp = IOTRead;
     IOT_RX[temp] =  UCA1RXBUF;   // Store Transmission 
     if (IOT_RX[temp] == '*') {
-      IOTRead = INITIAL;
-      IOT_RX[Pos0] = IOT_RX[temp];
+      IOTRead = ZERO;
+      IOT_RX[ZERO] = IOT_RX[temp];
     }
     if (++IOTRead >= (SMALL_RING_SIZE)) {
-      IOTRead = INITIAL;         // Reset Index
+      IOTRead = ZERO;         // Reset Index
     }
     break;
-  case SW_SEL_4:		// Vector 4 - TXIFG
+  case LINE_POS_L4:		// Vector 4 - TXIFG
     // Code for Transmit
     break;
   default: break;
@@ -166,20 +166,20 @@ __interrupt void USCI_A0_ISR(void){
 *        Globlas: temp, cpu_rx_ring_wr
 *******************************************************************************/
   // CPU and IOT interrupts are the same (This is the back door)
-   unsigned int temp = INITIAL;
-  switch(__even_in_range(UCA0IV, USCI_val8)) {
-  case SW_SEL_0:		//Vector 0 - No Interrupt
+   unsigned int temp = ZERO;
+  switch(__even_in_range(UCA0IV, UCAx)) {
+  case LINE_POS_L0:		//Vector 0 - No Interrupt
     break;
-  case SW_SEL_2:		// Vector 2 - RXIFG
+  case LINE_POS_L2:		// Vector 2 - RXIFG
     // Code for Receive
     temp = rxRead;
-    receiveEnable = TRUE;           // Tranmission received
+    receiveEnable = ALWAYS;           // Tranmission received
     RX_Char[temp] =  UCA0RXBUF;   // Store Transmission                    
     if (++rxRead >= (SMALL_RING_SIZE)) {
-      rxRead = INITIAL;             // Reset Index
+      rxRead = ZERO;             // Reset Index
     }
     break;
-  case SW_SEL_4:		// Vector 4 - TXIFG
+  case LINE_POS_L4:		// Vector 4 - TXIFG
     // Code for Transmit
     break;
   default: break;

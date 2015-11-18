@@ -34,35 +34,35 @@ void Init_IOT(void){
 //
 //****************************************************************************** 
   
-  int i = INITIAL;
-  _Bool firstDOT = FALSE;
-  Display_Format();
+  int i = ALWAYS;
+  int firstDOT = ZERO;
+  formatDisplay();
   
   UCA1IE |= UCTXIE;                       // Enable TX interrupt
   UCA1IE |= UCRXIE;	                  // Enable RX interrupt 
   
   // CONFIGURE SSID
-  SSID();
+  setSSID();
   // CONFIGURE HOSTNAME
-  HOST();
+  setHostName();
   // CONFIGURE NETWORK PRIVACY MODE
-  NPM();
+  setPrivacyMode();
   // CONFIGURE NETWORK MODE
-  NET_MODE();
+  setNetworkMode();
   // FLASH SETTING
-  FLASH();
+  iotSave();
   
 //// RESET ////
   display_2 = "  RESET   ";
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
+  Five_msec_Delay(switch_delay);
   
   PJOUT |= RESET;
-  Five_msec_Delay(ONE_SEC_COUNT);
+  Five_msec_Delay(ONE_SECOND);
   PJOUT &= ~RESET;
   Init_LCD();
   
-  Five_msec_Delay(ONE_SEC_MULT);
+  Five_msec_Delay(time_multiple);
   
   display_1 = "----------";
   display_2 = " COMPLETE ";
@@ -73,10 +73,10 @@ void Init_IOT(void){
   posL2 = LINE_POS_L0;
   posL3 = LINE_POS_L0;
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
   
-  Five_msec_Delay(ONE_SEC_MULT);
+  Five_msec_Delay(time_multiple);
   
   display_1 = "----------";
   display_2 = "CONNECTING";
@@ -87,101 +87,101 @@ void Init_IOT(void){
   posL2 = LINE_POS_L0;
   posL3 = LINE_POS_L0;
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
   
-  Five_msec_Delay(FIVE_SEC_MULT);
+  Five_msec_Delay(ONE_SECOND);
 
   // GET SSID to Display
-  char SSIDcmd[Pos12] = "AT+S.SSIDTXT";
+  char SSIDcmd[LINE_POS_L12] = "AT+S.SSIDTXT";
   // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ALWAYS; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos12; i++) {
+  IOTRead = ALWAYS;
+  for(i=ZERO; i < LINE_POS_L12; i++) {
     UCA1TXBUF = UCA0TXBUF = SSIDcmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(ALWAYS);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(ALWAYS);
   
-  Five_msec_Delay(BIG_DELAY);
+  Five_msec_Delay(switch_delay);
   
-  display_1[Pos0] = ' ';
-  display_1[Pos1] = ' ';
-  display_1[Pos2] = ' ';
-  display_1[Pos3] = IOT_RX[Pos8];
-  display_1[Pos4] = IOT_RX[Pos9];
-  display_1[Pos5] = IOT_RX[Pos10];
-  display_1[Pos6] = IOT_RX[Pos11];
-  display_1[Pos7] = ' ';
-  display_1[Pos8] = ' ';
-  display_1[Pos9] = ' ';
+  display_1[LINE_POS_L0] = ' ';
+  display_1[LINE_POS_L1] = ' ';
+  display_1[LINE_POS_L2] = ' ';
+  display_1[LINE_POS_L3] = IOT_RX[LINE_POS_L8];
+  display_1[LINE_POS_L4] = IOT_RX[LINE_POS_L9];
+  display_1[LINE_POS_L5] = IOT_RX[LINE_POS_L10];
+  display_1[LINE_POS_L6] = IOT_RX[LINE_POS_L11];
+  display_1[LINE_POS_L7] = ' ';
+  display_1[LINE_POS_L8] = ' ';
+  display_1[LINE_POS_L9] = ' ';
   display_2 = "  ipaddr  ";
   display_3 = display_4 = "          ";
-  big = INITIAL;
+  big = ZERO;
   lcd_4line();
   Display_Process();
   
-  Five_msec_Delay(ONE_SEC_MULT);
+  Five_msec_Delay(time_multiple);
   
   // GET IP Address to display
-  char IPADDRcmd[Pos18] = "AT+S.STS=ip_ipaddr";
+  char IPADDRcmd[LINE_POS_L18] = "AT+S.STS=ip_ipaddr";
   // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ALWAYS; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos18; i++) {
+  IOTRead = ALWAYS;
+  for(i=ALWAYS; i < LINE_POS_L18; i++) {
     UCA1TXBUF = UCA0TXBUF = IPADDRcmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(ALWAYS);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(ALWAYS);;
   
-  Five_msec_Delay(BIG_DELAY);
+  Five_msec_Delay(switch_delay);
   UCA1IE &= ~UCRXIE;
   
-  int indexIP = INITIAL;
-  firstDOT = FALSE;
-  display_3[Pos0] = ' ';
-  for(i=Pos1; i < Pos9; i++) {
-    display_3[i] = IOT_RX[i+Pos14];
-    if ((IOT_RX[i+Pos14] == '.') && (firstDOT == TRUE)) {
-      indexIP = i+Pos13;
+  int indexIP = ALWAYS;
+  firstDOT = ZERO;
+  display_3[LINE_POS_L0] = ' ';
+  for(i=LINE_POS_L1; i < LINE_POS_L9; i++) {
+    display_3[i] = IOT_RX[i+LINE_POS_L14];
+    if ((IOT_RX[i+LINE_POS_L14] == '.') && (firstDOT == ALWAYS)) {
+      indexIP = i+Index13;
       break;
     }
-    if (IOT_RX[i+Pos14] == '.') firstDOT = TRUE;
+    if (IOT_RX[i+LINE_POS_L14] == '.') firstDOT = ALWAYS;
   }
-  display_3[Pos9] = ' ';
+  display_3[LINE_POS_L9] = ' ';
  
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
+  Five_msec_Delay(switch_delay);
   
   display_4 = "         ";
-  for(i=Pos2; i < Pos9; i++) {
+  for(i=LINE_POS_L2; i < LINE_POS_L9; i++) {
     if (IOT_RX[i+indexIP] == '\r') break;
     display_4[i] = IOT_RX[i+indexIP];
   }
   
   // Display IP Address
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
+  Five_msec_Delay(switch_delay);
   UCA1IE |= UCRXIE;
   
   // PING LAB COMPUTER
-  PING();
+  pingIOT();
   
   // Wait for IOT confirmation
-  while (IOT_RX[Pos31] != 'O') {
+  while (IOT_RX[Index31] != 'O') {
     if (!(P4IN & SW2)) {
-      Five_msec_Delay(LIL_SW_DELAY); 
+      Five_msec_Delay(small_delay); 
       break;
     }
   }
   
   while(ALWAYS) {
     if (!(P4IN & SW2)) {
-      Five_msec_Delay(LIL_SW_DELAY); 
+      Five_msec_Delay(small_delay); 
       break;
     }
   }

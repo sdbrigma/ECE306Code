@@ -16,7 +16,7 @@
 #include  "functions.h"
 #include  "macros.h"
 
-void Display_Config(void){
+void Configuration(void){
 //******************************************************************************
 //
 //  Description: This file updates the menu element based on selection
@@ -37,7 +37,7 @@ void Display_Config(void){
 //
 //******************************************************************************  
   
-  switch_select = SW_SEL_1;
+  sw_select = LINE_POS_L1;
   display_1 = "Calibrate ";
   posL1 = LINE_POS_L0;
   display_2 = "IOT Config";
@@ -46,11 +46,11 @@ void Display_Config(void){
   posL3 = LINE_POS_L0;
   display_4 = "          ";
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
 }
 
-void Display_IOTCMD(void){
+void IOT_Commands(void){
 //******************************************************************************
 //
 //  Description: This file updates the menu element based on selection
@@ -71,7 +71,7 @@ void Display_IOTCMD(void){
 //
 //******************************************************************************  
   
-  switch_select = SW_SEL_2;
+  sw_select = LINE_POS_L2;
   display_1 = "IOT Config";
   posL1 = LINE_POS_L0;
   display_2 = " IOT CMD  ";
@@ -80,11 +80,11 @@ void Display_IOTCMD(void){
   posL3 = LINE_POS_L0;
   display_4 = "          ";
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
 }
 
-void Display_Backdoor(void){
+void backdoorDisplay(void){
 //******************************************************************************
 //
 //  Description: This file updates the menu element based on selection
@@ -105,7 +105,7 @@ void Display_Backdoor(void){
 //
 //******************************************************************************  
   
-  switch_select = SW_SEL_3;
+  sw_select = LINE_POS_L3;
   display_1 = " IOT CMD  ";
   posL1 = LINE_POS_L0;
   display_2 = "Back Door ";
@@ -114,11 +114,11 @@ void Display_Backdoor(void){
   posL3 = LINE_POS_L0;
   display_4 = "          ";
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
 }
 
-void Display_Detect(void){
+void IOTDetect(void){
 //******************************************************************************
 //
 //  Description: This file updates the menu element based on selection
@@ -139,7 +139,7 @@ void Display_Detect(void){
 //
 //******************************************************************************  
   
-  switch_select = SW_SEL_4;
+  sw_select = LINE_POS_L4;
   display_1 = "Back Door ";
   posL1 = LINE_POS_L0;
   display_2 = "  Detect  ";
@@ -148,11 +148,11 @@ void Display_Detect(void){
   posL3 = LINE_POS_L0;
   display_4 = "          ";
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
 }
 
-void Display_Calibrate(void){
+void calibrationDisplay(void){
 //******************************************************************************
 //
 //  Description: This file updates the menu element based on selection
@@ -173,7 +173,7 @@ void Display_Calibrate(void){
 //
 //******************************************************************************  
   
-  switch_select = SW_SEL_5;
+  sw_select = LINE_POS_L5;
   display_1 = "  Detect  ";
   posL1 = LINE_POS_L0;
   display_2 = "Calibrate ";
@@ -182,11 +182,11 @@ void Display_Calibrate(void){
   posL3 = LINE_POS_L0;
   display_4 = "          ";
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
 }
 
-void Display_Format(void){
+void formatDisplay(void){
 //******************************************************************************
 //
 //  Description: This file updates the menu element based on selection
@@ -207,7 +207,7 @@ void Display_Format(void){
 //
 //******************************************************************************  
   
-  switch_select = SW_SEL_1;
+  sw_select = LINE_POS_L1;
   display_1 = "----------";
   posL1 = LINE_POS_L0;
   display_2 = "          ";
@@ -216,11 +216,11 @@ void Display_Format(void){
   posL3 = LINE_POS_L0;
   display_4 = "          ";
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
 }
 
-void Display_Buffer(void){
+void bufferDisplay(void){
 //******************************************************************************
 //
 //  Description: This function is used to test serial communcation lines
@@ -240,8 +240,8 @@ void Display_Buffer(void){
 //
 //****************************************************************************** 
   
-  unsigned volatile int i = INITIAL;
-  unsigned volatile int index = INITIAL;
+  unsigned volatile int i = ZERO;
+  unsigned volatile int index = ZERO;
   int OLD_ADC_Thumb;
   display_1 = "----------";
   display_2 = "          ";
@@ -251,19 +251,19 @@ void Display_Buffer(void){
   posL2 = LINE_POS_L0;
   posL3 = LINE_POS_L0;
   posL4 = LINE_POS_L0;
-  big = TRUE;
+  big = ALWAYS;
   lcd_BIG_mid();
   
   while(ALWAYS) {
 	// Update all ADC channels
-	  for(i = SW_SEL_5; i > INITIAL; i--) {
-	  ADC10_Process();
+	  for(i = LINE_POS_L5; i > ZERO; i--) {
+	  ADC_Process();
 	  }
 	  
           // Only update when moving in the positive direction
-          if (OLD_ADC_Thumb < INITIAL) OLD_ADC_Thumb = SW_SEL_1;
-          if ((ADC_Thumb < OLD_ADC_Thumb - SW_SEL_1) && (ADC_Thumb > SW_SEL_1)) {
-              index+=Pos2; 
+          if (OLD_ADC_Thumb < ZERO) OLD_ADC_Thumb = LINE_POS_L1;
+          if ((ADC_Thumb < OLD_ADC_Thumb - LINE_POS_L1) && (ADC_Thumb > LINE_POS_L1)) {
+              index+=LINE_POS_L2; 
           }
           
           if (receiveEnable) {
@@ -271,30 +271,30 @@ void Display_Buffer(void){
             UCA1IE |= UCRXIE;	                    // Enable RX interrupt 
           }
           
-          if (index > Pos30) index = INITIAL;
+          if (index > Index30) index = ZERO;
           
           // Sets previous thumbwheel value
-          OLD_ADC_Thumb = ADC_Thumb - SW_SEL_6;
+          OLD_ADC_Thumb = ADC_Thumb - LINE_POS_L6;
               
           // Scroll Fight Song
-          display_2[SW_SEL_0] = RX_Char[index];
-          display_2[SW_SEL_1] = RX_Char[index + SW_SEL_1];
-          display_2[SW_SEL_2] = RX_Char[index + SW_SEL_2];
-          display_2[SW_SEL_3] = RX_Char[index + SW_SEL_3];
-          display_2[SW_SEL_4] = RX_Char[index + SW_SEL_4];
-          display_2[SW_SEL_5] = RX_Char[index + SW_SEL_5];
-          display_2[SW_SEL_6] = RX_Char[index + SW_SEL_6];
-          display_2[SW_SEL_7] = RX_Char[index + SW_SEL_7];
-          display_2[SW_SEL_8] = RX_Char[index + SW_SEL_8];
-          display_2[SW_SEL_9] = RX_Char[index + SW_SEL_9];
+          display_2[LINE_POS_L0] = RX_Char[index];
+          display_2[LINE_POS_L1] = RX_Char[index + LINE_POS_L1];
+          display_2[LINE_POS_L2] = RX_Char[index + LINE_POS_L2];
+          display_2[LINE_POS_L3] = RX_Char[index + LINE_POS_L3];
+          display_2[LINE_POS_L4] = RX_Char[index + LINE_POS_L4];
+          display_2[LINE_POS_L5] = RX_Char[index + LINE_POS_L5];
+          display_2[LINE_POS_L6] = RX_Char[index + LINE_POS_L6];
+          display_2[LINE_POS_L7] = RX_Char[index + LINE_POS_L7];
+          display_2[LINE_POS_L8] = RX_Char[index + LINE_POS_L8];
+          display_2[LINE_POS_L9] = RX_Char[index + LINE_POS_L9];
  
           // Update LCD Display
 	  Display_Process();
-	  Five_msec_Delay(LIL_DELAY);
+	  Five_msec_Delay(small_delay);
 		
           // Clean before return
           if (!(P4IN & SW2)) {
-            Five_msec_Delay(LIL_SW_DELAY);
+            Five_msec_Delay(small_delay);
             display_1 = "          ";
             display_2 = "          ";
             display_3 = "          ";

@@ -1,3 +1,7 @@
+#include  "macros.h"
+#include  "msp430.h"
+#include  "functions.h"
+
 // Use UCA1
 void setSSID(void){
 //******************************************************************************
@@ -21,27 +25,26 @@ void setSSID(void){
 //
 //****************************************************************************** 
   
-  int i = INITIAL;
+  int i = ZERO;
   
  //// SET SSID ////
-  display_2 = " SET SSID ";
-  Display_Process();
-  Five_msec_Delay(BIG_DELAY);
-  char SSIDcmd[Pos17] = "AT+S.SSIDTXT=ncsu";
+  displayLine2("  SET SSID  ",ZERO);
+  Five_msec_Delay(switch_delay);
+  char SSIDcmd[Index17] = "AT+S.SSIDTXT=ncsu";
   
   // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos17; i++) {
+  IOTRead = ZERO;
+  for(i=ZERO; i < Index17; i++) {
     UCA1TXBUF = UCA0TXBUF = SSIDcmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(Index1);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(Index1);
   
   // Wait for IOT confirmation
-  while (IOT_RX[Pos2] != 'O');
+  while (IOT_RX[Index2] != 'O');
   }
 void setHostName(void){
   //******************************************************************************
@@ -65,27 +68,27 @@ void setHostName(void){
 //
 //****************************************************************************** 
   
-  int i = INITIAL;
+  int i = ZERO;
   
 //// SET HOSTNAME ////
   display_2 = " SET HOST ";
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
- char HOSTcmd[Pos34] = "AT+S.SCFG=ip_hostname,ECE-306_02_C";
+  Five_msec_Delay(switch_delay);
+ char HOSTcmd[Index34] = "AT+S.SCFG=ip_hostname,ECE-306_02_Q";
   
   // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos34; i++) {
+  IOTRead = ZERO;
+  for(i=ZERO; i < Index34; i++) {
     UCA1TXBUF = UCA0TXBUF = HOSTcmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(Index1);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(Index1);
   
   // Wait for IOT confirmation
-  while (IOT_RX[Pos2] != 'O');
+  while (IOT_RX[Index2] != 'O');
 }
 
 void setPrivacyMode(void){
@@ -110,27 +113,27 @@ void setPrivacyMode(void){
 //
 //****************************************************************************** 
   
-  int i = INITIAL;
+  int i = ZERO;
   
 //// SET NETWORK PRIVACY MODE////
   display_2 = " SET NPM  ";
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
- char NPMcmd[Pos26] = "AT+S.SCFG=wifi_priv_mode,0";
+  Five_msec_Delay(switch_delay);
+ char NPMcmd[Index26] = "AT+S.SCFG=wifi_priv_mode,0";
   
   // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos26; i++) {
+  IOTRead = ZERO;
+  for(i=ZERO; i < Index26; i++) {
     UCA1TXBUF = UCA0TXBUF = NPMcmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(Index1);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(Index1);
   
   // Wait for IOT confirmation
-  while (IOT_RX[Pos2] != 'O');
+  while (IOT_RX[Index2] != 'O');
 }
 
 void setNetworkMode(void){
@@ -155,70 +158,69 @@ void setNetworkMode(void){
 //
 //****************************************************************************** 
   
-  int i = INITIAL;
+  int i = ZERO;
   
 //// SET NETWORK MODE ////
   display_2 = " SET MODE ";
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
- char NETcmd[Pos21] = "AT+S.SCFG=wifi_mode,1";
+  Five_msec_Delay(switch_delay);
+ char NETcmd[Index21] = "AT+S.SCFG=wifi_mode,1";
   
   // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos21; i++) {
+  IOTRead = ZERO;
+  for(i=ZERO; i < Index21; i++) {
     UCA1TXBUF = UCA0TXBUF = NETcmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(Index1);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
-  
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(Index1);  
   // Wait for IOT confirmation
-  while (IOT_RX[Pos2] != 'O');
+  while (IOT_RX[Index2] != 'O');
 }
 
 void iotSave(void){
-  int i = INITIAL;
+  int i = ZERO;
   
 //// Begin Flash ////
   display_2 = " SET MODE ";
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
-  char F1cmd[Pos4] = "AT&W";
-  char F2cmd[Pos9] = "AT+CFUN=0";
+  Five_msec_Delay(switch_delay);
+  char F1cmd[Index4] = "AT&W";
+  char F2cmd[Index9] = "AT+CFUN=0";
   
   // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos4; i++) {
+  IOTRead = ZERO;
+  for(i=ZERO; i < Index4; i++) {
     UCA1TXBUF = UCA0TXBUF = F1cmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(Index1);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(Index1);
   
   // Wait for IOT confirmation
-  while (IOT_RX[Pos2] != 'O');
+  while (IOT_RX[Index2] != 'O');
   
 //// Finalize Flash ////
   display_2 = " GET MODE ";
   Display_Process();
-  Five_msec_Delay(BIG_DELAY);
+  Five_msec_Delay(switch_delay);
   
  // Initialize IOT_RX ring
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos9; i++) {
+  IOTRead = ZERO;
+  for(i=ZERO; i < Index9; i++) {
     UCA1TXBUF = UCA0TXBUF = F2cmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(Index1);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay();
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(Index1);
   
-  Five_msec_Delay(BIGGER_DELAY);
+  Five_msec_Delay(switch_delay);
 }
 
 void pingIOT(void){
@@ -243,17 +245,17 @@ void pingIOT(void){
 //
 //****************************************************************************** 
   
-  int i = INITIAL;
+  int i = ZERO;
   
   // Initialize IOT_RX ring
-  char PINGcmd[Pos23] = "AT+S.PING=152.14.99.126";
-  for(i=INITIAL; i < SMALL_RING_SIZE; i++) IOT_RX[i] = INITIAL;
+  char PINGcmd[Index23] = "AT+S.PING=152.14.99.126";
+  for(i=ZERO; i < SMALL_RING_SIZE; i++) IOT_RX[i] = ZERO;
   
-  IOTRead = INITIAL;
-  for(i=INITIAL; i < Pos23; i++) {
+  IOTRead = ZERO;
+  for(i=ZERO; i < Index23; i++) {
     UCA1TXBUF = UCA0TXBUF = PINGcmd[i];
-    One_msec_Delay();
+    Five_msec_Delay(Index1);
   }
-  UCA1TXBUF = UCA0TXBUF = TX_FINISH;
-  One_msec_Delay(); 
+  UCA1TXBUF = UCA0TXBUF = END_COMMAND;
+  Five_msec_Delay(Index1); 
 }

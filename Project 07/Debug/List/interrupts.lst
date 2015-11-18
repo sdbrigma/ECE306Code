@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  17:14:13
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           18/Nov/2015  13:47:49
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -279,102 +279,121 @@
     128          *        Globlas: temp, cpu_rx_ring_wr
     129          *******************************************************************************/
     130            // CPU and IOT interrupts are the same (This is the back door)
-    131           unsigned int temp;
-    132           switch(__even_in_range(UCA1IV,UART_MAX)){
-   \   000002   1E42FE05     MOV.W   &0x5fe, R14
-   \   000006   E00E         ADDA    R14, PC
+    131          unsigned int temp = ZERO;
+   \   000002   0F43         MOV.W   #0x0, R15
+    132            switch(__even_in_range(UCA1IV, UCAx)) {
+   \   000004   1E42FE05     MOV.W   &0x5fe, R14
+   \   000008   E00E         ADDA    R14, PC
    \                     `?<Jumptable for USCI_A1_ISR>_0`:
-   \   000008   123C         JMP     ??USCI_A1_ISR_2
-   \   00000A   033C         JMP     ??USCI_A1_ISR_3
-   \   00000C   103C         JMP     ??USCI_A1_ISR_2
-   \   00000E   0F3C         JMP     ??USCI_A1_ISR_2
-   \   000010   0E3C         JMP     ??USCI_A1_ISR_2
-    133           case ZERO: // Vector 0 - no interrupt
-    134           break;
-    135           case RECEIVE: // Vector 2 – RXIFG
-    136             temp = cpu_rx_ring_wr;
+   \   00000A   1D3C         JMP     ??USCI_A1_ISR_2
+   \   00000C   033C         JMP     ??USCI_A1_ISR_4
+   \   00000E   1B3C         JMP     ??USCI_A1_ISR_2
+   \   000010   1A3C         JMP     ??USCI_A1_ISR_2
+   \   000012   193C         JMP     ??USCI_A1_ISR_2
+    133            case LINE_POS_L0:		//Vector 0 - No Interrupt
+    134              break;
+    135            case LINE_POS_L2:		// Vector 2 - RXIFG
+    136              // Code for Receive
+    137              temp = IOTRead;
+   \                     ??USCI_A1_ISR_4:
+   \   000014   1F42....     MOV.W   &IOTRead, R15
+    138              IOT_RX[temp] =  UCA1RXBUF;   // Store Transmission 
+   \   000018   1E42EC05     MOV.W   &0x5ec, R14
+   \   00001C   CF4E....     MOV.B   R14, IOT_RX(R15)
+    139              if (IOT_RX[temp] == '*') {
+   \   000020   FF902A00.... CMP.B   #0x2a, IOT_RX(R15)
+   \   000026   0520         JNE     ??USCI_A1_ISR_3
+    140                IOTRead = ZERO;
+   \   000028   8243....     MOV.W   #0x0, &IOTRead
+    141                IOT_RX[ZERO] = IOT_RX[temp];
+   \   00002C   D24F........ MOV.B   IOT_RX(R15), &IOT_RX
+    142              }
+    143              if (++IOTRead >= (SMALL_RING_SIZE)) {
    \                     ??USCI_A1_ISR_3:
-   \   000012   1F42....     MOV.W   &cpu_rx_ring_wr, R15
-    137             CPU_Char_Rx[temp] = UCA1RXBUF; // RX -> CPU_Char_Rx character
-   \   000016   1E42EC05     MOV.W   &0x5ec, R14
-   \   00001A   CF4E....     MOV.B   R14, CPU_Char_Rx(R15)
-    138             if (++cpu_rx_ring_wr >= (IOT_RING_SIZE)){
-   \   00001E   9253....     ADD.W   #0x1, &cpu_rx_ring_wr
-   \   000022   B2902800.... CMP.W   #0x28, &cpu_rx_ring_wr
-   \   000028   0228         JNC     ??USCI_A1_ISR_2
-    139             cpu_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
-   \   00002A   8243....     MOV.W   #0x0, &cpu_rx_ring_wr
-    140             }
-    141           break;
-    142           case TRANSMIT: // Vector 4 – TXIFG
-    143          // Code for Transmit
-    144           break;
-    145           default: break;
-    146           }
-    147          }
+   \   000032   1E42....     MOV.W   &IOTRead, R14
+   \   000036   1E53         ADD.W   #0x1, R14
+   \   000038   824E....     MOV.W   R14, &IOTRead
+   \   00003C   3E901000     CMP.W   #0x10, R14
+   \   000040   0228         JNC     ??USCI_A1_ISR_2
+    144                IOTRead = ZERO;         // Reset Index
+   \   000042   8243....     MOV.W   #0x0, &IOTRead
+    145              }
+    146              break;
+    147            case LINE_POS_L4:		// Vector 4 - TXIFG
+    148              // Code for Transmit
+    149              break;
+    150            default: break;
+    151            }
+    152          }
    \                     ??USCI_A1_ISR_2:
-   \   00002E   1E17         POPM.W  #0x2, R15
-   \   000030   0013         RETI
-   \   000032                REQUIRE _A_UCA1RXBUF_L
-   \   000032                REQUIRE UCA1IV
-    148          //------------------------------------------------------------------------------
-    149          
-    150          #pragma vector=USCI_A0_VECTOR
+   \   000046   1E17         POPM.W  #0x2, R15
+   \   000048   0013         RETI
+   \   00004A                REQUIRE _A_UCA1RXBUF_L
+   \   00004A                REQUIRE UCA1IV
+    153          //------------------------------------------------------------------------------
+    154          
+    155          #pragma vector=USCI_A0_VECTOR
 
    \                                 In  segment ISR_CODE, align 2
-    151          __interrupt void USCI_A0_ISR(void){
+    156          __interrupt void USCI_A0_ISR(void){
    \                     USCI_A0_ISR:
    \   000000   1F15         PUSHM.W #0x2, R15
-    152          /*******************************************************************************
-    153          *        Author: Steffon Brigman
-    154          *        Date:   October 2015
-    155          *        Description: This function is the transmit and receive interrupt for UART
-    156          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
-    157          *
-    158          *        Function name: USCI_A1_ISR
-    159          *        Passed : No variables passed 
-    160          *        Returned: no values returned 
-    161          *        Globlas: temp, cpu_rx_ring_wr
-    162          *******************************************************************************/
-    163            // CPU and IOT interrupts are the same (This is the back door)
-    164           unsigned int temp;
-    165           switch(__even_in_range(UCA0IV,UART_MAX)){
-   \   000002   1E42DE05     MOV.W   &0x5de, R14
-   \   000006   E00E         ADDA    R14, PC
+    157          /*******************************************************************************
+    158          *        Author: Steffon Brigman
+    159          *        Date:   October 2015
+    160          *        Description: This function is the transmit and receive interrupt for UART
+    161          *        Built with IAR Embedded Workbench Version: V7.0.5/W32 (6.10.5)
+    162          *
+    163          *        Function name: USCI_A1_ISR
+    164          *        Passed : No variables passed 
+    165          *        Returned: no values returned 
+    166          *        Globlas: temp, cpu_rx_ring_wr
+    167          *******************************************************************************/
+    168            // CPU and IOT interrupts are the same (This is the back door)
+    169             unsigned int temp = ZERO;
+   \   000002   0F43         MOV.W   #0x0, R15
+    170            switch(__even_in_range(UCA0IV, UCAx)) {
+   \   000004   1E42DE05     MOV.W   &0x5de, R14
+   \   000008   E00E         ADDA    R14, PC
    \                     `?<Jumptable for USCI_A0_ISR>_0`:
-   \   000008   123C         JMP     ??USCI_A0_ISR_2
-   \   00000A   033C         JMP     ??USCI_A0_ISR_3
-   \   00000C   103C         JMP     ??USCI_A0_ISR_2
-   \   00000E   0F3C         JMP     ??USCI_A0_ISR_2
-   \   000010   0E3C         JMP     ??USCI_A0_ISR_2
-    166           case ZERO: // Vector 0 - no interrupt
-    167           break;
-    168           case RECEIVE: // Vector 2 – RXIFG
-    169             temp = usb_rx_ring_wr;
+   \   00000A   163C         JMP     ??USCI_A0_ISR_2
+   \   00000C   033C         JMP     ??USCI_A0_ISR_3
+   \   00000E   143C         JMP     ??USCI_A0_ISR_2
+   \   000010   133C         JMP     ??USCI_A0_ISR_2
+   \   000012   123C         JMP     ??USCI_A0_ISR_2
+    171            case LINE_POS_L0:		//Vector 0 - No Interrupt
+    172              break;
+    173            case LINE_POS_L2:		// Vector 2 - RXIFG
+    174              // Code for Receive
+    175              temp = rxRead;
    \                     ??USCI_A0_ISR_3:
-   \   000012   1F42....     MOV.W   &usb_rx_ring_wr, R15
-    170             USB_Char_Rx[temp] = UCA0RXBUF; // RX -> CPU_Char_Rx character
-   \   000016   1E42CC05     MOV.W   &0x5cc, R14
-   \   00001A   CF4E....     MOV.B   R14, USB_Char_Rx(R15)
-    171             if (++usb_rx_ring_wr >= (IOT_RING_SIZE)){
-   \   00001E   9253....     ADD.W   #0x1, &usb_rx_ring_wr
-   \   000022   B2902800.... CMP.W   #0x28, &usb_rx_ring_wr
-   \   000028   0228         JNC     ??USCI_A0_ISR_2
-    172             usb_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
-   \   00002A   8243....     MOV.W   #0x0, &usb_rx_ring_wr
-    173             }
-    174           break;
-    175           case TRANSMIT: // Vector 4 – TXIFG
-    176          // Code for Transmit
-    177           break;
-    178           default: break;
-    179           }
-    180          }
+   \   000014   1F42....     MOV.W   &rxRead, R15
+    176              receiveEnable = ALWAYS;           // Tranmission received
+   \   000018   D243....     MOV.B   #0x1, &receiveEnable
+    177              RX_Char[temp] =  UCA0RXBUF;   // Store Transmission                    
+   \   00001C   1E42CC05     MOV.W   &0x5cc, R14
+   \   000020   CF4E....     MOV.B   R14, RX_Char(R15)
+    178              if (++rxRead >= (SMALL_RING_SIZE)) {
+   \   000024   1E42....     MOV.W   &rxRead, R14
+   \   000028   1E53         ADD.W   #0x1, R14
+   \   00002A   824E....     MOV.W   R14, &rxRead
+   \   00002E   3E901000     CMP.W   #0x10, R14
+   \   000032   0228         JNC     ??USCI_A0_ISR_2
+    179                rxRead = ZERO;             // Reset Index
+   \   000034   8243....     MOV.W   #0x0, &rxRead
+    180              }
+    181              break;
+    182            case LINE_POS_L4:		// Vector 4 - TXIFG
+    183              // Code for Transmit
+    184              break;
+    185            default: break;
+    186            }
+    187          }
    \                     ??USCI_A0_ISR_2:
-   \   00002E   1E17         POPM.W  #0x2, R15
-   \   000030   0013         RETI
-   \   000032                REQUIRE _A_UCA0RXBUF_L
-   \   000032                REQUIRE UCA0IV
+   \   000038   1E17         POPM.W  #0x2, R15
+   \   00003A   0013         RETI
+   \   00003C                REQUIRE _A_UCA0RXBUF_L
+   \   00003C                REQUIRE UCA0IV
 
    \                                 In  segment INTVEC, offset 0x56, root
    \                     `??USCI_A1_ISR::??INTVEC 86`:
@@ -391,7 +410,7 @@
    \                                 In  segment INTVEC, offset 0x60, root
    \                     `??USCI_A0_ISR::??INTVEC 96`:
    \   000060   ....         DC16    USCI_A0_ISR
-    181          //------------------------------------------------------------------------------
+    188          //------------------------------------------------------------------------------
 
    Maximum stack usage in bytes:
 
@@ -414,9 +433,9 @@
        2  Timer0_A0_ISR::??INTVEC 90
        2  UCA0IV
        2  UCA1IV
-      50  USCI_A0_ISR
+      60  USCI_A0_ISR
        2  USCI_A0_ISR::??INTVEC 96
-      50  USCI_A1_ISR
+      74  USCI_A1_ISR
        2  USCI_A1_ISR::??INTVEC 86
        2  _A_ADC10CTL0_L
        2  _A_ADC10IV_L
@@ -429,9 +448,9 @@
  
   20 bytes in segment DATA16_AN
    8 bytes in segment INTVEC
- 230 bytes in segment ISR_CODE
+ 264 bytes in segment ISR_CODE
  
- 230 bytes of CODE  memory
+ 264 bytes of CODE  memory
    0 bytes of CONST memory (+  8 bytes shared)
    0 bytes of DATA  memory (+ 20 bytes shared)
 

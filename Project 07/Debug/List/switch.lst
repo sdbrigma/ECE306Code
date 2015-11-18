@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           16/Nov/2015  18:11:13
+# IAR C/C++ Compiler V6.30.2.940/W32 for MSP430           18/Nov/2015  13:46:39
 # Copyright 1996-2015 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.30
 #
@@ -53,23 +53,11 @@
    \   union <unnamed> _A_PBIN_L
    \                     _A_PBIN_L:
    \   000000                DS8 2
-
-   \                                 In  segment DATA16_AN, at 0x5ce
-   \   union <unnamed> _A_UCA0TXBUF_L
-   \                     _A_UCA0TXBUF_L:
-   \   000000                DS8 2
-
-   \                                 In  segment DATA16_AN, at 0x5ee
-   \   union <unnamed> _A_UCA1TXBUF_L
-   \                     _A_UCA1TXBUF_L:
-   \   000000                DS8 2
      15          #include  "functions.h"
 
    \                                 In  segment CODE, align 2
      16          void Switches_Process(void){
    \                     Switches_Process:
-   \   000000   0A12         PUSH.W  R10
-   \   000002   31800A00     SUB.W   #0xa, SP
      17          //******************************************************************************
      18          //
      19          //  Description: This functions sets code for switch 1 and 2 upon being pressed
@@ -78,101 +66,99 @@
      22          //  Sept 2015
      23          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
      24          //******************************************************************************
-     25            if (!(P4IN & SW1)){
-   \   000006   D2B32102     BIT.B   #0x1, &0x221
-   \   00000A   1A2C         JC      ??Switches_Process_3
-     26              //getIotStatus();
-     27              const char transmitA1[] = "AT+S.STS\r";
-   \   00000C   0C41         MOV.W   SP, R12
-   \   00000E   3E40....     MOV.W   #`?<Constant "AT+S.STS\\r">`, R14
-   \   000012   3D400A00     MOV.W   #0xa, R13
-   \   000016   ........     CALLA   #?CopyMemoryBytes
-     28              int i = ZERO;
-   \   00001A   0A43         MOV.W   #0x0, R10
-     29              while(ALWAYS){
-     30                if(transmitA1[i] == END_COMMAND){break;}
-   \                     ??Switches_Process_0:
-   \   00001C   0F4A         MOV.W   R10, R15
-   \   00001E   0F51         ADD.W   SP, R15
-   \   000020   FF900D000000 CMP.B   #0xd, 0(R15)
-   \   000026   0C24         JEQ     ??Switches_Process_3
-     31                UCA1TXBUF = transmitA1[i];
-   \   000028   0F4A         MOV.W   R10, R15
-   \   00002A   0F51         ADD.W   SP, R15
-   \   00002C   6F4F         MOV.B   @R15, R15
-   \   00002E   4F4F         MOV.B   R15, R15
-   \   000030   824FEE05     MOV.W   R15, &0x5ee
-     32                i++;
-   \   000034   1A53         ADD.W   #0x1, R10
-     33                Five_msec_Delay(30);
-   \   000036   3C401E00     MOV.W   #0x1e, R12
-   \   00003A   ........     CALLA   #Five_msec_Delay
-   \   00003E   EE3F         JMP     ??Switches_Process_0
-     34              }
-     35            }
-     36            if (!(P4IN & SW2)) {
-   \                     ??Switches_Process_3:
-   \   000040   E2B32102     BIT.B   #0x2, &0x221
-   \   000044   0A2C         JC      ??Switches_Process_4
-     37              int i = ZERO;
-   \   000046   0F43         MOV.W   #0x0, R15
-     38            UCA0TXBUF = 0x40;
-   \   000048   B2404000CE05 MOV.W   #0x40, &0x5ce
-     39            while(ALWAYS){
-     40              i++;
+     25           if (!(P4IN & SW1)){
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   262C         JC      ??Switches_Process_0
+     26             Five_msec_Delay(small_delay);                   
+   \   000006   3C401900     MOV.W   #0x19, R12
+   \   00000A   ........     CALLA   #Five_msec_Delay
+     27             
+     28             if (sw_select == LINE_POS_L1) {
+   \   00000E   D293....     CMP.B   #0x1, &sw_select
+   \   000012   0320         JNE     ??Switches_Process_1
+     29              Init_IOT();
+   \   000014   ........     CALLA   #Init_IOT
+   \   000018   1C3C         JMP     ??Switches_Process_0
+     30             }
+     31             else if (sw_select == LINE_POS_L2) {
    \                     ??Switches_Process_1:
-   \   00004E   1F53         ADD.W   #0x1, R15
-     41              if(USB_Char_Rx[i] == 0x40){
-   \   000050   FF904000.... CMP.B   #0x40, USB_Char_Rx(R15)
-   \   000056   FB23         JNE     ??Switches_Process_1
-     42                i++;
-   \   000058   1F53         ADD.W   #0x1, R15
-     43                break;
-     44              }
-     45            }
-     46          }
-     47          //------------------------------------------------------------------------------
-     48          }
+   \   00001A   E293....     CMP.B   #0x2, &sw_select
+   \   00001E   0320         JNE     ??Switches_Process_2
+     32              IOT_Commands();
+   \   000020   ........     CALLA   #IOT_Commands
+   \   000024   163C         JMP     ??Switches_Process_0
+     33             }
+     34             else if (sw_select == LINE_POS_L3) {
+   \                     ??Switches_Process_2:
+   \   000026   F2900300.... CMP.B   #0x3, &sw_select
+   \   00002C   0320         JNE     ??Switches_Process_3
+     35              bufferDisplay();
+   \   00002E   ........     CALLA   #bufferDisplay
+   \   000032   0F3C         JMP     ??Switches_Process_0
+     36             }
+     37             else if (sw_select == LINE_POS_L4) {
+   \                     ??Switches_Process_3:
+   \   000034   E292....     CMP.B   #0x4, &sw_select
+   \   000038   0320         JNE     ??Switches_Process_4
+     38              IOTDetect();
+   \   00003A   ........     CALLA   #IOTDetect
+   \   00003E   093C         JMP     ??Switches_Process_0
+     39             }
+     40             else if (sw_select == LINE_POS_L5) {
    \                     ??Switches_Process_4:
-   \   00005A   31500A00     ADD.W   #0xa, SP
-   \   00005E   3A41         POP.W   R10
+   \   000040   F2900500.... CMP.B   #0x5, &sw_select
+   \   000046   0320         JNE     ??Switches_Process_5
+     41              calibrationDisplay();
+   \   000048   ........     CALLA   #calibrationDisplay
+   \   00004C   023C         JMP     ??Switches_Process_0
+     42             }
+     43             else {
+     44               sw_select = LINE_POS_L1;
+   \                     ??Switches_Process_5:
+   \   00004E   D243....     MOV.B   #0x1, &sw_select
+     45             }
+     46          }
+     47            if (!(P4IN & SW2)) {
+   \                     ??Switches_Process_0:
+   \   000052   E2B32102     BIT.B   #0x2, &0x221
+   \   000056   042C         JC      ??Switches_Process_6
+     48              Five_msec_Delay(small_delay);               
+   \   000058   3C401900     MOV.W   #0x19, R12
+   \   00005C   ........     CALLA   #Five_msec_Delay
+     49          
+     50            }
+     51          //------------------------------------------------------------------------------
+     52          }
+   \                     ??Switches_Process_6:
    \   000060   1001         RETA
    \   000062                REQUIRE _A_PBIN_L
-   \   000062                REQUIRE _A_UCA1TXBUF_L
-   \   000062                REQUIRE _A_UCA0TXBUF_L
-
-   \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "AT+S.STS\\r">`:
-   \   000000   41542B532E53 DC8 "AT+S.STS\015"
-   \            54530D00    
 
    Maximum stack usage in bytes:
 
    CSTACK Function
    ------ --------
-     16   Switches_Process
-       16   -> Five_msec_Delay
-       16 ?CopyMemoryBytes
+      4   Switches_Process
+        4   -> Five_msec_Delay
+        4   -> IOTDetect
+        4   -> IOT_Commands
+        4   -> Init_IOT
+        4   -> bufferDisplay
+        4   -> calibrationDisplay
 
 
    Segment part sizes:
 
    Bytes  Function/Label
    -----  --------------
-      10  ?<Constant "AT+S.STS\r">
       98  Switches_Process
        2  _A_PBIN_L
-       2  _A_UCA0TXBUF_L
-       2  _A_UCA1TXBUF_L
 
  
  98 bytes in segment CODE
-  6 bytes in segment DATA16_AN
- 10 bytes in segment DATA16_C
+  2 bytes in segment DATA16_AN
  
- 98 bytes of CODE  memory
- 10 bytes of CONST memory
-  0 bytes of DATA  memory (+ 6 bytes shared)
+ 98 bytes of CODE memory
+  0 bytes of DATA memory (+ 2 bytes shared)
 
 Errors: none
 Warnings: none

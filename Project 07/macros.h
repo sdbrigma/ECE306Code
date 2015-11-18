@@ -18,6 +18,8 @@
 #define QUARTER_SECOND          (50)
 #define HALF_SECOND             (100)
 #define THIRD_SECOND            (150)
+#define ONE_SECOND              (1000)
+#define time_multiple           (200)
 #define THOU_MS                 (200)
 #define FULL_SECOND             (250)
 #define STRAIGHT_TEST           (750) // 3 SECONDS
@@ -35,8 +37,8 @@
 #define SW2                  (0x02) // Switch 2
 
 // LCD
-#define LCD_LINE_1           (0x80) // Position Cursor at Character 01 of Line 1
-#define LCD_LINE_2           (0xC0) // Position Cursor at Character 01 of Line 2
+#define LCD_LINE_1           (0x80) // Indexition Cursor at Character 01 of Line 1
+#define LCD_LINE_2           (0xC0) // Indexition Cursor at Character 01 of Line 2
 #define LCD_HOME_L1	          0x80
 #define LCD_HOME_L2         	0xA0
 #define LCD_HOME_L3         	0xC0
@@ -50,7 +52,7 @@
 
 #define CSLOCK               (0x01) // Any incorrect password locks registers
 
-// Set LCD Line Positions
+// Set LCD Line Indexitions
 // Switch 1
 #define SW1_posL1   (3) 
 #define SW1_posL2   (1)
@@ -204,6 +206,15 @@
 #define LINE_POS_L7 (7)
 #define LINE_POS_L8 (8)
 #define LINE_POS_L9 (9)
+#define LINE_POS_L10 (10)
+#define LINE_POS_L11 (11)
+#define LINE_POS_L12 (12)
+#define LINE_POS_L13 (13)
+#define LINE_POS_L14 (14)
+#define LINE_POS_L15 (15)
+#define LINE_POS_L16 (16)
+#define LINE_POS_L17 (17)
+#define LINE_POS_L18 (18)
 
 #define MENU10 (1023)
 #define MENU1 (102)
@@ -229,7 +240,52 @@
 
 // IOT Commands
 #define END_COMMAND (0x0D)
-#define switch_delay (45)
+#define switch_delay (50)
+#define small_delay (25)
+#define UCAx (0x08)
+
+// IOT ARRAY
+// Array Macros
+#define Index0 (0)
+#define Index1 (1)
+#define Index2 (2)
+#define Index3 (3)
+#define Index4 (4)
+#define Index5 (5)
+#define Index6 (6)
+#define Index7 (7)
+#define Index8 (8)
+#define Index9 (9)
+#define Index10 (10)
+#define Index11 (11)
+#define Index12 (12)
+#define Index13 (13)
+#define Index14 (14)
+#define Index15 (15)
+#define Index16 (16)
+#define Index17 (17)
+#define Index18 (18)
+#define Index19 (19)
+#define Index20 (20)
+#define Index21 (21)
+#define Index22 (22)
+#define Index23 (23)
+#define Index24 (24)
+#define Index25 (25)
+#define Index26 (26)
+#define Index27 (27)
+#define Index28 (28)
+#define Index29 (29)
+#define Index30 (30)
+#define Index31 (31)
+#define Index32 (32)
+#define Index33 (33)
+#define Index34 (34)
+#define Index35 (35)
+#define Index36 (36)
+#define Index37 (37)
+#define Index38 (38)
+#define Index39 (39)
 
 extern volatile unsigned int Time_Sequence;
 extern int ISR_COUNT;
@@ -271,3 +327,12 @@ extern char posL3;
 extern unsigned int color;
 extern char posL4;
 extern unsigned int inc;
+extern volatile unsigned int rxRead;
+extern volatile unsigned int IOTRead;
+extern volatile char RX_Char[SMALL_RING_SIZE];
+extern volatile char IOT_RX[SMALL_RING_SIZE];
+extern volatile char test;
+extern volatile _Bool receiveEnable;
+extern volatile _Bool USB_Received;
+extern volatile _Bool IOT_Received;
+extern char sw_select;

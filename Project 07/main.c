@@ -58,6 +58,15 @@ unsigned int usb_rx_ring_wr;
 unsigned int usb_rx_ring_rd;
 unsigned int usb_tx_ring_wr;
 unsigned int usb_tx_ring_rd;
+volatile unsigned int rxRead;
+volatile unsigned int IOTRead;
+volatile char RX_Char[SMALL_RING_SIZE];
+volatile char IOT_RX[SMALL_RING_SIZE];
+volatile char test;
+volatile _Bool receiveEnable;
+volatile _Bool USB_Received;
+volatile _Bool IOT_Received;
+char sw_select;
 
 void main(void){
 //------------------------------------------------------------------------------
@@ -79,6 +88,7 @@ void main(void){
   Init_Serial_UCA1();
   Init_Serial_UCA0();
   //Init_IOT();
+  int i = ZERO;
   
 //             1234567890
   clearLCD();
@@ -139,7 +149,7 @@ void main(void){
   }
   
   // Update all ADC channels
-  for(i = SW_SEL_5; i > ZERO; i--) {
+  for(i = LINE_POS_L5; i > ZERO; i--) {
   ADC_Process();
   }
   
@@ -147,52 +157,48 @@ void main(void){
   
   // ITEM ONE
   if ((ADC_Thumb > ZERO) && (ADC_Thumb <= MENU1)) {
-    Display_Config();
+    Configuration();
   }
   // ITEM TWO
   else if ((ADC_Thumb > MENU1) && (ADC_Thumb <= MENU2)) {
-    Display_IOTCMD();
+    IOT_Commands();
   }
   // ITEM THREE
   else if ((ADC_Thumb > MENU2) && (ADC_Thumb <= MENU3)) {
-    Display_Backdoor();
+    backdoorDisplay();
   }
   // ITEM FOUR
   else if ((ADC_Thumb > MENU3) && (ADC_Thumb <= MENU4)) {
-    Display_Detect();
+    IOTDetect();
   }
   // ITEM FIVE
   else if ((ADC_Thumb > MENU4) && (ADC_Thumb <= MENU5)) {
-    Display_Calibrate();
+    calibrationDisplay();
   }
   // ITEM SIX
   else if ((ADC_Thumb > MENU5) && (ADC_Thumb <= MENU6)) {
-    Display_Config();
+    formatDisplay();
   }
   // ITEM SEVEN
   else if ((ADC_Thumb > MENU6) && (ADC_Thumb <= MENU7)) {
-    Display_IOTCMD();
   }
   // ITEM EIGHT
   else if ((ADC_Thumb > MENU7) && (ADC_Thumb <= MENU8)) {
-    Display_Backdoor();
   }
   // ITEM NINE
   else if ((ADC_Thumb > MENU8) && (ADC_Thumb <= MENU9)) {
-    Display_Detect();
   }
   // ITEM TEN
   else if ((ADC_Thumb > MENU9) && (ADC_Thumb <= MENU10)) {
-    Display_Calibrate();
   }
   else {
 
   }
   
-  Display_Process();        		        // Update LCD Display
-  Five_msec_Delay(LIL_DELAY);
+  Display_Process();
+  Five_msec_Delay(small_delay);
   
-  Switches_Process();                       // Check for switch state change 
+  Switches_Process();
   if(Time_Sequence > FULL_SECOND){ // 1000 msec
     Time_Sequence = ZERO;
   }
